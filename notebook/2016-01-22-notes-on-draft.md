@@ -1,12 +1,14 @@
-# Notes on manuscript draft
+---
+layout: post
+title: 'Notes on "Monoallelic Expression" Draft'
+---
 
-Title: *Novel monoallelically-expressed genes and relaxation of imprinting with advanced age in the
-dorsolateral prefrontal cortex.*
+Manuscript title: `Novel monoallelically-expressed genes and relaxation of imprinting with advanced age in the dorsolateral prefrontal cortex.`
 
-abbrev. | concept
-------------- | -------------
-(R)MAE | (random) monoallelic expression
-SCZ | schizophrenia
+| abbreviation | concept |
+| ------------- | ------------- |
+| (R)MAE | (random) monoallelic expression |
+| SCZ | schizophrenia |
 
 ## Rationale and expectations
 
@@ -14,30 +16,29 @@ SCZ | schizophrenia
 * in immune and olfactory system clear function: RMAE ensures one cell---one receptor
 * hypothetical function of RMAE in brain?
     * MHC association to SCZ => immunity. Mechanism in SCZ?  Autoimmune disease?
-*Andy: generate diversity and/or dosage regulation (Nat Genet Dscam paper by
-Andy, neuronal identity); mammals neurexin, pcdh protocadherin*
     * other roles (beyond immunity)?
+
+> Andy: generate diversity and/or dosage regulation (Dscam paper by [Neves,..., Chess], neuronal identity); mammals neurexin, pcdh protocadherin
+
 * hypothetical function of imprinting?
-*Andy: being diploid is generally
-beneficial but: battle between sexes growth control males boost growth
-promoting genes (e.g. IGF2); females suppress; Heigh's theory*
+
+> Andy: being diploid is generally beneficial but: battle between sexes growth control males boost growth promoting genes (e.g. IGF2); females suppress; Heigh's theory
 
 ### Onset and extent of RMAE
 * X-inactivation expected to be polyclonal in brain sample
 "the unsurprising notion that most samples are polyclonal with respect to X inactivation" (p.5).  Basis of expectation?
 * RMAE expected to be monoclonal?  Why?  Developmental onset of RMAE?
-* in limphoblastoid cell lines: RMAE is widespread (occurs in 5-10 % of genes, Gimelbrandt et al) consistent with role in immunity
-* known extent of RMAE in other cell lines or tissue types?  Does extent
-correlate with functional imporatnce in some tissue?
-*Andy: 0.7 % indicates
-that RMAE has less importance in the brain than in the immune systems*
+* in limphoblastoid cell lines: RMAE is widespread (occurs in 5-10 % of genes, [Gimelbrant et al]) consistent with role in immunity
+* known extent of RMAE in other cell lines or tissue types?  Does extent correlate with functional imporatnce in some tissue?
+
+> Andy: 0.7 % indicates that RMAE has less importance in the brain than in the immune systems*
 
 ### Molecular mechanisms
 
 * expected lenght of epigenetic marks
     * imprinting
     * RMAE
-*Andy: local duplication ORs; H region*
+> Andy: local duplication ORs; H region
 
 ## Methodology
 
@@ -52,6 +53,13 @@ that RMAE has less importance in the brain than in the immune systems*
 
 ### Extent of MAE
 
-"the discordance rate (monoallelic RNA genotype in the context of a heterozygous DNA genotype) was 0.71%" (p.3); consistency with 5-10 % (Gimelbrandt et al)?
+> ms p.3: the discordance rate (monoallelic RNA genotype in the context of a heterozygous DNA genotype) was 0.71%"
 
-*Andy: two papers Gregg and Dulac 2010 Science and followup PLoS Genet. 2012;8(3):e1002600.*
+how about consistency with 5-10 % ([Gimelbrant et al])?
+
+> Andy: two papers by [Gregg,..., Dulac], which was followed up by [DeVeale et al]
+
+[DeVeale et al]: http://journals.plos.org/plosgenetics/article?id=10.1371/journal.pgen.1002600
+[Gregg,..., Dulac]: http://classic.sciencemag.org/content/329/5992/682.long
+[Neves,..., Chess]: http://dx.doi.org/10.1038/ng1299
+[Gimelbrant et al]: http://classic.sciencemag.org/content/318/5853/1136.long
