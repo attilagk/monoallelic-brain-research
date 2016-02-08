@@ -17,10 +17,7 @@
 
 ## Regression
 
-$\mathrm{E}[ \mathrm{LOI\_R} ] = x_1 \beta_1 + ...$, where $x_1$ is the age of death and the null hypothesis is $\beta_1=0$, i.e. age has no impact on imprinting.
-$\mathrm{LOI\_R}$ seems to be a variable that in some way aggregates $\{S_g\}_g$ over 8 or 13 genes
-$g$.  But what is the definition of $\mathrm{LOI\_R}$?  What kind of aggregation is it (summation,
-pooling,...)?
+$\mathrm{E}[ \mathrm{LOI\_R} ] = x_1 \beta_1 + ...$, where $x_1$ is the age of death and the null hypothesis is $\beta_1=0$, i.e. age has no impact on imprinting. $\mathrm{LOI\_R}$ seems to be a variable that in some way aggregates $\{S_g\}_g$ over 8 or 13 genes $g$.  But what is the definition of $\mathrm{LOI\_R}$?  What kind of aggregation is it (summation, pooling,...)?
 
 > We looked at Ifat's R script for regression analysis and the definition of LOI_R.  When I get
 > access to her files on the other server I'll look at them.
