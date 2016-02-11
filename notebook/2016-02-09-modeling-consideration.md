@@ -1,35 +1,37 @@
 ## Assessment of monoallelic expression (m.a.e.)
 
-### Questions
+In this note I identify some shortcomings of our project "monoallelic expression in the brain" in its present state (see the [project page], [slides] and [manuscript]), discuss their impact on the study, and make suggestions for amendments.  In short, those shortcomings are the implicit treatment of...
 
+1. the possible levels of allelic exclusion (a parameter of interest)
+2. various model families specifying the distribution of the key statistic $\{S_{ig}\}_{ig}$ given the level of allelic exclusion and all other parameters
+3. variation among genes and individuals (subjects)
+3. the plausibility of various *model structures* considered,
+
+where model structure depends on the first three points, and $\{S_{ig}\}_{ig}$ will be introduced shortly.  As explained subsequently, the shortcomings impede addressing the **main questions** of our study:
+ 
 * overall extent
     a. (two state model of allelic exclusion) how many genes in how many individuals are m.a.e.?
     b. (multi state model) how are genes and individuals distributed according to the strength of allelic exclusion?
 * DLPFC tissue specific pattern; novel m.a.e. genes
 * regulation of allelic exclusion: dependence on explanatory variables (age,...)
 
-## Data, observations
+## Preliminaries: data, sufficiency, inference, model assessment
 
 Genome-wide observations on $m$ genes are based on post mortem tissue samples from the DLPFC of $n$ individuals.  For each individual $i$ and gene $g$ a statistic $s_{ig}$ was derived from the observed SNP-array and RNA-seq data.  The $n \times p$ matrix $X$ contains observations on all individuals and $p$ variables including age of death and psychological condition (e.g. schizophrenia).
 
-In this note I align with the preceding analysis (see the [project page], [slides] and [manuscript]) and assume that the random variables $\{S_{ig}\}_{ig}$ are sufficient statistics for the parameters $\theta$ of all models under consideration below.  This likely false but attractively simple assumption means that the complete data (from the SNP-array and RNA-seq measurements) carry no more information on $\theta$ than $\{S_{ig}\}_{ig}$ do, so it is sufficient to draw inferences solely from the latter (in combination with $X$, of course).  Ideally, $\theta$ will help us answer the questions above.
+In this note I align with the preceding analysis and assume that given $X$ the random variables $\{S_{ig}\}_{ig}$ are sufficient statistics for the parameters $\theta$ (including the level of allelic exclusion) of all model structures under consideration.  This likely false but attractively simple assumption means that the complete data (from the SNP-array and RNA-seq measurements) carry no more information on $\theta$ than $\{S_{ig}\}_{ig}$ do, so it is sufficient to draw inferences solely from the latter (in combination with $X$, of course).  I will not discuss sufficiency of $\{S_{ig}\}_{ig}$ further in this document.
 
-## Considerations
+Ideally, $\theta$ will carry information on the main questions above.  The nature of that information depends on the actual form of $\theta$, which is tied to model structure.  The information in $\theta$ further depends on its mechanistic interpretation and the errors with which it is inferred from $\{S_{ig}\}_{ig}$.  In case of several plausible candidate models, a single or at most a few preferred ones need to be selected by likelihood based criteria like AIC or BIC (to which an alternative is Bayesian model averaging).
 
-### States of allelic exclusion
+## Levels of allelic exclusion
 
-In the simplest, *two state*, model of allelic exclusion, gene $g$ (in individual $i$) is either bi or monoallelically expressed.  This may be phrased, for each $i,g$ pair, as a null hypothesis $H_0$ for biallelic and an alternative hypothesis $H_1$ for monoallelic expression.
+In the simplest case allelic exclusion has only *two levels* so that any gene $g$ (in any individual $i$) is either bi or monoallelically expressed.  Then $\theta = \{ \{\alpha_{ig}\}_{ig},...\}$, where for each $i,g$ pair $\alpha_{ig}$ may only equal 0 or 1 (for biallelic and monoallelic expression, say).  Inferring $\alpha_{ig}$ is the same as testing the hypothesis $H_0$ of biallelic expression against that ($H_1$) of monoallelic expression (in $H_0$ and $H_1$ the $ig$ subscript was suppressed for clarity).
 
-In a more general, *multi state*, model family $g$ may also occupy one or more intermediate states corresponding to incomplete allelic exclusion of a certain strength. As will be discussed later together with the regression analysis, the multi state model might be preferred.
+In a more general, *multi level*, model family the allelic exclusion of $g$ may also occupy one or more intermediate states reflecting the strength/grade of exclusion. As will be discussed later together with the regression analysis, the multi state model might be preferred.  Note that the definition of intermediate states is a more delicate issue than that of the extreme states; ideal definitions are based on natural quantities (e.g. allele-specific transcription rate) so that they are widely accepted in the research field.
 
-The manuscript does seem to consider both model families at different points.  However, it does so with a few shortcomings:
+How such quantities are mechanistically related to $S_{ig}$ through the RNA-seq and SNP-array data is crucial but is not discussed here.
 
-* implicit treatment of:
-    1. two and multi state model families
-    2. probability distributions (for a given family)
-* no quantitative model comparison
-
-A consequence of these is the unknown probability of some types of error that are relevant to our questions.
+The manuscript does indeed seem to consider both model families at different points. 
 
 Next I present classes (events) defined in the manuscript based on $s_{ig}$ and give a possible interpretation under each model family.  Then I discuss how the mentioned shortcomings may impede addressing some of the questions above.
 
@@ -66,7 +68,7 @@ Under this model family, the extent of m.a.e. cannot be expressed as simply as b
 
 ### Impact on classification of genes
 
-The [manuscript] appears to consider the *two* state model family in the beginning of Results (`Pipeline` and `Landscape of monoallelic expression...` subsections) by formulating a *binary* classification problem for each $j,g$ pair.  It presents discoveries of "known imprinted genes and novel candidates" but without the corresponding false negative and false positive rate, respectively.  Viewing for instance the novelty detection side of classification, there is no confidence
+The [manuscript] appears to consider the *two* state model family in the beginning of Results (`Pipeline` and `Landscape of monoallelic expression...` subsections) by formulating a *binary* classification problem for each $j,g$ pair.  It presents discoveries of "known imprinted genes and novel candidates" but without error rates of misclassification.  Viewing for instance the novelty detection side of classification, there is no confidence
 
 the current definition of classes $A_1, A_2, A_3, B$ is arbitrary and has no probabilistic foundation, perhaps with the exception of $B$ (hence the different notation).  Therefore, we cannot tell in terms of two misclassification error rates (e.g. FPR, FNR) how strongly $H_0$ or $H_1$ supported for gene $g$ in individual $i$ by the observed $s_{ig}$.  Class $A_3$---gray on Figure 1 (slide 1) and S4 (slide 14) on the [slides]---"is considered 'indeterminate'", as stated on p6 of the [manuscript].
 
@@ -76,11 +78,9 @@ Indeed on p4 of the [manuscript] the first sentence of the Results section state
 
 On the one hand it "calls" bi and monoallelic
 
-### Variation among genes
+## Variation among genes, individuals and regression
 
-### Variation among individuals and regression
-
-### Model selection
+## Model selection
 
 [manuscript]: https://docs.google.com/document/d/1cWd4UH98SJR5lihDihC0ZO-C_A1-8MQ5COcixxCLzHE/edit?usp=sharing
 [project page]: http://katahdin.mssm.edu/ifat/web/cm/home

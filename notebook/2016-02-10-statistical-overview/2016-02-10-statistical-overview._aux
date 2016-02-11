@@ -1,0 +1,15 @@
+\relax 
+\@writefile{toc}{\contentsline {section}{\numberline {1}Rationale}{1}}
+\@writefile{toc}{\contentsline {section}{\numberline {2}Preliminaries}{1}}
+\@writefile{toc}{\contentsline {section}{\numberline {3}Towards explicit model specification}{2}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.1}The simplest model}{2}}
+\newlabel{eq:two-level}{{1}{2}}
+\newlabel{eq:two-level-cases}{{2}{2}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.2}Directions for generalization}{2}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.3}Regression models}{3}}
+\newlabel{eq:normal-lm}{{3}{3}}
+\newlabel{eq:shared-regression-param}{{4}{3}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.4}The model family used in the project}{4}}
+\@writefile{toc}{\contentsline {section}{\numberline {4}Model selection}{4}}
+\@writefile{toc}{\contentsline {section}{\numberline {5}Calling monoallelic expression}{4}}
+\@writefile{toc}{\contentsline {section}{\numberline {6}Extent of monoallelic expression}{4}}

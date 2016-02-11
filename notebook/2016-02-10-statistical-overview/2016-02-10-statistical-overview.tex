@@ -1,0 +1,199 @@
+\documentclass{article}
+\title{Possible Revision for the Monoallelic Expression Study}
+\usepackage{polyglossia, fontspec}
+\usepackage{amsmath, mathtools}
+\author{Attila Gulyás-Kovács}
+
+\begin{document}
+
+\maketitle
+
+\section{Rationale}
+
+In my understanding, the aims of the project\footnote{working title: Novel
+monoallelically-expressed genes and relaxation of imprinting with advanced age
+in the dorsolateral prefrontal cortex.} may be summarized as
+\begin{enumerate}
+\item classify (addressable) genes as mono or biallelically expressed in human DLFPC
+\item investigate dependence on explanatory variables like age (regression)
+\item estimate the fraction of monoallelically expressed genes 
+\end{enumerate}
+
+Some shortcomings (listed below) of the used approaches appear to hinder interpretation of results or
+weaken the conclusions already drawn from those.
+\begin{itemize}
+\item implicit specification of statistical models and underlying assumptions
+\item no model checking/comparison of alternative models
+\item no error rates were calculated for the detection of monoallelic expression
+\item consequently, only a semi-quantitative statement could be made on the
+small fraction of monoallelically expressed genes
+\end{itemize}
+
+\section{Preliminaries}
+
+Genome-wide observations on $m$ genes are based on post mortem tissue samples from the DLPFC
+(dorsolateral prefrontal cortex) of $n$ individuals.  For each individual $i$ and gene $g$ a
+statistic $s_{ig}$ was derived from the observed SNP-array and RNA-seq data.  The $n \times p$
+matrix $X$ contains observations on all individuals and $p$ variables including age of death and
+psychological condition (e.g. schizophrenia).
+
+In this note I follow the previous analysis in that I assume that given $X$ the random variables
+$\{S_{ig}\}_{ig}$ are sufficient statistics for the parameters $\theta$ (including the level of
+allelic exclusion) of all model structures under consideration.  This admittedly false but
+attractively simple assumption means that the complete data (from the SNP-array and RNA-seq
+measurements) carry no more information on $\theta$ than $\{S_{ig}\}_{ig}$ do, so it is sufficient
+to draw inferences solely from the latter (in combination with $X$, if $X$ is informative).  I will
+not discuss sufficiency of $\{S_{ig}\}_{ig}$ further in this document.
+
+\section{Towards explicit model specification}
+
+To make the implicit model specification of the manuscript explicit, I will briefly expose here a
+few plausible model families.  I will start from the simplest one, progressing towards generalized
+linear models.  Along the way I will list mechanistic/biological assumptions behind that model, and
+sketch various modeling directions to relax some of those assumptions.
+
+\subsection{The simplest model}
+
+For all the model families considered here the following assumptions are made
+on the mechanism of allelic exclusion
+\begin{itemize}
+\item $\{S_{ig}\}$ are sufficient statistics (see above) for $\theta$
+\item individuals are independent of each other
+\end{itemize}
+
+In case of the simplest model family, $\{S_{ig}\}$ are independently
+distributed according to two likelihood functions $f(\cdot|a)$ and
+$f(\cdot|b)$, corresponding to mono and biallelic expression, respectively:
+\begin{eqnarray}
+\label{eq:two-level}
+\{S_{ig}\}_{ig} &\overset{i.i.d.}{\sim}& f(s | \theta) \\
+\label{eq:two-level-cases}
+\theta &=&
+\begin{dcases*}
+a & when $g$ is monoallelically expressed \\
+b & when $g$ is biallelically expressed.
+\end{dcases*}
+\end{eqnarray}
+
+For this model framework the following additional assumptions must be made on
+allelic exclusion:
+\begin{enumerate}
+\item it takes only two levels (resulting in fully biallelic or monoallelic
+expression) of the same alleles in all cells on which the data are based on
+\item all genes $g$ are independent
+\item $X$ has no impact (i.e.~age independence)
+\end{enumerate}
+
+\subsection{Directions for generalization}
+
+When we relax the assumption 1 above to allow \emph{multiple levels of allelic exclusion}
+within single cells and/or variation among cells, we have a separate
+$\theta_G$ parameter for each level, expressing the strength of allelic
+exclusion:
+\begin{equation*}
+\{S_{ig}\}_{ig} \overset{i.i.d.}{\sim} f(s | \theta_G) \quad \forall g \in G.
+\end{equation*}
+The difficulty with this model family is twofold.  First, the biological
+significance of different levels of $\theta_G$ seems vague.  Second, the
+extent of monoallelic expression (genome-wide or restricted to addressable
+genes) cannot be expressed by a single number such as the expected
+frequency $\hat{\pi}_\mathrm{m}$ of monoallelically expressed genes that is applicable
+to the two level case.  Here I will not pursue this direction further and
+continue by assuming two levels as before.
+
+\emph{Dependence among genes} (see assumption 2.) is known to exist because of extensive epigenetic
+marks for imprinting spanning multiple neighboring genes.  The simplest model
+family for such dependence is a HMM framework.  Emission probabilities for
+\(\theta_{ig}\rightarrow S_{ig}\) are specified by \(f(s | \theta_{ig})\)
+(cf.~Eq.~\ref{eq:two-level}), and
+the hidden Markov chain is
+\(\theta_{i1}\rightarrow\theta_{i2}\rightarrow...\), where each
+\(\theta_{ig}\) may only take the two values as in
+Eq.~\ref{eq:two-level-cases}.  Neither this direction is followed further
+here, so we return to the independent genes scenario.
+
+Until this point \(\{S_{1g},...,S_{ng}\}\) were distributed identically and
+independently across individuals for any given gene \(g\).  That allows
+aggregating \(\{S_{1g},...,S_{ng}\}\) by taking the average
+\(\bar{S}_g=n^{-1}\sum_i S_{ig}\), which results an estimator whose standard
+error is diminished by \(n^{-1/2}\) relative to \(S_{ig}\).  Given $n=579$
+this is a great improvement, yet the previous analysis did not take advantage
+of this.
+
+\subsection{Regression models}
+
+The following regression framework achieves a similar effect to averaging.
+Importantly, it also allows \(X\) to \emph{impact allelic exclusion}
+(assumption 3.).  The most simple model family in this case is normal linear
+regression.  Let \(f(\cdot|\mu,\sigma^2)\) denote the p.d.f.~of the normal
+distribution with mean \(\mu\) and variance \(\sigma^2\).  Then for a given
+individual \(i\)
+\begin{eqnarray}
+\label{eq:normal-lm}
+\{S_{ig}\} &\overset{i.i.d.}{\sim}& f(s | x_i \beta_g, \sigma^2_g) \\
+\label{eq:shared-regression-param}
+\beta_g,\sigma^2_g &=&
+\begin{dcases*}
+a_1, a_2 & when $g$ is monoallelically expressed \\
+b_1, b_2 & when $g$ is biallelically expressed,
+\end{dcases*}
+\end{eqnarray}
+where \(x_i\) is the \(i\)-th row of \(X\) and \(\beta_g\) is a \(p\)-length
+vector of regression coefficients.
+
+In this model family the multi level explanatory variables \(x_i\) enter the model specification as
+scaling factors of the regression parameters \(\beta_g\).  Therefore \(S_{jg}\) may be distributed
+according to (many) more distributions than just two because \(f\) in Eq.~\ref{eq:normal-lm}
+incorporates \(x_i\).  Yet, this model family does support binary classification since \(X\) is known
+and, as in Eq.~\ref{eq:two-level-cases}, the unknown parameter(s) may only take two values.
+
+Linearity and normal distribution may not hold\footnote{In fact they cannot exactly hold given
+theoretical considerations such as the boundedness or discrete nature of \(S_{jg}\).  Despite this,
+they may hold approximately well in some sense.} for \(S_{jg}\) and \(X\).  Generalized linear model
+families (among which normal linear models comprise just one family) may offer solutions then.  In
+this more general model family Eq.~\ref{eq:normal-lm} modifies to \(\{S_{ig'}\}
+\overset{i.i.d.}{\sim} f(s | \theta_{g'}(x_i), \phi_{g'})\), such that \(\theta_{g'}\) is a function
+of the explanatory variables \(x_i\), and \(g(\mathrm{E}[S_{ig'}]) = x_i \beta_{g'}\), where \(g\)
+is a link function.
+
+\subsection{The model family used in the project}
+
+The manuscript describes the used model in two halves.  The first half-model is given in the 
+classification context (calling monoallelic expression) and the description is not only implicit but
+also seems incomplete.  The second half is specified at the analysis of age-dependent relaxation of
+imprinting, and the description is both clearer and more complete than for the first half.  Some
+details, however, only turn out from the scrutiny of related R code\footnote{I received Ifat's code
+from Andy via email on 2/4/16}.
+
+Taken together, the following model framework emerged for me:
+\begin{itemize}
+\item two levels of allelic exclusion: monoallelic and biallelic expression (well suited for binary classification)
+\item for biallelic expression it is not clear (for me) that a model was specified at all;
+a confidence interval is mentioned on p6 of the manuscript but that might refer to distributions
+of read counts instead of those of \(\{S_{ig}\}_{ig}\)
+\item for monoallelic expression a normal linear model was used\footnote{implemented in the
+\texttt{glm} R function, which was called in Ifat's code with the default \texttt{family = gaussian}
+argument}, not on \(\{S_{ig}\}_{ig}\), but instead on a ``loss of imprinting'' statistic LOI\_R,
+which I rename here to \(T_i\), which aggregates \(\{S_{ig}\}_{ig}\) for a few (8) genes classified
+as monoallelically expressing
+\item the definition of \(T_i\) is essentially \(\left(\sum_{g=1}^8 \hat{F}(s_{ig}) + 1 \right) /
+2\), that is the average empirical cumulative distribution function across the 8 selected genes,
+scaled to match \(S_{ig}\)
+\end{itemize}
+
+
+
+\section{Model selection}
+
+Scatter plots from the previous analysis indicate that the normal linear model would not fit well.
+This qualitative result explains why that work transformed, for each \(g\),
+\(\{S_{1g},...,S_{ng}\}\) into percentiles before fitting the normal linear model.  Still before fitting, that analysis averaged
+each percentile across 8 preselected monoallelically expressed genes, which has a similar effect as
+constraining all monoallelically expressed to share parameters
+(Eq.~\ref{eq:shared-regression-param})
+
+\section{Calling monoallelic expression}
+
+\section{Extent of monoallelic expression}
+
+\end{document}
