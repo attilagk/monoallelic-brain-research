@@ -1,8 +1,9 @@
-\documentclass{article}
-\title{Possible Revision for the Monoallelic Expression Study}
+\documentclass[letterpaper]{article}
+\title{A Statistical View on the Monoallelic Expression Study}
 \usepackage{polyglossia, fontspec}
 \usepackage{amsmath, mathtools}
-\author{Attila Gulyás-Kovács}
+\usepackage{hyperref}
+\author{Attila G.K.}
 
 \begin{document}
 
@@ -12,7 +13,12 @@
 
 In my understanding, the aims of the project\footnote{working title: Novel
 monoallelically-expressed genes and relaxation of imprinting with advanced age
-in the dorsolateral prefrontal cortex.} may be summarized as
+in the dorsolateral prefrontal cortex.  See the text of manuscript
+\href{https://docs.google.com/document/d/1cWd4UH98SJR5lihDihC0ZO-C_A1-8MQ5COcixxCLzHE/edit?usp=sharing}{under
+this link}
+and the corresponding figures
+\href{https://docs.google.com/presentation/d/1YvpA1AJ-zzir1Iw0F25tO9x8gkSAzqaO4fjB7K3zBhE/edit?usp=sharing}{here}}
+may be summarized as
 \begin{enumerate}
 \item classify (addressable) genes as mono or biallelically expressed in human DLFPC
 \item investigate dependence on explanatory variables like age (regression)
@@ -66,9 +72,9 @@ distributed according to two likelihood functions $f(\cdot|a)$ and
 $f(\cdot|b)$, corresponding to mono and biallelic expression, respectively:
 \begin{eqnarray}
 \label{eq:two-level}
-\{S_{ig}\}_{ig} &\overset{i.i.d.}{\sim}& f(s | \theta) \\
+\{S_{ig}\}_{ig} &\overset{i.i.d.}{\sim}& f(s | \theta_g) \\
 \label{eq:two-level-cases}
-\theta &=&
+\theta_g &=&
 \begin{dcases*}
 a & when $g$ is monoallelically expressed \\
 b & when $g$ is biallelically expressed.
@@ -130,7 +136,7 @@ distribution with mean \(\mu\) and variance \(\sigma^2\).  Then for a given
 individual \(i\)
 \begin{eqnarray}
 \label{eq:normal-lm}
-\{S_{ig}\} &\overset{i.i.d.}{\sim}& f(s | x_i \beta_g, \sigma^2_g) \\
+\{S_{ig}\}_g &\overset{i.i.d.}{\sim}& f(s | x_i \beta_g, \sigma^2_g) \\
 \label{eq:shared-regression-param}
 \beta_g,\sigma^2_g &=&
 \begin{dcases*}
@@ -158,42 +164,96 @@ is a link function.
 
 \subsection{The model family used in the project}
 
-The manuscript describes the used model in two halves.  The first half-model is given in the 
-classification context (calling monoallelic expression) and the description is not only implicit but
-also seems incomplete.  The second half is specified at the analysis of age-dependent relaxation of
-imprinting, and the description is both clearer and more complete than for the first half.  Some
-details, however, only turn out from the scrutiny of related R code\footnote{I received Ifat's code
-from Andy via email on 2/4/16}.
+The manuscript describes the used model in bits of varying details, using two
+different sets of interrelated summary statistics, in the context of different
+sets of genes and different tasks.  Some details only turn out from the
+scrutiny of related R code\footnote{I received Ifat's code from Andy via email
+on 2/4/16}.
 
-Taken together, the following model framework emerged for me:
+Taken together, the following model framework emerges (summarized in
+Table~\ref{tab:model-used}):
 \begin{itemize}
 \item two levels of allelic exclusion: monoallelic and biallelic expression (well suited for binary classification)
-\item for biallelic expression it is not clear (for me) that a model was specified at all;
+\item for biallelic expression it is not clear (for me) that a model was
+specified at all during the course of the study;
 a confidence interval is mentioned on p6 of the manuscript but that might refer to distributions
 of read counts instead of those of \(\{S_{ig}\}_{ig}\)
 \item for monoallelic expression a normal linear model was used\footnote{implemented in the
-\texttt{glm} R function, which was called in Ifat's code with the default \texttt{family = gaussian}
-argument}, not on \(\{S_{ig}\}_{ig}\), but instead on a ``loss of imprinting'' statistic LOI\_R,
-which I rename here to \(T_i\), which aggregates \(\{S_{ig}\}_{ig}\) for a few (8) genes classified
+\texttt{glm} R function, which was called in Ifat's code without
+\texttt{family} argument thus defaulting to \texttt{gaussian}, which is the
+normal linear model family. }, not on \(\{S_{ig}\}_{ig}\), but instead on a ``loss of imprinting'' statistic LOI\_R,
+which I rename here to \(T_i\) to emphasize that each \(T_i\) is specific to 
+individual \(i\).  \(T_i\) aggregates \(\{S_{ig}\}_{ig}\) for a few (8) genes classified
 as monoallelically expressing
-\item the definition of \(T_i\) is essentially \(\left(\sum_{g=1}^8 \hat{F}(s_{ig}) + 1 \right) /
-2\), that is the average empirical cumulative distribution function across the 8 selected genes,
+\item the definition of \(T_i\) is essentially
+\begin{equation}
+\label{eq:T}
+\frac{1}{2}\left(\sum_{g=1}^8 \hat{F}(s_{ig}) + 1 \right)
+\end{equation}
+that is the average empirical cumulative distribution function across the 8
+selected genes,
 scaled to match \(S_{ig}\)
 \end{itemize}
 
+\begin{table}[t]
+\label{tab:model-used}
+\begin{tabular}{c|c|c|}
+statistic & \(S_{ig}\) & \(T_i\) (=LOI\_R) \\
+\hline
+definition & directly based on data & based on \(\{S_{ig}\}_{ig}\) (Eq.~\ref{eq:T}) \\
+distribution & \(\{S_{ig}\}_{ig} \overset{i.i.d.}{\sim} f(s |
+\theta) \) &
+\(T_{i} = x_i \beta + \epsilon_i; \; \epsilon_i \overset{i.i.d.}{\sim}
+\mathcal{N}(0, \sigma^2)\) \\
+model family & Eq.~\ref{eq:two-level} with unspecified \(f\) & normal linear \\
+parameters & \(\theta=b\)=? (Eq.~\ref{eq:two-level-cases})& least sq.~estimate \(\hat{\beta}, \hat{\sigma}^2\) \\
+applied to & all genes & 8 selected monoallelic genes \\
+task & calling monoallelic e. & age dependence \\
+\hline
+\end{tabular}
+\caption{Properties of the models used in the project}
+\end{table}
 
+As Table~\ref{tab:model-used} shows, the two kind of statistics
+(\(\{S_{ig}\}_{ig}\) and \(\{T_i\}\)) differ in their relation to the full
+data set and to each other, the type of probability model family and how
+exactly those probabilities are specified.  Furthermore, they differ in what
+kind of analysis (task) they were used in and how broad set of genes they were
+applied to.
 
-\section{Model selection}
+In section~\ref{sec:consequences} I discuss those consequences of the
+unspecified \emph{null distribution} of \(\{S_{ig}\}_{ig}\), which relate
+specifically to biallelically expressed genes.  These consequences concern two
+tasks: (i.) calling monoallelically expressed genes and (ii.) estimating their fraction
+in all (addressable) genes (i.e. the extent of monoallelic expression).  Here
+I only suggest revision of the interpretation of results (conclusions) but not that of the
+analysis itself, which would be desirable if stronger conclusions were to be
+made.
 
-Scatter plots from the previous analysis indicate that the normal linear model would not fit well.
+In section~\ref{sec:full-specification} I turn to the dependece of monoallelic
+expression on the explanatory variables \(X\) and suggest ways not only for
+strengthening and generalizing the result on age dependence, but also for
+unifying the modeling framework to allow the most direct, genome wide,
+biological interpretation of parameters.
+
+\section{Consequences of unspecified null distribution}
+\label{sec:consequences}
+
+\subsection{Calling monoallelic expression}
+
+\subsection{Extent of monoallelic expression}
+
+\section{More ideal selection}
+\label{sec:full-specification}
+
+Scatter plots from the previous analysis indicate that the normal linear model
+would not fit well (see
+\href{https://docs.google.com/presentation/d/1YvpA1AJ-zzir1Iw0F25tO9x8gkSAzqaO4fjB7K3zBhE/edit?usp=sharing}{Figure
+3}).
 This qualitative result explains why that work transformed, for each \(g\),
 \(\{S_{1g},...,S_{ng}\}\) into percentiles before fitting the normal linear model.  Still before fitting, that analysis averaged
-each percentile across 8 preselected monoallelically expressed genes, which has a similar effect as
+each percentile across 8 selected monoallelically expressed genes, which has a similar effect as
 constraining all monoallelically expressed to share parameters
 (Eq.~\ref{eq:shared-regression-param})
-
-\section{Calling monoallelic expression}
-
-\section{Extent of monoallelic expression}
 
 \end{document}
