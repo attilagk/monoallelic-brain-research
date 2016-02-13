@@ -1,4 +1,4 @@
-" ATP project vim script: Thu Feb 11, 2016 at 10:03 PM -0500.
+" ATP project vim script: Fri Feb 12, 2016 at 06:06 PM -0500.
 
 let b:atp_MainFile = '2016-02-10-statistical-overview.tex'
 let g:atp_mapNn = 0
@@ -13,9 +13,9 @@ let b:atp_OpenViewer = '1'
 let b:atp_XpdfServer = '2016-02-10-statistical-overview'
 let b:atp_Viewer = 'okular'
 let b:TreeOfFiles = {}
-let b:ListOfFiles = []
-let b:TypeDict = {}
-let b:LevelDict = {}
+let b:ListOfFiles = ['statistical-overview.bib']
+let b:TypeDict = {'statistical-overview.bib': 'bib'}
+let b:LevelDict = {'statistical-overview.bib': 1}
 let b:atp_BibCompiler = 'bibtex'
 let b:atp_StarEnvDefault = ''
 let b:atp_StarMathEnvDefault = ''

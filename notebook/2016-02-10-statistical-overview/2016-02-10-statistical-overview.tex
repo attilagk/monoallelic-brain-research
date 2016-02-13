@@ -1,9 +1,11 @@
 \documentclass[letterpaper]{article}
-\title{A Statistical View on the Monoallelic Expression Study}
 \usepackage{polyglossia, fontspec}
 \usepackage{amsmath, mathtools}
 \usepackage{hyperref}
+
+\title{A Statistical View on the Monoallelic Expression Study}
 \author{Attila G.K.}
+\bibliographystyle{plain}
 
 \begin{document}
 
@@ -38,18 +40,33 @@ small fraction of monoallelically expressed genes
 \section{Preliminaries}
 
 Genome-wide observations on $m$ genes are based on post mortem tissue samples from the DLPFC
-(dorsolateral prefrontal cortex) of $n$ individuals.  For each individual $i$ and gene $g$ a
-statistic $s_{ig}$ was derived from the observed SNP-array and RNA-seq data.  The $n \times p$
-matrix $X$ contains observations on all individuals and $p$ variables including age of death and
-psychological condition (e.g. schizophrenia).
+(dorsolateral prefrontal cortex) of $n$ individuals. The $n \times p$ design
+matrix $X$ contains observations on all individuals and $p$ \emph{explanatory variables} including age of death and psychological condition (e.g.
+schizophrenia).
 
-In this note I follow the previous analysis in that I assume that given $X$ the random variables
-$\{S_{ig}\}_{ig}$ are sufficient statistics for the parameters $\theta$ (including the level of
-allelic exclusion) of all model structures under consideration.  This admittedly false but
-attractively simple assumption means that the complete data (from the SNP-array and RNA-seq
-measurements) carry no more information on $\theta$ than $\{S_{ig}\}_{ig}$ do, so it is sufficient
-to draw inferences solely from the latter (in combination with $X$, if $X$ is informative).  I will
-not discuss sufficiency of $\{S_{ig}\}_{ig}$ further in this document.
+For each gene $g$ and individual $i$ inferred to be heterozygous for \(g\) a
+statistic $S_{ig}$ was derived from the SNP-array and RNA-seq data based on
+read counts that contain any of the inferred SNPs in the \((i,g)\) pair.  Let
+\(N_{ig}\) be the total number of such counts (based on both alleles) and
+\(H_{ig} = \sum_{s} H'_{is}\), where \(H'_{is}\) is the greater of the read
+counts for the two variants at SNP \(s\); the summation runs over all inferred
+SNPs \(s\) (for individual \(i\) and gene \(g\)).  Using the notations just
+introduced, the definition in the manuscript
+reads
+\begin{eqnarray*}
+\label{eq:S}
+S_{ig} = \frac{H_{ig}}{N_{ig}}.
+\end{eqnarray*}
+
+In this note I follow the previous analysis in that I assume
+that given $X$ the random variables $\{S_{ig}\}_{ig}$ are sufficient
+statistics for the parameters $\theta$ (including the level of allelic
+exclusion) of all model structures under consideration.  This admittedly false
+but attractively simple assumption means that the complete data (from the
+SNP-array and RNA-seq measurements) carry no more information on $\theta$ than
+$\{S_{ig}\}_{ig}$ do, so it is sufficient to draw inferences solely from the
+latter (in combination with $X$, if $X$ is informative).  I will not discuss
+sufficiency of $\{S_{ig}\}_{ig}$ further in this document.
 
 \section{Towards explicit model specification}
 
@@ -91,9 +108,10 @@ expression) of the same alleles in all cells on which the data are based on
 \end{enumerate}
 
 \subsection{Directions for generalization}
+\label{sec:generalizations}
 
-When we relax the assumption 1 above to allow \emph{multiple levels of allelic exclusion}
-within single cells and/or variation among cells, we have a separate
+When assumption 1 above is relaxed to allow \emph{multiple levels of allelic exclusion}
+within single cells and/or variation among cells, there is a separate
 $\theta_G$ parameter for each level, expressing the strength of allelic
 exclusion:
 \begin{equation*}
@@ -116,7 +134,7 @@ the hidden Markov chain is
 \(\theta_{i1}\rightarrow\theta_{i2}\rightarrow...\), where each
 \(\theta_{ig}\) may only take the two values as in
 Eq.~\ref{eq:two-level-cases}.  Neither this direction is followed further
-here, so we return to the independent genes scenario.
+here and I return to the independent genes scenario.
 
 Until this point \(\{S_{1g},...,S_{ng}\}\) were distributed identically and
 independently across individuals for any given gene \(g\).  That allows
@@ -127,6 +145,7 @@ this is a great improvement, yet the previous analysis did not take advantage
 of this.
 
 \subsection{Regression models}
+\label{sec:regression-models}
 
 The following regression framework achieves a similar effect to averaging.
 Importantly, it also allows \(X\) to \emph{impact allelic exclusion}
@@ -176,8 +195,14 @@ Table~\ref{tab:model-used}):
 \item two levels of allelic exclusion: monoallelic and biallelic expression (well suited for binary classification)
 \item for biallelic expression it is not clear (for me) that a model was
 specified at all during the course of the study;
-a confidence interval is mentioned on p6 of the manuscript but that might refer to distributions
+a confidence interval is mentioned on p6 of the manuscript but that appears to refer to distributions
 of read counts instead of those of \(\{S_{ig}\}_{ig}\)
+\item since
+the manuscript leaves the likelihood function \(f\) unspecified and mentions
+none of the generalizations of Section~\ref{sec:generalizations}
+and~\ref{sec:regression-models}, I assume that the simplest model
+(Eqs.~\ref{eq:two-level}-\ref{eq:two-level-cases}) describes best the
+intentions of the manuscript
 \item for monoallelic expression a normal linear model was used\footnote{implemented in the
 \texttt{glm} R function, which was called in Ifat's code without
 \texttt{family} argument thus defaulting to \texttt{gaussian}, which is the
@@ -188,11 +213,12 @@ as monoallelically expressing
 \item the definition of \(T_i\) is essentially
 \begin{equation}
 \label{eq:T}
-\frac{1}{2}\left(\sum_{g=1}^8 \hat{F}(s_{ig}) + 1 \right)
+\frac{1}{2}\left(\sum_{g=1}^8 \hat{F}_g(s) + 1 \right)
 \end{equation}
-that is the average empirical cumulative distribution function across the 8
-selected genes,
-scaled to match \(S_{ig}\)
+where \(\hat{F}_g\) is the empirical cumulative distribution function
+(e.c.d.f.) based on \(\{S_{ig}\}_i\) for one of the 8 selected genes \(g\);
+thus Eq.~\ref{eq:T} gives the average e.c.d.f.~whose range is scaled to
+\([0.5,1]\) to match the same interval of possible values \(S_{ig}\) may take
 \end{itemize}
 
 \begin{table}[t]
@@ -200,13 +226,15 @@ scaled to match \(S_{ig}\)
 \begin{tabular}{c|c|c|}
 statistic & \(S_{ig}\) & \(T_i\) (=LOI\_R) \\
 \hline
-definition & directly based on data & based on \(\{S_{ig}\}_{ig}\) (Eq.~\ref{eq:T}) \\
+definition & based on the data (Eq.~\ref{eq:S}) & based on \(\{S_{ig}\}_{ig}\) (Eq.~\ref{eq:T}) \\
 distribution & \(\{S_{ig}\}_{ig} \overset{i.i.d.}{\sim} f(s |
 \theta) \) &
 \(T_{i} = x_i \beta + \epsilon_i; \; \epsilon_i \overset{i.i.d.}{\sim}
 \mathcal{N}(0, \sigma^2)\) \\
-model family & Eq.~\ref{eq:two-level} with unspecified \(f\) & normal linear \\
-parameters & \(\theta=b\)=? (Eq.~\ref{eq:two-level-cases})& least sq.~estimate \(\hat{\beta}, \hat{\sigma}^2\) \\
+model family & Eq.~\ref{eq:two-level} with unspecified \(f\)
+ & normal linear \\
+parameters & \(a=\)?, \(b=\)? (Eq.~\ref{eq:two-level-cases})
+& least sq.~estimate \(\hat{\beta}, \hat{\sigma}^2\) \\
 applied to & all genes & 8 selected monoallelic genes \\
 task & calling monoallelic e. & age dependence \\
 \hline
@@ -221,16 +249,18 @@ exactly those probabilities are specified.  Furthermore, they differ in what
 kind of analysis (task) they were used in and how broad set of genes they were
 applied to.
 
-In section~\ref{sec:consequences} I discuss those consequences of the
-unspecified \emph{null distribution} of \(\{S_{ig}\}_{ig}\), which relate
-specifically to biallelically expressed genes.  These consequences concern two
-tasks: (i.) calling monoallelically expressed genes and (ii.) estimating their fraction
-in all (addressable) genes (i.e. the extent of monoallelic expression).  Here
-I only suggest revision of the interpretation of results (conclusions) but not that of the
-analysis itself, which would be desirable if stronger conclusions were to be
-made.
+In section~\ref{sec:consequences} I discuss those consequences of not
+specifying the \emph{null distribution} \(f(s|\theta=b)\) for the simple model
+(Eqs.~\ref{eq:two-level}-\ref{eq:two-level-cases}), a term that in the present
+context names the distribution of \(\{S_{ig}\}_{ig}\) for biallelically
+expressed genes \(g\).  These consequences concern two tasks: (i.)~calling
+monoallelically expressed genes and (ii.)~estimating their fraction in all
+(addressable) genes (i.e. the extent of monoallelic expression).  Here I only
+suggest revision of the interpretation of results (conclusions) but not that
+of the analysis itself, which would be desirable if stronger conclusions were
+to be made.
 
-In section~\ref{sec:full-specification} I turn to the dependece of monoallelic
+In section~\ref{sec:full-specification} I turn to the dependence of monoallelic
 expression on the explanatory variables \(X\) and suggest ways not only for
 strengthening and generalizing the result on age dependence, but also for
 unifying the modeling framework to allow the most direct, genome wide,
@@ -242,6 +272,8 @@ biological interpretation of parameters.
 \subsection{Calling monoallelic expression}
 
 \subsection{Extent of monoallelic expression}
+
+Estimating the expected fraction \cite{Storey:2003kx}
 
 \section{More ideal selection}
 \label{sec:full-specification}
@@ -255,5 +287,7 @@ This qualitative result explains why that work transformed, for each \(g\),
 each percentile across 8 selected monoallelically expressed genes, which has a similar effect as
 constraining all monoallelically expressed to share parameters
 (Eq.~\ref{eq:shared-regression-param})
+
+\bibliography{statistical-overview}
 
 \end{document}
