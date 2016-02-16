@@ -2,6 +2,8 @@
 \usepackage{polyglossia, fontspec}
 \usepackage{amsmath, mathtools}
 \usepackage{hyperref}
+\usepackage{tikz}
+\usepackage[margin = 1.5 in]{geometry}
 
 \title{A Statistical View on the Monoallelic Expression Study}
 \author{Attila G.K.}
@@ -223,6 +225,7 @@ thus Eq.~\ref{eq:T} gives the average e.c.d.f.~whose range is scaled to
 
 \begin{table}[t]
 \label{tab:model-used}
+\begin{center}
 \begin{tabular}{c|c|c|}
 statistic & \(S_{ig}\) & \(T_i\) (=LOI\_R) \\
 \hline
@@ -239,6 +242,7 @@ applied to & all genes & 8 selected monoallelic genes \\
 task & calling monoallelic e. & age dependence \\
 \hline
 \end{tabular}
+\end{center}
 \caption{Properties of the models used in the project}
 \end{table}
 
@@ -269,11 +273,63 @@ biological interpretation of parameters.
 \section{Consequences of unspecified null distribution}
 \label{sec:consequences}
 
-\subsection{Calling monoallelic expression}
-
 \subsection{Extent of monoallelic expression}
 
 Estimating the expected fraction \cite{Storey:2003kx}
+
+\begin{equation}
+\label{eq:exp-unif-mixture}
+h(p) = \pi_0 + \pi_1 \lambda (1 - e^{-\lambda}) e^{-\lambda p}
+\end{equation}
+for \(0 \leq p \leq 1; \; \lambda > 0; \; 0 < \pi_0 < 1\)
+
+\begin{figure}[b]
+\includegraphics[scale=1.04]{figures/storey-2003-fig1}
+
+\includegraphics[scale=0.5]{figures/exp-unif-mixture-1.pdf}
+\caption{\(\pi_0 : \pi_1\) mixtures of null and alternative distributions of
+\(p\)-values.  \emph{Top:} figure taken from ref.~\cite{Storey:2003kx} showing
+3170 \(p\)-values from a genomwide study with estimated \(\pi_0 \approx 2/3\).  \emph{Bottom left:} the black and gray thick solid lines show the probability density
+function for two mixture distributions defined by
+Eq.~\ref{eq:exp-unif-mixture}, with the same \(\pi_0=2/3\) but different \(\lambda\)
+values.  The bars correspond to the histogram of a 3170-sized sample from the
+``black'' distribution.  \emph{Bottom right:} the same ``black'' distribution
+function is expanded to illustrate the four outcomes of hypothesis testing;
+their probabilities equal the gray areas delineated by the dotted lines. }
+\end{figure}
+
+\begin{table}
+\label{tab:fdr-exp-unif-mixture}
+\begin{center}
+\begin{tabular}{cc|ll|}
+ & & \multicolumn{2}{c}{FDR} \\
+ \(\lambda\) & threshold \(\alpha\) & \(\pi_1=0.008\) & \(\pi_1=0.052\) \\
+\hline
+ & \(10^{-2}\) & 0.87 & 0.50 \\
+ 20 & \(10^{-4}\) & 0.86 & 0.48 \\
+ & \(10^{-8}\) & 0.86 & 0.47 \\
+\hline
+ & \(10^{-2}\) & 0.55 & 0.15 \\
+ 2000 & \(10^{-4}\) & 0.064 & 0.010 \\
+ & \(10^{-8}\) & 0.058 & 0.0090 \\
+\hline
+\end{tabular}
+\end{center}
+\caption{False discovery rate calculated using Eq under the mixture distribution
+function (Eq.~\ref{eq:exp-unif-mixture}) at various \(\pi_1\) and \(\lambda\) values and various significance
+thresholds \(\alpha\).}
+\end{table}
+
+\subsection{Calling monoallelic expression}
+
+\begin{equation}
+\mathrm{Pr}(\mathrm{TP}) = \pi_1 [1 - (1 - e^{-\lambda}) (e^{-\lambda \alpha} -
+e^{-\lambda})]
+\end{equation}
+
+\begin{equation}
+\mathrm{FDR} = \frac{\mathrm{Pr}(\mathrm{FP})}{\mathrm{Pr}(\mathrm{FP}) + \mathrm{Pr}(\mathrm{TP})}
+\end{equation}
 
 \section{More ideal selection}
 \label{sec:full-specification}
