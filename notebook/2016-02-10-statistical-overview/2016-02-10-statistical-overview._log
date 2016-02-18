@@ -345,16 +345,15 @@ LaTeX Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-10-statisti
 LaTeX Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-10-statistical-overview/2016-02-10-statistical-overview.tex::12::0::Redefining \nameref.
 Input File::/home/attila/projects/monoallelic-brain/notebook/2016-02-10-statistical-overview/2016-02-10-statistical-overview.out::0::0::Input File
 Input File::/home/attila/projects/monoallelic-brain/notebook/2016-02-10-statistical-overview/2016-02-10-statistical-overview.out::0::0::Input File
-LaTeX Font Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-10-statistical-overview/2016-02-10-statistical-overview.tex::211::0::   Try loading font information for EU2+lmtt.
+LaTeX Font Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-10-statistical-overview/2016-02-10-statistical-overview.tex::319::0::   Try loading font information for EU2+lmtt.
 Input File::/home/attila/texlive/2014/texmf-dist/tex/latex/euenc/eu2lmtt.fd::0::0::Input File
-Package Warning::/home/attila/projects/monoallelic-brain/notebook/2016-02-10-statistical-overview/2016-02-10-statistical-overview.tex::232::0::Suppressing link with empty target. (hyperref package)
 Input File::pdftex.def::0::0::Input File
 Input File::pdftex.def::0::0::Input File
-hbox Warning::/home/attila/projects/monoallelic-brain/notebook/2016-02-10-statistical-overview/2016-02-10-statistical-overview.tex::289::0::Overfull \hbox (108.40376pt too wide) in paragraph at lines 289--298
+hbox Warning::/home/attila/projects/monoallelic-brain/notebook/2016-02-10-statistical-overview/2016-02-10-statistical-overview.tex::350::0::Overfull \hbox (108.40376pt too wide) in paragraph at lines 350--361
 Input File::/home/attila/projects/monoallelic-brain/notebook/2016-02-10-statistical-overview/2016-02-10-statistical-overview.bbl::0::0::Input File
-Package Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-10-statistical-overview/2016-02-10-statistical-overview.tex::349::0::Empty hook `BeforeClearDocument'. (atveryend)
-Package Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-10-statistical-overview/2016-02-10-statistical-overview.tex::349::0::Empty hook `AfterLastShipout'. (atveryend)
+Package Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-10-statistical-overview/2016-02-10-statistical-overview.tex::631::0::Empty hook `BeforeClearDocument'. (atveryend)
+Package Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-10-statistical-overview/2016-02-10-statistical-overview.tex::631::0::Empty hook `AfterLastShipout'. (atveryend)
 Input File::/home/attila/projects/monoallelic-brain/notebook/2016-02-10-statistical-overview/2016-02-10-statistical-overview.aux::0::0::Input File
-Package Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-10-statistical-overview/2016-02-10-statistical-overview.tex::349::0::Executing hook `AtVeryEndDocument'. (atveryend)
-Package Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-10-statistical-overview/2016-02-10-statistical-overview.tex::349::0::Executing hook `AtEndAfterFileList'. (atveryend)
-Package Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-10-statistical-overview/2016-02-10-statistical-overview.tex::0::0::File `2016-02-10-statistical-overview.out' has not changed. Checksum: B0F03BF8EC7A8BB1799FD83919F746DB;756. (rerunfilecheck)
+Package Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-10-statistical-overview/2016-02-10-statistical-overview.tex::631::0::Executing hook `AtVeryEndDocument'. (atveryend)
+Package Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-10-statistical-overview/2016-02-10-statistical-overview.tex::631::0::Executing hook `AtEndAfterFileList'. (atveryend)
+Package Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-10-statistical-overview/2016-02-10-statistical-overview.tex::0::0::File `2016-02-10-statistical-overview.out' has not changed. Checksum: 7265D370265A6851E9AE7DC8EAC8FC64;903. (rerunfilecheck)

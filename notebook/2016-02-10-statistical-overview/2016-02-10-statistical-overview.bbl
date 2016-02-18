@@ -1,5 +1,18 @@
 \begin{thebibliography}{1}
 
+\bibitem{DeVeale2012}
+Brian DeVeale, Derek van~der Kooy, and Tomas Babak.
+\newblock {Critical evaluation of imprinted gene expression by RNA-Seq: a new
+  perspective.}
+\newblock {\em PLoS genetics}, 8(3):e1002600, jan 2012.
+
+\bibitem{Gregg2010}
+Christopher Gregg, Jiangwen Zhang, Brandon Weissbourd, Shujun Luo, Gary~P
+  Schroth, David Haig, and Catherine Dulac.
+\newblock {High-resolution analysis of parent-of-origin allelic expression in
+  the mouse brain.}
+\newblock {\em Science (New York, N.Y.)}, 329(5992):643--8, aug 2010.
+
 \bibitem{Storey:2003kx}
 JD~Storey and Robert Tibshirani.
 \newblock {Statistical significance for genomewide studies}.
