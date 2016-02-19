@@ -1,0 +1,93 @@
+\documentclass[letterpaper]{article}
+\usepackage{polyglossia, fontspec}
+\usepackage{amsmath, mathtools}
+\usepackage{hyperref}
+\usepackage{tikz}
+\usepackage[margin = 1.5 in]{geometry}
+
+\title{Binomial Models of Reference Read Counts}
+\author{Attila Gulyás-Kovács}
+\bibliographystyle{plain}
+
+\begin{document}
+
+\maketitle
+
+\section{Preliminaries}
+
+We have \(i=1,...,I\) individuals and \(g=1,...,G\) genes.  I start with the
+simplest but unrealistic case that there is 0 or 1 SNP for each \((i,g)\) pair
+for which \(i\) is heterozygous.  Later I will generalize to allow more than 1
+such SNPs.  Let \(Y_{ig}\) be the read count for the reference allele and
+\(n_{ig}\) the total read count (by adding alternative alleles to \(Y_{ig}\)).
+
+For each \((i,g)\) we test \(\mathcal{H}_0\) of biallelic expression against
+\(\mathcal{H}_1\) of monoallelic expression.  Let us denote
+\((i,g)\in\mathcal{H}_h\) that \((i,g)\) conforms to \(\mathcal{H}_h\)
+(\(h=0\) in the biallelic case and \(h=1\) in the monoallelic case).
+
+\section{Andy's model}
+
+In my understanding, in Andy's general model
+\(\{Y_{ig}\}_{ig}\) are independent random variables and
+\begin{equation}
+Y_{ig} \sim \mathrm{Binom}(q_h \text{ or } 1 - q_h, n_{ig}) \text{ under }
+\mathcal{H}_h, \; h=0,1
+\end{equation}
+
+Let \(p_h = \mathrm{max}(q_h, 1-q_h)\).  In Andy's specific model \(p_0 =
+1/2\) and \(p_1=9/10\).  To specify the model more completely, suppose \(p_h =
+q_h\) with \(1/2\) probability \emph{a priori}.  Then for each \((i,g)\) the
+probability mass function (p.m.f.) of \(Y_{ig}\)'s sampling distribution is
+\begin{equation}
+f(y|p_h, n_{ig}) = \frac{1}{2} \frac{n_{ig}!}{y! (n_{ig}-y)!} \left[ p_h^{y}
+(1-p)^{n_{ig}-y} + p^{n_{ig}-y} (1-p)^{y} \right].
+\end{equation}
+
+Note that for homozygous \((i,g)\) pairs \(f(y=n_{ig}|p_h,n_{ig})=1\) for \(h=0,1\)
+because all reads must surely come from a single variant regardless allelic
+exclusion.
+
+
+For the observation \(Y_{ig}=y_{ig}\) the \(p\)-value is 
+\begin{equation}
+\sum_{y=y_{ig}}^{n_{ig}} f(y|p_0,n_{ig}).
+\end{equation}
+
+Set classification threshold \(n_{ig} t\) for any \(Y_{ig}\).  For instance,
+\(t=0.9\) means that we classify those pairs \((i,g)\) for which at least
+\(9/10\) of the reads come from the reference allele.  Let
+\(\pi_0\) and \(\pi_1\) be the fraction of \((i,g)\) pairs when
+\((i,g)\in\mathcal{H}_0\) and when
+\((i,g)\in\mathcal{H}_1\), respectively.  Note that \(\pi_0+\pi_1=1\).
+
+The expected number of \((i,g)\) pairs called monoallelic is then
+\begin{equation}
+\sum_{i,g} \pi_0 \overbrace{ \sum_{y=t}^{n_{ig}} f(y|p_0,n_{ig})}^{\text{false
+positive rate}} + \pi_1
+\overbrace{ \sum_{y=t}^{n_{ig}} f(y|p_1,n_{ig})}^{\text{true positive rate}}.
+\end{equation}
+
+So, given \(t\), there are two ways to learn about the expected number of positives
+
+\end{document}
+
+Define \(S_{ig}=n_{ig}^{-1} \mathrm{max}(Y_{ig}, n_{ig} - Y_{ig})\).  Then we
+have
+\begin{equation}
+\label{eq:pmf-s-pmf-y}
+f_s(s|p_h,n_{ig}) = f(y|p_h,n_{ig})
+\end{equation}
+as a consequence of the definition of \(p_h\), so it doesn't matter if we use
+\(S_{ig}\) or \(Y_{ig}\) for testing \(H_h\) or inferring \(p_h\) as long as
+we use the information \(n_{ig}\).  If may remove \(n_{ig}\) from
+Eq.~\ref{eq:pmf-s-pmf-y} if we take it as a random quantity, specify a
+distribution for it, and marginalize \(f_s\).  But then
+\begin{equation}
+\label{eq:pmf-smarginal-pmf-y}
+f_s(s|p_h) \neq f(y|p_h,n_{ig})
+\end{equation}
+because we lost the information in the observed total number of reads
+\(n_{ig}\).  This information loss prevents \(S_{ig}\) from being a sufficient
+statistic.
+
