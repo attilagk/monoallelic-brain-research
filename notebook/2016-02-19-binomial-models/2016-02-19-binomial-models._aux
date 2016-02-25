@@ -18,4 +18,28 @@
 \providecommand\HyField@AuxAddToCoFields[2]{}
 \bibstyle{plain}
 \@writefile{toc}{\contentsline {section}{\numberline {1}Preliminaries}{1}{section.1}}
-\@writefile{toc}{\contentsline {section}{\numberline {2}Andy's model}{1}{section.2}}
+\newlabel{eq:Z-def}{{2}{1}{Preliminaries}{equation.1.2}{}}
+\newlabel{eq:Y-def}{{3}{1}{Preliminaries}{equation.1.3}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {2}Models}{2}{section.2}}
+\newlabel{sec:models}{{2}{2}{Models}{section.2}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.1}}{2}{subsection.2.1}}
+\newlabel{sec:model-basic}{{2.1}{2}{}{subsection.2.1}{}}
+\newlabel{eq:hypothesis-prior}{{7}{2}{}{equation.2.7}{}}
+\newlabel{eq:fixed-hypothesis-prior}{{8}{2}{}{equation.2.7}{}}
+\newlabel{eq:binom}{{9}{2}{}{equation.2.7}{}}
+\newlabel{eq:fixed_pi-p}{{10}{2}{}{equation.2.7}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.2}}{2}{subsection.2.2}}
+\newlabel{sec:model-beta}{{2.2}{2}{}{subsection.2.2}{}}
+\newlabel{eq:beta}{{12}{2}{}{equation.2.11}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.3}}{2}{subsection.2.3}}
+\newlabel{sec:model-regression}{{2.3}{2}{}{subsection.2.3}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.4}}{2}{subsection.2.4}}
+\newlabel{sec:prior-evidence}{{2.4}{2}{}{subsection.2.4}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {3}Likelihood functions}{3}{section.3}}
+\newlabel{eq:f_v}{{16}{3}{Likelihood functions}{equation.3.16}{}}
+\newlabel{eq:f_ig}{{17}{3}{Likelihood functions}{equation.3.16}{}}
+\newlabel{eq:f}{{18}{3}{Likelihood functions}{equation.3.16}{}}
+\newlabel{eq:S-pmf-given-n}{{19}{3}{Likelihood functions}{equation.3.19}{}}
+\newlabel{eq:S-pmf-given-dist-of-n}{{20}{3}{Likelihood functions}{equation.3.19}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {4}Inference of parameters}{3}{section.4}}
+\@writefile{toc}{\contentsline {section}{\numberline {5}Classification}{3}{section.5}}

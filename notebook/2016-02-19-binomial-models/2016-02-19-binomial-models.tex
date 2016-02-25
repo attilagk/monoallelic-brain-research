@@ -15,18 +15,204 @@
 
 \section{Preliminaries}
 
-We have \(i=1,...,I\) individuals and \(g=1,...,G\) genes.  I start with the
-simplest but unrealistic case that there is 0 or 1 SNP for each \((i,g)\) pair
-for which \(i\) is heterozygous.  Later I will generalize to allow more than 1
-such SNPs.  Let \(Y_{ig}\) be the read count for the reference allele and
-\(n_{ig}\) the total read count (by adding alternative alleles to \(Y_{ig}\)).
+We have \(i=1,...,I\) individuals, \(g=1,...,G\) genes and \(v=1,...,V\)
+polymorphic (SNP) sites that occur at least one \((i,g)\) pair in heterozygous form.  For
+each \((i,g)\) we test hypothesis \(\mathcal{H}_0\) against \(\mathcal{H}_1\):
+\begin{equation}
+(i,g) \in \mathcal{H}_h :
+\begin{cases}
+(i,g) \text{ biallelically expressed} & \text{if } h=0 \\
+(i,g) \text{ monoallelically expressed} & \text{if } h=1
+\end{cases}
+\end{equation}
 
-For each \((i,g)\) we test \(\mathcal{H}_0\) of biallelic expression against
-\(\mathcal{H}_1\) of monoallelic expression.  Let us denote
-\((i,g)\in\mathcal{H}_h\) that \((i,g)\) conforms to \(\mathcal{H}_h\)
-(\(h=0\) in the biallelic case and \(h=1\) in the monoallelic case).
+Assuming only one alternative allele at each \(v\), let \(A_v\) denote the
+read count for the alternative allele and \(n_v\) the count of all reads.
+Thus, the read count for the reference allele is \(n_v-A_v\). In the context
+of all models to follow, we will consider \(n_v\) as observed and fixed
+parameter while \(A_v\) as an observed \emph{random variable} with unknown
+mean (expected value) \(\mathrm{E}[A_v]\).  
 
-\section{Andy's model}
+We define
+\begin{equation}
+\label{eq:Z-def}
+Z_v =
+\begin{cases}
+A_v & \text{if } \mathrm{E}[A_v] \ge n_v-\mathrm{E}[A_v] \\
+n_v-A_v & \text{otherwise}.
+\end{cases}
+\end{equation}
+In words, \(Z_v\) is the read count for the allele with the higher expected
+read count.
+
+Since the mean counts in Eq.~\ref{eq:Z-def} are unknown, \(Z_v\) is a
+\emph{latent (unobserved) variable} in the sense that we don't know for sure whether \(Z_v\) corresponds
+to the reference or the alternative allele.  But it will be much more
+straight-forward to express all models in Section~\ref{sec:models} using the
+\emph{expected fraction} \(p_v=\mathrm{E}[Z_v/n_v]\) instead of the expected fraction
+of \(A_v\) in \(n_v\).
+
+Thus \(Z_v\) is latent; but any statistical analysis (parameter inference and hypothesis
+testing/classification) must be based on \emph{observed variables}.  To that
+end we could use \(A_v\); but to be consistent with the previous work of the
+MAE project, we define 
+\begin{eqnarray}
+\label{eq:Y-def}
+Y_{v} &=& \mathrm{max}(Z_{v}, n_{v} - Z_{v}) \\
+Y_{ig} &=&  \{Y_v\}_{v\in(i,g)}, \qquad n_{ig} = \{n_v\}_{v\in(i,g)} \\
+Y &=&  \{Y_{ig}\}_{ig}, \qquad n = \{n_{ig}\}_{ig}.
+%S_{ig} &=& Y_{ig} / n_{ig}.
+\end{eqnarray}
+The random variable \(Y_v\)\footnote{The symbol \(H\) was used previously in
+the MAE project but conventions in statistics and information theory as well
+as other considerations motivated me to replace it with \(Y\).} is the
+\emph{higher read count} at polymorphic site \(v\).  The notation
+\(v\in(i,g)\) means all heterozygous sites \(v\) in individual \(i\) and gene
+\(g\).
+
+Much of
+the previous analysis of the MAE project was based on \(S_{ig}\)
+\begin{equation}
+S_{ig} = \frac{\sum_{v\in(i,g)} Y_v}{ \sum_{v\in(i,g)} n_v} =
+\frac{||Y_{ig}||_1}{||n_{ig}||_1}.
+\end{equation}
+The scalar \(S_{ig}\) aggregates the vectors \(Y_{ig}\) and \(n_{ig}\) and,
+as we will see, the information lost in that aggregation has an impact on all
+statistical analysis based on the models below.
+
+\section{Models}
+\label{sec:models}
+
+\subsection{}
+\label{sec:model-basic}
+
+The most basic model
+\begin{itemize}
+\item fixed expected fraction \(Z_v/n_v\)
+\end{itemize}
+
+\begin{eqnarray}
+\label{eq:hypothesis-prior}
+P\left( (i,g) \in \mathcal{H}_h \right) &=& \pi_h \quad \text{\emph{a priori}} \\
+\label{eq:fixed-hypothesis-prior}
+\pi_h && \text{fixed} \\
+\label{eq:binom}
+Z_v &\sim& \mathrm{Binom}(p_h, n_v) \quad v\in(i,g), \; (i,g)\in \mathcal{H}_h \\
+\label{eq:fixed_pi-p}
+p_h && \mathrm{fixed}
+\end{eqnarray}
+
+\subsection{}
+\label{sec:model-beta}
+
+Uncertain expected fraction \(Z_v/n_v\).
+\begin{eqnarray}
+Z_v &\sim& \mathrm{Binom}(p'_h, n_v) \quad v\in(i,g), \; (i,g)\in \mathcal{H}_h \\
+\label{eq:beta}
+p'_h &\sim& \mathrm{Beta}(\mu_h, \nu_h)
+\end{eqnarray}
+To obtain Model~\ref{sec:model-basic}, take \(\mu_h=p_h\) from
+Eq.~\ref{eq:binom}-\ref{eq:fixed_pi-p} and let \(\nu_h \rightarrow \infty\).
+
+\subsection{}
+\label{sec:model-regression}
+
+Influence of explanatory variables \(x_i\) on expected fraction \(Z_v/n_v\).
+\begin{eqnarray}
+p'_h &\sim& \mathrm{Beta}(\mu'_{hi}, \nu_h) \\
+\mathrm{logit}(\mu'_{hi}) &=& x_i \beta_h
+\end{eqnarray}
+Model~\ref{sec:model-beta} is obtained by taking \(\beta_{h,0}=\mu_h\) from
+Eq.~\ref{eq:beta} and
+setting \(\beta_{h,1}=...=\beta_{h,p-1}=0\).
+
+\subsection{}
+\label{sec:prior-evidence}
+
+Prior to observing the RNA-seq data there is evidence \(\mathrm{Ev}_{ig}\)
+for/against \((i,g)\in \mathcal{H}_h\) such as
+\begin{itemize}
+\item distance of \(g\) from known imprinted genes
+\item cis-eQTLs of \((i,g)\)
+\item confidence in calling \((i,g)\) heterozygous at \(v\)
+\end{itemize}
+
+\begin{eqnarray}
+P\left( (i,g) \in \mathcal{H}_h\, |\, \mathrm{Ev}_{ig} \right) &=&
+\pi'_h(\mathrm{Ev}_{ig}),
+\end{eqnarray}
+where \(\pi'_h\) is some function of the evidence \(\mathrm{Ev}_{ig}\).  For
+instance, \(\mathrm{Ev}_{ig}\) may be gene \(g\)'s distance \(d(g)\) from the
+nearest imprinted gene, and \(\pi'_h(\mathrm{Ev}_{ig}) = \gamma +
+\mathrm{exp}(- d(g) / \tau) \), where \(\tau\) is a length constant measured
+in bases.  To obtain Model~\ref{sec:model-regression} let \(pi'_h\) be
+constant  by setting \(\pi'_h = \pi_h\) from
+Eq.~\ref{eq:hypothesis-prior}-\ref{eq:fixed-hypothesis-prior} regardless of
+the evidence.
+
+\section{Likelihood functions}
+
+We will derive the likelihood function\footnote{The notion of probability
+mass/density function \(f(y|\theta)\) of statistic \(y\) given parameters
+\(\theta\) is so closely related to the likelihood function \(L(\theta; y)\)
+of \(\theta\) given \(y\) that the two are often used interchangeably in the
+literature.  Here I also use \(f\) to refer to both kinds of function.  }
+\(f\) of the full model under the basic Model~\ref{sec:model-basic}.
+Extensions to more complex models will follow.  \(f\) fill be derived
+piece-wise based on the set of functions \(\{f_{ig}\}_{ig}\), where each
+\(f_{ig}\) in turn is derived from \(\{f_v\}_{v\in(i,g)}\).  For all models,
+\(f\) will be required to infer parameters based on the observed value \(y\)
+of random variable \(Y\) and on the observed \(n\).  Classification of some
+\((i,g)\) pair (or \(g\) in regression models) will require only \(f_{ig}\)
+(or \(f_g\) in regression models) because of the independencies of the model
+at hand.
+
+\begin{eqnarray}
+\label{eq:f_v}
+f_v(y_v | n_v, p_h) &=& \frac{1}{2} \binom{n_v}{y} \left[
+p_h^{y_v} (1 - p_h)^{n_v - y} + 
+p_h^{n_v - y_v} (1 - p_h)^y \right] \\
+\label{eq:f_ig}
+f_{ig}(y_{ig} | n_{ig}, p_h) &=& \prod_{v\in(i,g)} f_v(y_v | n_v, p_h) \\
+\label{eq:f}
+f(y | n, p_0, p_1, \pi_1) &=& \prod_{i,g} \left[
+f_{ig}(y_{ig} | n_{ig}, p_1) \pi_1 +
+f_{ig}(y_{ig} | n_{ig}, p_0) (1-\pi_1)
+\right]
+\end{eqnarray}
+
+If we want to base inference on the scalar \(S_{ig}\) instead of the vector
+\(Y_{ig}\), we need to derive likelihood functions for \(S_{ig}\) using
+Eq.~\ref{eq:f_ig}.
+Let \(\mathcal{S} = \{(i,g) : n_{ig} s_{ig} = y_{ig}\}\), that is the set of
+all \((i,g)\) pairs leading to the observed \(s_{ig}\).  Then the likelihood
+functions \(h_{ig}\) and \(h'_{ig}\) for \(S_{ig}\) can be expressed in terms
+of \(\{f_{ig}\}_{(i,g)\in\mathcal{S}}\):
+\begin{eqnarray}
+\label{eq:S-pmf-given-n}
+h_{ig}(s_{ig} | n_{ig}, p_h) &=& \sum_{(i,g)\in\mathcal{S}} f_{ig}(y_{ig} | n_{ig}, p_h)
+\\
+\label{eq:S-pmf-given-dist-of-n}
+h'_{ig}(s_{ig} | p_h) &=& \sum_{(i,g)\in\mathcal{S}} f_{ig}(y_{ig} | n_{ig},
+p_h) \, q_{ig}(n_{ig}|p_h).
+\end{eqnarray}
+The difference between \(h_{ig}\) and \(h'_{ig}\) is whether or not we
+condition the distribution of \(S_{ig}\) on the observed \(n_{ig}\).  If we
+don't take advantage of the observations on \(n_{ig}\) (Eq.~\ref{eq:S-pmf-given-dist-of-n}), we
+must then treat it as a random variable and specify a distribution for it, say
+\(q_{ig}\). In either case we need \emph{some} kind of information on
+\(n_{ig}\).  This holds regardless we want to use \(h_{ig}\) (or \(h'_{ig}\))
+in simulations, in parameter inference or in classification with error
+control.
+
+
+\section{Inference of parameters}
+
+\section{Classification}
+
+\end{document}
+
+\section{Basic model}
 
 In my understanding, in Andy's general model
 \(\{Y_{ig}\}_{ig}\) are independent random variables and
@@ -38,7 +224,7 @@ Y_{ig} \sim \mathrm{Binom}(q_h \text{ or } 1 - q_h, n_{ig}) \text{ under }
 Let \(p_h = \mathrm{max}(q_h, 1-q_h)\).  In Andy's specific model \(p_0 =
 1/2\) and \(p_1=9/10\).  To specify the model more completely, suppose \(p_h =
 q_h\) with \(1/2\) probability \emph{a priori}.  Then for each \((i,g)\) the
-probability mass function (p.m.f.) of \(Y_{ig}\)'s sampling distribution is
+probability mass function of \(Y_{ig}\)'s sampling distribution is
 \begin{equation}
 f(y|p_h, n_{ig}) = \frac{1}{2} \frac{n_{ig}!}{y! (n_{ig}-y)!} \left[ p_h^{y}
 (1-p)^{n_{ig}-y} + p^{n_{ig}-y} (1-p)^{y} \right].
@@ -69,9 +255,6 @@ positive rate}} + \pi_1
 \end{equation}
 
 So, given \(t\), there are two ways to learn about the expected number of positives
-
-\end{document}
-
 Define \(S_{ig}=n_{ig}^{-1} \mathrm{max}(Y_{ig}, n_{ig} - Y_{ig})\).  Then we
 have
 \begin{equation}
