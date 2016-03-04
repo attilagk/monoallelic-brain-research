@@ -1,6 +1,7 @@
 ---
 layout: post
-title: 'More Discussion on "Monoallelic Expr. Project"'
+title: 'More Discussion on the "Monoallelic Expression (MAE) Project"'
+tags: [ discussion, monoallelic-expression, andy ]
 ---
 
 ## Overall

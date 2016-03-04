@@ -1,9 +1,14 @@
 ---
 layout: post
-title: Temporary Title
+title: 'Project on Monoallelic Expression: a Statistical View'
+tags: [ modeling, article, classification, regression, error-rate ]
 ---
 
-{% include 2016-02-10-statistical-overview.pdf %}
-I wrote a short article to discuss...
+I wrote a article (accessible [here][pdf]) with the same title as this post.
+The article evaluates the current state of the "monoallelic expression project" (MAE) by
 
-[pdf]: 2016-02-10-statistical-overview.pdf
+* clarifying its hypotheses, analytical approaches, results and conclusions
+* examining those in light of some plausible statistical models of genome- and population-wise allelic exclusion
+* suggesting modified conclusions or reanalysis.
+
+[pdf]: /assets/projects/monoallelic-brain/2016-02-10-statistical-overview.pdf

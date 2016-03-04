@@ -1,6 +1,7 @@
 ---
 layout: post
-title: 'Notes on "Monoallelic Expression" Draft'
+title: 'Notes on the "Monoallelic Expression (MAE) Draft"'
+tags: [ discussion, monoallelic-expression, andy ]
 ---
 
 Manuscript title: `Novel monoallelically-expressed genes and relaxation of imprinting with advanced age in the dorsolateral prefrontal cortex.`
