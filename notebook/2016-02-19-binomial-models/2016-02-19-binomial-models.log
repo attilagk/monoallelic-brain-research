@@ -1,4 +1,4 @@
-This is LuaTeX, Version beta-0.79.1 (TeX Live 2014) (rev 4971)  (format=lualatex 2014.7.4)  3 MAR 2016 14:26
+This is LuaTeX, Version beta-0.79.1 (TeX Live 2014) (rev 4971)  (format=lualatex 2014.7.4)  10 MAR 2016 00:54
  restricted \write18 enabled.
 **/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex
 (/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex
@@ -854,7 +854,7 @@ Package: geometry 2010/09/12 v5.6 Page Geometry
 \Gm@layoutvoffset=\dimen336
 \Gm@dimlist=\toks36
 )
-(/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/.tmp/DHws3S/2016-02-19-binomial-models.aux)
+(/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/.tmp/VVytwx/2016-02-19-binomial-models.aux)
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 12.
 LaTeX Font Info:    ... okay on input line 12.
 LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 12.
@@ -970,7 +970,7 @@ Package: gettitlestring 2010/12/03 v1.4 Cleanup title references (HO)
 LaTeX Info: Redefining \ref on input line 12.
 LaTeX Info: Redefining \pageref on input line 12.
 LaTeX Info: Redefining \nameref on input line 12.
- (/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/.tmp/DHws3S/2016-02-19-binomial-models.out) (/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/.tmp/DHws3S/2016-02-19-binomial-models.out)
+ (/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/.tmp/VVytwx/2016-02-19-binomial-models.out) (/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/.tmp/VVytwx/2016-02-19-binomial-models.out)
 \@outlinefile=\write4
  ABD: EveryShipout initializing macros
 *geometry* driver: auto-detecting
@@ -1032,6 +1032,8 @@ luaotfload | load : no defaults for script "latn", falling back to "dflt"
 luaotfload | load : auto-selecting default features for script: latn
 luaotfload | load : no defaults for script "latn", falling back to "dflt"(load luc: /home/attila/texlive/2014/texmf-var/luatex-cache/generic/fonts/otf/lmroman12-bold.luc)
 luaotfload | load : auto-selecting default features for script: latn
+luaotfload | load : no defaults for script "latn", falling back to "dflt"
+luaotfload | load : auto-selecting default features for script: latn
 luaotfload | load : no defaults for script "latn", falling back to "dflt"(load luc: /home/attila/texlive/2014/texmf-var/luatex-cache/generic/fonts/otf/lmroman7-regular.luc)
 luaotfload | load : auto-selecting default features for script: latn
 luaotfload | load : no defaults for script "latn", falling back to "dflt"(load luc: /home/attila/texlive/2014/texmf-var/luatex-cache/generic/fonts/otf/lmroman5-regular.luc)
@@ -1049,35 +1051,48 @@ luaotfload | load : auto-selecting default features for script: dflt [1
 
 {/home/attila/texlive/2014/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
 \c@model=\count344
-luaotfload | load : auto-selecting default features for script: latn
-luaotfload | load : no defaults for script "latn", falling back to "dflt"
-luaotfload | load : auto-selecting default features for script: latn
-luaotfload | load : no defaults for script "latn", falling back to "dflt"(load luc: /home/attila/texlive/2014/texmf-var/luatex-cache/generic/fonts/otf/lmroman7-italic.luc)
-luaotfload | load : auto-selecting default features for script: latn
-luaotfload | load : no defaults for script "latn", falling back to "dflt" [2] [3] [4]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 266.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 266.
- (/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/.tmp/DHws3S/2016-02-19-binomial-models.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 266.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 266.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `math shift' on input line 142.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `subscript' on input line 142.
+
+[2]
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `math shift' on input line 157.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `\pi' on input line 157.
+
+[3] [4]
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 276.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 276.
+ (/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/.tmp/VVytwx/2016-02-19-binomial-models.aux)
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 276.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 276.
 Package rerunfilecheck Info: File `2016-02-19-binomial-models.out' has not changed.
-(rerunfilecheck)             Checksum: 522ED132A82903378BEE888E4B93BB86;560.
+(rerunfilecheck)             Checksum: 150CA427595BB2AC09DE7A455F43B5F8;800.
 )
 
 Here is how much of LuaTeX's memory you used:
- 29823 strings out of 494695
+ 29816 strings out of 494695
  100000,662416 words of node,token memory allocated
- 441 words of node memory still in use:
-   6 hlist, 2 vlist, 2 rule, 2 glue, 5 kern, 9 attribute, 48 glue_spec, 9 attribute_list, 1 write nodes
-   avail lists: 1:3,2:6525,3:159,4:965,5:180,6:2427,7:41,8:27,9:286,10:203
- 32671 multiletter control sequences out of 65536+600000
- 54 fonts using 3961519 bytes
- 61i,11n,68p,923b,345s stack positions out of 5000i,500n,10000p,200000b,100000s
-</home/attila/texlive/2014/texmf-dist/fonts/opentype/public/lm/lmroman8-regular.otf></home/attila/texlive/2014/texmf-dist/fonts/opentype/public/lm/lmroman6-regular.otf></home/attila/texlive/2014/texmf-dist/fonts/opentype/public/lm/lmroman7-regular.otf></home/attila/texlive/2014/texmf-dist/fonts/opentype/public/lm/lmroman10-italic.otf></home/attila/texlive/2014/texmf-dist/fonts/opentype/public/lm/lmroman10-regular.otf></home/attila/texlive/2014/texmf-dist/fonts/opentype/public/lm/lmroman12-bold.otf></home/attila/texlive/2014/texmf-dist/fonts/opentype/public/lm/lmroman12-regular.otf></home/attila/texlive/2014/texmf-dist/fonts/opentype/public/lm/lmroman17-regular.otf><</home/attila/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb><</home/attila/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb><</home/attila/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi5.pfb><</home/attila/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb><</home/attila/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb><</home/attila/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb><</home/attila/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb><</home/attila/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb><</home/attila/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb><</home/attila/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb><</home/attila/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb>
-Output written on 2016-02-19-binomial-models.pdf (4 pages, 145488 bytes).
+ 456 words of node memory still in use:
+   6 hlist, 2 vlist, 2 rule, 2 glue, 7 kern, 11 attribute, 48 glue_spec, 11 attribute_list, 1 write nodes
+   avail lists: 1:3,2:6197,3:197,4:1038,5:193,6:2258,7:38,8:20,9:216,10:189
+ 32663 multiletter control sequences out of 65536+600000
+ 52 fonts using 3711311 bytes
+ 61i,11n,68p,923b,344s stack positions out of 5000i,500n,10000p,200000b,100000s
+</home/attila/texlive/2014/texmf-dist/fonts/opentype/public/lm/lmroman8-regular.otf></home/attila/texlive/2014/texmf-dist/fonts/opentype/public/lm/lmroman6-regular.otf></home/attila/texlive/2014/texmf-dist/fonts/opentype/public/lm/lmroman7-regular.otf></home/attila/texlive/2014/texmf-dist/fonts/opentype/public/lm/lmroman10-italic.otf></home/attila/texlive/2014/texmf-dist/fonts/opentype/public/lm/lmroman10-regular.otf></home/attila/texlive/2014/texmf-dist/fonts/opentype/public/lm/lmroman12-bold.otf></home/attila/texlive/2014/texmf-dist/fonts/opentype/public/lm/lmroman12-regular.otf></home/attila/texlive/2014/texmf-dist/fonts/opentype/public/lm/lmroman17-regular.otf><</home/attila/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb><</home/attila/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb><</home/attila/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb><</home/attila/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi5.pfb><</home/attila/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb><</home/attila/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb><</home/attila/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb><</home/attila/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb><</home/attila/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb><</home/attila/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb>
+Output written on 2016-02-19-binomial-models.pdf (4 pages, 141645 bytes).
 
-PDF statistics: 223 PDF objects out of 1000 (max. 8388607)
- 180 compressed objects within 2 object streams
- 32 named destinations out of 1000 (max. 131072)
- 104 words of extra memory for PDF output out of 10000 (max. 10000000)
+PDF statistics: 210 PDF objects out of 1000 (max. 8388607)
+ 168 compressed objects within 2 object streams
+ 35 named destinations out of 1000 (max. 131072)
+ 120 words of extra memory for PDF output out of 10000 (max. 10000000)
 

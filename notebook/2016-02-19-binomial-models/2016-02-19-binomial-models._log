@@ -345,9 +345,13 @@ LaTeX Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial
 LaTeX Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::12::0::Redefining \nameref.
 Input File::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.out::0::0::Input File
 Input File::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.out::0::0::Input File
-Package Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::266::0::Empty hook `BeforeClearDocument'. (atveryend)
-Package Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::266::0::Empty hook `AfterLastShipout'. (atveryend)
+Package Warning::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::142::0::Token not allowed in a PDF string (PDFDocEncoding): removing `math shift'. (hyperref package)
+Package Warning::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::142::0::Token not allowed in a PDF string (PDFDocEncoding): removing `subscript'. (hyperref package)
+Package Warning::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::157::0::Token not allowed in a PDF string (PDFDocEncoding): removing `math shift'. (hyperref package)
+Package Warning::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::157::0::Token not allowed in a PDF string (PDFDocEncoding): removing `\pi'. (hyperref package)
+Package Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::276::0::Empty hook `BeforeClearDocument'. (atveryend)
+Package Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::276::0::Empty hook `AfterLastShipout'. (atveryend)
 Input File::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.aux::0::0::Input File
-Package Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::266::0::Executing hook `AtVeryEndDocument'. (atveryend)
-Package Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::266::0::Executing hook `AtEndAfterFileList'. (atveryend)
-Package Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::0::0::File `2016-02-19-binomial-models.out' has not changed. Checksum: 522ED132A82903378BEE888E4B93BB86;560. (rerunfilecheck)
+Package Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::276::0::Executing hook `AtVeryEndDocument'. (atveryend)
+Package Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::276::0::Executing hook `AtEndAfterFileList'. (atveryend)
+Package Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::0::0::File `2016-02-19-binomial-models.out' has not changed. Checksum: 150CA427595BB2AC09DE7A455F43B5F8;800. (rerunfilecheck)

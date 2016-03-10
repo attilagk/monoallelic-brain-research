@@ -1,11 +1,13 @@
-\BOOKMARK [1][-]{section.1}{Preliminaries}{}% 1
-\BOOKMARK [1][-]{section.2}{Models}{}% 2
-\BOOKMARK [2][-]{subsection.2.1}{}{section.2}% 3
-\BOOKMARK [2][-]{subsection.2.2}{}{section.2}% 4
-\BOOKMARK [2][-]{subsection.2.3}{}{section.2}% 5
-\BOOKMARK [2][-]{subsection.2.4}{}{section.2}% 6
-\BOOKMARK [1][-]{section.3}{Likelihood function}{}% 7
-\BOOKMARK [1][-]{section.4}{Inference}{}% 8
-\BOOKMARK [2][-]{subsection.4.1}{Parameter estimation}{section.4}% 9
-\BOOKMARK [2][-]{subsection.4.2}{Classification}{section.4}% 10
-\BOOKMARK [1][-]{section.5}{Appendix}{}% 11
+\BOOKMARK [1][-]{section.1}{Introduction}{}% 1
+\BOOKMARK [2][-]{subsection.1.1}{Goals}{section.1}% 2
+\BOOKMARK [2][-]{subsection.1.2}{The modeled data}{section.1}% 3
+\BOOKMARK [2][-]{subsection.1.3}{Definition of bi and monoallelic expression}{section.1}% 4
+\BOOKMARK [2][-]{subsection.1.4}{Latent and observable variables}{section.1}% 5
+\BOOKMARK [1][-]{section.2}{Models}{}% 6
+\BOOKMARK [2][-]{subsection.2.1}{}{section.2}% 7
+\BOOKMARK [1][-]{section.3}{Likelihood functions}{}% 8
+\BOOKMARK [2][-]{subsection.3.1}{Sampling distribution for read counts yig}{section.3}% 9
+\BOOKMARK [2][-]{subsection.3.2}{Marginal likelihood for }{section.3}% 10
+\BOOKMARK [1][-]{section.4}{Inference}{}% 11
+\BOOKMARK [2][-]{subsection.4.1}{Classification}{section.4}% 12
+\BOOKMARK [1][-]{section.5}{Appendix}{}% 13

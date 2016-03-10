@@ -17,37 +17,30 @@
 \providecommand\HyField@AuxAddToFields[1]{}
 \providecommand\HyField@AuxAddToCoFields[2]{}
 \bibstyle{plain}
-\@writefile{toc}{\contentsline {section}{\numberline {1}Preliminaries}{1}{section.1}}
-\newlabel{eq:hypotheses}{{1}{1}{Preliminaries}{equation.1.1}{}}
-\newlabel{eq:Z-def}{{2}{1}{Preliminaries}{equation.1.2}{}}
-\newlabel{eq:Y-def}{{3}{1}{Preliminaries}{equation.1.3}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {1}Introduction}{1}{section.1}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {1.1}Goals}{1}{subsection.1.1}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {1.2}The modeled data}{1}{subsection.1.2}}
+\newlabel{eq:Y-ig-def}{{1}{1}{The modeled data}{equation.1.1}{}}
+\newlabel{eq:Y-def}{{2}{1}{The modeled data}{equation.1.1}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {1.3}Definition of bi and monoallelic expression}{1}{subsection.1.3}}
+\newlabel{eq:hypotheses}{{3}{2}{Definition of bi and monoallelic expression}{equation.1.3}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {1.4}Latent and observable variables}{2}{subsection.1.4}}
+\newlabel{eq:Z-def}{{4}{2}{Latent and observable variables}{equation.1.4}{}}
 \@writefile{toc}{\contentsline {section}{\numberline {2}Models}{2}{section.2}}
 \newlabel{sec:models}{{2}{2}{Models}{section.2}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {M1}}{2}{subsection.2.1}}
 \newlabel{sec:model-basic}{{M1}{2}{}{subsection.2.1}{}}
-\newlabel{enum:binom}{{1}{2}{}{Item.1}{}}
-\newlabel{enum:fixed-p}{{2}{2}{}{Item.2}{}}
-\newlabel{enum:shared-p_h}{{3}{2}{}{Item.3}{}}
-\newlabel{enum:prior}{{4}{2}{}{Item.4}{}}
-\newlabel{eq:hypothesis-prior}{{7}{2}{}{equation.2.7}{}}
-\newlabel{eq:fixed-hypothesis-prior}{{8}{2}{}{equation.2.7}{}}
-\newlabel{eq:binom}{{9}{2}{}{equation.2.7}{}}
-\newlabel{eq:fixed_pi-p}{{10}{2}{}{equation.2.7}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {M2}}{2}{subsection.2.2}}
-\newlabel{sec:model-beta}{{M2}{2}{}{subsection.2.2}{}}
-\newlabel{eq:beta}{{12}{2}{}{equation.2.11}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {M3}}{3}{subsection.2.3}}
-\newlabel{sec:model-regression}{{M3}{3}{}{subsection.2.3}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {M4}}{3}{subsection.2.4}}
-\newlabel{sec:model-prior-evidence}{{M4}{3}{}{subsection.2.4}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {3}Likelihood function}{3}{section.3}}
-\newlabel{eq:f_v}{{16}{3}{Likelihood function}{equation.3.16}{}}
-\newlabel{eq:f_ig}{{17}{3}{Likelihood function}{equation.3.16}{}}
-\newlabel{eq:f}{{18}{3}{Likelihood function}{equation.3.16}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {4}Inference}{4}{section.4}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.1}Parameter estimation}{4}{subsection.4.1}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.2}Classification}{4}{subsection.4.2}}
+\@writefile{toc}{\contentsline {section}{\numberline {3}Likelihood functions}{2}{section.3}}
+\newlabel{sec:likelihood}{{3}{2}{Likelihood functions}{section.3}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {M1}Sampling distribution for read counts \(y_{ig}\)}{2}{subsection.3.1}}
+\@writefile{lot}{\contentsline {table}{\numberline {1}{\ignorespaces Two basic strategies for carrying out inference tasks relevant to the project.}}{3}{table.1}}
+\newlabel{tab:inference-strategies}{{1}{3}{Two basic strategies for carrying out inference tasks relevant to the project}{table.1}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {M1}Marginal likelihood for \(\pi \)}{3}{subsection.3.2}}
+\newlabel{sec:marginal-likelihood-pi}{{M1}{3}{Marginal likelihood for \(\pi \)}{subsection.3.2}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {4}Inference}{3}{section.4}}
+\newlabel{sec:inference}{{4}{3}{Inference}{section.4}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {M1}Classification}{4}{subsection.4.1}}
 \@writefile{toc}{\contentsline {section}{\numberline {5}Appendix}{4}{section.5}}
 \newlabel{sec:appendix}{{5}{4}{Appendix}{section.5}{}}
-\newlabel{eq:S-pmf-given-n}{{19}{4}{Appendix}{equation.5.19}{}}
-\newlabel{eq:S-pmf-given-dist-of-n}{{20}{4}{Appendix}{equation.5.19}{}}
+\newlabel{eq:S-pmf-given-n}{{10}{4}{Appendix}{equation.5.10}{}}
+\newlabel{eq:S-pmf-given-dist-of-n}{{11}{4}{Appendix}{equation.5.10}{}}

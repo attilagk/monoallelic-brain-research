@@ -13,84 +13,122 @@
 
 \maketitle
 
-\section{Preliminaries}
+\section{Introduction}
+
+\subsection{Goals}
+
+\subsection{The modeled data}
 
 We have \(i=1,...,I\) individuals, \(g=1,...,G\) genes and \(v=1,...,V\)
-polymorphic (SNP) sites that occur at least one \((i,g)\) pair in heterozygous form.  For
-each \((i,g)\) we test hypothesis \(\mathcal{H}_0\) against \(\mathcal{H}_1\):
+polymorphic (SNP) sites.  With the notation \(v\in(i,g)\) we will express that site \(v\) is in
+gene \(g\) and it is heterozygous in individual \(i\), and we distinguish \(v\)
+from \(w\) if \(w\in(j,g)\) and if \(i\neq j\) even if both \(v\) and \(w\) map to
+the same site in a reference genome (meaning they are homologous).
+
+We assume only one alternative allele at each site \(v\), and write \(Y_v\) to
+denote the read count of the alternative allele at site \(v\).  We also define 
+\begin{eqnarray}
+\label{eq:Y-ig-def}
+%Y_{v} &=& \mathrm{max}(Z_{v}, n_{v} - Z_{v}) \\
+Y_{ig} &=&  \{Y_v\}_{v\in(i,g)}, \qquad n_{ig} = \{n_v\}_{v\in(i,g)} \\
+\label{eq:Y-def}
+Y &=&  [Y_{ig}], \qquad n = [n_{ig}],
+%S_{ig} &=& Y_{ig} / n_{ig}.
+\end{eqnarray}
+where \([Y_{ig}]\) denotes a matrix whose rows are indexed by \(i=1,...,I\)
+and columns by \(g=1,...,G\).  Moreover, we have a design matrix \(X =
+[X_{ir}], \; r=1,...,R\) whose columns \(x_r\) are explanatory variables
+a.k.a.~regressors.  All
+proposed inferences in this article will be based on \(Y\) and \(X\).
+
+Much of the previous inferences of the MAE project were based on the statistic
+\(S = [S_{ig}]\). The connection between \(S\) and \(Y\) can be drawn by
+introducing the ``higher read count'' \(H_{v} = \max(Y_v, n_v-Y_v)\) and
+writing \(S_{ig} = \left( \sum_{v\in(i,g)} H_v \right) \times \left(
+\sum_{v\in(i,g)} n_v \right)^{-1}\).  The scalar \(S_{ig}\) aggregates the
+vectors \(Y_{ig}\) and \(n_{ig}\) and, as we will see, the information lost in
+that aggregation has an impact on all statistical analysis based on the models
+below.
+
+\subsection{Definition of bi and monoallelic expression}
+
+A prerequisite of the following definition is the assumption that \(Y_v\) is
+binomially distributed with parameters \(n_v\) (the total read counts) and
+\(q_{ig}\).  Thus, for all sites \(v\in(i,g)\) the expected fraction
+\(\mathrm{E}[Y_v]/n_v = q_{ig}\).
+We regard the expected proportion \(q_{ig}\) the single direct determinant of
+allelic exclusion based on which we can define bi and monoallelic expression
+as follows.
+
+Informally speaking, we define the biallelic case such that the two alleles
+are expressed equally, so \(q_{ig}=1/2\), and the monoallelic case with
+\(q_{ig}\) close to either 1 or 0 depending on whether the reference or the
+alternative allele is excluded, respectively.  To express our indifference
+about that last point we introduce \(p_{ig} = \max(q_{ig},
+1-q_{ig}) \), which implies that \(1/2\le p_{ig}\le 1\).
+
+For the formal definition we introduce variable \(\theta_{ig}\)
+indicating the biallelic and monoallelic case (\(\theta_{ig}=0\) and \(\theta_{ig}=1\),
+respectively).  We also fix parameters \(p_0,p_1\) by setting \(p_0=1/2\) and
+\(p_1=0.9\), say.  We then define
+allelic exclusion with the general equation \(p_{ig} = p_{\theta_{ig}}\) or,
+equivalently, with
 \begin{equation}
+\begin{array}{rcccc}
 \label{eq:hypotheses}
-(i,g) \in \mathcal{H}_h :
-\begin{cases}
-(i,g) \text{ biallelically expressed} & \text{if } h=0 \\
-(i,g) \text{ monoallelically expressed} & \text{if } h=1
-\end{cases}
+\text{allelic exclusion} & & \text{indicator} & & \text{expected
+proportion} \\
+\hline
+\text{biallelic exp.~of } (i,g) & \Leftrightarrow & \theta_{ig}=0 &
+\Leftrightarrow & p_{ig}=p_0 \\
+\text{monoallelic exp.~of } (i,g) & \Leftrightarrow & \theta_{ig}=1 &
+\Leftrightarrow & p_{ig}=p_1
+\end{array}
 \end{equation}
 
-Assuming only one alternative allele at each \(v\), let \(A_v\) denote the
-read count for the alternative allele and \(n_v\) the count of all reads.
-Thus, the read count for the reference allele is \(n_v-A_v\). In the context
-of all models to follow, we will consider \(n_v\) as observed and fixed
-parameter while \(A_v\) as an observed \emph{random variable} with unknown
-mean (expected value) \(\mathrm{E}[A_v]\).  
+A few things deserve mentioning in the context of Eq.~\ref{eq:hypotheses}.
+\begin{enumerate}
+\item By indexing \(\theta\) and \(p\) using both \(i\) and \(g\) we allow variation
+in allelic exclusion not only across genes but also across individuals,
+\item we define monoallelic expression by a theoretical expectation based on a
+simple parametric model rather than referring to some previous gold standard
+data set of \((i,g)\) pairs that have been classified as either bi or monoallelically
+expressing,
+\item the choice of \(p_0=1/2\) leaves little room for debate but that of
+\(p_1\) is quite arbitrary, and \(p_1\) will in general influence all outcomes of
+statistical inference; so the results must be interpreted in light of the
+definition,
+\item using only two classes (bi and monoallelic expression) means only two possible
+values of \(p_{ig}\) so we cannot account for  
+relatively subtle differences among individuals and/or genes by fine-tuning
+\(p_{ig}\); this constraints the way we can model dependence on age across all
+individuals for a given gene, or dependence on distance from previously
+identified imprinted genes across all genes for a given individual.
+\end{enumerate}
 
-We define
+\subsection{Latent and observable variables}
+
+Our preference of \(p_{ig}\) to \(q_{ig}\) motivates the introduction
+of
 \begin{equation}
 \label{eq:Z-def}
 Z_v =
 \begin{cases}
-A_v & \text{if } \mathrm{E}[A_v] \ge n_v-\mathrm{E}[A_v] \\
-n_v-A_v & \text{otherwise}.
+Y_v & \text{if } p_{ig} \ge 1/2 \\
+n_v-Y_v & \text{otherwise}.
 \end{cases}
 \end{equation}
-In words, \(Z_v\) is the read count for the allele with the higher expected
-read count.
+where \(v\in(i,g)\).
+Then \(Z_v\sim\mathrm{Binom}(p_{ig},n_v)\) if and only if
+\(Y_v\sim\mathrm{Binom}(q_{ig},n_v)\).  Using \(Z_v\) facilitates
+expressing models in the most direct manner (Section~\ref{sec:models}).  However, \(Z_v\) is a latent
+(unobserved) variable because we are uncertain about \(p_{ig}\).  For
+this reason, statistical inference will require using likelihood functions
+based on \(Y_v\) (Section~\ref{sec:likelihood} and~\ref{sec:inference}).
 
-Since the mean counts in Eq.~\ref{eq:Z-def} are unknown, \(Z_v\) is a
-\emph{latent (unobserved) variable} in the sense that we don't know for sure whether \(Z_v\) corresponds
-to the reference or the alternative allele.  But it will be much more
-straight-forward to express all models in Section~\ref{sec:models} using the
-\emph{expected fraction} \(p_v=\mathrm{E}[Z_v/n_v]\) instead of the expected fraction
-of \(A_v\) in \(n_v\).
-
-Thus \(Z_v\) is latent; but any statistical analysis (parameter inference and hypothesis
-testing/classification) must be based on \emph{observed variables}.  To that
-end we could use \(A_v\); but to be consistent with the previous work of the
-MAE project, we define 
-\begin{eqnarray}
-\label{eq:Y-def}
-Y_{v} &=& \mathrm{max}(Z_{v}, n_{v} - Z_{v}) \\
-Y_{ig} &=&  \{Y_v\}_{v\in(i,g)}, \qquad n_{ig} = \{n_v\}_{v\in(i,g)} \\
-Y &=&  \{Y_{ig}\}_{ig}, \qquad n = \{n_{ig}\}_{ig}.
-%S_{ig} &=& Y_{ig} / n_{ig}.
-\end{eqnarray}
-The random variable \(Y_v\)\footnote{The symbol \(H\) was used previously in
-the MAE project but conventions in statistics and information theory as well
-as other considerations motivated me to replace it with \(Y\).} is the
-\emph{higher read count} at polymorphic site \(v\).  The notation
-\(v\in(i,g)\) means all heterozygous sites \(v\) in individual \(i\) and gene
-\(g\).
-
-Much of
-the previous analysis of the MAE project was based on \(S = \{S_{ig}\}_{ig}\),
-where
-\begin{equation}
-S_{ig} = \frac{\sum_{v\in(i,g)} Y_v}{ \sum_{v\in(i,g)} n_v} =
-\frac{||Y_{ig}||_1}{||n_{ig}||_1}.
-\end{equation}
-The scalar \(S_{ig}\) aggregates the vectors \(Y_{ig}\) and \(n_{ig}\) and,
-as we will see, the information lost in that aggregation has an impact on all
-statistical analysis based on the models below.
 
 \section{Models}
 \label{sec:models}
-
-The following models are sequentially nested in each other.  Therefore it is
-sufficient to fully describe only the first model in the sequence and only
-specify the direction of generalization for the second, third,...~model.
-Conversely, the sequence of models can be given in the opposite direction by
-specifying the sequence of constraints to obtain from a given model a
-more specific model.
 
 \newcounter{model}
 \renewcommand{\thesubsection}{M\arabic{model}}
@@ -98,139 +136,111 @@ more specific model.
 \stepcounter{model}\subsection{}
 \label{sec:model-basic}
 
-Model~\ref{sec:model-basic} is the most basic among all models.  It expresses the following \emph{assumptions}:
-\begin{enumerate}
-\item\label{enum:binom} at any polymorphic site \(v\), \(Z_v\) is binomial with parameters \(n_v,p_h\); the latter being the
-expected fraction of \(Z_v/n_v\) when
-\(v\in(i,g)\) and \((i,g)\in\mathcal{H}_h\) (Eq.~\ref{eq:hypotheses})
-\item\label{enum:fixed-p} \(p_h\) is fixed for all sites
-\item\label{enum:shared-p_h} all individuals and all biallelically (or monoallelically) expressed genes share
-the same \(p_0\) (or \(p_1\)) regardless of explanatory variables
-\item\label{enum:prior} the prior probability \(\pi_1\) of gene \(g\) being monoallelically expressed
-in individual \(i\) is the same for all \((i,g)\) pairs regardless of any
-prior information, e.g.~known cis-eQTLs in \((i,g)\)
-\end{enumerate}
+\section{Likelihood functions}
+\label{sec:likelihood}
 
-\begin{eqnarray}
-\label{eq:hypothesis-prior}
-P\left( (i,g) \in \mathcal{H}_h \right) &=& \pi_h \quad \text{\emph{a priori}} \\
-\label{eq:fixed-hypothesis-prior}
-\pi_h && \text{fixed} \\
-\label{eq:binom}
-Z_v &\sim& \mathrm{Binom}(p_h, n_v) \quad v\in(i,g), \; (i,g)\in \mathcal{H}_h \\
-\label{eq:fixed_pi-p}
-p_h && \mathrm{fixed}
-\end{eqnarray}
+\subsection{Sampling distribution for read counts \(y_{ig}\)}
 
-\stepcounter{model}\subsection{}
-\label{sec:model-beta}
+\begin{equation}
+f_v(y_v | n_v, p_a) = \binom{n_v}{y_v} p_a^{y_v} (1-p_a)^{n_v-y_v}
+\end{equation}
 
-Relaxing assumption~\ref{enum:fixed-p} means expressing uncertainty about \(p_h\), which
-can enhance the robustness of the model.
-\begin{eqnarray}
-Z_v &\sim& \mathrm{Binom}(p'_h, n_v) \quad v\in(i,g), \; (i,g)\in \mathcal{H}_h \\
-\label{eq:beta}
-p'_h &\sim& \mathrm{Beta}(\mu_h, \nu_h)
-\end{eqnarray}
-To obtain model~\ref{sec:model-basic} by constraining~\ref{sec:model-beta}, take \(\mu_h=p_h\) from
-Eq.~\ref{eq:binom}-\ref{eq:fixed_pi-p} and let \(\nu_h \rightarrow \infty\).
-
-\stepcounter{model}\subsection{}
-\label{sec:model-regression}
-
-Relaxing assumption~\ref{enum:shared-p_h} allows the explanatory
-variables \(x_i\) to influence the expected fraction \(Z_v/n_v\).
-\begin{eqnarray}
-p'_h &\sim& \mathrm{Beta}(\mu'_{hi}, \nu_h) \\
-\mathrm{link\_function}(\mu'_{hi}) &=& x_i \beta_h
-\end{eqnarray}
-Choosing the best link function is a matter of mechanistic considerations and
-model selection comparing several alternative link functions.  To obtain
-model~\ref{sec:model-beta} by constraining~\ref{sec:model-regression}, take
-\(\beta_{h,0}=\mathrm{link\_function}(\mu'_{hi})\) from Eq.~\ref{eq:beta} and
-set \(\beta_{h,1}=...=\beta_{h,p-1}=0\).
-
-\stepcounter{model}\subsection{}
-\label{sec:model-prior-evidence}
-
-Prior to observing the RNA-seq data there is evidence \(\mathrm{Ev}_{ig}\)
-for/against \((i,g)\in \mathcal{H}_h\) such as
-\begin{itemize}
-\item distance of \(g\) from known imprinted genes
-\item cis-eQTLs of \((i,g)\)
-\item confidence in calling \((i,g)\) heterozygous at \(v\)
-\end{itemize}
-
-\begin{eqnarray}
-P\left( (i,g) \in \mathcal{H}_h\, |\, \mathrm{Ev}_{ig} \right) &=&
-\pi'_h(\mathrm{Ev}_{ig}),
-\end{eqnarray}
-where \(\pi'_h\) is some function of the evidence \(\mathrm{Ev}_{ig}\).  For
-instance, \(\mathrm{Ev}_{ig}\) may be gene \(g\)'s distance \(d(g)\) from the
-nearest imprinted gene, and \(\pi'_h(\mathrm{Ev}_{ig}) = \gamma +
-\mathrm{exp}(- d(g) / \tau) \), where \(\tau\) is a length constant measured
-in bases.  To obtain model~\ref{sec:model-regression}
-from~\ref{sec:model-prior-evidence}, let \(pi'_h\) be
-constant  by setting \(\pi'_h = \pi_h\) from
-Eq.~\ref{eq:hypothesis-prior}-\ref{eq:fixed-hypothesis-prior} regardless of
-the evidence.
-
-\renewcommand{\thesubsection}{\arabic{section}.\arabic{subsection}}
-\section{Likelihood function}
-
-Likelihood functions\footnote{The notion of probability mass/density function
-\(f(y|\theta)\) of statistic \(y\) given parameters \(\theta\) is so closely
-related to the likelihood function \(L(\theta; y)\) of \(\theta\) given \(y\)
-that the two are often used interchangeably in the literature setting
-mathematical rigour aside.  Here I follow this tradition and denote both kinds
-of function with \(f\).  } play indispensable role in all forms of inference
-relevant to this study: model selection, parameter estimation and
-classification.  This section derives the likelihood function \(f\) for the
-basic model~\ref{sec:model-basic} based on the observation \(n\) and that
-\(Y=y\).  The analogous functions based on \(S=s\) are presented in the
-Appendix (Section~\ref{sec:appendix}).  Extensions of \(f\) to more complex models
-\ref{sec:model-beta}-\ref{sec:model-prior-evidence} will be presented
-in a subsequent report.
-
-By exploiting independencies, \(f\) can be derived piece-wise
-based on the set of functions \(\{f_{ig}\}_{ig}\), where each \(f_{ig}\) in
-turn is derived from \(\{f_v\}_{v\in(i,g)}\):
-%Classification of some \((i,g)\) pair (or \(g\) in regression models) will
-%require only \(f_{ig}\) (or \(f_g\)) because of the independencies of the
-%model at hand.
-\begin{eqnarray}
-\label{eq:f_v}
-f_v(y_v | n_v, p_h) &=& \frac{1}{2} \binom{n_v}{y} \left[
-p_h^{y_v} (1 - p_h)^{n_v - y} + 
-p_h^{n_v - y_v} (1 - p_h)^y \right] \\
-\label{eq:f_ig}
-f_{ig}(y_{ig} | n_{ig}, p_h) &=& \prod_{v\in(i,g)} f_v(y_v | n_v, p_h) \\
-\label{eq:f}
-f(y | n, p_0, p_1, \pi_1) &=& \prod_{i,g} \left[
-f_{ig}(y_{ig} | n_{ig}, p_1) \pi_1 +
-f_{ig}(y_{ig} | n_{ig}, p_0) (1-\pi_1)
+The p.m.f.~for \(y_{ig}\)
+\begin{equation}
+f_{ig}(y_{ig} | n_{ig}, p_a, \kappa) = \prod_{v\in(i,g)}
+\left[
+\kappa f_v(y_v | n_v, p_a) +
+(1-\kappa) f_v(y_v | n_v, 1-p_a)
 \right]
-\end{eqnarray}
+\end{equation}
 
-Eq.~\ref{eq:f_v} follows from the fact that \(Y_v\) is binomially distributed
-with proportion parameter either \(p_h\) or \(1-p_h\), and we assume that
-these alternative cases are equally likely.  Eq.~\ref{eq:f_ig} expresses
-independence of read counts at different polymorphic sites within gene \(g\),
-whereas Eq.~\ref{eq:f} follows from the independence of read counts in
-model~\ref{sec:model-basic} both across genes and individuals and from the
-\emph{a priori} probability \(\pi_1\) of gene \(g\) being monoallelically expressed
-in individual \(i\).
+\subsection{Marginal likelihood for \(\pi\)}
+\label{sec:marginal-likelihood-pi}
+
+model M.I.1; the marginal likelihood \(L(\pi;y,n,p,\kappa)\equiv f(y|n,p,\kappa,\pi)\) for \(\pi\) equals
+\begin{equation}
+L(\pi) = \prod_{i,g}
+\left[
+(1-\pi) f_{ig}(y_{ig} | n_{ig}, p_0, \kappa)
++
+\pi f_{ig}(y_{ig} | n_{ig}, p_1, \kappa)
+\right]
+\end{equation}
+
+model M.I.2; the marginal likelihood \(L(\pi;y,n,p,\kappa,\nu)\equiv
+f(y|n,p,\kappa,\nu,\pi)\) for \(\pi\) is given by
+\begin{eqnarray}
+L(\pi) &=& B^{-1} \prod_{g} \int_{0}^{1} \mu^{\pi\nu} (1-\mu)^{(1-\pi)\nu}
+\prod_{i}
+u_{ig}(\mu) \, \mathrm{d}\mu
+\\
+u_{ig}(\mu) &=&
+(1-\mu) f_{ig}(y_{ig} | n_{ig}, p_0, \kappa)
++
+\mu f_{ig}(y_{ig} | n_{ig}, p_1, \kappa)
+\end{eqnarray}
+where \(B\) is the beta function evaluated at \((\pi\nu, (1-\pi)\nu)\).
 
 \section{Inference}
+\label{sec:inference}
 
-\begin{tabular}{c|c|c|c|}
-& \multicolumn{2}{c}{conditional} & joint \\
-task & all & \parbox{5 cm}{model selection\\parameter estimation} & classification \\
-& & & \\
-& & & \\
+Given the models in Section~\ref{sec:models} and their parameters, the goals
+of the study can be framed in the following statistical inference tasks:
+\begin{enumerate}
+\item assess dependence on explanatory variables via two tightly linked tasks:
+\begin{itemize}
+\item \emph{select the model}\footnote{When several models are nearly equally
+good, it is preferred to avoid selecting only one of them and discard the
+rest.  In that case Bayesian model averaging provides a normative solution. } that best fits both the data and some prior information
+such as definitions or theoretical considerations
+\item \emph{estimate} regression parameters \(\beta_h\) (Eq.???)
+\end{itemize}
+\item assess the fraction of monoallelically expressed genes by finding an
+\emph{estimate} \(\hat{\pi}_1\) for \(\pi_1\)
+\item call novel monoallelically expressed genes: depending on the selected
+model \emph{classify} each \((i,g)\) or \(g\) by hypothesis testing
+(Eq.~\ref{eq:hypotheses})
+\end{enumerate}
+
+\begin{table}[t]
+\center
+\begin{tabular}{c||c|c|c|}
+\hline
+strategy & \multicolumn{2}{|c|}{conditional (sequential)} & joint \\
+\hline
+inference task(s) & \parbox{3.5 cm}{\center model selection,\\parameter estimation} & classification & all \\
+\hline
+\parbox{2 cm}{\center required\\prior info} & training
+set & known model & basic assumptions \\
+\hline
 \end{tabular}
+\caption{Two basic strategies for carrying out inference tasks relevant to the project.}
+\label{tab:inference-strategies}
+\end{table}
 
-\subsection{Parameter estimation}
+Depending on what prior information we wish to take advantage of, we may
+choose between two major strategies, summarized by
+Table~\ref{tab:inference-strategies}.  The conditional strategy requires prior
+information beyond the basic assumptions, where the latter correspond to the
+constraints of the most general model we consider
+(??? in Section~\ref{sec:models}).
+
+One such piece of prior information is a \emph{training set} of \((i,g)\)
+pairs (or of genes \(g\)) that are labeled either as mono or biallelically
+expressing.  Given the training set the best model can be selected and most
+parameters (like \(\beta\)) can be estimated.  Parameter \(\pi_1\), however,
+is special in the sense that it can only be estimated from the genome-wide
+test data (or its addressable subset).
+
+The conditional strategy is also sequential in that in the first step model selection and
+the estimation of \(\beta\) must be achieved, then based on that the
+estimation of \(\pi_1\) together with classification.
+
+In principle it is possible to evade the discomforting uncertainty that may
+surround prior information by ignoring those completely.  This, however,
+requires a joint inference strategy that is both challenging to implement and
+validate and may lead to high errors in all three tasks depending on how
+valuable the discarded prior information are.
 
 \subsection{Classification}
 
@@ -239,7 +249,7 @@ task & all & \parbox{5 cm}{model selection\\parameter estimation} & classificati
 
 If we want to base inference on the scalar \(S_{ig}\) instead of the vector
 \(Y_{ig}\), we need to derive likelihood functions for \(S_{ig}\) using
-Eq.~\ref{eq:f_ig}.
+Eq.???.
 Let \(\mathcal{S} = \{(i,g) : n_{ig} s_{ig} = y_{ig}\}\), that is the set of
 all \((i,g)\) pairs leading to the observed \(s_{ig}\).  Then the likelihood
 functions \(h_{ig}\) and \(h'_{ig}\) for \(S_{ig}\) can be expressed in terms
@@ -327,3 +337,144 @@ because we lost the information in the observed total number of reads
 \(n_{ig}\).  This information loss prevents \(S_{ig}\) from being a sufficient
 statistic.
 
+\section{Likelihood function}
+\label{sec:likelihood}
+
+Likelihood functions\footnote{The notion of probability mass/density function
+\(f(y|p)\) of statistic \(y\) given parameters \(p\) is so closely
+related to the likelihood function \(L(p; y)\) of \(p\) given \(y\)
+that the two are often used interchangeably in the literature setting
+mathematical rigour aside.  Here I follow this tradition and denote both kinds
+of function with \(f\).  } play indispensable role in all forms of inference
+relevant to this study: model selection, parameter estimation and
+classification.  This section derives the likelihood function \(f\) for the
+basic model~\ref{sec:model-basic} based on the observation \(n\) and that
+\(Y=y\).  The analogous functions based on \(S=s\) are presented in the
+Appendix (Section~\ref{sec:appendix}).  Extensions of \(f\) to more complex models
+\ref{sec:model-beta}-\ref{sec:model-prior-evidence} will be presented
+in a subsequent report.
+
+By exploiting independencies, \(f\) can be derived piece-wise
+based on the set of functions \(\{f_{ig}\}_{ig}\), where each \(f_{ig}\) in
+turn is derived from \(\{f_v\}_{v\in(i,g)}\):
+%Classification of some \((i,g)\) pair (or \(g\) in regression models) will
+%require only \(f_{ig}\) (or \(f_g\)) because of the independencies of the
+%model at hand.
+\begin{eqnarray}
+\label{eq:f_v}
+f_v(y_v | n_v, p_h) &=& \frac{1}{2} \binom{n_v}{y} \left[
+p_h^{y_v} (1 - p_h)^{n_v - y} + 
+p_h^{n_v - y_v} (1 - p_h)^y \right] \\
+\label{eq:f_ig}
+f_{ig}(y_{ig} | n_{ig}, p_h) &=& \prod_{v\in(i,g)} f_v(y_v | n_v, p_h) \\
+\label{eq:f}
+f(y | n, p_0, p_1, \pi_1) &=& \prod_{i,g} \left[
+f_{ig}(y_{ig} | n_{ig}, p_1) \pi_1 +
+f_{ig}(y_{ig} | n_{ig}, p_0) (1-\pi_1)
+\right]
+\end{eqnarray}
+
+Eq.~\ref{eq:f_v} follows from the fact that \(Y_v\) is binomially distributed
+with proportion parameter either \(p_h\) or \(1-p_h\), and we assume that
+these alternative cases are equally likely.  Eq.~\ref{eq:f_ig} expresses
+independence of read counts at different polymorphic sites within gene \(g\),
+whereas Eq.~\ref{eq:f} follows from the independence of read counts in
+model~\ref{sec:model-basic} both across genes and individuals and from the
+\emph{a priori} probability \(\pi_1\) of gene \(g\) being monoallelically expressed
+in individual \(i\).
+
+\section{Models}
+\label{sec:models}
+
+The following models are sequentially nested in each other.  Therefore it is
+sufficient to fully describe only the first model in the sequence and only
+specify the direction of generalization for the second, third,...~model.
+Conversely, the sequence of models can be given in the opposite direction by
+specifying the sequence of constraints to obtain from a given model a
+more specific model.
+
+\newcounter{model}
+\renewcommand{\thesubsection}{M\arabic{model}}
+
+\stepcounter{model}\subsection{}
+\label{sec:model-basic}
+
+Model~\ref{sec:model-basic} is the most basic among all models.  It expresses the following \emph{assumptions}:
+\begin{enumerate}
+\item\label{enum:binom} at any polymorphic site \(v\), \(Z_v\) is binomial with parameters \(n_v,p_h\); the latter being the
+expected fraction of \(Z_v/n_v\) when
+\(v\in(i,g)\) and \((i,g)\in\mathcal{H}_h\) (Eq.~\ref{eq:hypotheses})
+\item\label{enum:fixed-p} \(p_h\) is fixed for all sites
+\item\label{enum:shared-p_h} all individuals and all biallelically (or monoallelically) expressed genes share
+the same \(p_0\) (or \(p_1\)) regardless of explanatory variables
+\item\label{enum:prior} the prior probability \(\pi_1\) of gene \(g\) being monoallelically expressed
+in individual \(i\) is the same for all \((i,g)\) pairs regardless of any
+prior information, e.g.~known cis-eQTLs in \((i,g)\)
+\end{enumerate}
+
+\begin{eqnarray}
+\label{eq:hypothesis-prior}
+P\left( (i,g) \in \mathcal{H}_h \right) &=& \pi_h \quad \text{\emph{a priori}} \\
+\label{eq:fixed-hypothesis-prior}
+\pi_h && \text{fixed} \\
+\label{eq:binom}
+Z_v &\sim& \mathrm{Binom}(p_h, n_v) \quad v\in(i,g), \; (i,g)\in \mathcal{H}_h \\
+\label{eq:fixed_pi-p}
+p_h && \mathrm{fixed}
+\end{eqnarray}
+
+\stepcounter{model}\subsection{}
+\label{sec:model-beta}
+
+Relaxing assumption~\ref{enum:fixed-p} means expressing uncertainty about \(p_h\), which
+can enhance the robustness of the model.
+\begin{eqnarray}
+Z_v &\sim& \mathrm{Binom}(p'_h, n_v) \quad v\in(i,g), \; (i,g)\in \mathcal{H}_h \\
+\label{eq:beta}
+p'_h &\sim& \mathrm{Beta}(\mu_h, \nu_h)
+\end{eqnarray}
+To obtain model~\ref{sec:model-basic} by constraining~\ref{sec:model-beta}, take \(\mu_h=p_h\) from
+Eq.~\ref{eq:binom}-\ref{eq:fixed_pi-p} and let \(\nu_h \rightarrow \infty\).
+
+\stepcounter{model}\subsection{}
+\label{sec:model-regression}
+
+Relaxing assumption~\ref{enum:shared-p_h} allows the explanatory
+variables \(x_i\) to influence the expected fraction \(Z_v/n_v\).
+\begin{eqnarray}
+p'_h &\sim& \mathrm{Beta}(\mu'_{hi}, \nu_h) \\
+\label{eq:glm}
+\mathrm{link\_function}(\mu'_{hi}) &=& x_i \beta_h
+\end{eqnarray}
+Choosing the best link function is a matter of mechanistic considerations and
+model selection comparing several alternative link functions.  To obtain
+model~\ref{sec:model-beta} by constraining~\ref{sec:model-regression}, take
+\(\beta_{h,0}=\mathrm{link\_function}(\mu'_{hi})\) from Eq.~\ref{eq:beta} and
+set \(\beta_{h,1}=...=\beta_{h,p-1}=0\).
+
+\stepcounter{model}\subsection{}
+\label{sec:model-prior-evidence}
+
+Prior to observing the RNA-seq data there is evidence \(\mathrm{Ev}_{ig}\)
+for/against \((i,g)\in \mathcal{H}_h\) such as
+\begin{itemize}
+\item distance of \(g\) from known imprinted genes
+\item cis-eQTLs of \((i,g)\)
+\item confidence in calling \((i,g)\) heterozygous at \(v\)
+\end{itemize}
+
+\begin{eqnarray}
+P\left( (i,g) \in \mathcal{H}_h\, |\, \mathrm{Ev}_{ig} \right) &=&
+\pi'_h(\mathrm{Ev}_{ig}),
+\end{eqnarray}
+where \(\pi'_h\) is some function of the evidence \(\mathrm{Ev}_{ig}\).  For
+instance, \(\mathrm{Ev}_{ig}\) may be gene \(g\)'s distance \(d(g)\) from the
+nearest imprinted gene, and \(\pi'_h(\mathrm{Ev}_{ig}) = \gamma +
+\mathrm{exp}(- d(g) / \tau) \), where \(\tau\) is a length constant measured
+in bases.  To obtain model~\ref{sec:model-regression}
+from~\ref{sec:model-prior-evidence}, let \(pi'_h\) be
+constant  by setting \(\pi'_h = \pi_h\) from
+Eq.~\ref{eq:hypothesis-prior}-\ref{eq:fixed-hypothesis-prior} regardless of
+the evidence.
+
+\renewcommand{\thesubsection}{\arabic{section}.\arabic{subsection}}
