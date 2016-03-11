@@ -2,12 +2,16 @@
 \BOOKMARK [2][-]{subsection.1.1}{Goals}{section.1}% 2
 \BOOKMARK [2][-]{subsection.1.2}{The modeled data}{section.1}% 3
 \BOOKMARK [2][-]{subsection.1.3}{Definition of bi and monoallelic expression}{section.1}% 4
-\BOOKMARK [2][-]{subsection.1.4}{Latent and observable variables}{section.1}% 5
-\BOOKMARK [1][-]{section.2}{Models}{}% 6
-\BOOKMARK [2][-]{subsection.2.1}{}{section.2}% 7
-\BOOKMARK [1][-]{section.3}{Likelihood functions}{}% 8
-\BOOKMARK [2][-]{subsection.3.1}{Sampling distribution for read counts yig}{section.3}% 9
-\BOOKMARK [2][-]{subsection.3.2}{Marginal likelihood for }{section.3}% 10
-\BOOKMARK [1][-]{section.4}{Inference}{}% 11
-\BOOKMARK [2][-]{subsection.4.1}{Classification}{section.4}% 12
-\BOOKMARK [1][-]{section.5}{Appendix}{}% 13
+\BOOKMARK [1][-]{section.2}{Models}{}% 5
+\BOOKMARK [2][-]{subsection.2.1}{No influence of explanatory variables }{section.2}% 6
+\BOOKMARK [3][-]{subsubsection.2.1.1}{Special cases}{subsection.2.1}% 7
+\BOOKMARK [2][-]{subsection.2.2}{Regression of Yv on explanatory variables }{section.2}% 8
+\BOOKMARK [3][-]{subsubsection.2.2.1}{Shortcomings}{subsection.2.2}% 9
+\BOOKMARK [2][-]{subsection.2.3}{Regression of ig on explanatory variables }{section.2}% 10
+\BOOKMARK [1][-]{section.3}{Likelihood functions}{}% 11
+\BOOKMARK [2][-]{subsection.3.1}{Model selection and estimation of }{section.3}% 12
+\BOOKMARK [2][-]{subsection.3.2}{Sampling distribution for read counts yig}{section.3}% 13
+\BOOKMARK [2][-]{subsection.3.3}{Marginal likelihood for }{section.3}% 14
+\BOOKMARK [1][-]{section.4}{Inference}{}% 15
+\BOOKMARK [2][-]{subsection.4.1}{Classification}{section.4}% 16
+\BOOKMARK [1][-]{section.5}{Appendix}{}% 17

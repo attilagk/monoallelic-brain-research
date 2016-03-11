@@ -36,9 +36,10 @@ Y &=&  [Y_{ig}], \qquad n = [n_{ig}],
 %S_{ig} &=& Y_{ig} / n_{ig}.
 \end{eqnarray}
 where \([Y_{ig}]\) denotes a matrix whose rows are indexed by \(i=1,...,I\)
-and columns by \(g=1,...,G\).  Moreover, we have a design matrix \(X =
-[X_{ir}], \; r=1,...,R\) whose columns \(x_r\) are explanatory variables
-a.k.a.~regressors.  All
+and columns by \(g=1,...,G\).  Moreover, we have an \(I\times R\) design matrix \(X =
+[x_{ir}], \; r=0,...,R-1\) whose columns are explanatory variables
+a.k.a.~regressors except for the 0th column, whose entries \(x_{i0}=1\)
+for all \(i\). All
 proposed inferences in this article will be based on \(Y\) and \(X\).
 
 Much of the previous inferences of the MAE project were based on the statistic
@@ -52,80 +53,63 @@ below.
 
 \subsection{Definition of bi and monoallelic expression}
 
-A prerequisite of the following definition is the assumption that \(Y_v\) is
-binomially distributed with parameters \(n_v\) (the total read counts) and
-\(q_{ig}\).  Thus, for all sites \(v\in(i,g)\) the expected fraction
-\(\mathrm{E}[Y_v]/n_v = q_{ig}\).
-We regard the expected proportion \(q_{ig}\) the single direct determinant of
-allelic exclusion based on which we can define bi and monoallelic expression
-as follows.
+We will refer to bi and monoallelic expression collectively as (allelic)
+\emph{exclusion state}.  Here we define exclusion state for any given \((i,g)\) pair.
+Suppose \(q_{ig}\) is the expected fraction of transcripts\footnote{The word
+``expected'' implies a probability distribution for maternal transcripts.
+This can be either binomial if the total number of transcripts is fixed, or
+else Poisson.  In the latter case \(q_{ig}\) is to be interpreted as the
+relative transcription rate on the maternal chromosome. } from the maternal
+chromosome and \(1-q_{ig}\) for the paternal chromosome, and let
+\(p_{ig}=\max(q_{ig},1-q_{ig})\) implying that \(p_{ig}\ge 1/2\).
 
-Informally speaking, we define the biallelic case such that the two alleles
-are expressed equally, so \(q_{ig}=1/2\), and the monoallelic case with
-\(q_{ig}\) close to either 1 or 0 depending on whether the reference or the
-alternative allele is excluded, respectively.  To express our indifference
-about that last point we introduce \(p_{ig} = \max(q_{ig},
-1-q_{ig}) \), which implies that \(1/2\le p_{ig}\le 1\).
-
-For the formal definition we introduce variable \(\theta_{ig}\)
-indicating the biallelic and monoallelic case (\(\theta_{ig}=0\) and \(\theta_{ig}=1\),
-respectively).  We also fix parameters \(p_0,p_1\) by setting \(p_0=1/2\) and
-\(p_1=0.9\), say.  We then define
-allelic exclusion with the general equation \(p_{ig} = p_{\theta_{ig}}\) or,
-equivalently, with
+We regard the expected proportion \(p_{ig}\) as the single direct determinant of
+allelic exclusion: if \(p_{ig}\) is near \(1/2\) we call \((i,g)\)
+biallelically expressed, whereas if \(p_{ig}\) is near \(1\) we classify
+\((i,g)\) monoallelic.  Formally, let \(\mathcal{P}_0 = [1/2, p')\) and
+\(\mathcal{P}_1 = [p'', p''']\) disjoint subintervals of \([1/2,1]\) so that
+\(1/2\le p'\le p''\le p'''\le 1\).  Then we define exclusion state of \((i,j)\) as
 \begin{equation}
-\begin{array}{rcccc}
-\label{eq:hypotheses}
-\text{allelic exclusion} & & \text{indicator} & & \text{expected
-proportion} \\
-\hline
-\text{biallelic exp.~of } (i,g) & \Leftrightarrow & \theta_{ig}=0 &
-\Leftrightarrow & p_{ig}=p_0 \\
-\text{monoallelic exp.~of } (i,g) & \Leftrightarrow & \theta_{ig}=1 &
-\Leftrightarrow & p_{ig}=p_1
-\end{array}
-\end{equation}
-
-A few things deserve mentioning in the context of Eq.~\ref{eq:hypotheses}.
-\begin{enumerate}
-\item By indexing \(\theta\) and \(p\) using both \(i\) and \(g\) we allow variation
-in allelic exclusion not only across genes but also across individuals,
-\item we define monoallelic expression by a theoretical expectation based on a
-simple parametric model rather than referring to some previous gold standard
-data set of \((i,g)\) pairs that have been classified as either bi or monoallelically
-expressing,
-\item the choice of \(p_0=1/2\) leaves little room for debate but that of
-\(p_1\) is quite arbitrary, and \(p_1\) will in general influence all outcomes of
-statistical inference; so the results must be interpreted in light of the
-definition,
-\item using only two classes (bi and monoallelic expression) means only two possible
-values of \(p_{ig}\) so we cannot account for  
-relatively subtle differences among individuals and/or genes by fine-tuning
-\(p_{ig}\); this constraints the way we can model dependence on age across all
-individuals for a given gene, or dependence on distance from previously
-identified imprinted genes across all genes for a given individual.
-\end{enumerate}
-
-\subsection{Latent and observable variables}
-
-Our preference of \(p_{ig}\) to \(q_{ig}\) motivates the introduction
-of
-\begin{equation}
-\label{eq:Z-def}
-Z_v =
+p_{ig} \in
 \begin{cases}
-Y_v & \text{if } p_{ig} \ge 1/2 \\
-n_v-Y_v & \text{otherwise}.
+\mathcal{P}_0 & \Leftrightarrow \text{biallelic} \\
+\mathcal{P}_1 & \Leftrightarrow \text{monoallelic}.
 \end{cases}
 \end{equation}
-where \(v\in(i,g)\).
-Then \(Z_v\sim\mathrm{Binom}(p_{ig},n_v)\) if and only if
-\(Y_v\sim\mathrm{Binom}(q_{ig},n_v)\).  Using \(Z_v\) facilitates
-expressing models in the most direct manner (Section~\ref{sec:models}).  However, \(Z_v\) is a latent
-(unobserved) variable because we are uncertain about \(p_{ig}\).  For
-this reason, statistical inference will require using likelihood functions
-based on \(Y_v\) (Section~\ref{sec:likelihood} and~\ref{sec:inference}).
 
+There are some complications with this definition.  First, our data consists of
+reads instead of full-length transcripts.  We assume that the read count
+\(Y_v\) for the alternative allele at polymorphic site \(v\) is binomially
+distributed with parameters \(n_v\) (the total read counts) and \(p_{v}\)
+Figure TODO.
+Second, read counts have confounded by various measurement errors but we
+assume that they are proportional to allele specific transcription rates.
+This allows us to write \(p_v = p_{ig}\) given the event that the alternative
+allele is on the chromosome that has the higher expected fraction of
+transcripts; we denote that event with \(\phi_v=1\).  Otherwise \(\pi_v=0\),
+which implies that \(1-p_v=p_{ig}\).  We may call \(\phi_v\) \emph{allele
+configuration} at site \(v\).  Third, some reads may map to multiple
+polymorphic sites \(v_1,v_2,...\) coupling \(\phi_{v_1},\phi_{v_2},...\).  We
+suppose this happens rarely enough to be completely ignored so that all allele
+configurations \(\phi_v\) for any given \((i,g)\) can be assumed independent.
+
+With the preceding considerations the definition of exclusion state can be
+based on \(p_v\) and \(\phi_v\) as
+\begin{table}[h]
+\begin{center}
+\begin{tabular}{c|cc|}
+& biallelic & monoallelic \\
+\hline
+\(\phi_v=0\) & \(1-p_v \in \mathcal{P}_0\) & \(1-p_v \in \mathcal{P}_1\) \\
+\(\phi_v=1\) & \(p_v \in \mathcal{P}_0\) & \(p_v \in \mathcal{P}_1\) \\
+\hline
+\end{tabular}
+\caption{
+Definition of exclusion state of \((i,g)\) based on \(p_v\) and \(\phi_v\) for
+site \(v\in(i,g)\)
+}
+\end{center}
+\end{table}
 
 \section{Models}
 \label{sec:models}
@@ -133,53 +117,204 @@ based on \(Y_v\) (Section~\ref{sec:likelihood} and~\ref{sec:inference}).
 \newcounter{model}
 \renewcommand{\thesubsection}{M\arabic{model}}
 
-\stepcounter{model}\subsection{}
+\stepcounter{model}\subsection{No influence of explanatory variables }
 \label{sec:model-basic}
 
+Table~\ref{tab:model-basic}
+
+\begin{table}[h]
+\begin{center}
+\begin{tabular}{c|cc|}
+& \(\theta_{ig}=0\) & \(\theta_{ig}=1\) \\
+\hline
+\(\phi_v=0\) & \(1-p_0\) & \(1-p_1\) \\
+\(\phi_v=1\) & \(p_0\) & \(p_1\) \\
+\hline
+\end{tabular}
+\caption{
+Value of \(p_v\) at all four combinations of allelic configuration and exclusion
+state in model~\ref{sec:model-basic}.
+}
+\label{tab:model-basic}
+\end{center}
+\end{table}
+
+\subsubsection{Special cases}
+
+As \(\nu\rightarrow 0\), the beta distribution becomes Bernoully and \(\mu_g\) will be 1 with probability \(\pi\) and 0 with
+probability \(1-\pi\).  For any gene \(g\) this couples the exclusion state
+for all individuals so that \(\theta_{1g}=...=\theta_{Ig}\).  So we can
+replace the general structure of model~\ref{sec:model-basic} with a
+probabilistically equivalent but simpler structure by introducing
+\(\theta_g\equiv\theta_{1g}\) and removing \(\mu_g\) (Figure TODO).
+
+In the limit \(\nu\rightarrow\infty\) we have \(\mu_1=...=\mu_G=\pi\).
+Therefore we can once again simplify the model structure by removing
+\(\mu_g\).  But the effect on \(\theta_{ig}\) is the opposite
+in that \(\theta_{1g},...,\theta_{Ig}\) become completely uncoupled in the
+sense that \(\{\theta_{ig}\}_{ig}\) becomes independent and identically
+distributed (Figure TODO).
+
+The interpretation of the first limiting case is that individuals show no
+variation in exclusion status for any gene \(g\).  Thus it makes sense to
+speak about bi or monoallelically expressing genes population-wide without the
+need of looking at individuals.  The second limiting case, on the other hand,
+means that all genes have the same population-wide tendency for bi or
+monoallelic expression.
+
+\stepcounter{model}\subsection{Regression of \(Y_v\) on explanatory variables }
+\label{sec:model-Y-regr}
+
+This model is an extension of model~\ref{sec:model-basic} when
+\(\nu\rightarrow 0\).  For a given gene \(g\) each individual has the same
+exclusion state \(\theta_g\) but the across individual variation in
+explanatory variables \(x_i\) induces variation in the expected fraction
+in the sense that \(p_v\neq p_w\) if \(v\in(i,g)\) and \(w\in(j,g), \; (i\neq
+j)\).
+
+Given that \(Y_v\) is binomial, logistic regression appears as a natural
+framework, although some shortcomings will be discussed below TODO.  In this
+framework the logit function links the expected fraction \(p_v\) of \(Y_v\) to
+the \(i\)th row of design matrix \(X\) so that
+\begin{equation}
+p_v = \mathrm{logit}^{-1}(x_i\, b_v).
+\end{equation}
+The regression coefficient \(b_v = (b_{v0},...,b_{vR-1})^\top\) is an
+\(R\)-length vector and is given by the deterministic ``switch'' function \(s\) such that \(d =
+s(\beta,\theta_g,\phi_v)\), where
+\(\beta = [\beta^0,\beta^1]\) is a \(R\times 2\) parameter matrix and \(\beta^a =
+(\beta_{0}^a,...,\beta_{R-1}^a)^\top\).  We give \(s\) by specifying the value
+of \(b_{vr}\) in terms of \(\theta_g,\phi_v,\beta_r^0\) or \(\beta_r^1\) in
+Table~\ref{tab:model-Y-regr-br}.
+
+\begin{table}[h]
+\begin{center}
+\begin{tabular}{c|cc|}
+& \(\theta_g=0\) & \(\theta_g=1\) \\
+\hline
+\(\phi_v=0\) & \(1-\beta_0^0\) & \(1-\beta_0^1\) \\
+\(\phi_v=1\) & \(\beta_0^0\) & \(\beta_0^1\) \\
+\hline
+\end{tabular}
+\hspace{\columnsep}
+\begin{tabular}{c|cc|}
+& \(\theta_g=0\) & \(\theta_g=1\) \\
+\hline
+\(\phi_v=0\) & \(\beta_{r}^0\) & \(\beta_{r}^1\) \\
+\(\phi_v=0\) & \(-\beta_{r}^0\) & \(-\beta_{r}^1\) \\
+\hline
+\end{tabular}
+\caption{
+Value of the intercept \(b_{vr} = s(\beta,\theta_g,\phi_v)\) at all four
+\(\theta_g,\phi_v\) combinations. \emph{Left:} \(r=0\); \emph{right:}
+\(r=1,...,R-1\)
+}
+\label{tab:model-Y-regr-br}
+\end{center}
+\end{table}
+
+We can set \(\beta_r^0=0,\;r\ge1\) expressing no dependence of \(y_{ig}\) on
+explanatory variables for all biallelically expressed genes.  When the same is
+true for monoallelically expressed genes, we have \(\beta_r^1=0,\;r\ge1\), and
+we end up with the special case of model~\ref{sec:model-basic} given by
+\(\nu\rightarrow 0\).  This result motivates fixing
+\(\beta_0^a=\mathrm{logit}(p_a)\).  When we want to study how, for
+monoallelically expressed genes, \(y_{ig}\) depends on the explanatory
+variables, we need to infer \(\beta_r^1,\;r=1,...,R-1\).
+
+\subsubsection{Shortcomings}
+
+\stepcounter{model}\subsection{Regression of \(\theta_{ig}\) on explanatory variables }
+\label{sec:model-theta-regr}
+
+\renewcommand{\thesubsection}{\arabic{section}.\arabic{subsection}}
 \section{Likelihood functions}
 \label{sec:likelihood}
+
+\subsection{Model selection and estimation of \(\pi\)}
+\label{sec:marginal-likelihood-pi}
+
+The general frequentist procedure goes as follows:
+\begin{enumerate}
+\item
+express the marginal likelihood \(L_m\) for \(\pi\) based on \(y\)
+and \(X\) under all models \(m=1,...\), by taking expectations over nuisance
+parameters such as \(\mu_{ig},\theta_{ig},\phi_v\)
+\item 
+maximize \(L_m\) with respect to \(\pi\) obtaining the ML estimate
+\(\hat{\pi}_m=\arg\max_\pi L_{m}(\pi)\)
+\item for each \(m\) evaluate model fit using a criterion based on the
+maximized likelihood (such as AIC, BIC) and select the highest scoring model
+\(m^*\) and the corresponding \(\hat{\pi}_{m^*}\)
+\end{enumerate}
+
+TODO: note on Bayesian procedure
 
 \subsection{Sampling distribution for read counts \(y_{ig}\)}
 
 \begin{equation}
-f_v(y_v | n_v, p_a) = \binom{n_v}{y_v} p_a^{y_v} (1-p_a)^{n_v-y_v}
+f_v(y_v | n_v, p_v) = \binom{n_v}{y_v} p_v^{y_v} (1-p_v)^{n_v-y_v}
 \end{equation}
 
-The p.m.f.~for \(y_{ig}\)
+Under model~\ref{sec:model-basic} and~\ref{sec:model-theta-regr} p.m.f.~for \(y_{ig}\)
 \begin{equation}
+\label{eq:f-ig}
 f_{ig}(y_{ig} | n_{ig}, p_a, \kappa) = \prod_{v\in(i,g)}
 \left[
 \kappa f_v(y_v | n_v, p_a) +
 (1-\kappa) f_v(y_v | n_v, 1-p_a)
 \right]
 \end{equation}
+where \(a\) is 0 or 1 reflecting \(\theta_{ig}=0\) or \(=1\).  It will be
+convenient to use the shorthand \(L_{ig}^a\equiv f_{ig}(y_{ig} | n_{ig}, p_a,
+\kappa)\).
 
 \subsection{Marginal likelihood for \(\pi\)}
-\label{sec:marginal-likelihood-pi}
 
-model M.I.1; the marginal likelihood \(L(\pi;y,n,p,\kappa)\equiv f(y|n,p,\kappa,\pi)\) for \(\pi\) equals
+Under model~\ref{sec:model-basic} the marginal likelihood
+\(L_1(\pi,\nu)\equiv
+f(y|n,p,\kappa,\nu,\pi)\) for \(\pi\) and \(\nu\) is given by
 \begin{equation}
-L(\pi) = \prod_{i,g}
-\left[
-(1-\pi) f_{ig}(y_{ig} | n_{ig}, p_0, \kappa)
-+
-\pi f_{ig}(y_{ig} | n_{ig}, p_1, \kappa)
-\right]
-\end{equation}
-
-model M.I.2; the marginal likelihood \(L(\pi;y,n,p,\kappa,\nu)\equiv
-f(y|n,p,\kappa,\nu,\pi)\) for \(\pi\) is given by
-\begin{eqnarray}
-L(\pi) &=& B^{-1} \prod_{g} \int_{0}^{1} \mu^{\pi\nu} (1-\mu)^{(1-\pi)\nu}
+\label{eq:L-model-basic}
+L_1(\pi,\nu) = B^{-1} \prod_{g} \int_{0}^{1} \mu^{\pi\nu} (1-\mu)^{(1-\pi)\nu}
 \prod_{i}
-u_{ig}(\mu) \, \mathrm{d}\mu
-\\
-u_{ig}(\mu) &=&
-(1-\mu) f_{ig}(y_{ig} | n_{ig}, p_0, \kappa)
-+
-\mu f_{ig}(y_{ig} | n_{ig}, p_1, \kappa)
-\end{eqnarray}
+\left[
+(1-\mu) L_{ig}^0 + \mu L_{ig}^1
+\right]
+\, \mathrm{d}\mu
+%\\
+%u_{ig}(\mu) &=&
+%(1-\mu) f_{ig}(y_{ig} | n_{ig}, p_0, \kappa)
+%+
+%\mu f_{ig}(y_{ig} | n_{ig}, p_1, \kappa)
+\end{equation}
 where \(B\) is the beta function evaluated at \((\pi\nu, (1-\pi)\nu)\).
+
+\(L_1\) in Eq.~\ref{eq:L-model-basic} depends on the parameter \(\nu\), which
+may be of some interest because it quantifies the tendency of genes to be
+monoallelically expressed across all individuals (so that individuals tend not
+to vary for any given gene).  We may decide not to care about \(\nu\) or take
+it to the limit \(\nu\rightarrow 0\) or \(\nu\rightarrow \infty\) by recalling
+the two special cases of model~\ref{sec:model-basic}.  To obtain the
+likelihood for those cases let us denote \(L_1(\pi)\equiv
+f(y|n,p,\kappa,\pi)\) and recall Eq~\ref{eq:f-ig}.  Then
+Eq.~\ref{eq:L-model-basic} simplifies to
+\begin{equation}
+L_1(\pi) =
+\begin{cases}
+\prod_{g}
+\left[
+(1-\pi) \prod_i L_{ig}^0 + \pi \prod_i L_{ig}^1
+\right]
+& \text{if } \(\nu\rightarrow 0\)
+\\
+\prod_{i,g}
+\left[
+(1-\pi) L_{ig}^0 + \pi L_{ig}^1
+\right]
+& \text{if } \(\nu\rightarrow\infty\).
+\end{cases}
+\end{equation}
 
 \section{Inference}
 \label{sec:inference}
@@ -199,7 +334,7 @@ such as definitions or theoretical considerations
 \emph{estimate} \(\hat{\pi}_1\) for \(\pi_1\)
 \item call novel monoallelically expressed genes: depending on the selected
 model \emph{classify} each \((i,g)\) or \(g\) by hypothesis testing
-(Eq.~\ref{eq:hypotheses})
+(Eq)
 \end{enumerate}
 
 \begin{table}[t]
@@ -449,7 +584,7 @@ p'_h &\sim& \mathrm{Beta}(\mu'_{hi}, \nu_h) \\
 Choosing the best link function is a matter of mechanistic considerations and
 model selection comparing several alternative link functions.  To obtain
 model~\ref{sec:model-beta} by constraining~\ref{sec:model-regression}, take
-\(\beta_{h,0}=\mathrm{link\_function}(\mu'_{hi})\) from Eq.~\ref{eq:beta} and
+\(\beta_{h,0}=\mathrm{link\_function}(\mu'_{hi})\) from Eq.~\ref{eq:bet}^a and
 set \(\beta_{h,1}=...=\beta_{h,p-1}=0\).
 
 \stepcounter{model}\subsection{}
@@ -478,3 +613,71 @@ Eq.~\ref{eq:hypothesis-prior}-\ref{eq:fixed-hypothesis-prior} regardless of
 the evidence.
 
 \renewcommand{\thesubsection}{\arabic{section}.\arabic{subsection}}
+
+\subsection{Latent and observable variables}
+
+Our preference of \(p_{ig}\) to \(q_{ig}\) motivates the introduction
+of
+\begin{equation}
+\label{eq:Z-def}
+Z_v =
+\begin{cases}
+Y_v & \text{if } p_{ig} \ge 1/2 \\
+n_v-Y_v & \text{otherwise}.
+\end{cases}
+\end{equation}
+where \(v\in(i,g)\).
+Then \(Z_v\sim\mathrm{Binom}(p_{ig},n_v)\) if and only if
+\(Y_v\sim\mathrm{Binom}(q_{ig},n_v)\).  Using \(Z_v\) facilitates
+expressing models in the most direct manner (Section~\ref{sec:models}).  However, \(Z_v\) is a latent
+(unobserved) variable because we are uncertain about \(p_{ig}\).  For
+this reason, statistical inference will require using likelihood functions
+based on \(Y_v\) (Section~\ref{sec:likelihood} and~\ref{sec:inference}).
+
+
+Informally speaking, we define the biallelic case such that the two alleles
+are expressed equally, so \(q_{ig}=1/2\), and the monoallelic case with
+\(q_{ig}\) close to either 1 or 0 depending on whether the reference or the
+alternative allele is excluded, respectively.  To express our indifference
+about that last point we introduce \(p_{ig} = \max(q_{ig},
+1-q_{ig}) \), which implies that \(1/2\le p_{ig}\le 1\).
+
+For the formal definition we introduce variable \(\theta_{ig}\)
+indicating the biallelic and monoallelic case (\(\theta_{ig}=0\) and \(\theta_{ig}=1\),
+respectively).  We also fix parameters \(p_0,p_1\) by setting \(p_0=1/2\) and
+\(p_1=0.9\), say.  We then define
+allelic exclusion with the general equation \(p_{ig} = p_{\theta_{ig}}\) or,
+equivalently, with
+\begin{equation}
+\begin{array}{rcccc}
+\label{eq:hypotheses}
+\text{allelic exclusion} & & \text{indicator} & & \text{expected
+proportion} \\
+\hline
+\text{biallelic exp.~of } (i,g) & \Leftrightarrow & \theta_{ig}=0 &
+\Leftrightarrow & p_{ig}=p_0 \\
+\text{monoallelic exp.~of } (i,g) & \Leftrightarrow & \theta_{ig}=1 &
+\Leftrightarrow & p_{ig}=p_1
+\end{array}
+\end{equation}
+
+A few things deserve mentioning in the context of Eq.~\ref{eq:hypotheses}.
+\begin{enumerate}
+\item By indexing \(\theta\) and \(p\) using both \(i\) and \(g\) we allow variation
+in allelic exclusion not only across genes but also across individuals,
+\item we define monoallelic expression by a theoretical expectation based on a
+simple parametric model rather than referring to some previous gold standard
+data set of \((i,g)\) pairs that have been classified as either bi or monoallelically
+expressing,
+\item the choice of \(p_0=1/2\) leaves little room for debate but that of
+\(p_1\) is quite arbitrary, and \(p_1\) will in general influence all outcomes of
+statistical inference; so the results must be interpreted in light of the
+definition,
+\item using only two classes (bi and monoallelic expression) means only two possible
+values of \(p_{ig}\) so we cannot account for  
+relatively subtle differences among individuals and/or genes by fine-tuning
+\(p_{ig}\); this constraints the way we can model dependence on age across all
+individuals for a given gene, or dependence on distance from previously
+identified imprinted genes across all genes for a given individual.
+\end{enumerate}
+
