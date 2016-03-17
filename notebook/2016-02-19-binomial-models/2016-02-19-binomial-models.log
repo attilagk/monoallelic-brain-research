@@ -1,4 +1,4 @@
-This is LuaTeX, Version beta-0.79.1 (TeX Live 2014) (rev 4971)  (format=lualatex 2014.7.4)  14 MAR 2016 02:48
+This is LuaTeX, Version beta-0.79.1 (TeX Live 2014) (rev 4971)  (format=lualatex 2014.7.4)  16 MAR 2016 22:13
  restricted \write18 enabled.
 **/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex
 (/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex
@@ -236,7 +236,7 @@ luaotfload:  then use the possibly updated libraries. The merged
 luaotfload:  version is not supported as it is a frozen instance.
 luaotfload:  Problems can be reported to the ConTeXt mailing list."
 luaotfload: pop namespace from font loader -- non-destructive
-luaotfload: fontloader loaded in 0.031 seconds
+luaotfload: fontloader loaded in 0.033 seconds
 luatexbase-mcb: inserting 'luaotfload.node_processor'
 at position 1 in 'pre_linebreak_filter'
 luatexbase-mcb: inserting 'luaotfload.node_processor'
@@ -855,39 +855,41 @@ Package: geometry 2010/09/12 v5.6 Page Geometry
 \Gm@layoutvoffset=\dimen336
 \Gm@dimlist=\toks36
 )
-(/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/.tmp/icjHet/2016-02-19-binomial-models.aux)
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 12.
-LaTeX Font Info:    ... okay on input line 12.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 12.
-LaTeX Font Info:    ... okay on input line 12.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 12.
-LaTeX Font Info:    ... okay on input line 12.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 12.
-LaTeX Font Info:    ... okay on input line 12.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 12.
-LaTeX Font Info:    ... okay on input line 12.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 12.
-LaTeX Font Info:    ... okay on input line 12.
-LaTeX Font Info:    Checking defaults for EU2/lmr/m/n on input line 12.
-LaTeX Font Info:    ... okay on input line 12.
-LaTeX Font Info:    Checking defaults for T3/cmr/m/n on input line 12.
-LaTeX Font Info:    Try loading font information for T3+cmr on input line 12.
+(/home/attila/texlive/2014/texmf-dist/tex/latex/multirow/multirow.sty
+\bigstrutjot=\dimen337
+) (/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/.tmp/9SNUBj/2016-02-19-binomial-models.aux)
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 13.
+LaTeX Font Info:    ... okay on input line 13.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 13.
+LaTeX Font Info:    ... okay on input line 13.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 13.
+LaTeX Font Info:    ... okay on input line 13.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 13.
+LaTeX Font Info:    ... okay on input line 13.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 13.
+LaTeX Font Info:    ... okay on input line 13.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 13.
+LaTeX Font Info:    ... okay on input line 13.
+LaTeX Font Info:    Checking defaults for EU2/lmr/m/n on input line 13.
+LaTeX Font Info:    ... okay on input line 13.
+LaTeX Font Info:    Checking defaults for T3/cmr/m/n on input line 13.
+LaTeX Font Info:    Try loading font information for T3+cmr on input line 13.
  (/home/attila/texlive/2014/texmf-dist/tex/latex/tipa/t3cmr.fd
 File: t3cmr.fd 2001/12/31 TIPA font definitions
 )
-LaTeX Font Info:    ... okay on input line 12.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 12.
-LaTeX Font Info:    ... okay on input line 12.
+LaTeX Font Info:    ... okay on input line 13.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 13.
+LaTeX Font Info:    ... okay on input line 13.
  (/home/attila/texlive/2014/texmf-dist/tex/context/base/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
 \scratchcounter=\count337
-\scratchdimen=\dimen337
+\scratchdimen=\dimen338
 \scratchbox=\box269
 \nofMPsegments=\count338
 \nofMParguments=\count339
 \everyMPshowfont=\toks37
 \MPscratchCnt=\count340
-\MPscratchDim=\dimen338
+\MPscratchDim=\dimen339
 \MPnumerator=\count341
 \makeMPintoPDFobject=\count342
 \everyMPtoPDFconversion=\toks38
@@ -909,58 +911,58 @@ File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Live
 .................................................
 \symlegacymaths=\mathgroup4
 LaTeX Font Info:    Overwriting symbol font `legacymaths' in version `bold'
-(Font)                  OT1/cmr/m/n --> OT1/cmr/bx/n on input line 12.
-LaTeX Font Info:    Redeclaring math accent \acute on input line 12.
-LaTeX Font Info:    Redeclaring math accent \grave on input line 12.
-LaTeX Font Info:    Redeclaring math accent \ddot on input line 12.
-LaTeX Font Info:    Redeclaring math accent \tilde on input line 12.
-LaTeX Font Info:    Redeclaring math accent \bar on input line 12.
-LaTeX Font Info:    Redeclaring math accent \breve on input line 12.
-LaTeX Font Info:    Redeclaring math accent \check on input line 12.
-LaTeX Font Info:    Redeclaring math accent \hat on input line 12.
-LaTeX Font Info:    Redeclaring math accent \dot on input line 12.
-LaTeX Font Info:    Redeclaring math accent \mathring on input line 12.
-LaTeX Font Info:    Redeclaring math symbol \Gamma on input line 12.
-LaTeX Font Info:    Redeclaring math symbol \Delta on input line 12.
-LaTeX Font Info:    Redeclaring math symbol \Theta on input line 12.
-LaTeX Font Info:    Redeclaring math symbol \Lambda on input line 12.
-LaTeX Font Info:    Redeclaring math symbol \Xi on input line 12.
-LaTeX Font Info:    Redeclaring math symbol \Pi on input line 12.
-LaTeX Font Info:    Redeclaring math symbol \Sigma on input line 12.
-LaTeX Font Info:    Redeclaring math symbol \Upsilon on input line 12.
-LaTeX Font Info:    Redeclaring math symbol \Phi on input line 12.
-LaTeX Font Info:    Redeclaring math symbol \Psi on input line 12.
-LaTeX Font Info:    Redeclaring math symbol \Omega on input line 12.
-LaTeX Font Info:    Redeclaring math symbol \mathdollar on input line 12.
-LaTeX Font Info:    Redeclaring symbol font `operators' on input line 12.
+(Font)                  OT1/cmr/m/n --> OT1/cmr/bx/n on input line 13.
+LaTeX Font Info:    Redeclaring math accent \acute on input line 13.
+LaTeX Font Info:    Redeclaring math accent \grave on input line 13.
+LaTeX Font Info:    Redeclaring math accent \ddot on input line 13.
+LaTeX Font Info:    Redeclaring math accent \tilde on input line 13.
+LaTeX Font Info:    Redeclaring math accent \bar on input line 13.
+LaTeX Font Info:    Redeclaring math accent \breve on input line 13.
+LaTeX Font Info:    Redeclaring math accent \check on input line 13.
+LaTeX Font Info:    Redeclaring math accent \hat on input line 13.
+LaTeX Font Info:    Redeclaring math accent \dot on input line 13.
+LaTeX Font Info:    Redeclaring math accent \mathring on input line 13.
+LaTeX Font Info:    Redeclaring math symbol \Gamma on input line 13.
+LaTeX Font Info:    Redeclaring math symbol \Delta on input line 13.
+LaTeX Font Info:    Redeclaring math symbol \Theta on input line 13.
+LaTeX Font Info:    Redeclaring math symbol \Lambda on input line 13.
+LaTeX Font Info:    Redeclaring math symbol \Xi on input line 13.
+LaTeX Font Info:    Redeclaring math symbol \Pi on input line 13.
+LaTeX Font Info:    Redeclaring math symbol \Sigma on input line 13.
+LaTeX Font Info:    Redeclaring math symbol \Upsilon on input line 13.
+LaTeX Font Info:    Redeclaring math symbol \Phi on input line 13.
+LaTeX Font Info:    Redeclaring math symbol \Psi on input line 13.
+LaTeX Font Info:    Redeclaring math symbol \Omega on input line 13.
+LaTeX Font Info:    Redeclaring math symbol \mathdollar on input line 13.
+LaTeX Font Info:    Redeclaring symbol font `operators' on input line 13.
 LaTeX Font Info:    Encoding `OT1' has changed to `EU2' for symbol font
-(Font)              `operators' in the math version `normal' on input line 12.
+(Font)              `operators' in the math version `normal' on input line 13.
 LaTeX Font Info:    Overwriting symbol font `operators' in version `normal'
-(Font)                  OT1/cmr/m/n --> EU2/lmr/m/n on input line 12.
+(Font)                  OT1/cmr/m/n --> EU2/lmr/m/n on input line 13.
 LaTeX Font Info:    Encoding `OT1' has changed to `EU2' for symbol font
-(Font)              `operators' in the math version `bold' on input line 12.
+(Font)              `operators' in the math version `bold' on input line 13.
 LaTeX Font Info:    Overwriting symbol font `operators' in version `bold'
-(Font)                  OT1/cmr/bx/n --> EU2/lmr/m/n on input line 12.
+(Font)                  OT1/cmr/bx/n --> EU2/lmr/m/n on input line 13.
 LaTeX Font Info:    Overwriting symbol font `operators' in version `normal'
-(Font)                  EU2/lmr/m/n --> EU2/lmr/m/n on input line 12.
+(Font)                  EU2/lmr/m/n --> EU2/lmr/m/n on input line 13.
 LaTeX Font Info:    Overwriting math alphabet `\mathit' in version `normal'
-(Font)                  OT1/cmr/m/it --> EU2/lmr/m/it on input line 12.
+(Font)                  OT1/cmr/m/it --> EU2/lmr/m/it on input line 13.
 LaTeX Font Info:    Overwriting math alphabet `\mathbf' in version `normal'
-(Font)                  OT1/cmr/bx/n --> EU2/lmr/bx/n on input line 12.
+(Font)                  OT1/cmr/bx/n --> EU2/lmr/bx/n on input line 13.
 LaTeX Font Info:    Overwriting math alphabet `\mathsf' in version `normal'
-(Font)                  OT1/cmss/m/n --> EU2/lmss/m/n on input line 12.
+(Font)                  OT1/cmss/m/n --> EU2/lmss/m/n on input line 13.
 LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `normal'
-(Font)                  OT1/cmtt/m/n --> EU2/lmtt/m/n on input line 12.
+(Font)                  OT1/cmtt/m/n --> EU2/lmtt/m/n on input line 13.
 LaTeX Font Info:    Overwriting symbol font `operators' in version `bold'
-(Font)                  EU2/lmr/m/n --> EU2/lmr/bx/n on input line 12.
+(Font)                  EU2/lmr/m/n --> EU2/lmr/bx/n on input line 13.
 LaTeX Font Info:    Overwriting math alphabet `\mathit' in version `bold'
-(Font)                  OT1/cmr/bx/it --> EU2/lmr/bx/it on input line 12.
+(Font)                  OT1/cmr/bx/it --> EU2/lmr/bx/it on input line 13.
 LaTeX Font Info:    Overwriting math alphabet `\mathsf' in version `bold'
-(Font)                  OT1/cmss/bx/n --> EU2/lmss/bx/n on input line 12.
+(Font)                  OT1/cmss/bx/n --> EU2/lmss/bx/n on input line 13.
 LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `bold'
-(Font)                  OT1/cmtt/m/n --> EU2/lmtt/bx/n on input line 12.
+(Font)                  OT1/cmtt/m/n --> EU2/lmtt/bx/n on input line 13.
 \AtBeginShipoutBox=\box270
-Package hyperref Info: Link coloring ON on input line 12.
+Package hyperref Info: Link coloring ON on input line 13.
  (/home/attila/texlive/2014/texmf-dist/tex/latex/hyperref/nameref.sty
 Package: nameref 2012/10/27 v2.43 Cross-referencing by name of section
  (/home/attila/texlive/2014/texmf-dist/tex/generic/oberdiek/gettitlestring.sty
@@ -968,10 +970,10 @@ Package: gettitlestring 2010/12/03 v1.4 Cleanup title references (HO)
 )
 \c@section@level=\count343
 )
-LaTeX Info: Redefining \ref on input line 12.
-LaTeX Info: Redefining \pageref on input line 12.
-LaTeX Info: Redefining \nameref on input line 12.
- (/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/.tmp/icjHet/2016-02-19-binomial-models.out) (/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/.tmp/icjHet/2016-02-19-binomial-models.out)
+LaTeX Info: Redefining \ref on input line 13.
+LaTeX Info: Redefining \pageref on input line 13.
+LaTeX Info: Redefining \nameref on input line 13.
+ (/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/.tmp/9SNUBj/2016-02-19-binomial-models.out) (/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/.tmp/9SNUBj/2016-02-19-binomial-models.out)
 \@outlinefile=\write4
  ABD: EveryShipout initializing macros
 *geometry* driver: auto-detecting
@@ -1050,89 +1052,93 @@ luaotfload | load : auto-selecting default features for script: dflt
 luaotfload | load : auto-selecting default features for script: dflt
 luaotfload | load : auto-selecting default features for script: dflt [1
 
-{/home/attila/texlive/2014/texmf-var/fonts/map/pdftex/updmap/pdftex.map}] [2]
+{/home/attila/texlive/2014/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
+LaTeX Font Info:    Try loading font information for EU2+lmtt on input line 108.
+ (/home/attila/texlive/2014/texmf-dist/tex/latex/euenc/eu2lmtt.fd
+File: eu2lmtt.fd 2009/10/30 v1.6 Font defs for Latin Modern
+)
+luaotfload | load : auto-selecting default features for script: latn
+luaotfload | load : no defaults for script "latn", falling back to "dflt"(load luc: /home/attila/texlive/2014/texmf-var/luatex-cache/generic/fonts/otf/lmmono8-regular.luc) [2] [3] [4]
 \c@model=\count344
- [3]
+ [5]
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `math shift' on input line 263.
-
-
-Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `subscript' on input line 263.
-
-[4]
-
-Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `math shift' on input line 343.
+(hyperref)                removing `math shift' on input line 439.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `\theta' on input line 343.
+(hyperref)                removing `subscript' on input line 439.
+
+[6]
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `math shift' on input line 515.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `subscript' on input line 343.
-
-
-LaTeX Warning: Command \nobreakspace invalid in math mode on input line 364.
-
-
-LaTeX Warning: Command \nobreakspace invalid in math mode on input line 367.
+(hyperref)                removing `\theta' on input line 515.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `math shift' on input line 399.
+(hyperref)                removing `subscript' on input line 515.
+
+
+LaTeX Warning: Command \nobreakspace invalid in math mode on input line 536.
+
+
+LaTeX Warning: Command \nobreakspace invalid in math mode on input line 539.
+
+[7]
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `math shift' on input line 571.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `\pi' on input line 399.
+(hyperref)                removing `\pi' on input line 571.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `math shift' on input line 399.
+(hyperref)                removing `math shift' on input line 571.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `\beta' on input line 399.
-
-[5]
-
-Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `math shift' on input line 418.
+(hyperref)                removing `\beta' on input line 571.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `\pi' on input line 418.
+(hyperref)                removing `math shift' on input line 590.
 
-[6] [7]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 539.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 539.
- (/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/.tmp/icjHet/2016-02-19-binomial-models.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 539.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 539.
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `\pi' on input line 590.
+
+[8] [9] [10]
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 721.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 721.
+ (/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/.tmp/9SNUBj/2016-02-19-binomial-models.aux)
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 721.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 721.
 Package rerunfilecheck Info: File `2016-02-19-binomial-models.out' has not changed.
-(rerunfilecheck)             Checksum: 42AF6A290C49580F0B7944BA2A208F9F;1548.
-
-
-LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
-
+(rerunfilecheck)             Checksum: 70D1AC2C76028EA44E4E51600A3C3BBF;1785.
 )
 
 Here is how much of LuaTeX's memory you used:
- 29850 strings out of 494695
+ 29933 strings out of 494695
  100000,662416 words of node,token memory allocated
- 499 words of node memory still in use:
+ 514 words of node memory still in use:
    6 hlist, 2 vlist, 2 rule, 2 glue, 7 kern, 11 attribute, 48 glue_spec, 11 attribute_list, 1 write nodes
-   avail lists: 1:3,2:10335,3:223,4:1277,5:267,6:3749,7:113,8:36,9:253,10:322
- 32685 multiletter control sequences out of 65536+600000
- 52 fonts using 3711311 bytes
- 61i,12n,68p,923b,392s stack positions out of 5000i,500n,10000p,200000b,100000s
-</home/attila/texlive/2014/texmf-dist/fonts/opentype/public/lm/lmroman10-bold.otf></home/attila/texlive/2014/texmf-dist/fonts/opentype/public/lm/lmroman8-regular.otf></home/attila/texlive/2014/texmf-dist/fonts/opentype/public/lm/lmroman6-regular.otf></home/attila/texlive/2014/texmf-dist/fonts/opentype/public/lm/lmroman7-regular.otf></home/attila/texlive/2014/texmf-dist/fonts/opentype/public/lm/lmroman10-italic.otf></home/attila/texlive/2014/texmf-dist/fonts/opentype/public/lm/lmroman10-regular.otf></home/attila/texlive/2014/texmf-dist/fonts/opentype/public/lm/lmroman12-bold.otf></home/attila/texlive/2014/texmf-dist/fonts/opentype/public/lm/lmroman12-regular.otf></home/attila/texlive/2014/texmf-dist/fonts/opentype/public/lm/lmroman17-regular.otf><</home/attila/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb><</home/attila/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb><</home/attila/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb><</home/attila/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi5.pfb><</home/attila/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi6.pfb><</home/attila/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb><</home/attila/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb><</home/attila/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb><</home/attila/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmr5.pfb><</home/attila/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb><</home/attila/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb><</home/attila/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy5.pfb><</home/attila/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb>
-Output written on 2016-02-19-binomial-models.pdf (7 pages, 196886 bytes).
+   avail lists: 1:3,2:11045,3:218,4:1461,5:272,6:3646,7:132,8:43,9:311,10:368
+ 32738 multiletter control sequences out of 65536+600000
+ 53 fonts using 3831095 bytes
+ 61i,12n,68p,923b,343s stack positions out of 5000i,500n,10000p,200000b,100000s
+LuaTeX warning (dest): name{subsubsection.4.4.1} has been referenced but does not exist, replaced by a fixed one
 
-PDF statistics: 334 PDF objects out of 1000 (max. 8388607)
- 282 compressed objects within 3 object streams
- 47 named destinations out of 1000 (max. 131072)
- 184 words of extra memory for PDF output out of 10000 (max. 10000000)
+</home/attila/texlive/2014/texmf-dist/fonts/opentype/public/lm/lmroman8-regular.otf></home/attila/texlive/2014/texmf-dist/fonts/opentype/public/lm/lmmono8-regular.otf></home/attila/texlive/2014/texmf-dist/fonts/opentype/public/lm/lmroman6-regular.otf></home/attila/texlive/2014/texmf-dist/fonts/opentype/public/lm/lmroman10-italic.otf></home/attila/texlive/2014/texmf-dist/fonts/opentype/public/lm/lmroman7-regular.otf></home/attila/texlive/2014/texmf-dist/fonts/opentype/public/lm/lmroman10-regular.otf></home/attila/texlive/2014/texmf-dist/fonts/opentype/public/lm/lmroman10-bold.otf></home/attila/texlive/2014/texmf-dist/fonts/opentype/public/lm/lmroman12-bold.otf></home/attila/texlive/2014/texmf-dist/fonts/opentype/public/lm/lmroman12-regular.otf></home/attila/texlive/2014/texmf-dist/fonts/opentype/public/lm/lmroman17-regular.otf><</home/attila/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb><</home/attila/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb><</home/attila/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb><</home/attila/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi5.pfb><</home/attila/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi6.pfb><</home/attila/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb><</home/attila/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb><</home/attila/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb><</home/attila/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmr5.pfb><</home/attila/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb><</home/attila/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb><</home/attila/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy5.pfb><</home/attila/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb>
+Output written on 2016-02-19-binomial-models.pdf (10 pages, 216525 bytes).
+
+PDF statistics: 400 PDF objects out of 1000 (max. 8388607)
+ 339 compressed objects within 4 object streams
+ 62 named destinations out of 1000 (max. 131072)
+ 200 words of extra memory for PDF output out of 10000 (max. 10000000)
 

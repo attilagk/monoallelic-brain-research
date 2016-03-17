@@ -8,6 +8,16 @@
 
 \begin{tikzpicture}
 
+\node[obs]                    (k)   {$k$}; %
+\node[latent, above=2 of k]   (l)   {$\lambda$}; %
+\factor[above=0.8 of k]       {k-f} {} {} {}; %
+\node[latent, right=of k-f]   (paa) {$\phi$}; %
+%\node[latent, right=of k-f]   (p)   {$\phi$}; %
+% Connections
+\factoredge {paa} {k-f} {k} ; %
+% Gate
+\gate {} {(k-f)(k-f-caption)} {l} ; %
+
 % Define nodes
 \path (0,0)
 node[obs] (X) {\(X^v_i\)}

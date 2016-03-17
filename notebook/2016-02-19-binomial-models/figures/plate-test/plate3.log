@@ -1,7 +1,7 @@
-This is LuaTeX, Version beta-0.79.1 (TeX Live 2014) (rev 4971)  (format=lualatex 2014.7.4)  16 MAR 2016 06:44
+This is LuaTeX, Version beta-0.79.1 (TeX Live 2014) (rev 4971)  (format=lualatex 2014.7.4)  10 MAR 2016 00:34
  restricted \write18 enabled.
-**/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/figures/plate-test/plate3.tex
-(/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/figures/plate-test/plate3.tex
+**/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/figures/plate3.tex
+(/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/figures/plate3.tex
 LaTeX2e <2014/05/01>
 Babel <3.9k> and hyphenation patterns for 78 languages loaded.
 (/home/attila/texlive/2014/texmf-dist/tex/latex/standalone/standalone.cls
@@ -770,7 +770,7 @@ File: tikzlibraryarrows.code.tex 2008/01/09 v3.0.0 (rcs-revision 1.1)
  (/home/attila/texlive/2014/texmf-dist/tex/generic/pgf/libraries/pgflibraryarrows.code.tex
 File: pgflibraryarrows.code.tex 2013/09/23 v3.0.0 (rcs-revision 1.16)
 \arrowsize=\dimen269
-))) (/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/figures/plate-test/.tmp/mr_bd3/plate3.aux)
+))) (/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/figures/.tmp/ufm4ZG/plate3.aux)
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 7.
 LaTeX Font Info:    ... okay on input line 7.
 LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 7.
@@ -886,10 +886,10 @@ luaotfload | load : auto-selecting default features for script: dflt
 luaotfload | load : auto-selecting default features for script: dflt
 luaotfload | load : auto-selecting default features for script: dflt
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <7> on input line 11.
+(Font)              <7> on input line 13.
 luaotfload | load : auto-selecting default features for script: dflt
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <5> on input line 11.
+(Font)              <5> on input line 13.
 luaotfload | load : auto-selecting default features for script: dflt
 luaotfload | load : auto-selecting default features for script: dflt
 luaotfload | load : auto-selecting default features for script: dflt
@@ -902,10 +902,10 @@ luaotfload | load : auto-selecting default features for script: dflt
 luaotfload | load : auto-selecting default features for script: dflt
 luaotfload | load : auto-selecting default features for script: dflt
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <8> on input line 29.
+(Font)              <8> on input line 19.
 luaotfload | load : auto-selecting default features for script: dflt
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <6> on input line 29.
+(Font)              <6> on input line 19.
 luaotfload | load : auto-selecting default features for script: dflt
 luaotfload | load : auto-selecting default features for script: dflt
 luaotfload | load : auto-selecting default features for script: dflt
@@ -922,30 +922,19 @@ luaotfload | load : no defaults for script "latn", falling back to "dflt"(load l
 Missing character: There is no ; (U+003B) in font nullfont!
 Missing character: There is no ; (U+003B) in font nullfont!
 Missing character: There is no ; (U+003B) in font nullfont!
-Missing character: There is no ; (U+003B) in font nullfont!
-Missing character: There is no ; (U+003B) in font nullfont!
-Missing character: There is no ; (U+003B) in font nullfont!
-Missing character: There is no ; (U+003B) in font nullfont!
-Missing character: There is no ; (U+003B) in font nullfont!
-Missing character: There is no ; (U+003B) in font nullfont!
-Missing character: There is no ; (U+003B) in font nullfont!
-Missing character: There is no ; (U+003B) in font nullfont!
-Missing character: There is no ; (U+003B) in font nullfont!
-Missing character: There is no ; (U+003B) in font nullfont!
-Missing character: There is no ; (U+003B) in font nullfont!
-] (/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/figures/plate-test/.tmp/mr_bd3/plate3.aux))
+] (/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/figures/.tmp/ufm4ZG/plate3.aux))
 
 Here is how much of LuaTeX's memory you used:
- 28142 strings out of 494695
+ 28081 strings out of 494695
  100000,662416 words of node,token memory allocated
  301 words of node memory still in use:
    3 hlist, 1 vlist, 1 rule, 2 glue, 1 kern, 4 attribute, 42 glue_spec, 4 attribute_list, 1 write nodes
-   avail lists: 2:1646,3:1003,4:919,5:12,6:126,7:1,9:408
- 30943 multiletter control sequences out of 65536+600000
+   avail lists: 1:1,2:1236,3:735,4:654,5:10,6:96,7:1,9:326
+ 30882 multiletter control sequences out of 65536+600000
  43 fonts using 3114839 bytes
- 62i,7n,78p,506b,733s stack positions out of 5000i,500n,10000p,200000b,100000s
+ 62i,7n,78p,495b,725s stack positions out of 5000i,500n,10000p,200000b,100000s
 </home/attila/texlive/2014/texmf-dist/fonts/opentype/public/lm/lmroman8-regular.otf></home/attila/texlive/2014/texmf-dist/fonts/opentype/public/lm/lmroman7-regular.otf></home/attila/texlive/2014/texmf-dist/fonts/opentype/public/lm/lmroman10-bold.otf><</home/attila/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb><</home/attila/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi6.pfb><</home/attila/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb><</home/attila/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb><</home/attila/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb><</home/attila/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy6.pfb><</home/attila/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb>
-Output written on plate3.pdf (1 page, 62165 bytes).
+Output written on plate3.pdf (1 page, 61134 bytes).
 
 PDF statistics: 60 PDF objects out of 1000 (max. 8388607)
  40 compressed objects within 1 object stream

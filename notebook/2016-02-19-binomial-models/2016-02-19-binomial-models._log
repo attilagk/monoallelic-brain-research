@@ -271,27 +271,28 @@ Input File::/home/attila/texlive/2014/texmf-dist/tex/generic/pgf/modules/pgfmodu
 Input File::/home/attila/texlive/2014/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibrarytopaths.code.tex::0::0::Input File
 Input File::/home/attila/texlive/2014/texmf-dist/tex/latex/geometry/geometry.sty::0::0::Input File
 Input Package::/home/attila/texlive/2014/texmf-dist/tex/latex/geometry/geometry.sty::0::0::geometry 2010/09/12 v5.6 Page Geometry
+Input File::/home/attila/texlive/2014/texmf-dist/tex/latex/multirow/multirow.sty::0::0::Input File
 Input File::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.aux::0::0::Input File
-LaTeX Font Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::12::0::   Checking defaults for OML/cmm/m/it.
-LaTeX Font Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::12::0::   ... okay.
-LaTeX Font Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::12::0::   Checking defaults for T1/cmr/m/n.
-LaTeX Font Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::12::0::   ... okay.
-LaTeX Font Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::12::0::   Checking defaults for OT1/cmr/m/n.
-LaTeX Font Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::12::0::   ... okay.
-LaTeX Font Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::12::0::   Checking defaults for OMS/cmsy/m/n.
-LaTeX Font Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::12::0::   ... okay.
-LaTeX Font Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::12::0::   Checking defaults for OMX/cmex/m/n.
-LaTeX Font Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::12::0::   ... okay.
-LaTeX Font Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::12::0::   Checking defaults for U/cmr/m/n.
-LaTeX Font Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::12::0::   ... okay.
-LaTeX Font Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::12::0::   Checking defaults for EU2/lmr/m/n.
-LaTeX Font Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::12::0::   ... okay.
-LaTeX Font Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::12::0::   Checking defaults for T3/cmr/m/n.
-LaTeX Font Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::12::0::   Try loading font information for T3+cmr.
+LaTeX Font Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::13::0::   Checking defaults for OML/cmm/m/it.
+LaTeX Font Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::13::0::   ... okay.
+LaTeX Font Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::13::0::   Checking defaults for T1/cmr/m/n.
+LaTeX Font Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::13::0::   ... okay.
+LaTeX Font Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::13::0::   Checking defaults for OT1/cmr/m/n.
+LaTeX Font Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::13::0::   ... okay.
+LaTeX Font Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::13::0::   Checking defaults for OMS/cmsy/m/n.
+LaTeX Font Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::13::0::   ... okay.
+LaTeX Font Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::13::0::   Checking defaults for OMX/cmex/m/n.
+LaTeX Font Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::13::0::   ... okay.
+LaTeX Font Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::13::0::   Checking defaults for U/cmr/m/n.
+LaTeX Font Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::13::0::   ... okay.
+LaTeX Font Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::13::0::   Checking defaults for EU2/lmr/m/n.
+LaTeX Font Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::13::0::   ... okay.
+LaTeX Font Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::13::0::   Checking defaults for T3/cmr/m/n.
+LaTeX Font Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::13::0::   Try loading font information for T3+cmr.
 Input File::/home/attila/texlive/2014/texmf-dist/tex/latex/tipa/t3cmr.fd::0::0::Input File
-LaTeX Font Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::12::0::   ... okay.
-LaTeX Font Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::12::0::   Checking defaults for PD1/pdf/m/n.
-LaTeX Font Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::12::0::   ... okay.
+LaTeX Font Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::13::0::   ... okay.
+LaTeX Font Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::13::0::   Checking defaults for PD1/pdf/m/n.
+LaTeX Font Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::13::0::   ... okay.
 Input File::/home/attila/texlive/2014/texmf-dist/tex/context/base/supp-pdf.mkii::0::0::Input File
 Input File::/home/attila/texlive/2014/texmf-dist/tex/latex/oberdiek/epstopdf-base.sty::0::0::Input File
 Input Package::/home/attila/texlive/2014/texmf-dist/tex/latex/oberdiek/epstopdf-base.sty::0::0::epstopdf-base 2010/02/09 v2.5 Base part for package epstopdf
@@ -299,70 +300,71 @@ Input File::/home/attila/texlive/2014/texmf-dist/tex/latex/oberdiek/grfext.sty::
 Input Package::/home/attila/texlive/2014/texmf-dist/tex/latex/oberdiek/grfext.sty::0::0::grfext 2010/08/19 v1.1 Manage graphics extensions (HO)
 Package Info::/home/attila/texlive/2014/texmf-dist/tex/latex/oberdiek/epstopdf-base.sty::452::0::Graphics extension search list: [.png,.pdf,.jpg,.mps,.jpeg,.jbig2,.jb2,.PNG,.PDF,.JPG,.JPEG,.JBIG2,.JB2,.eps] \AppendGraphicsExtensions. (grfext)
 Input File::/home/attila/texlive/2014/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg::0::0::Input File
-LaTeX Font Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::12::0::   Overwriting symbol font `legacymaths' in version `bold' OT1/cmr/m/n --> OT1/cmr/bx/n.
-LaTeX Font Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::12::0::   Redeclaring math accent \acute.
-LaTeX Font Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::12::0::   Redeclaring math accent \grave.
-LaTeX Font Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::12::0::   Redeclaring math accent \ddot.
-LaTeX Font Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::12::0::   Redeclaring math accent \tilde.
-LaTeX Font Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::12::0::   Redeclaring math accent \bar.
-LaTeX Font Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::12::0::   Redeclaring math accent \breve.
-LaTeX Font Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::12::0::   Redeclaring math accent \check.
-LaTeX Font Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::12::0::   Redeclaring math accent \hat.
-LaTeX Font Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::12::0::   Redeclaring math accent \dot.
-LaTeX Font Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::12::0::   Redeclaring math accent \mathring.
-LaTeX Font Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::12::0::   Redeclaring math symbol \Gamma.
-LaTeX Font Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::12::0::   Redeclaring math symbol \Delta.
-LaTeX Font Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::12::0::   Redeclaring math symbol \Theta.
-LaTeX Font Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::12::0::   Redeclaring math symbol \Lambda.
-LaTeX Font Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::12::0::   Redeclaring math symbol \Xi.
-LaTeX Font Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::12::0::   Redeclaring math symbol \Pi.
-LaTeX Font Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::12::0::   Redeclaring math symbol \Sigma.
-LaTeX Font Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::12::0::   Redeclaring math symbol \Upsilon.
-LaTeX Font Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::12::0::   Redeclaring math symbol \Phi.
-LaTeX Font Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::12::0::   Redeclaring math symbol \Psi.
-LaTeX Font Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::12::0::   Redeclaring math symbol \Omega.
-LaTeX Font Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::12::0::   Redeclaring math symbol \mathdollar.
-LaTeX Font Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::12::0::   Redeclaring symbol font `operators'.
-LaTeX Font Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::12::0::   Encoding `OT1' has changed to `EU2' for symbol font `operators' in the math version `normal'.
-LaTeX Font Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::12::0::   Overwriting symbol font `operators' in version `normal' OT1/cmr/m/n --> EU2/lmr/m/n.
-LaTeX Font Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::12::0::   Encoding `OT1' has changed to `EU2' for symbol font `operators' in the math version `bold'.
-LaTeX Font Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::12::0::   Overwriting symbol font `operators' in version `bold' OT1/cmr/bx/n --> EU2/lmr/m/n.
-LaTeX Font Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::12::0::   Overwriting symbol font `operators' in version `normal' EU2/lmr/m/n --> EU2/lmr/m/n.
-LaTeX Font Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::12::0::   Overwriting math alphabet `\mathit' in version `normal' OT1/cmr/m/it --> EU2/lmr/m/it.
-LaTeX Font Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::12::0::   Overwriting math alphabet `\mathbf' in version `normal' OT1/cmr/bx/n --> EU2/lmr/bx/n.
-LaTeX Font Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::12::0::   Overwriting math alphabet `\mathsf' in version `normal' OT1/cmss/m/n --> EU2/lmss/m/n.
-LaTeX Font Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::12::0::   Overwriting math alphabet `\mathtt' in version `normal' OT1/cmtt/m/n --> EU2/lmtt/m/n.
-LaTeX Font Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::12::0::   Overwriting symbol font `operators' in version `bold' EU2/lmr/m/n --> EU2/lmr/bx/n.
-LaTeX Font Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::12::0::   Overwriting math alphabet `\mathit' in version `bold' OT1/cmr/bx/it --> EU2/lmr/bx/it.
-LaTeX Font Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::12::0::   Overwriting math alphabet `\mathsf' in version `bold' OT1/cmss/bx/n --> EU2/lmss/bx/n.
-LaTeX Font Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::12::0::   Overwriting math alphabet `\mathtt' in version `bold' OT1/cmtt/m/n --> EU2/lmtt/bx/n.
-Package Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::12::0::Link coloring ON. (hyperref)
+LaTeX Font Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::13::0::   Overwriting symbol font `legacymaths' in version `bold' OT1/cmr/m/n --> OT1/cmr/bx/n.
+LaTeX Font Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::13::0::   Redeclaring math accent \acute.
+LaTeX Font Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::13::0::   Redeclaring math accent \grave.
+LaTeX Font Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::13::0::   Redeclaring math accent \ddot.
+LaTeX Font Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::13::0::   Redeclaring math accent \tilde.
+LaTeX Font Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::13::0::   Redeclaring math accent \bar.
+LaTeX Font Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::13::0::   Redeclaring math accent \breve.
+LaTeX Font Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::13::0::   Redeclaring math accent \check.
+LaTeX Font Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::13::0::   Redeclaring math accent \hat.
+LaTeX Font Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::13::0::   Redeclaring math accent \dot.
+LaTeX Font Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::13::0::   Redeclaring math accent \mathring.
+LaTeX Font Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::13::0::   Redeclaring math symbol \Gamma.
+LaTeX Font Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::13::0::   Redeclaring math symbol \Delta.
+LaTeX Font Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::13::0::   Redeclaring math symbol \Theta.
+LaTeX Font Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::13::0::   Redeclaring math symbol \Lambda.
+LaTeX Font Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::13::0::   Redeclaring math symbol \Xi.
+LaTeX Font Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::13::0::   Redeclaring math symbol \Pi.
+LaTeX Font Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::13::0::   Redeclaring math symbol \Sigma.
+LaTeX Font Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::13::0::   Redeclaring math symbol \Upsilon.
+LaTeX Font Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::13::0::   Redeclaring math symbol \Phi.
+LaTeX Font Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::13::0::   Redeclaring math symbol \Psi.
+LaTeX Font Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::13::0::   Redeclaring math symbol \Omega.
+LaTeX Font Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::13::0::   Redeclaring math symbol \mathdollar.
+LaTeX Font Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::13::0::   Redeclaring symbol font `operators'.
+LaTeX Font Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::13::0::   Encoding `OT1' has changed to `EU2' for symbol font `operators' in the math version `normal'.
+LaTeX Font Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::13::0::   Overwriting symbol font `operators' in version `normal' OT1/cmr/m/n --> EU2/lmr/m/n.
+LaTeX Font Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::13::0::   Encoding `OT1' has changed to `EU2' for symbol font `operators' in the math version `bold'.
+LaTeX Font Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::13::0::   Overwriting symbol font `operators' in version `bold' OT1/cmr/bx/n --> EU2/lmr/m/n.
+LaTeX Font Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::13::0::   Overwriting symbol font `operators' in version `normal' EU2/lmr/m/n --> EU2/lmr/m/n.
+LaTeX Font Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::13::0::   Overwriting math alphabet `\mathit' in version `normal' OT1/cmr/m/it --> EU2/lmr/m/it.
+LaTeX Font Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::13::0::   Overwriting math alphabet `\mathbf' in version `normal' OT1/cmr/bx/n --> EU2/lmr/bx/n.
+LaTeX Font Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::13::0::   Overwriting math alphabet `\mathsf' in version `normal' OT1/cmss/m/n --> EU2/lmss/m/n.
+LaTeX Font Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::13::0::   Overwriting math alphabet `\mathtt' in version `normal' OT1/cmtt/m/n --> EU2/lmtt/m/n.
+LaTeX Font Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::13::0::   Overwriting symbol font `operators' in version `bold' EU2/lmr/m/n --> EU2/lmr/bx/n.
+LaTeX Font Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::13::0::   Overwriting math alphabet `\mathit' in version `bold' OT1/cmr/bx/it --> EU2/lmr/bx/it.
+LaTeX Font Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::13::0::   Overwriting math alphabet `\mathsf' in version `bold' OT1/cmss/bx/n --> EU2/lmss/bx/n.
+LaTeX Font Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::13::0::   Overwriting math alphabet `\mathtt' in version `bold' OT1/cmtt/m/n --> EU2/lmtt/bx/n.
+Package Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::13::0::Link coloring ON. (hyperref)
 Input File::/home/attila/texlive/2014/texmf-dist/tex/latex/hyperref/nameref.sty::0::0::Input File
 Input Package::/home/attila/texlive/2014/texmf-dist/tex/latex/hyperref/nameref.sty::0::0::nameref 2012/10/27 v2.43 Cross-referencing by name of section
 Input File::/home/attila/texlive/2014/texmf-dist/tex/generic/oberdiek/gettitlestring.sty::0::0::Input File
 Input Package::/home/attila/texlive/2014/texmf-dist/tex/generic/oberdiek/gettitlestring.sty::0::0::gettitlestring 2010/12/03 v1.4 Cleanup title references (HO)
-LaTeX Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::12::0::Redefining \ref.
-LaTeX Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::12::0::Redefining \pageref.
-LaTeX Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::12::0::Redefining \nameref.
+LaTeX Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::13::0::Redefining \ref.
+LaTeX Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::13::0::Redefining \pageref.
+LaTeX Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::13::0::Redefining \nameref.
 Input File::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.out::0::0::Input File
 Input File::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.out::0::0::Input File
-Package Warning::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::263::0::Token not allowed in a PDF string (PDFDocEncoding): removing `math shift'. (hyperref package)
-Package Warning::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::263::0::Token not allowed in a PDF string (PDFDocEncoding): removing `subscript'. (hyperref package)
-Package Warning::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::343::0::Token not allowed in a PDF string (PDFDocEncoding): removing `math shift'. (hyperref package)
-Package Warning::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::343::0::Token not allowed in a PDF string (PDFDocEncoding): removing `\theta'. (hyperref package)
-Package Warning::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::343::0::Token not allowed in a PDF string (PDFDocEncoding): removing `subscript'. (hyperref package)
- LaTeX Warning::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::364::0::Command \nobreakspace invalid in math mode.
- LaTeX Warning::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::367::0::Command \nobreakspace invalid in math mode.
-Package Warning::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::399::0::Token not allowed in a PDF string (PDFDocEncoding): removing `math shift'. (hyperref package)
-Package Warning::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::399::0::Token not allowed in a PDF string (PDFDocEncoding): removing `\pi'. (hyperref package)
-Package Warning::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::399::0::Token not allowed in a PDF string (PDFDocEncoding): removing `math shift'. (hyperref package)
-Package Warning::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::399::0::Token not allowed in a PDF string (PDFDocEncoding): removing `\beta'. (hyperref package)
-Package Warning::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::418::0::Token not allowed in a PDF string (PDFDocEncoding): removing `math shift'. (hyperref package)
-Package Warning::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::418::0::Token not allowed in a PDF string (PDFDocEncoding): removing `\pi'. (hyperref package)
-Package Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::539::0::Empty hook `BeforeClearDocument'. (atveryend)
-Package Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::539::0::Empty hook `AfterLastShipout'. (atveryend)
+LaTeX Font Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::108::0::   Try loading font information for EU2+lmtt.
+Input File::/home/attila/texlive/2014/texmf-dist/tex/latex/euenc/eu2lmtt.fd::0::0::Input File
+Package Warning::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::439::0::Token not allowed in a PDF string (PDFDocEncoding): removing `math shift'. (hyperref package)
+Package Warning::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::439::0::Token not allowed in a PDF string (PDFDocEncoding): removing `subscript'. (hyperref package)
+Package Warning::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::515::0::Token not allowed in a PDF string (PDFDocEncoding): removing `math shift'. (hyperref package)
+Package Warning::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::515::0::Token not allowed in a PDF string (PDFDocEncoding): removing `\theta'. (hyperref package)
+Package Warning::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::515::0::Token not allowed in a PDF string (PDFDocEncoding): removing `subscript'. (hyperref package)
+ LaTeX Warning::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::536::0::Command \nobreakspace invalid in math mode.
+ LaTeX Warning::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::539::0::Command \nobreakspace invalid in math mode.
+Package Warning::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::571::0::Token not allowed in a PDF string (PDFDocEncoding): removing `math shift'. (hyperref package)
+Package Warning::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::571::0::Token not allowed in a PDF string (PDFDocEncoding): removing `\pi'. (hyperref package)
+Package Warning::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::571::0::Token not allowed in a PDF string (PDFDocEncoding): removing `math shift'. (hyperref package)
+Package Warning::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::571::0::Token not allowed in a PDF string (PDFDocEncoding): removing `\beta'. (hyperref package)
+Package Warning::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::590::0::Token not allowed in a PDF string (PDFDocEncoding): removing `math shift'. (hyperref package)
+Package Warning::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::590::0::Token not allowed in a PDF string (PDFDocEncoding): removing `\pi'. (hyperref package)
+Package Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::721::0::Empty hook `BeforeClearDocument'. (atveryend)
+Package Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::721::0::Empty hook `AfterLastShipout'. (atveryend)
 Input File::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.aux::0::0::Input File
-Package Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::539::0::Executing hook `AtVeryEndDocument'. (atveryend)
-Package Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::539::0::Executing hook `AtEndAfterFileList'. (atveryend)
-Package Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::0::0::File `2016-02-19-binomial-models.out' has not changed. Checksum: 42AF6A290C49580F0B7944BA2A208F9F;1548. (rerunfilecheck)
-LaTeX Warning::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::0::0::Label(s) may have changed. Rerun to get cross-references right.
+Package Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::721::0::Executing hook `AtVeryEndDocument'. (atveryend)
+Package Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::721::0::Executing hook `AtEndAfterFileList'. (atveryend)
+Package Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::0::0::File `2016-02-19-binomial-models.out' has not changed. Checksum: 70D1AC2C76028EA44E4E51600A3C3BBF;1785. (rerunfilecheck)

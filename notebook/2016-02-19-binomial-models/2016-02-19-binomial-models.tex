@@ -4,6 +4,7 @@
 \usepackage[linkcolor=blue, colorlinks=true]{hyperref}
 \usepackage{tikz}
 \usepackage[margin = 1.5 in]{geometry}
+\usepackage{multirow}
 
 \title{Binomial Models of Reference Read Counts}
 \author{Attila Gulyás-Kovács}
@@ -17,34 +18,137 @@
 
 \subsection{Goals}
 
+\begin{description}
+\item[estimation of \(\pi\)], where \(\pi\) is the expected fraction of monoallelically
+expressed genes per genome
+\item[within-gene variation] to what extent and how does exclusion state vary across
+individuals for any given gene?
+\item[regression] if there is such variation, how does it depend on age and
+other measured explanatory variables?
+\item[classification] predict exclusion state for each individual--gene pair
+to learn about species and tissue specificity
+\end{description}
+
+To what extent has the previous work achieved these goals?  Estimation of
+\(\pi\) has not yet been achieved.  Within-gene variation has been
+characterized using the conditional distribution of the \(S_{ig}\) statistic
+for any given gene \(g\) but the relative contribution of within-gene and of
+across-gene variance to total variance (across all genes and individuals)
+remains unknown.  Regression on explanatory variables has been performed but
+left the generality and statistical significance of the results an open
+question.  Classification has been performed using \(S_{ig}\) but without
+estimated error rates and---inconsistently with the results of regression
+analysis---also without taking explanatory variables into account.
+
 \subsection{Improvement relative to previous approach}
+\label{sec:improvement}
 
-All inference is now based \emph{directly on read counts} \(Y\) while previous
-inferences used the \(S\) statistic derived from \(Y\) (for classification) and
-\(\mathrm{LOI\_R}\) further derived from \(S\) (for estimation of regression parameters).
-Because both derivations discard some information \(S\) is
-not sufficient\footnote{https://en.wikipedia.org/wiki/Sufficient\_statistic}
-and \(\mathrm{LOI\_R}\) is even less so.  Thus, the direct approach using \(Y\) is
-more informative.
+\begin{table}[t]
+\begin{tabular}{rr|cc}
+& & previous & proposed \\
+\hline
+\hline
+\multirow{3}{*}{local model(s)} & read counts at heteroz.~sites & binomial &
+binomial\\
+& sites jointly modeled & no & yes \\
+& direct biol.~relevance & no & yes \\
+\hline
+\multirow{3}{*}{global models} & well-defined & no & yes \\
+& objective selection possible & no & yes \\
+& selection done & inconsistently & not yet \\
+\hline
+\multirow{1}{*}{frac.~\(\pi\) of monoall.~} & estimation possible & no & yes \\
+\hline
+\multirow{2}{*}{regression} & nonlinearity & no & yes \\
+& heteroscedasticity & no & yes\\
+\hline
+\multirow{3}{*}{classification} & test statistic & \(S_{ig}\) & posterior
+pr. \\
+& likelihood (distrib.)~known & no & yes \\
+& sufficiency (given likelihood) & no & yes \\
+& error control & no & yes \\
+\hline
+\end{tabular}
+\caption{
+Salient properties of previous model(s) and the ones proposed in this article,
+and properties of inferences based on those models.
+}
+\label{tab:previous-proposed}
+\end{table}
 
-Now \emph{global} probability models are formulated. These model the
-entire data (all genes and individuals) jointly and so facilitate statistical
-inference at all relevant levels: at the level of individual--gene pairs, of 
-genes, of individuals, and at the level of all genes and individuals collectively.
-Previously only a set of local binomial models 
-was considered, which would have allowed probabilistic inference only at the irrelevant level of
-heterozygous sites but not at the biologically relevant higher levels because of the
-missing connections among the local models.
+As explained in this section, answering the remaining questions is limited by the
+properties of the previous models and---to even greater extent perhaps---by
+the lack of clarifying those properties, which has motivated this article to
+explicitly describe previously intended and/or novel modeling approaches and
+the way their utility in achieving the remaining goals
+(Table~\ref{tab:previous-proposed}).
 
-Specifically, the above two improvements afford now
-\begin{itemize}
-\item assessment of the structure of variation both among genes and among individuals
-\item a better assessment of the impact of explanatory variables (more power,
-less bias,...)
-\item estimation of the expected fraction of monoallelically expressed genes
-per individual (and the expected variation, if any, among individuals)
-\item bi/monoallelic classification with error control
-\end{itemize}
+Both the previous and present approach starts out from modeling read counts at
+heterozygous sites as binomial random variables.  However, only the present
+approach considers their joint distribution at the level of entities that are
+directly relevant to biology: transcripts for given individuals and genes, all
+individuals (population) within genes, and across all genes (genome).  This is
+achieved via local (transcript level) and global (individual and higher
+levels) joint models of the complete data.
+
+These new models draw direct, and explicit, link between read counts and
+allelic exclusion state \(\theta_{ig}\) by enabling likelihood calculations.
+The previous approach was both indirect and implicit because it used the
+\(S_{ig}\) statistic derived from read counts to describe
+exclusion state in a non-probabilistic way (not giving null/alternative
+distributions) that prevents likelihood calculations.
+
+Even if it were possible to calculate the likelihoods based on \(S_{ig}\), it
+could only be done with loosing information on exclusion state because
+\(S_{ig}\) only considers the proportion of read counts (for one allele)
+discarding the counts themselves, which enhance confidence.  Further
+information is lost by the simplifying assumption on haplotype phase that all
+``higher'' read counts originate from the same chromosome.  These shortcomings
+mean that \(S_{ig}\) is not a sufficient
+statistic\footnote{\url{https://en.wikipedia.org/wiki/Sufficient\_statistic}}
+for exclusion state.  Although they were recognized previously, only partial,
+post-hoc, corrections could be applied.  In contrast, proposed local models
+operate with bona fide counts and relax the simplifying assumption by
+considering all possible \emph{allele configurations} thus containing all
+information on exclusion state and its likelihood\footnote{Note that,
+trivially, the likelihood is always a sufficient statistic}.
+
+The lack of \(S_{ig}\)-based likelihood for exclusion state prevents the
+estimation of the error rates of classification and that of the expected
+fraction \(\pi\) because the two are inherently coupled as explained in a
+previous article\footnote{Feb 10, 2016: Project on Monoallelic Expression: a
+Statistical View}.  All proposed global models contain \(\pi\) parameter,
+which can be estimated by maximum likelihood based on the complete dataset.
+That estimate then can be combined with likelihood ratios representing the
+odds that the read count data support mono vs.~biallelic expression. This
+yields the posterior probability of monoallelic expression, which naturally
+incorporates error.  Alternatively, likelihood ratios can be used on their own
+as Bayes factors.  Note that the Neyman-Pearson lemma\footnote{\url{http://mathworld.wolfram.com/Neyman-PearsonLemma.html}} guarantees that there
+do not exist more powerful tests than those based on likelihood ratios.
+
+Previous regression analysis used the vector \(\mathrm{LOI\_R}_g\) as response variable
+derived from \(S_{ig}\) with a data transformation step; some limitations of the former obviously follow from those of latter
+(discussed above).  More limitations have been found\footnote{lab-notebook post
+from Mar 2, 2016: Repeating Ifat's Regression Analysis with 5
+More Genes} to arise from incorrect use of regression
+weights.  Moreover, the data transformation may only partially remove
+the observed strong nonlinearity and heteroscedasticity of read
+count/\(S_{ig}\)-based regression thus leading to bias.  Finally, the
+interpretation of \(\mathrm{LOI\_R}_g\)-based regression results in terms of
+exclusion state is unclear.  All these shortcomings are now removed by the
+proposed logistic regression approach using directly read counts or, alternatively,
+exclusion state as response variables.
+
+The above complications might have contributed to the awkward inconsistency in
+previous analysis
+that conflicting models were used in different inferences:
+\(\mathrm{LOI\_R}_g\)-based regression model finding dependence on some explanatory
+variables (like age) and a \(S_{ig}\)-based non-regression model for
+classification that ignores any such dependence.  The proposed 
+approach is consistent because the observed variable is read counts in all
+alternative models.  Moreover, the likelihood under all proposed global models can
+be calculated permitting selection of the best fitting model based on
+some objective criterion like AIC or BIC.
 
 \section{Data and local models}
 
@@ -83,7 +187,7 @@ vectors \(Y_{ig}\) and \(n_{ig}\) and, as we will see, the information lost in
 that aggregation has an impact on all statistical analysis based on the models
 below.
 
-\subsection{Local model of allelic exclusion}
+\subsection{Local models of allelic exclusion}
 \label{sec:local-model}
 
 The probability model presented here is \emph{local} in the sense that the
@@ -93,10 +197,14 @@ describes allelic exclusion and read counts at the biologically relevant level
 of \((i,g)\) pairs in contrast with the previously considered binomial model
 restricted to the lower, and irrelevant, level of sites \(v\).
 
+\subsubsection{Binary (Bernoulli) exclusion state}
+\label{sec:local-binary}
+
 We introduce (allelic)
 \emph{exclusion state} \(\theta_{ig}\)for any given \((i,g)\) pair such that
 biallelic expression of gene \(g\) in individual \(i\) is indicated by
-\(\theta_{ig}=0\) and monoallelic by \(\theta_{ig}=1\).
+\(\theta_{ig}=0\) and monoallelic by \(\theta_{ig}=1\).  Thus \(\theta_{ig}\)
+is a binary or Bernoulli random variable.
 Suppose \(p_{ig}\) is the expected fraction of transcripts\footnote{The word
 ``expected'' implies a probability distribution for maternal transcripts.
 This can be either binomial if the total number of transcripts is fixed, or
@@ -149,8 +257,7 @@ reads may map to multiple polymorphic sites \(v_1,v_2,...\) coupling
 completely ignored so that all allele configurations \(\psi_v\) for any given
 \((i,g)\) can be assumed independent.
 
-We may call \((\phi_{ig},\psi_v)\) \emph{allele
-configuration} at site \(v\).  
+We may call \((\phi_{ig},\psi_v)\) allele configuration at site \(v\).  
 With the preceding considerations the definition of exclusion state
 \(\theta_{ig}\) can be
 based on \(p_v\) and the allele configuration
@@ -205,8 +312,67 @@ is \(>1\) then we will base the inference of \(\theta_{ig}\) on all
 \(p_v: v\in(i,g)\) jointly, taking expectation over all \(4^{s_{ig}}\)
 configurations.
 
-\section{Three alternative global models}
+\subsubsection{Multinomial exclusion state}
+\label{sec:local-multinomial}
+
+A generalization of the binary local model is the multinomial with \(K\)
+exclusion states including biallelic expression (for the binary model \(K=2\)).
+
+Then \(\{\mathcal{P}_k: k=0,...,K-1\}\) is a sequence of disjoint subintervals
+of \([1/2,1]\).  For instance, if \(K=3\) then
+Table~\ref{tab:def-exclusion-state} changes to
+Table~\ref{tab:def-exclusion-state-multi} and the \(P\) matrix of the binary
+model (Eq.~\ref{eq:P-matrix}) needs to be
+extended accordingly.
+\begin{table}[t]
+\begin{center}
+\begin{tabular}{r|cc|}
+& \(\phi_{ig}\neq\psi_v\) & \(\phi_{ig}=\psi_v\) \\
+\hline
+biallelic, \(\theta_{ig}=0\) & \(1-p_v \in \mathcal{P}_0\) & \(p_v \in \mathcal{P}_0\) \\
+weakly monoallelic, \(\theta_{ig}=1\) & \(1-p_v \in \mathcal{P}_1\) & \(p_v \in \mathcal{P}_1\) \\
+strongly monoallelic, \(\theta_{ig}=2\) & \(1-p_v \in \mathcal{P}_2\) & \(p_v \in \mathcal{P}_2\) \\
+\hline
+\end{tabular}
+\caption{
+Definition of exclusion state \(\theta_{ig}\) of \((i,g)\) under the
+multinomial local model with \(K=3\) states.
+}
+\label{tab:def-exclusion-state-multi}
+\end{center}
+\end{table}
+
+\section{Global models}
 \label{sec:models}
+
+Several global models are formulated in this article, which can be classified
+by two aspects (Table~\ref{tab:model-overview}):
+\begin{enumerate}
+\item
+the variance
+of exclusion state \(\theta_{ig}\) within each gene \(g\) and
+\item the response variable to the explanatory variables in \(X\)
+\end{enumerate}
+
+\begin{table}[b]
+\begin{tabular}{cr|p{2.2 cm}p{2.2 cm}p{2.2 cm}|}
+& & \multicolumn{3}{c|}{ variance of exclusion state \(\theta_{ig}\) within each gene \(g\) } \\
+& & any & zero & maximum  \\
+\hline
+\multirow{3}{*}{response var.:} & none & \ref{sec:model-basic} & \ref{sec:model-basic-nu-0} & \ref{sec:model-basic-nu-infinit} \\
+& read counts
+\(Y_{ig}\) & & \ref{sec:model-Y-regr} & \\
+& exclusion state \(\theta_{ig}\) & \ref{sec:model-theta-regr} & & \\
+\hline
+\end{tabular}
+\caption{
+Overview of the global models in this article.  For each global model the
+exclusion state \(\theta_{ig}\) may be binary or multinomial, in which case an
+``m'' is appended to the name, (e.g.~\ref{sec:model-basic}m) to distinguish from
+the binary cases (e.g.~\ref{sec:model-basic}) indicated in the table.
+}
+\label{tab:model-overview}
+\end{table}
 
 \newcounter{model}
 \renewcommand{\thesubsection}{M\arabic{model}}
@@ -214,9 +380,11 @@ configurations.
 \stepcounter{model}\subsection{No influence of explanatory variables }
 \label{sec:model-basic}
 
+%\subsubsection{Some variance of exclusion state within each gene}
+
 TODO: plate diagram
 
-In this model both subintervals in
+In this model, denoted as~\ref{sec:model-basic}, both subintervals in
 Eq.~\ref{eq:def-exclusion-state}-\ref{eq:P-matrix} consist
 of a single point such that \(\mathcal{P}_0 = \{1/2\}\) and \(\mathcal{P}_1 =
 \{p_1\}\), where \(p_1\) is some fixed number, say \(0.9\).  Then
@@ -235,16 +403,24 @@ data supports \(p_v=p_1\) stronger than \(p_v=1/2\) then we conclude, based
 only on \(v\), that the exclusion state \(\theta_{ig}=1\) (i.e.~monoallelic
 expression) is more likely.
 
-\subsubsection{Special cases}
+A key aspect of~\ref{sec:model-basic}
+
+Now we will consider two special cases of~\ref{sec:model-basic}.
 
 TODO: DAG with theta leaves
 
+\subsubsection{Zero variance within each gene}
+\label{sec:model-basic-nu-0}
+
 As \(\nu\rightarrow 0\), the beta distribution becomes Bernoully and \(\mu_g\) will be 1 with probability \(\pi\) and 0 with
 probability \(1-\pi\).  For any gene \(g\) this couples the exclusion state
-for all individuals so that \(\theta_{1g}=...=\theta_{Ig}\).  So we can
+for all individuals so that \(\theta_{1g}=...=\theta_{Ig}\).  This means that we can
 replace the general structure of model~\ref{sec:model-basic} with a
 probabilistically equivalent but simpler structure by introducing
 \(\theta_g\equiv\theta_{1g}\) and removing \(\mu_g\) (Figure TODO).
+
+\subsubsection{Maximum variance within each gene}
+\label{sec:model-basic-nu-infinit}
 
 In the limit \(\nu\rightarrow\infty\) we have \(\mu_1=...=\mu_G=\pi\).
 Therefore we can once again simplify the model structure by removing
@@ -253,10 +429,10 @@ in that \(\theta_{1g},...,\theta_{Ig}\) become completely uncoupled in the
 sense that \(\{\theta_{ig}\}_{ig}\) becomes independent and identically
 distributed (Figure TODO).
 
-The interpretation of the first limiting case is that individuals show no
+The interpretation of~\ref{sec:model-basic-nu-0} is that individuals show no
 variation in exclusion status for any gene \(g\).  Thus it makes sense to
 speak about bi or monoallelically expressing genes population-wide without the
-need of looking at individuals.  The second limiting case, on the other hand,
+need of looking at individuals.  Model~\ref{sec:model-basic-nu-infinit}, on the other hand,
 means that all genes have the same population-wide tendency for bi or
 monoallelic expression.
 
@@ -265,12 +441,10 @@ monoallelic expression.
 
 TODO: plate diagram
 
-The global structure of this model is the same as the special case
-of~\ref{sec:model-basic} given by
-\(\nu\rightarrow 0\).  So, for a given gene \(g\) all individuals have the same
+The global structure of this model is the same as~\ref{sec:model-basic-nu-0}.  So, for a given gene \(g\) all individuals have the same
 exclusion state \(\theta_g\) but the across individual variation in
 explanatory variables \(x_i\) induces variation in \(p_v\).  For this the
-local model introduced in Section~\ref{sec:local-model} must be extended with
+local models introduced in Section~\ref{sec:local-model} must be extended with
 the regression of \(Y_v\) on \(X\).
 
 Given that \(Y_v\) is binomial, logistic regression appears as a natural
@@ -280,7 +454,7 @@ the \(i\)th row of design matrix \(X\) so that Eq.~\ref{eq:p-v-by-P-matrix}
 modifies to
 \begin{eqnarray}
 \label{eq:logit-p}
-p_v &=& \mathrm{logit}^{-1}(x_i\, b_v) \\
+p_v &=& \max \left( \mathrm{logit}^{-1}(x_i\, b_v), \frac{1}{2} \right) \\
 \label{eq:logit-b-B}
 b_v &=& B[\theta_{ig},\delta_{\phi_{ig}\psi_v}],
 \end{eqnarray}
@@ -331,12 +505,10 @@ made even more explicit by considering the special case of
 \ref{sec:model-Y-regr} that \(\beta_1,...,\beta_{R-1}=0\) so that explanatory
 variables have no impact on \(p_v\) also when \(\theta_{ig}=1\) (monoallelic
 expression).  Furthermore, if \(\beta_0=\mathrm{logit}(p_1)\) also holds, then
-\ref{sec:model-Y-regr} is probabilistically equivalent to the special case
-\ref{sec:model-basic} given by \(\nu\rightarrow 0\).  So for consistency
-between models we should set \(\beta_0=\mathrm{logit}(p_1)\), which has the
-additional advantage of having one less unknown parameters.
-
-\subsubsection{Shortcomings}
+\ref{sec:model-Y-regr} is probabilistically equivalent
+to~\ref{sec:model-basic-nu-0}.  So, for consistency between models, we should
+set \(\beta_0=\mathrm{logit}(p_1)\), which has the additional advantage of
+having one less unknown parameters.
 
 TODO: logit function
 
@@ -442,28 +614,27 @@ where \(b\) is the beta function evaluated at \((\pi\nu, (1-\pi)\nu)\).
 may be of some interest because it quantifies the tendency of genes to be
 monoallelically expressed across all individuals (so that individuals tend not
 to vary for any given gene).  We may decide not to care about \(\nu\) or take
-it to the limit \(\nu\rightarrow 0\) or \(\nu\rightarrow \infty\) by recalling
-the two special cases of model~\ref{sec:model-basic}.  To obtain the
+it to the limit \(\nu\rightarrow 0\) or \(\nu\rightarrow \infty\) by
+choosing~\ref{sec:model-basic-nu-0} or~\ref{sec:model-basic-nu-infinit} a
+priori, i.e.~without evaluating how well they fit the data.  To obtain the
 likelihood for those cases let us denote \(L_{\ref{sec:model-basic}}(\pi)\equiv
 f(y|n,p,\kappa,\pi)\) and recall Eq~\ref{eq:f-ig}.  Then
 Eq.~\ref{eq:L-model-basic} simplifies to
-\begin{equation}
-\label{eq:L-model-basics-special}
-L_{\ref{sec:model-basic}}(\pi) =
-\begin{cases}
+\begin{eqnarray}
+\label{eq:L-model-basic-nu-0}
+L_{\ref{sec:model-basic-nu-0}}(\pi) &=&
 \prod_{g}
 \left[
 (1-\pi) \prod_i L_{ig}^0 + \pi \prod_i L_{ig}^1
 \right]
-& \text{if } \nu\rightarrow 0
 \\
+\label{eq:L-model-basic-nu-infinit}
+L_{\ref{sec:model-basic-nu-infinit}}(\pi) &=&
 \prod_{i,g}
 \left[
 (1-\pi) L_{ig}^0 + \pi L_{ig}^1
-\right]
-& \text{if } \nu\rightarrow\infty,
-\end{cases}
-\end{equation}
+\right],
+\end{eqnarray}
 where \(L_{ig}^a\) is used in the sense of
 \ref{sec:model-basic}-\ref{sec:model-theta-regr} (Eq.~\ref{eq:f-ig}).
 
@@ -471,8 +642,8 @@ Turning to model~\ref{sec:model-Y-regr}, we assume that the matrix \(B\) of regr
 parameters is known
 (preset and/or estimated).  Write \(L_{\ref{sec:model-Y-regr}}(\pi)\equiv
 f(y|n,X,B,\kappa,\pi)\).  It is easy to see that
-\(L_{\ref{sec:model-Y-regr}}(\pi)\) has the same form as the top case
-(\(\nu\rightarrow 0\)); of course in this case the semantics of \(L_{ig}^a\)
+\(L_{\ref{sec:model-Y-regr}}(\pi)\) has the same form as
+Eq.~\ref{eq:L-model-basic-nu-0}; of course in this case the semantics of \(L_{ig}^a\)
 is connected to \ref{sec:model-Y-regr} (recall remark below Eq.~\ref{eq:f-ig}).
 
 \subsection{Estimating regression parameters from training data}
@@ -503,38 +674,49 @@ monoallelically expressed genes
 
 \subsection{Classification}
 
-Neyman-Pearson lemma
+We formulate the task of classification as the statistical test of two simple
+hypotheses: \(H_0:\;\theta_{ig}=0\) versus \(H_1:\;\theta_{ig}=1\) (biallelic versus
+monoallelic expression).
+According to the
+Neyman-Pearson lemma the likelihood ratio \(\Lambda_{ig}=L_{ig}^1/L_{ig}^0\)
+provides the test statistic for the most powerful test at a given significance
+level, so it is preferable to use \(\Lambda_{ig}\).  For nested hypotheses
+\(H_0\subset H_1\) the
+asymptotic distribution of twice the log-likelihood ratio is \(\chi^2\) with
+degrees of freedom given by the increase in unknown parameters from \(H_0\) to
+\(H_1\).  But in the present case \(H_0\) is not \(\subset H_1\) so the
+asymptotic \(\chi^2\) distribution doesn't hold.
 
-Log likelihood ratio statistic \(W_{ig}\) under model~\ref{sec:model-basic}
-\ref{sec:model-theta-regr} and \(W_g\) under~\ref{sec:model-Y-regr}.
+Fortunately, however, the present case lends itself to Bayesian hypothesis
+testing with \(\Lambda_{ig}\) playing the role of Bayes factor and
+\(\pi/(1-\pi)\) the corresponding prior odds.  Let's write
+\(\pi(\theta_{ig}=1)\equiv\pi\) to emphasize that \(\pi\) is the prior
+probability that \(\theta_{ig}=1\); and likewise
+\(\pi(\theta_{ig}=0)\equiv1-\pi\).  Then the posterior probability of
+\(H_1:\;\theta_{ig}=1\) given \(n_{ig}\) and after observing that
+\(Y_{ig}=y_{ig}\) is
+\begin{equation}
+\pi(\theta_{ig}=1|n_{ig},y_{ig}) =
+\frac{L_{ig}^1 \pi(\theta_{ig}=1)}{{L_{ig}^1 \pi(\theta_{ig}=1)} + {L_{ig}^0
+\pi(\theta_{ig}=0)}}
+\end{equation}
 
-\section{Appendix}
-\label{sec:appendix}
+\subsection{Thoughts on simulations}
 
-If we want to base inference on the scalar \(S_{ig}\) instead of the vector
-\(Y_{ig}\), we need to derive likelihood functions for \(S_{ig}\) using
-Eq.???.
-Let \(\mathcal{S} = \{(i,g) : n_{ig} s_{ig} = y_{ig}\}\), that is the set of
-all \((i,g)\) pairs leading to the observed \(s_{ig}\).  Then the likelihood
-functions \(h_{ig}\) and \(h'_{ig}\) for \(S_{ig}\) can be expressed in terms
-of \(\{f_{ig}\}_{(i,g)\in\mathcal{S}}\):
-\begin{eqnarray}
-\label{eq:S-pmf-given-n}
-h_{ig}(s_{ig} | n_{ig}, p_h) &=& \sum_{(i,g)\in\mathcal{S}} f_{ig}(y_{ig} | n_{ig}, p_h)
-\\
-\label{eq:S-pmf-given-dist-of-n}
-h'_{ig}(s_{ig} | p_h) &=& \sum_{(i,g)\in\mathcal{S}} f_{ig}(y_{ig} | n_{ig},
-p_h) \, q_{ig}(n_{ig}|p_h).
-\end{eqnarray}
-The difference between \(h_{ig}\) and \(h'_{ig}\) is whether or not we
-condition the distribution of \(S_{ig}\) on the observed \(n_{ig}\).  If we
-don't take advantage of the observations on \(n_{ig}\) (Eq.~\ref{eq:S-pmf-given-dist-of-n}), we
-must then treat it as a random variable and specify a distribution for it, say
-\(q_{ig}\). In either case we need \emph{some} kind of information or
-assumption on
-\(n_{ig}\).  This holds regardless we want to use \(h_{ig}\) (or \(h'_{ig}\))
-in simulations, in parameter estimation or in classification with error
-control.
+Simulations are helpful in comparing performance of alternative approaches in
+some inference task.  Two important choices must be made prior to a
+simulation experiment: the inference task and the model (the sampling
+distribution).  Testing under all relevant tasks (classification or estimation of parameters
+such as \(\pi\)) is desirable.  However, a single model that presumed to be true should be selected based on mechanistic arguments and/or model fit to
+real data.
+
+In the present case, what should be that presumed true model?  As pointed out
+in Section~\ref{sec:improvement}, the previous approaches do not allow
+objective, likelihood-based, evaluation of model fit.  Turning to mechanistic
+arguments, how should allelic exclusion depend on the measured explanatory
+variables like age or gender?  Suppose we have a reason to exclude such
+dependence.  Then it still remains to be specified how allelic exclusion
+varies across individuals within any given gene.
 
 \end{document}
 
@@ -871,4 +1053,32 @@ validate and may lead to high errors in all three tasks depending on how
 valuable the discarded prior information are.
 
 \subsection{Classification}
+
+\section{Appendix}
+\label{sec:appendix}
+
+If we want to base inference on the scalar \(S_{ig}\) instead of the vector
+\(Y_{ig}\), we need to derive likelihood functions for \(S_{ig}\) using
+Eq.???.
+Let \(\mathcal{S} = \{(i,g) : n_{ig} s_{ig} = y_{ig}\}\), that is the set of
+all \((i,g)\) pairs leading to the observed \(s_{ig}\).  Then the likelihood
+functions \(h_{ig}\) and \(h'_{ig}\) for \(S_{ig}\) can be expressed in terms
+of \(\{f_{ig}\}_{(i,g)\in\mathcal{S}}\):
+\begin{eqnarray}
+\label{eq:S-pmf-given-n}
+h_{ig}(s_{ig} | n_{ig}, p_h) &=& \sum_{(i,g)\in\mathcal{S}} f_{ig}(y_{ig} | n_{ig}, p_h)
+\\
+\label{eq:S-pmf-given-dist-of-n}
+h'_{ig}(s_{ig} | p_h) &=& \sum_{(i,g)\in\mathcal{S}} f_{ig}(y_{ig} | n_{ig},
+p_h) \, q_{ig}(n_{ig}|p_h).
+\end{eqnarray}
+The difference between \(h_{ig}\) and \(h'_{ig}\) is whether or not we
+condition the distribution of \(S_{ig}\) on the observed \(n_{ig}\).  If we
+don't take advantage of the observations on \(n_{ig}\) (Eq.~\ref{eq:S-pmf-given-dist-of-n}), we
+must then treat it as a random variable and specify a distribution for it, say
+\(q_{ig}\). In either case we need \emph{some} kind of information or
+assumption on
+\(n_{ig}\).  This holds regardless we want to use \(h_{ig}\) (or \(h'_{ig}\))
+in simulations, in parameter estimation or in classification with error
+control.
 
