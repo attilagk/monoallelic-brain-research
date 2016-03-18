@@ -29,49 +29,55 @@
 \newlabel{eq:Y-def}{{2}{3}{The modeled data: read counts}{equation.2.1}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {2.2}Local models of allelic exclusion}{3}{subsection.2.2}}
 \newlabel{sec:local-model}{{2.2}{3}{Local models of allelic exclusion}{subsection.2.2}{}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.2.1}Binary (Bernoulli) exclusion state}{4}{subsubsection.2.2.1}}
-\newlabel{sec:local-binary}{{2.2.1}{4}{Binary (Bernoulli) exclusion state}{subsubsection.2.2.1}{}}
-\newlabel{eq:def-exclusion-state}{{3}{4}{Binary (Bernoulli) exclusion state}{equation.2.3}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {2}{\ignorespaces  Definition of exclusion state \(\theta _{ig}\) of \((i,g)\) based on \(p_v\) and the allele configuration \((\phi _{ig},\psi _v)\) for site \(v\in (i,g)\) }}{4}{table.2}}
-\newlabel{tab:def-exclusion-state}{{2}{4}{Definition of exclusion state \(\theta _{ig}\) of \((i,g)\) based on \(p_v\) and the allele configuration \((\phi _{ig},\psi _v)\) for site \(v\in (i,g)\)}{table.2}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {3}{\ignorespaces  Definition of exclusion state \(\theta _{ig}\) of \((i,g)\) under the multinomial local model with \(K=3\) states. }}{5}{table.3}}
-\newlabel{tab:def-exclusion-state-multi}{{3}{5}{Definition of exclusion state \(\theta _{ig}\) of \((i,g)\) under the multinomial local model with \(K=3\) states}{table.3}{}}
-\newlabel{eq:p-v-by-P-matrix}{{4}{5}{Binary (Bernoulli) exclusion state}{equation.2.4}{}}
-\newlabel{eq:P-matrix}{{5}{5}{Binary (Bernoulli) exclusion state}{equation.2.4}{}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.2.2}Multinomial exclusion state}{5}{subsubsection.2.2.2}}
-\newlabel{sec:local-multinomial}{{2.2.2}{5}{Multinomial exclusion state}{subsubsection.2.2.2}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {3}Global models}{5}{section.3}}
-\newlabel{sec:models}{{3}{5}{Global models}{section.3}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {M1}No influence of explanatory variables }{5}{subsection.3.1}}
-\newlabel{sec:model-basic}{{M1}{5}{No influence of explanatory variables}{subsection.3.1}{}}
-\newlabel{eq:P-matrix-M1}{{6}{6}{No influence of explanatory variables}{equation.3.6}{}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {M1.1}Zero variance within each gene}{6}{subsubsection.3.1.1}}
-\newlabel{sec:model-basic-nu-0}{{M1.1}{6}{Zero variance within each gene}{subsubsection.3.1.1}{}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {M1.2}Maximum variance within each gene}{6}{subsubsection.3.1.2}}
-\newlabel{sec:model-basic-nu-infinit}{{M1.2}{6}{Maximum variance within each gene}{subsubsection.3.1.2}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {M2}Regression of \(Y_v\) on explanatory variables }{6}{subsection.3.2}}
-\newlabel{sec:model-Y-regr}{{M2}{6}{Regression of \(Y_v\) on explanatory variables}{subsection.3.2}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {4}{\ignorespaces  Overview of the global models in this article. For each global model the exclusion state \(\theta _{ig}\) may be binary or multinomial, in which case an ``m'' is appended to the name, (e.g.\nobreakspace {}\ref  {sec:model-basic}m) to distinguish from the binary cases (e.g.\nobreakspace {}\ref  {sec:model-basic}) indicated in the table. }}{6}{table.4}}
-\newlabel{tab:model-overview}{{4}{6}{Overview of the global models in this article. For each global model the exclusion state \(\theta _{ig}\) may be binary or multinomial, in which case an ``m'' is appended to the name, (e.g.~\ref {sec:model-basic}m) to distinguish from the binary cases (e.g.~\ref {sec:model-basic}) indicated in the table}{table.4}{}}
-\newlabel{eq:logit-p}{{7}{7}{Regression of \(Y_v\) on explanatory variables}{equation.3.7}{}}
-\newlabel{eq:logit-b-B}{{8}{7}{Regression of \(Y_v\) on explanatory variables}{equation.3.7}{}}
-\newlabel{eq:B-matrix-M2}{{9}{7}{Regression of \(Y_v\) on explanatory variables}{equation.3.9}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {M3}Regression of \(\theta _{ig}\) on explanatory variables }{7}{subsection.3.3}}
-\newlabel{sec:model-theta-regr}{{M3}{7}{Regression of \(\theta _{ig}\) on explanatory variables}{subsection.3.3}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {4}Inference}{8}{section.4}}
-\newlabel{sec:likelihood}{{4}{8}{Inference}{section.4}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.1}Local models and classification}{8}{subsection.4.1}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.1.1}Likelihood}{8}{subsubsection.4.1.1}}
-\newlabel{eq:f-v-M1-M3}{{11}{8}{Likelihood}{equation.4.11}{}}
-\newlabel{eq:f-ig}{{12}{8}{Likelihood}{equation.4.12}{}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.1.2}Classification}{8}{subsubsection.4.1.2}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.2}Selection of a global model, estimation of \(\pi \) and \(\beta \)}{8}{subsection.4.2}}
-\newlabel{sec:marginal-likelihood-pi}{{4.2}{8}{Selection of a global model, estimation of \(\pi \) and \(\beta \)}{subsection.4.2}{}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.2.1}Marginal likelihood for \(\pi \)}{8}{subsubsection.4.2.1}}
-\newlabel{eq:L-model-basic}{{14}{8}{Marginal likelihood for \(\pi \)}{equation.4.14}{}}
-\newlabel{eq:L-model-basic-nu-0}{{15}{9}{Marginal likelihood for \(\pi \)}{equation.4.15}{}}
-\newlabel{eq:L-model-basic-nu-infinit}{{16}{9}{Marginal likelihood for \(\pi \)}{equation.4.15}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.3}Estimating regression parameters from training data}{9}{subsection.4.3}}
-\newlabel{sec:beta-from-training-data}{{4.3}{9}{Estimating regression parameters from training data}{subsection.4.3}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.4}Classification}{9}{subsection.4.4}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.5}Thoughts on simulations}{10}{subsection.4.5}}
+\@writefile{lot}{\contentsline {table}{\numberline {2}{\ignorespaces  Parameters and other components of the proposed models }}{4}{table.2}}
+\newlabel{tab:parameters}{{2}{4}{Parameters and other components of the proposed models}{table.2}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.2.1}Binary exclusion state}{4}{subsubsection.2.2.1}}
+\newlabel{sec:local-binary}{{2.2.1}{4}{Binary exclusion state}{subsubsection.2.2.1}{}}
+\newlabel{eq:def-exclusion-state}{{3}{4}{Binary exclusion state}{equation.2.3}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {3}{\ignorespaces  Definition of the binary exclusion state and its indicator \(\theta _{ig}\) based on \(p_v\) and the allele configuration \((\phi _{ig},\psi _v)\) }}{5}{table.3}}
+\newlabel{tab:def-exclusion-state}{{3}{5}{Definition of the binary exclusion state and its indicator \(\theta _{ig}\) based on \(p_v\) and the allele configuration \((\phi _{ig},\psi _v)\)}{table.3}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.2.2}Multiple exclusion states}{5}{subsubsection.2.2.2}}
+\newlabel{sec:local-multinomial}{{2.2.2}{5}{Multiple exclusion states}{subsubsection.2.2.2}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {4}{\ignorespaces  Definition of the general \(K\)-ary exclusion state and its indicator \(\theta _{ig}\) }}{5}{table.4}}
+\newlabel{tab:def-exclusion-state-multi}{{4}{5}{Definition of the general \(K\)-ary exclusion state and its indicator \(\theta _{ig}\)}{table.4}{}}
+\newlabel{eq:p-v-by-P-matrix}{{4}{5}{Multiple exclusion states}{equation.2.4}{}}
+\newlabel{eq:P-matrix}{{5}{5}{Multiple exclusion states}{equation.2.4}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {3}Global models}{6}{section.3}}
+\newlabel{sec:models}{{3}{6}{Global models}{section.3}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {M1}No influence of explanatory variables }{6}{subsection.3.1}}
+\newlabel{sec:model-basic}{{M1}{6}{No influence of explanatory variables}{subsection.3.1}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {5}{\ignorespaces  Overview of the global models in this article. }}{6}{table.5}}
+\newlabel{tab:model-overview}{{5}{6}{Overview of the global models in this article}{table.5}{}}
+\newlabel{eq:P-matrix-M1}{{6}{7}{No influence of explanatory variables}{equation.3.6}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {M1.1}Zero variance within each gene}{7}{subsubsection.3.1.1}}
+\newlabel{sec:model-basic-nu-0}{{M1.1}{7}{Zero variance within each gene}{subsubsection.3.1.1}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {M1.2}Maximum variance within each gene}{7}{subsubsection.3.1.2}}
+\newlabel{sec:model-basic-nu-infinit}{{M1.2}{7}{Maximum variance within each gene}{subsubsection.3.1.2}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {M2}Regression of \(Y_v\) on explanatory variables }{7}{subsection.3.2}}
+\newlabel{sec:model-Y-regr}{{M2}{7}{Regression of \(Y_v\) on explanatory variables}{subsection.3.2}{}}
+\newlabel{eq:logit-p}{{7}{8}{Regression of \(Y_v\) on explanatory variables}{equation.3.7}{}}
+\newlabel{eq:logit-b-B}{{8}{8}{Regression of \(Y_v\) on explanatory variables}{equation.3.7}{}}
+\newlabel{eq:B-matrix-M2}{{9}{8}{Regression of \(Y_v\) on explanatory variables}{equation.3.9}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {M3}Regression of \(\theta _{ig}\) on explanatory variables }{8}{subsection.3.3}}
+\newlabel{sec:model-theta-regr}{{M3}{8}{Regression of \(\theta _{ig}\) on explanatory variables}{subsection.3.3}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {4}Inference}{9}{section.4}}
+\newlabel{sec:likelihood}{{4}{9}{Inference}{section.4}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.1}Likelihood of local models}{9}{subsection.4.1}}
+\newlabel{sec:likelihood-local}{{4.1}{9}{Likelihood of local models}{subsection.4.1}{}}
+\newlabel{eq:f-v-M1-M3}{{11}{9}{Likelihood of local models}{equation.4.11}{}}
+\newlabel{eq:f-ig}{{12}{9}{Likelihood of local models}{equation.4.12}{}}
+\newlabel{eq:f-ig-continued}{{13}{9}{Likelihood of local models}{equation.4.12}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.2}Regression parameters under\nobreakspace {}\ref  {sec:model-Y-regr} from training data}{9}{subsection.4.2}}
+\newlabel{sec:beta-from-training-data}{{4.2}{9}{Regression parameters under~\ref {sec:model-Y-regr} from training data}{subsection.4.2}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.3}Model selection and estimation of \(\pi \)}{9}{subsection.4.3}}
+\newlabel{sec:model-selection}{{4.3}{9}{Model selection and estimation of \(\pi \)}{subsection.4.3}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.3.1}Marginal likelihood}{10}{subsubsection.4.3.1}}
+\newlabel{sec:marginal-likelihood-pi}{{4.3.1}{10}{Marginal likelihood}{subsubsection.4.3.1}{}}
+\newlabel{eq:L-model-basic}{{15}{10}{Marginal likelihood}{equation.4.15}{}}
+\newlabel{eq:L-model-basic-nu-0}{{16}{10}{Marginal likelihood}{equation.4.16}{}}
+\newlabel{eq:L-model-basic-nu-infinit}{{17}{10}{Marginal likelihood}{equation.4.16}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.4}Classification}{10}{subsection.4.4}}
+\newlabel{sec:classification}{{4.4}{10}{Classification}{subsection.4.4}{}}
+\newlabel{eq:hypothesis-posterior}{{18}{11}{Classification}{equation.4.18}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.5}Thoughts on simulations}{11}{subsection.4.5}}
+\newlabel{sec:simulation}{{4.5}{11}{Thoughts on simulations}{subsection.4.5}{}}
