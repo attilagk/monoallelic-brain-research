@@ -124,59 +124,6 @@ Input Package::/home/attila/texlive/2014/texmf-dist/tex/generic/pgf/frontendlaye
 Input File::/home/attila/texlive/2014/texmf-dist/tex/generic/pgf/libraries/pgflibraryplothandlers.code.tex::0::0::Input File
 Input File::/home/attila/texlive/2014/texmf-dist/tex/generic/pgf/modules/pgfmodulematrix.code.tex::0::0::Input File
 Input File::/home/attila/texlive/2014/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibrarytopaths.code.tex::0::0::Input File
-Input File::/home/attila/texlive/2014/texmf-dist/tex/latex/fontspec/fontspec.sty::0::0::Input File
-Input Package::/home/attila/texlive/2014/texmf-dist/tex/latex/fontspec/fontspec.sty::0::0::fontspec 2014/06/21 v2.4a Font selection for XeLaTeX and LuaLaTeX
-Input File::/home/attila/texlive/2014/texmf-dist/tex/latex/l3kernel/expl3.sty::0::0::Input File
-Input Package::/home/attila/texlive/2014/texmf-dist/tex/latex/l3kernel/expl3.sty::0::0::expl3 2014/06/10 v5105 L3 programming layer (loader) 
-Input File::/home/attila/texlive/2014/texmf-dist/tex/latex/l3kernel/expl3-code.tex::0::0::Input File
-Input Package::/home/attila/texlive/2014/texmf-dist/tex/latex/l3kernel/expl3-code.tex::0::0::expl3 2014/06/10 v5105 L3 programming layer (code) 
-Input File::/home/attila/texlive/2014/texmf-dist/tex/latex/etex-pkg/etex.sty::0::0::Input File
-Input Package::/home/attila/texlive/2014/texmf-dist/tex/latex/etex-pkg/etex.sty::0::0::etex 1998/03/26 v2.0 eTeX basic definition package (PEB)
-Input File::/home/attila/texlive/2014/texmf-dist/tex/latex/l3kernel/l3pdfmode.def::0::0::Input File
-Input File::/home/attila/texlive/2014/texmf-dist/tex/latex/l3packages/xparse/xparse.sty::0::0::Input File
-Input Package::/home/attila/texlive/2014/texmf-dist/tex/latex/l3packages/xparse/xparse.sty::0::0::xparse 2014/06/10 v5105 L3 Experimental document command parser
-Input File::/home/attila/texlive/2014/texmf-dist/tex/luatex/luaotfload/luaotfload.sty::0::0::Input File
-Input Package::/home/attila/texlive/2014/texmf-dist/tex/luatex/luaotfload/luaotfload.sty::0::0::luaotfload 2014/05/18 v2.4-4 OpenType layout system
-Input File::/home/attila/texlive/2014/texmf-dist/tex/luatex/luatexbase/luatexbase.sty::0::0::Input File
-Input Package::/home/attila/texlive/2014/texmf-dist/tex/luatex/luatexbase/luatexbase.sty::0::0::luatexbase 2013/05/11 v0.6 Resource management for the LuaTeX macro programmer
-Input File::/home/attila/texlive/2014/texmf-dist/tex/generic/oberdiek/luatex.sty::0::0::Input File
-Input Package::/home/attila/texlive/2014/texmf-dist/tex/generic/oberdiek/luatex.sty::0::0::luatex 2010/03/09 v0.4 LuaTeX basic definition package (HO)
-Input File::/home/attila/texlive/2014/texmf-dist/tex/luatex/luatexbase/luatexbase-compat.sty::0::0::Input File
-Input Package::/home/attila/texlive/2014/texmf-dist/tex/luatex/luatexbase/luatexbase-compat.sty::0::0::luatexbase-compat 2011/05/24 v0.4 Compatibility tools for LuaTeX
-Input File::/home/attila/texlive/2014/texmf-dist/tex/luatex/luatexbase/luatexbase-modutils.sty::0::0::Input File
-Input Package::/home/attila/texlive/2014/texmf-dist/tex/luatex/luatexbase/luatexbase-modutils.sty::0::0::luatexbase-modutils 2013/05/11 v0.6 Module utilities for LuaTeX
-Input File::/home/attila/texlive/2014/texmf-dist/tex/luatex/luatexbase/luatexbase-loader.sty::0::0::Input File
-Input Package::/home/attila/texlive/2014/texmf-dist/tex/luatex/luatexbase/luatexbase-loader.sty::0::0::luatexbase-loader 2013/05/11 v0.6 Lua module loader for LuaTeX
-Input File::/home/attila/texlive/2014/texmf-dist/tex/luatex/luatexbase/luatexbase-regs.sty::0::0::Input File
-Input Package::/home/attila/texlive/2014/texmf-dist/tex/luatex/luatexbase/luatexbase-regs.sty::0::0::luatexbase-regs 2011/05/24 v0.4 Registers allocation for LuaTeX
-Input File::/home/attila/texlive/2014/texmf-dist/tex/luatex/luatexbase/luatexbase-attr.sty::0::0::Input File
-Input Package::/home/attila/texlive/2014/texmf-dist/tex/luatex/luatexbase/luatexbase-attr.sty::0::0::luatexbase-attr 2013/05/11 v0.6 Attributes allocation for LuaTeX
-Input File::/home/attila/texlive/2014/texmf-dist/tex/luatex/luatexbase/luatexbase-cctb.sty::0::0::Input File
-Input Package::/home/attila/texlive/2014/texmf-dist/tex/luatex/luatexbase/luatexbase-cctb.sty::0::0::luatexbase-cctb 2013/05/11 v0.6 Catcodetable allocation for LuaTeX
-Input File::/home/attila/texlive/2014/texmf-dist/tex/luatex/luatexbase/luatexbase-mcb.sty::0::0::Input File
-Input Package::/home/attila/texlive/2014/texmf-dist/tex/luatex/luatexbase/luatexbase-mcb.sty::0::0::luatexbase-mcb 2013/05/11 v0.6 Callback management for LuaTeX
-Input File::using read cache: /home/attila/texlive/2014/texmf-var/luatex-cache/generic /home/attila/.tex::0::0::Input File
-Input File::/home/attila/texlive/2014/texmf-dist/tex/latex/fontspec/fontspec-patches.sty::0::0::Input File
-Input Package::/home/attila/texlive/2014/texmf-dist/tex/latex/fontspec/fontspec-patches.sty::0::0::fontspec-patches 2014/06/21 v2.4a Font selection for XeLaTeX and LuaLaTeX
-LaTeX Info::/home/attila/texlive/2014/texmf-dist/tex/latex/fontspec/fontspec-patches.sty::38::0::Redefining \em.
-LaTeX Info::/home/attila/texlive/2014/texmf-dist/tex/latex/fontspec/fontspec-patches.sty::46::0::Redefining \emph.
-LaTeX Info::/home/attila/texlive/2014/texmf-dist/tex/latex/fontspec/fontspec-patches.sty::49::0::Redefining \-.
-Input File::/home/attila/texlive/2014/texmf-dist/tex/latex/fontspec/fontspec-luatex.sty::0::0::Input File
-Input Package::/home/attila/texlive/2014/texmf-dist/tex/latex/fontspec/fontspec-luatex.sty::0::0::fontspec-luatex 2014/06/21 v2.4a Font selection for XeLaTeX and LuaLaTeX
-Input File::/home/attila/texlive/2014/texmf-dist/tex/latex/base/fontenc.sty::0::0::Input File
-Input Package::/home/attila/texlive/2014/texmf-dist/tex/latex/base/fontenc.sty::0::0::fontenc 2005/09/27 v1.99g Standard LaTeX package
-Input File::/home/attila/texlive/2014/texmf-dist/tex/latex/euenc/eu2enc.def::0::0::Input File
-LaTeX Font Info::/home/attila/texlive/2014/texmf-dist/tex/latex/base/fontenc.sty::100::0::   Try loading font information for EU2+lmr.
-Input File::/home/attila/texlive/2014/texmf-dist/tex/latex/euenc/eu2lmr.fd::0::0::Input File
-Input File::/home/attila/texlive/2014/texmf-dist/tex/xelatex/xunicode/xunicode.sty::0::0::Input File
-Input File::/home/attila/texlive/2014/texmf-dist/tex/latex/tipa/t3enc.def::0::0::Input File
-LaTeX Font Info::/home/attila/texlive/2014/texmf-dist/tex/latex/tipa/t3enc.def::357::0::   Try loading font information for EU2+lmss.
-Input File::/home/attila/texlive/2014/texmf-dist/tex/latex/euenc/eu2lmss.fd::0::0::Input File
-LaTeX Info::/home/attila/texlive/2014/texmf-dist/tex/latex/fontspec/fontspec-luatex.sty::2117::0::Redefining \itshape.
-LaTeX Info::/home/attila/texlive/2014/texmf-dist/tex/latex/fontspec/fontspec-luatex.sty::2122::0::Redefining \slshape.
-LaTeX Info::/home/attila/texlive/2014/texmf-dist/tex/latex/fontspec/fontspec-luatex.sty::2127::0::Redefining \scshape.
-LaTeX Info::/home/attila/texlive/2014/texmf-dist/tex/latex/fontspec/fontspec-luatex.sty::2132::0::Redefining \upshape.
-Input File::/home/attila/texlive/2014/texmf-dist/tex/latex/fontspec/fontspec.cfg::0::0::Input File
 Input File::/home/attila/texlive/2014/texmf-dist/tex/latex/standalone/standalone.sty::0::0::Input File
 Input Package::/home/attila/texlive/2014/texmf-dist/tex/latex/standalone/standalone.sty::0::0::standalone 2012/09/15 v1.1b Package to include TeX sub-files with preambles
 Input File::/home/attila/texlive/2014/texmf-dist/tex/latex/currfile/currfile.sty::0::0::Input File
@@ -229,24 +176,18 @@ Input File::/home/attila/texlive/2014/texmf-dist/tex/generic/pgf/frontendlayer/t
 Input File::/home/attila/texlive/2014/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibraryarrows.code.tex::0::0::Input File
 Input File::/home/attila/texlive/2014/texmf-dist/tex/generic/pgf/libraries/pgflibraryarrows.code.tex::0::0::Input File
 Input File::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/figures/plate3.aux::0::0::Input File
-LaTeX Font Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/figures/plate-test/plate3.tex::7::0::   Checking defaults for OML/cmm/m/it.
-LaTeX Font Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/figures/plate-test/plate3.tex::7::0::   ... okay.
-LaTeX Font Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/figures/plate-test/plate3.tex::7::0::   Checking defaults for T1/cmr/m/n.
-LaTeX Font Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/figures/plate-test/plate3.tex::7::0::   ... okay.
-LaTeX Font Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/figures/plate-test/plate3.tex::7::0::   Checking defaults for OT1/cmr/m/n.
-LaTeX Font Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/figures/plate-test/plate3.tex::7::0::   ... okay.
-LaTeX Font Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/figures/plate-test/plate3.tex::7::0::   Checking defaults for OMS/cmsy/m/n.
-LaTeX Font Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/figures/plate-test/plate3.tex::7::0::   ... okay.
-LaTeX Font Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/figures/plate-test/plate3.tex::7::0::   Checking defaults for OMX/cmex/m/n.
-LaTeX Font Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/figures/plate-test/plate3.tex::7::0::   ... okay.
-LaTeX Font Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/figures/plate-test/plate3.tex::7::0::   Checking defaults for U/cmr/m/n.
-LaTeX Font Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/figures/plate-test/plate3.tex::7::0::   ... okay.
-LaTeX Font Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/figures/plate-test/plate3.tex::7::0::   Checking defaults for EU2/lmr/m/n.
-LaTeX Font Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/figures/plate-test/plate3.tex::7::0::   ... okay.
-LaTeX Font Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/figures/plate-test/plate3.tex::7::0::   Checking defaults for T3/cmr/m/n.
-LaTeX Font Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/figures/plate-test/plate3.tex::7::0::   Try loading font information for T3+cmr.
-Input File::/home/attila/texlive/2014/texmf-dist/tex/latex/tipa/t3cmr.fd::0::0::Input File
-LaTeX Font Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/figures/plate-test/plate3.tex::7::0::   ... okay.
+LaTeX Font Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/figures/plate-test/plate3.tex::6::0::   Checking defaults for OML/cmm/m/it.
+LaTeX Font Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/figures/plate-test/plate3.tex::6::0::   ... okay.
+LaTeX Font Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/figures/plate-test/plate3.tex::6::0::   Checking defaults for T1/cmr/m/n.
+LaTeX Font Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/figures/plate-test/plate3.tex::6::0::   ... okay.
+LaTeX Font Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/figures/plate-test/plate3.tex::6::0::   Checking defaults for OT1/cmr/m/n.
+LaTeX Font Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/figures/plate-test/plate3.tex::6::0::   ... okay.
+LaTeX Font Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/figures/plate-test/plate3.tex::6::0::   Checking defaults for OMS/cmsy/m/n.
+LaTeX Font Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/figures/plate-test/plate3.tex::6::0::   ... okay.
+LaTeX Font Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/figures/plate-test/plate3.tex::6::0::   Checking defaults for OMX/cmex/m/n.
+LaTeX Font Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/figures/plate-test/plate3.tex::6::0::   ... okay.
+LaTeX Font Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/figures/plate-test/plate3.tex::6::0::   Checking defaults for U/cmr/m/n.
+LaTeX Font Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/figures/plate-test/plate3.tex::6::0::   ... okay.
 Input File::/home/attila/texlive/2014/texmf-dist/tex/context/base/supp-pdf.mkii::0::0::Input File
 Input File::/home/attila/texlive/2014/texmf-dist/tex/latex/oberdiek/epstopdf-base.sty::0::0::Input File
 Input Package::/home/attila/texlive/2014/texmf-dist/tex/latex/oberdiek/epstopdf-base.sty::0::0::epstopdf-base 2010/02/09 v2.5 Base part for package epstopdf
@@ -256,46 +197,7 @@ Input File::/home/attila/texlive/2014/texmf-dist/tex/generic/oberdiek/kvdefineke
 Input Package::/home/attila/texlive/2014/texmf-dist/tex/generic/oberdiek/kvdefinekeys.sty::0::0::kvdefinekeys 2011/04/07 v1.3 Define keys (HO)
 Package Info::/home/attila/texlive/2014/texmf-dist/tex/latex/oberdiek/epstopdf-base.sty::452::0::Graphics extension search list: [.png,.pdf,.jpg,.mps,.jpeg,.jbig2,.jb2,.PNG,.PDF,.JPG,.JPEG,.JBIG2,.JB2,.eps] \AppendGraphicsExtensions. (grfext)
 Input File::/home/attila/texlive/2014/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg::0::0::Input File
-LaTeX Font Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/figures/plate-test/plate3.tex::7::0::   Overwriting symbol font `legacymaths' in version `bold' OT1/cmr/m/n --> OT1/cmr/bx/n.
-LaTeX Font Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/figures/plate-test/plate3.tex::7::0::   Redeclaring math accent \acute.
-LaTeX Font Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/figures/plate-test/plate3.tex::7::0::   Redeclaring math accent \grave.
-LaTeX Font Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/figures/plate-test/plate3.tex::7::0::   Redeclaring math accent \ddot.
-LaTeX Font Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/figures/plate-test/plate3.tex::7::0::   Redeclaring math accent \tilde.
-LaTeX Font Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/figures/plate-test/plate3.tex::7::0::   Redeclaring math accent \bar.
-LaTeX Font Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/figures/plate-test/plate3.tex::7::0::   Redeclaring math accent \breve.
-LaTeX Font Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/figures/plate-test/plate3.tex::7::0::   Redeclaring math accent \check.
-LaTeX Font Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/figures/plate-test/plate3.tex::7::0::   Redeclaring math accent \hat.
-LaTeX Font Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/figures/plate-test/plate3.tex::7::0::   Redeclaring math accent \dot.
-LaTeX Font Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/figures/plate-test/plate3.tex::7::0::   Redeclaring math accent \mathring.
-LaTeX Font Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/figures/plate-test/plate3.tex::7::0::   Redeclaring math symbol \colon.
-LaTeX Font Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/figures/plate-test/plate3.tex::7::0::   Redeclaring math symbol \Gamma.
-LaTeX Font Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/figures/plate-test/plate3.tex::7::0::   Redeclaring math symbol \Delta.
-LaTeX Font Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/figures/plate-test/plate3.tex::7::0::   Redeclaring math symbol \Theta.
-LaTeX Font Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/figures/plate-test/plate3.tex::7::0::   Redeclaring math symbol \Lambda.
-LaTeX Font Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/figures/plate-test/plate3.tex::7::0::   Redeclaring math symbol \Xi.
-LaTeX Font Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/figures/plate-test/plate3.tex::7::0::   Redeclaring math symbol \Pi.
-LaTeX Font Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/figures/plate-test/plate3.tex::7::0::   Redeclaring math symbol \Sigma.
-LaTeX Font Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/figures/plate-test/plate3.tex::7::0::   Redeclaring math symbol \Upsilon.
-LaTeX Font Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/figures/plate-test/plate3.tex::7::0::   Redeclaring math symbol \Phi.
-LaTeX Font Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/figures/plate-test/plate3.tex::7::0::   Redeclaring math symbol \Psi.
-LaTeX Font Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/figures/plate-test/plate3.tex::7::0::   Redeclaring math symbol \Omega.
-LaTeX Font Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/figures/plate-test/plate3.tex::7::0::   Redeclaring math symbol \mathdollar.
-LaTeX Font Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/figures/plate-test/plate3.tex::7::0::   Redeclaring symbol font `operators'.
-LaTeX Font Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/figures/plate-test/plate3.tex::7::0::   Encoding `OT1' has changed to `EU2' for symbol font `operators' in the math version `normal'.
-LaTeX Font Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/figures/plate-test/plate3.tex::7::0::   Overwriting symbol font `operators' in version `normal' OT1/cmr/m/n --> EU2/lmr/m/n.
-LaTeX Font Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/figures/plate-test/plate3.tex::7::0::   Encoding `OT1' has changed to `EU2' for symbol font `operators' in the math version `bold'.
-LaTeX Font Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/figures/plate-test/plate3.tex::7::0::   Overwriting symbol font `operators' in version `bold' OT1/cmr/bx/n --> EU2/lmr/m/n.
-LaTeX Font Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/figures/plate-test/plate3.tex::7::0::   Overwriting symbol font `operators' in version `normal' EU2/lmr/m/n --> EU2/lmr/m/n.
-LaTeX Font Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/figures/plate-test/plate3.tex::7::0::   Overwriting math alphabet `\mathit' in version `normal' OT1/cmr/m/it --> EU2/lmr/m/it.
-LaTeX Font Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/figures/plate-test/plate3.tex::7::0::   Overwriting math alphabet `\mathbf' in version `normal' OT1/cmr/bx/n --> EU2/lmr/bx/n.
-LaTeX Font Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/figures/plate-test/plate3.tex::7::0::   Overwriting math alphabet `\mathsf' in version `normal' OT1/cmss/m/n --> EU2/lmss/m/n.
-LaTeX Font Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/figures/plate-test/plate3.tex::7::0::   Overwriting math alphabet `\mathtt' in version `normal' OT1/cmtt/m/n --> EU2/lmtt/m/n.
-LaTeX Font Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/figures/plate-test/plate3.tex::7::0::   Overwriting symbol font `operators' in version `bold' EU2/lmr/m/n --> EU2/lmr/bx/n.
-LaTeX Font Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/figures/plate-test/plate3.tex::7::0::   Overwriting math alphabet `\mathit' in version `bold' OT1/cmr/bx/it --> EU2/lmr/bx/it.
-LaTeX Font Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/figures/plate-test/plate3.tex::7::0::   Overwriting math alphabet `\mathsf' in version `bold' OT1/cmss/bx/n --> EU2/lmss/bx/n.
-LaTeX Font Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/figures/plate-test/plate3.tex::7::0::   Overwriting math alphabet `\mathtt' in version `bold' OT1/cmtt/m/n --> EU2/lmtt/bx/n.
-LaTeX Font Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/figures/plate-test/plate3.tex::11::0::   External font `cmex10' loaded for size <7>.
+LaTeX Font Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/figures/plate-test/plate3.tex::11::0::   External font `cmex10' loaded for size <8>.
+LaTeX Font Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/figures/plate-test/plate3.tex::11::0::   External font `cmex10' loaded for size <6>.
 LaTeX Font Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/figures/plate-test/plate3.tex::11::0::   External font `cmex10' loaded for size <5>.
-LaTeX Font Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/figures/plate-test/plate3.tex::29::0::   External font `cmex10' loaded for size <8>.
-LaTeX Font Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/figures/plate-test/plate3.tex::29::0::   External font `cmex10' loaded for size <6>.
 Input File::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/figures/plate3.aux::0::0::Input File

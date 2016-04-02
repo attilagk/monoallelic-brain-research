@@ -368,18 +368,20 @@ Input File::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial
 Input File::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.out::0::0::Input File
 LaTeX Font Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::113::0::   Try loading font information for EU2+lmtt.
 Input File::/home/attila/texlive/2014/texmf-dist/tex/latex/euenc/eu2lmtt.fd::0::0::Input File
-Package Warning::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::493::0::Token not allowed in a PDF string (PDFDocEncoding): removing `math shift'. (hyperref package)
-Package Warning::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::493::0::Token not allowed in a PDF string (PDFDocEncoding): removing `subscript'. (hyperref package)
-Package Warning::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::576::0::Token not allowed in a PDF string (PDFDocEncoding): removing `math shift'. (hyperref package)
-Package Warning::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::576::0::Token not allowed in a PDF string (PDFDocEncoding): removing `\theta'. (hyperref package)
-Package Warning::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::576::0::Token not allowed in a PDF string (PDFDocEncoding): removing `subscript'. (hyperref package)
- LaTeX Warning::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::611::0::Command \nobreakspace invalid in math mode.
- LaTeX Warning::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::614::0::Command \nobreakspace invalid in math mode.
-Package Warning::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::668::0::Token not allowed in a PDF string (PDFDocEncoding): removing `math shift'. (hyperref package)
-Package Warning::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::668::0::Token not allowed in a PDF string (PDFDocEncoding): removing `\pi'. (hyperref package)
-Package Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::819::0::Empty hook `BeforeClearDocument'. (atveryend)
-Package Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::819::0::Empty hook `AfterLastShipout'. (atveryend)
+LaTeX Warning::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::0::0::`h' float specifier changed to `ht'.
+Package Warning::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::667::0::Token not allowed in a PDF string (PDFDocEncoding): removing `math shift'. (hyperref package)
+Package Warning::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::667::0::Token not allowed in a PDF string (PDFDocEncoding): removing `subscript'. (hyperref package)
+Input File::pdftex.def::0::0::Input File
+Package Warning::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::823::0::Token not allowed in a PDF string (PDFDocEncoding): removing `math shift'. (hyperref package)
+Package Warning::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::823::0::Token not allowed in a PDF string (PDFDocEncoding): removing `\theta'. (hyperref package)
+Package Warning::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::823::0::Token not allowed in a PDF string (PDFDocEncoding): removing `subscript'. (hyperref package)
+ LaTeX Warning::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::894::0::Command \nobreakspace invalid in math mode.
+ LaTeX Warning::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::897::0::Command \nobreakspace invalid in math mode.
+Package Warning::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::951::0::Token not allowed in a PDF string (PDFDocEncoding): removing `math shift'. (hyperref package)
+Package Warning::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::951::0::Token not allowed in a PDF string (PDFDocEncoding): removing `\pi'. (hyperref package)
+Package Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::1102::0::Empty hook `BeforeClearDocument'. (atveryend)
+Package Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::1102::0::Empty hook `AfterLastShipout'. (atveryend)
 Input File::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.aux::0::0::Input File
-Package Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::819::0::Executing hook `AtVeryEndDocument'. (atveryend)
-Package Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::819::0::Executing hook `AtEndAfterFileList'. (atveryend)
+Package Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::1102::0::Executing hook `AtVeryEndDocument'. (atveryend)
+Package Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::1102::0::Executing hook `AtEndAfterFileList'. (atveryend)
 Package Info::/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex::0::0::File `2016-02-19-binomial-models.out' has not changed. Checksum: 3B0EC398A6B820499D8F4DAD26E469B8;1595. (rerunfilecheck)

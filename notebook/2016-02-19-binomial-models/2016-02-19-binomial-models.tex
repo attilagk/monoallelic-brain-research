@@ -7,7 +7,7 @@
 \usepackage[margin = 1.5 in]{geometry}
 \usepackage{multirow}
 
-\title{Binomial Models of Reference Read Counts}
+\title{Binomial Models of Read Counts}
 \author{Attila Gulyás-Kovács}
 \bibliographystyle{plain}
 
@@ -214,10 +214,8 @@ Table~\ref{tab:parameters}.
 \begin{tabular}{clll}
 symbol & name/description & type & specific to \\
 \hline
-%\tikz{\node[obs] () {\(Y_v\)}} & read count at site \(v\) & observed & \\
 \(Y_v\) & read count at site \(v\), altern.~variant & observed & \\
 \(n_v\) & read count at site \(v\), total & fixed & \\
-%\tikz{\node[det] () {\(P\)}} & parameters & deterministic & \\
 \(P\) & multinomial proportions, Eq.~\ref{eq:P-matrix-M1} & deterministic & \ref{sec:model-basic}, \ref{sec:model-theta-regr} \\
 \(B\) & regression parameters, Eq.~\ref{eq:B-matrix-M2} & deterministic & \ref{sec:model-Y-regr} \\
 \(\psi_v\) & indicates altern.~var.~on maternal allele & unobserved & \\
@@ -257,11 +255,69 @@ chromosome and \(1-p_{ig}\) for the paternal chromosome, and let
 \(q_{ig}=\max(p_{ig},1-p_{ig})\) implying that \(q_{ig}\ge 1/2\).
 
 We regard \(q_{ig}\) as the single direct determinant of
-allelic exclusion (Figure TODO): if \(q_{ig}\) is near \(1/2\) we call \((i,g)\)
+allelic exclusion: if \(q_{ig}\) is near \(1/2\) we call \((i,g)\)
 biallelically expressed, whereas if \(q_{ig}\) is near \(1\) we classify
 \((i,g)\) monoallelic.  Formally, let \(\mathcal{P}_0 = [1/2, p')\) and
 \(\mathcal{P}_1 = [p'', p''']\) disjoint subintervals of \([1/2,1]\) so that
-\(1/2\le p'\le p''\le p'''\le 1\).
+\(1/2\le p'\le p''\le p'''\le 1\) (Figure~\ref{fig:P-intervals}A).
+
+\begin{figure}[t]
+\begin{center}
+\begin{tikzpicture}
+
+
+\draw[dotted, thin, yshift=5 cm] (-1,0) node[label=left:1] (one) {} -- (7,0);
+\draw[dotted, thin] (-1,0) node[label=left:\(\frac{1}{2}\)] (half) {} -- (7,0);
+
+\node (a) at (0,-1) {(A)};
+\node (b) at (3,-1) {(B)};
+\node (c) at (6,-1) {(C)};
+
+\draw
+(a|-half) --
+node[pos=0.15, label=left:{\(\mathcal{P}_0\)}] (a-P0) {}
+node[pos=0.3, label=left:{\(p'\)}] (a-P0-r) {}
+node[pos=0.5, label=left:{\(p''\)}] (a-P1-l) {}
+node[pos=0.725, label=left:{\(\mathcal{P}_1\)}] (a-P1) {}
+node[pos=0.95, label=left:{\(p'''\)}] (a-P1-r) {}
+(a|-one)
+(b|-half) --
+node[pos=0, label=left:{\(\mathcal{P}_0=\{\frac{1}{2}\}\)}] (b-P0-r) {}
+node[pos=0.9, label=left:{\(\mathcal{P}_1=\{p_1\}\)}] (b-P1-l) {}
+(b|-one)
+(c|-half) --
+node[pos=0, label=left:{\(\mathcal{P}_0=\{\frac{1}{2}\}\)}] (c-P0-r) {}
+node[pos=0.45, label=left:{\(\mathcal{P}_1\)}] (c-P1) {}
+node[pos=0.9, label=left:{\(\mathrm{logit}^{-1}(\beta_0)\)}] (c-P1-l) {}
+(c|-one)
+;
+
+% general
+\draw[very thick, red, fill=red!20] ([xshift=-5] a-P1-r) rectangle ([xshift=5] a-P1-l);
+\draw[very thick, blue, fill=blue!20] ([xshift=-5] a|-half) rectangle ([xshift=5] a-P0-r);
+
+% M1
+\draw[very thick, red, fill=red!20] ([xshift=-5] b-P1-l) rectangle ([xshift=5] b-P1-l);
+\draw[very thick, blue, fill=blue!20] ([xshift=-5] b|-half) rectangle ([xshift=5] b-P0-r);
+
+% M2
+\draw[very thick, red, fill=red!20] ([xshift=-5] c|-half) rectangle ([xshift=5] c-P1-l);
+\draw[very thick, blue, fill=blue!20] ([xshift=-5] c|-half) rectangle ([xshift=5] c-P0-r);
+
+\end{tikzpicture}
+\caption{
+\(\mathcal{P}_0\) and \(\mathcal{P}_1\) are two subintervals of \([1/2,1]\),
+based on which a binary set of exclusion states (\(K=2\)) may be defined.  (A)
+an example illustrating the general case (Section~\ref{sec:local-binary}). (B)
+Model~\ref{sec:model-basic} and~\ref{sec:model-theta-regr}.  (C)
+Model~\ref{sec:model-Y-regr}, with a single explanatory variable age.  Because
+of the lower boundedness of age (\(\ge 0\)) and because of the presumed
+temporal decline of allelic exclusion the upper end of \(\mathcal{P}_1\)
+equals \(\mathrm{logit}^{-1}(\beta_0)\).
+}
+\label{fig:P-intervals}
+\end{center}
+\end{figure}
 
 Then we \emph{define} exclusion state of \((i,g)\) as follows:
 \begin{equation}
@@ -277,7 +333,8 @@ There are some complications with this definition.  First, \(p_{ig}\) is
 unobserved and so must be inferred from the observed read counts.  This raises
 uncertainty about not only exact value of \(p_{ig}\) but also whether
 \(p_{ig}\ge 1/2\) and therefore \(q_{ig}=p_{ig}\), or else \(<1/2\) and therefore
-\(q_{ig}=1-p_{ig}\).  Let \(\phi_{ig}=1\) indicate the former event and
+\(q_{ig}=1-p_{ig}\).  Consider a Bernoulli variable \(\phi_{ig}\)
+(Figure~\ref{fig:plate-local}), and let \(\phi_{ig}=1\) indicate the former event and
 \(\phi_{ig}=0\) the latter with prior probability \(\kappa\) and
 \(1-\kappa\), respectively.  Thus \(\kappa\) quantifies the tendency of the
 paternal allele to be excluded. In the present models \(\kappa\) is not
@@ -294,17 +351,19 @@ errors but we assume here that they are proportional to allele specific
 transcription rates.  This allows us to write \(p_v = p_{ig}\) given the
 random event that the alternative allele is on the maternal chromosome; we
 denote that event with \(\psi_v=1\).  Otherwise \(\psi_v=0\), which implies
-that \(1-p_v=p_{ig}\).  We will assume \(1/2\) prior probability for
-\(\psi_v=1\) for all \(v\).  Moreover, some reads may map to multiple
-polymorphic sites \(v_1,v_2,...\) coupling \(\psi_{v_1},\phi_{v_2},...\).  We
-suppose this happens rarely enough to be completely ignored so that all allele
-configurations \(\psi_v\) for any given \((i,g)\) can be assumed independent.
+that \(1-p_v=p_{ig}\).  \(\psi_v\) is another Bernoulli variable
+(Figure~\ref{fig:plate-local}) and we will assume \(1/2\) prior probability
+for \(\psi_v=1\) independently of \(v\).  Moreover, some reads may map to
+multiple polymorphic sites \(v_1,v_2,...\) coupling
+\(\psi_{v_1},\phi_{v_2},...\).  We suppose this happens rarely enough to be
+completely ignored so that all allele configurations \(\psi_v\) for any given
+\((i,g)\) can be assumed independent.
 
 The pair \((\phi_{ig},\psi_v)\) will denote an \emph{allele configuration} at
 site \(v\).  With the preceding considerations the definition of exclusion
 state \(\theta_{ig}\) can be based on \(p_v\) and the allele configuration as
-follows:
-\begin{table}[h]
+shown in Table~\ref{tab:def-exclusion-state}.
+\begin{table}[b]
 \begin{center}
 \begin{tabular}{cl|ll|}
 & & \(\phi_{ig}\neq\psi_v\) & \(\phi_{ig}=\psi_v\) \\
@@ -328,7 +387,7 @@ The binary local model may be generalized to a \(K\)-ary one, in which there
 are \(K\ge 2\) exclusion states.  Then \(\{\mathcal{P}_k: k=0,...,K-1\}\) is a
 sequence of disjoint subintervals of \([1/2,1]\) and
 the definition of exclusion
-states are as follows:
+states are given by Table~\ref{tab:def-exclusion-state-multi}.
 \begin{table}[h]
 \begin{center}
 \begin{tabular}{cl|ll|}
@@ -361,7 +420,60 @@ P &=&
 \end{eqnarray}
 where \(\delta_{ab}\) is
 the Kronecker delta function, which is 1 if \(\phi_{ig}=\psi_v\) and 0
-otherwise.
+otherwise.  Figure~\ref{fig:plate-local} illustrates how \(P\) depends on
+\(\theta_{ig}, \phi_{ig}, \psi_v\) and how in turn the read count \(Y_v\)
+depends on it.
+
+\begin{figure}[t]
+
+\begin{center}
+\begin{tikzpicture}
+
+\node[det]                    (P)   {$P$}; %
+\factor[above=0.8 of P]       {P-f} {} {} {}; %
+\draw[->] (P-f) -- (P);
+
+% theta_iv
+\node[latent, above=1.5 of P-f] (theta) {\(\theta_{ig}\)};
+\gate {} {(P-f)} {theta} ; %
+
+% psi_v
+\node[latent, right=1.5 of P-f] (psi) {\(\psi_v\)};
+\gate {} {(P-f)} {psi} ; %
+\node[const, right=1.5 of psi] (half) {\(\frac{1}{2}\)};
+\factor[right=0.75 of psi, label=Bern]       {psi-f} {} {} {}; %
+\factoredge {half} {psi-f} {psi};
+
+% phi_ig
+\node[latent] (phi) at (theta -| psi) {\(\phi_{ig}\)} ;
+\gate {} {(P-f)} {phi} ; %
+\factor[right=0.75 of phi, label=Bern]       {phi-f} {} {} {}; %
+\node[const, right=1.5 of phi] (kappa) {\(\kappa\)} ;
+\factoredge {kappa} {phi-f} {phi};
+
+% Y_v
+\node[const] (n) at (P -| psi) {\(n_v\)};
+\path (P) -- (n) coordinate[midway] (P-n);
+\node[factor, below=0.5 of P-n] (Y-f) [label=right:Binom] {};
+\node[obs, below=0.5 of Y-f] (Y) {\(Y_v\)};
+\factoredge {P,n} {Y-f} {Y};
+
+\plate {} {(Y) (n) (psi)} {\(v\in(i,g)\)};
+\end{tikzpicture}
+\end{center}
+\caption{
+Dependencies of all read counts \(\{Y_v : v\in(i,g)\}\) on parameters of the
+local model for~\ref{sec:model-basic} and~\ref{sec:model-theta-regr}.  The
+dashed square is a switch mechanism (Eq.~\ref{eq:p-v-by-P-matrix}) through
+which allelic exlcusion state \(\theta_{ig}\) and allelic configuration
+\((\phi_{ig},\psi_v)\) select from \(P\) the \(p_v\) parameter of the
+binomially distributed read count \(Y_v\).  Each circle denotes a random
+varibles; a diamond a deterministic variable; fixed variables are without
+encosing shape.  The rectangular plate means replication of contained
+variables.
+}
+\label{fig:plate-local}
+\end{figure}
 
 To see the utility of \(P\), consider the following example with binary
 exclusion state (\(K=2\)).  Based on the data we have some uncertain
@@ -416,27 +528,91 @@ Overview of the global models in this article.
 \label{sec:model-basic}
 
 A key aspect of~\ref{sec:model-basic} is that it accounts for population-wide
-variation within a given gene \(g\) through a hierarchy of parameters.  The
-indicator \(\theta_{ig}\) of exclusion state is a \(K\)-ary multinomial random
-variable (or Bernoulli variable when \(K=2\)) with a \(K\)-length parameter
-vector \(\mu_g=(\mu_{g0},...,\mu_{gK-1}\) containing the probabilities for
-each exclusion state.  This setup permits population-wide variation within any
+variation within a given gene \(g\) through a hierarchy of parameters
+(Figure~\ref{fig:plate-basic}).  The indicator \(\theta_{ig}\) of exclusion
+state is a \(K\)-ary multinomial random variable (or Bernoulli variable when
+\(K=2\)) with a \(K\)-length parameter vector
+\(\mu_g=(\mu_{g0},...,\mu_{gK-1})\) containing the probabilities for each
+exclusion state.  This setup permits population-wide variation within any
 given gene \(g\).  \(\mu_g\) is itself a random variable with Dirichlet
 distribution with parameters \(\pi,\nu\), which models the genom-wide
-variation of allelic exclusion.  \(\pi=(\pi_0,...,\pi_{K-1}\) are the prior
+variation of allelic exclusion.  \(\pi=(\pi_0,...,\pi_{K-1})\) are the prior
 probabilities for the \(K\) exclusion states and the scalar \(\nu\) controls
-the density of \(\mu_{gk}\) at \(\pi_k\), and so \(\pi_k \nu\) may be
-considered a pseudocount with the interpretation as the number of genes that
-were found in state \(k\) in prior studies.
+(inversely) the density of \(\mu_{gk}\) at \(\pi_k\).
 
-TODO: plate diagram
+\begin{figure}[t]
+\begin{center}
+\begin{tikzpicture}
+
+\node[latent] (theta) {\(\theta_{ig}\)};
+\factor[above=0.5 of theta, label=left:Multi]       {theta-f} {} {} {}; %
+\node[latent, above=1.0 of theta] (mu) {\(\mu_g\)};
+\factoredge {mu} {theta-f} {theta};
+
+\factor[above=0.5 of mu, label=left:Dirichlet]       {mu-f} {} {} {}; %
+\node[latent, above=1.0 of mu, xshift=-0.75 cm] (pi) {\(\pi\)};
+\node[latent, above=1.0 of mu, xshift=0.75 cm] (nu) {\(\nu\)};
+\factoredge {pi, nu} {mu-f} {mu};
+
+\plate {i-p} {(theta)} {\(i=1,...,I\)} ;
+\coordinate[below=0.75 of theta] (g-p-bottom) ;
+\plate {g-p} {(theta) (mu) (g-p-bottom)} {\(g=1,...,G\)} ;
+
+\node[below=1.5 of g-p-bottom] {\ref{sec:model-basic}};
+
+
+\begin{scope}[xshift=4 cm]
+
+\node[latent] (theta-1) {\(\theta_{g}\)};
+\factor[above=0.5 of theta-1, label=left:Multi]       {theta-f-1} {} {} {}; %
+\node[latent, above=1.0 of theta-1] (pi-1) {\(\pi\)};
+\factoredge {pi-1} {theta-f-1} {theta-1};
+
+\coordinate[below=0.75 of theta-1] (g-p-bottom-1) ;
+\plate {g-p-1} {(theta-1) (g-p-bottom-1)} {\(g=1,...,G\)} ;
+
+\node[below=1.5 of g-p-bottom-1] {\ref{sec:model-basic-nu-0}};
+
+
+\end{scope}
+
+\begin{scope}[xshift=8 cm]
+
+\node[latent] (theta-2) {\(\theta_{ig}\)};
+\factor[above=0.5 of theta-2, label=left:Multi]       {theta-f-2} {} {} {}; %
+\node[latent, above=1.0 of theta-2] (pi-2) {\(\pi\)};
+\factoredge {pi-2} {theta-f-2} {theta-2};
+
+\coordinate[below=0.75 of theta-2] (g-p-bottom-2) ;
+\plate {g-p-2} {(theta-2) (g-p-bottom-2)} {\((i,g)\in I\times G\)} ;
+
+\node[below=1.5 of g-p-bottom-2]  {\ref{sec:model-basic-nu-infinit}};
+
+
+\end{scope}
+\end{tikzpicture}
+\end{center}
+\caption{
+The inner plate of model~\ref{sec:model-basic} (left) represents
+population-wide variation of exclusion state \(\theta_{ig}\) within any given
+gene \(g\) whereas the outer plate genome-wide variation.  Within gene
+variation disappears in the limit \(\nu\rightarrow 0\), which simplifies model
+structure to~\ref{sec:model-basic-nu-0}. On the other hand  when
+\(\nu\rightarrow\infty\) within gene variation is maximized, which leads to
+another simplified structure that is~\ref{sec:model-basic-nu-infinit}.  Note
+that only the exclusion state \(\theta_{ig}\) and its ``dependency ancestors''
+are shown; \(\kappa, \phi_{ig}, \psi_v,...\) are connected to \(\phi_{ig}\) as
+in Figure \ref{fig:plate-local}.
+}
+\label{fig:plate-basic}
+\end{figure}
 
 Turning to the local properties of~\ref{sec:model-basic}, each of the \(K\)
 subinterval (Section~\ref{sec:local-multinomial}) consists of a single point
 such that \(\mathcal{P}_0 = \{1/2\}\) and \(\mathcal{P}_k = \{p_k\} \;
-(k>0)\), where \(p_k\) is some fixed number.  Taking binary state (\(K=2\))
-for instance, \(p_1\) may be fixed at \(0.9\).  Then
-Eq.~\ref{eq:p-v-by-P-matrix} remains the same but Eq.~\ref{eq:P-matrix}
+(k>0)\), where \(p_k\) is some fixed number (Figure~\ref{fig:P-intervals}B).
+Taking binary state (\(K=2\)) for instance, \(p_1\) may be fixed at \(0.9\).
+Then Eq.~\ref{eq:p-v-by-P-matrix} remains the same but Eq.~\ref{eq:P-matrix}
 changes to
 \begin{equation}
 \label{eq:P-matrix-M1}
@@ -465,8 +641,6 @@ means that all genes have the same population-wide tendency for bi or
 monoallelic expression and the only source of variation is the one within the
 population.
 
-TODO: DAG with theta leaves
-
 \subsubsection{Zero variance within each gene}
 \label{sec:model-basic-nu-0}
 
@@ -478,7 +652,7 @@ structure of model~\ref{sec:model-basic} with a probabilistically
 equivalent\footnote{
 \url{https://en.wikipedia.org/wiki/Convergence_of_random_variables}} but
 simpler structure by introducing \(\theta_g\equiv\theta_{1g}\) and removing
-\(\mu_g\) (Figure TODO).
+\(\mu_g\) (Figure~\ref{fig:plate-basic} middle).
 
 \subsubsection{Maximum variance within each gene}
 \label{sec:model-basic-nu-infinit}
@@ -488,26 +662,80 @@ Therefore we can once again simplify the model structure by removing
 \(\mu_g\).  But the effect on \(\theta_{ig}\) is the opposite in that
 \(\theta_{1g},...,\theta_{Ig}\) become completely uncoupled in the sense that
 \(\{\theta_{ig}\}_{ig}\) becomes independent and identically distributed
-(Figure TODO).
+(Figure~\ref{fig:plate-basic} right).
 
 \stepcounter{model}\subsection{Regression of \(Y_v\) on explanatory variables }
 \label{sec:model-Y-regr}
 
-TODO: plate diagram
-
-The global structure of this model is the same as~\ref{sec:model-basic-nu-0}.
+The global structure of this model (upper part of Figure~\ref{fig:plate-Y-regr}) is essentially the same as~\ref{sec:model-basic-nu-0}.
 So, for a given gene \(g\) all individuals have the same exclusion state
 \(\theta_g\) but the population-wide variation in explanatory variables
 \(x_i\) induces variation in \(p_v\).  To this end the local models introduced
 in Section~\ref{sec:local-model} must be extended with the regression of
-\(Y_v\) on \(X\).  For simplicity we describe this model assuming binary
+\(Y_v\) on \(X\).  This is illustrated by the lower part of
+Figure~\ref{fig:plate-Y-regr}.  For simplicity we describe this model assuming binary
 exclusion state and briefly sketch the general \(K\)-ary case at the end of
 this section.
+
+\begin{figure}[t]
+\begin{center}
+\begin{tikzpicture}
+
+\node[det]                    (B)   {$B$}; %
+\factor[above=0.8 of B]       {B-f} {} {} {}; %
+\draw[->] (B-f) -- (B);
+
+% theta_iv
+\node[latent, above=1.5 of B-f] (theta) {\(\theta_g\)};
+\gate {} {(B-f)} {theta} ; %
+
+% psi_v
+\node[latent, right=1.5 of B-f] (psi) {\(\psi_v\)};
+\gate {} {(B-f)} {psi} ; %
+\node[const, right=1.5 of psi] (half) {\(\frac{1}{2}\)};
+\factor[right=0.75 of psi, label=Bern]       {psi-f} {} {} {}; %
+\factoredge {half} {psi-f} {psi};
+
+% phi_ig
+\node[latent] (phi) at (theta -| psi) {\(\phi_{ig}\)} ;
+\gate {} {(B-f)} {phi} ; %
+\factor[right=0.75 of phi, label=Bern]       {phi-f} {} {} {}; %
+\node[const, right=1.5 of phi] (kappa) {\(\kappa\)} ;
+\factoredge {kappa} {phi-f} {phi};
+
+% Y_v
+\node[const] (n) at (B -| psi) {\(n_v\)};
+\path (B) -- (n) coordinate[midway] (B-n);
+\node[factor, below=0.5 of B-n] (Y-f) [label=right:Binom] {};
+\node[obs, below=0.5 of Y-f] (Y) {\(Y_v\)};
+\node[const, left=1.5 of Y-f] (x) {\(x_i\)};
+
+\factoredge {B,n,x} {Y-f} {Y};
+
+\plate {} {(Y) (n) (psi)} {\(v\in(i,g)\)};
+
+\factor[above=0.5 of theta, label=left:Multi]       {theta-f} {} {} {}; %
+\node[latent, above=1.0 of theta] (pi) {\(\pi\)};
+\factoredge {pi} {theta-f} {theta};
+
+\end{tikzpicture}
+\end{center}
+\caption{
+The structure of model~\ref{sec:model-Y-regr}, in which each read
+count \(Y_v\) is the response variable to the explanatory variable(s) \(x_i\)
+that has been measured for each individual \(i\).  Both the global and local
+structure is depicted.  The global structure is similar
+to that of~\ref{sec:model-basic-nu-0} (Figure~\ref{fig:plate-basic}).  The plates
+corresponding to replication over individuals \(i\) and genes \(g\) are omitted
+for clarity.
+}
+\label{fig:plate-Y-regr}
+\end{figure}
 
 Given that \(Y_v\) is binomial, logistic regression appears as a natural
 framework, where the logit function links the expected fraction \(p_v\) of
 \(Y_v\) to the \(i\)th row of design matrix \(X\) unless the resulting
-\(p_v<1/2\).  Therefore Eq.~\ref{eq:p-v-by-P-matrix} modifies to
+\(p_v<1/2\), see Figure~\ref{fig:Y-regression}.  Therefore Eq.~\ref{eq:p-v-by-P-matrix} modifies to
 \begin{eqnarray}
 \label{eq:logit-p}
 p_v &=& \max \left( \mathrm{logit}^{-1}(x_i\, b_v), \, \frac{1}{2} \right) \\
@@ -520,6 +748,12 @@ regression coefficient in Eq.~\ref{eq:logit-p}. As Eq.~\ref{eq:logit-b-B}
 says, \(b_v\) is an entry of matrix \(B\) of regression parameters,
 which is indexed by the exclusion state \(\theta_{ig}\) and the allelic configuration
 \((\phi_{ig},\psi_v)\).
+
+As Figure~\ref{fig:Y-regression} shows for a monoallelically expressed gene,
+\(p_v\) declines from an initial high value at birth to \(1/2\) with age
+\(x\).  This means that \(\mathcal{P}_1\) is not a single point as
+in~\ref{sec:model-basic} but a long interval \((1/2,
+\mathrm{logit}^{-1}(\beta_0)\) shown inf Figure~\ref{fig:P-intervals}C.
 
 Analogously to \(P\) under~\ref{sec:model-basic} (Eq.\ref{eq:P-matrix-M1}),
 \(B\) under the present model~\ref{sec:model-Y-regr} facilitates the inference
@@ -571,23 +805,72 @@ general \(K\)-ary exclusion state.  In that case the \(B\) matrix
 binary case, whereas rows \(k=1,...,K-1\) have distinct \(\beta_k\) vectors
 of the form of \((\beta_{k0},\beta_{k1},...,\beta_{kR-1})^\top\).
 
-TODO: logit function
+\begin{figure}[t]
+\begin{center}
+\includegraphics[scale=0.5]{figures/read-count-regr-1}
+\caption{
+Dependence of \(p_v\), the expected read fraction of the alternative allele,
+on explanatory variable age \(x\) given by Eq.~\ref{eq:logit-p} when
+\(\theta_{ig}=1\) (monoallelic expression) and the allele configuration is
+\(\phi_{ig}=\psi_v\).  Regression parameter \(\beta_0 = \mathrm{logit}(p_1)\) where
+\(p_1\) is fixed at \(0.9\).  \(\beta_1 = - 0.02 \, \mathrm{year}^{-1}\)
+corresponding to an exponential decay time constant of \(50\) years.
+}
+\label{fig:Y-regression}
+\end{center}
+\end{figure}
 
 \stepcounter{model}\subsection{Regression of \(\theta_{ig}\) on explanatory variables }
 \label{sec:model-theta-regr}
 
-Model~\ref{sec:model-theta-regr} is very similar to~\ref{sec:model-basic}.
-The key difference is the replacement of \(\mu_g\) by \(x_i \beta_{g}\) so
-that the allelic state \(\theta_{ig}\) is a response to the explanatory
-variables in \(x_i\) with regression coefficient \(\beta_g\).  \(\beta_g\) in
-turn is a random variable parametrized by \(\pi\) and some other parameters.
+We only sketch this regression model because~\ref{sec:model-Y-regr} looks a
+better fitting candidate. Model~\ref{sec:model-theta-regr} is quite similar
+to~\ref{sec:model-basic} (Figure~\ref{fig:theta-regression}). The key
+difference is the replacement of \(\mu_g\) by \(x_i
+\beta_{g}=(beta_{g0},...,\beta_{gR-1})\) so that the allelic state
+\(\theta_{ig}\) is a response to the explanatory variables in \(x_i\) with
+regression coefficient \(\beta_g\).  \(\beta_g\) in turn is a random variable
+parametrized by vector \(\pi\) and some other parameters \(\rho\).  An
+attractive distribution family is yet to be found for \(\beta_{gr}\).
+
+\begin{figure}[t]
+\begin{center}
+\begin{tikzpicture}
+
+\node[latent] (theta) {\(\theta_{ig}\)};
+\factor[above=0.5 of theta, label=right:Multi]       {theta-f} {} {} {}; %
+\node[latent, above=1.5 of theta, xshift=1 cm] (beta) {\(\beta_{gr}\)};
+\node[const, above=1.5 of theta, xshift=-1 cm] (x) {\(x_i\)};
+\factoredge {x, beta} {theta-f} {theta};
+
+\factor[above=0.5 of beta]       {beta-f} {} {} {}; %
+\node[latent, above=1.0 of beta, xshift=-0.75 cm] (pi) {\(\pi\)};
+\node[latent, above=1.0 of beta, xshift=0.75 cm] (rho) {\(\rho\)};
+\factoredge {pi, rho} {beta-f} {beta};
+
+\plate {i-p} {(x) (theta)} {\(i=1,...,I\)} ;
+\coordinate[below=0.75 of theta] (g-p-bottom) ;
+\plate {g-p} {(theta) (beta) (g-p-bottom)} {\(g=1,...,G\)} ;
+
+\plate {beta-p} {(beta)} {\(R\)} ;
+
+\end{tikzpicture}
+\end{center}
+\caption{
+The global structure of model~\ref{sec:model-theta-regr}.  The exclusion state
+indicators \(\theta_{ig}\) play the role of response variables in regression.
+Thus, the \(R-1\) explanatory variables in \(x_i\) have a direct effect on
+exclusion state \(\theta_{ig}\) but only indirect effect on read counts
+\(Y_v\).  This is the key distinction from the regression framework
+of~\ref{sec:model-Y-regr}.
+}
+\label{fig:theta-regression}
+\end{figure}
 
 With this model structure the variation of exclusion state has three
 components: the genome-wide variation of their effect mediated by \(\beta_g\),
 a systematic within-gene variation due to the measured explanatory variables
 \(x_i\), and the remaining within-gene variation unexplained by \(x_i\).
-
-TODO: plate diagram
 
 \renewcommand{\thesubsection}{\arabic{section}.\arabic{subsection}}
 \section{Inference}

@@ -1,4 +1,4 @@
-This is LuaTeX, Version beta-0.79.1 (TeX Live 2014) (rev 4971)  (format=lualatex 2014.7.4)  17 MAR 2016 20:54
+This is LuaTeX, Version beta-0.79.1 (TeX Live 2014) (rev 4971)  (format=lualatex 2014.7.4)  1 APR 2016 16:39
  restricted \write18 enabled.
 **/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex
 (/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/2016-02-19-binomial-models.tex
@@ -236,7 +236,7 @@ luaotfload:  then use the possibly updated libraries. The merged
 luaotfload:  version is not supported as it is a frozen instance.
 luaotfload:  Problems can be reported to the ConTeXt mailing list."
 luaotfload: pop namespace from font loader -- non-destructive
-luaotfload: fontloader loaded in 0.034 seconds
+luaotfload: fontloader loaded in 0.031 seconds
 luatexbase-mcb: inserting 'luaotfload.node_processor'
 at position 1 in 'pre_linebreak_filter'
 luatexbase-mcb: inserting 'luaotfload.node_processor'
@@ -911,7 +911,7 @@ Package: geometry 2010/09/12 v5.6 Page Geometry
 \Gm@dimlist=\toks36
 ) (/home/attila/texlive/2014/texmf-dist/tex/latex/multirow/multirow.sty
 \bigstrutjot=\dimen338
-) (/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/.tmp/I3D2hV/2016-02-19-binomial-models.aux)
+) (/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/.tmp/gsGsBm/2016-02-19-binomial-models.aux)
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 14.
 LaTeX Font Info:    ... okay on input line 14.
 LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 14.
@@ -1027,7 +1027,7 @@ Package: gettitlestring 2010/12/03 v1.4 Cleanup title references (HO)
 LaTeX Info: Redefining \ref on input line 14.
 LaTeX Info: Redefining \pageref on input line 14.
 LaTeX Info: Redefining \nameref on input line 14.
- (/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/.tmp/I3D2hV/2016-02-19-binomial-models.out) (/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/.tmp/I3D2hV/2016-02-19-binomial-models.out)
+ (/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/.tmp/gsGsBm/2016-02-19-binomial-models.out) (/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/.tmp/gsGsBm/2016-02-19-binomial-models.out)
 \@outlinefile=\write4
  ABD: EveryShipout initializing macros
 *geometry* driver: auto-detecting
@@ -1112,69 +1112,222 @@ LaTeX Font Info:    Try loading font information for EU2+lmtt on input line 113.
 File: eu2lmtt.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
 luaotfload | load : auto-selecting default features for script: latn
-luaotfload | load : no defaults for script "latn", falling back to "dflt"(load luc: /home/attila/texlive/2014/texmf-var/luatex-cache/generic/fonts/otf/lmmono8-regular.luc) [2] [3] [4] [5]
+luaotfload | load : no defaults for script "latn", falling back to "dflt"(load luc: /home/attila/texlive/2014/texmf-var/luatex-cache/generic/fonts/otf/lmmono8-regular.luc) [2] [3] [4]
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+[5] [6
+Missing character: There is no ; (U+003B) in font nullfont!
+Missing character: There is no ; (U+003B) in font nullfont!
+Missing character: There is no ; (U+003B) in font nullfont!
+Missing character: There is no ; (U+003B) in font nullfont!
+Missing character: There is no ; (U+003B) in font nullfont!
+Missing character: There is no ; (U+003B) in font nullfont!
+Missing character: There is no ; (U+003B) in font nullfont!
+Missing character: There is no ; (U+003B) in font nullfont!
+Missing character: There is no ; (U+003B) in font nullfont!
+Missing character: There is no ; (U+003B) in font nullfont!
+Missing character: There is no ; (U+003B) in font nullfont!
+Missing character: There is no ; (U+003B) in font nullfont!
+Missing character: There is no ; (U+003B) in font nullfont!
+Missing character: There is no ; (U+003B) in font nullfont!
+Missing character: There is no ; (U+003B) in font nullfont!
+Missing character: There is no ; (U+003B) in font nullfont!
+Missing character: There is no ; (U+003B) in font nullfont!
+Missing character: There is no ; (U+003B) in font nullfont!
+Missing character: There is no ; (U+003B) in font nullfont!
+Missing character: There is no ; (U+003B) in font nullfont!
+Missing character: There is no ; (U+003B) in font nullfont!
+Missing character: There is no ; (U+003B) in font nullfont!
+Missing character: There is no ; (U+003B) in font nullfont!
+Missing character: There is no ; (U+003B) in font nullfont!
+Missing character: There is no ; (U+003B) in font nullfont!
+Missing character: There is no ; (U+003B) in font nullfont!
+Missing character: There is no ; (U+003B) in font nullfont!
+Missing character: There is no ; (U+003B) in font nullfont!
+Missing character: There is no ; (U+003B) in font nullfont!
+Missing character: There is no ; (U+003B) in font nullfont!
+Missing character: There is no ; (U+003B) in font nullfont!
+Missing character: There is no ; (U+003B) in font nullfont!
+Missing character: There is no ; (U+003B) in font nullfont!
+Missing character: There is no ; (U+003B) in font nullfont!
+]
 \c@model=\count344
- [6]
+ [7] [8
+Missing character: There is no ; (U+003B) in font nullfont!
+Missing character: There is no ; (U+003B) in font nullfont!
+Missing character: There is no ; (U+003B) in font nullfont!
+Missing character: There is no ; (U+003B) in font nullfont!
+Missing character: There is no ; (U+003B) in font nullfont!
+Missing character: There is no ; (U+003B) in font nullfont!
+Missing character: There is no ; (U+003B) in font nullfont!
+Missing character: There is no ; (U+003B) in font nullfont!
+Missing character: There is no ; (U+003B) in font nullfont!
+Missing character: There is no ; (U+003B) in font nullfont!
+Missing character: There is no ; (U+003B) in font nullfont!
+Missing character: There is no ; (U+003B) in font nullfont!
+Missing character: There is no ; (U+003B) in font nullfont!
+Missing character: There is no ; (U+003B) in font nullfont!
+Missing character: There is no ; (U+003B) in font nullfont!
+Missing character: There is no ; (U+003B) in font nullfont!
+Missing character: There is no ; (U+003B) in font nullfont!
+Missing character: There is no ; (U+003B) in font nullfont!
+Missing character: There is no ; (U+003B) in font nullfont!
+Missing character: There is no ; (U+003B) in font nullfont!
+Missing character: There is no ; (U+003B) in font nullfont!
+Missing character: There is no ; (U+003B) in font nullfont!
+Missing character: There is no ; (U+003B) in font nullfont!
+Missing character: There is no ; (U+003B) in font nullfont!
+Missing character: There is no ; (U+003B) in font nullfont!
+Missing character: There is no ; (U+003B) in font nullfont!
+Missing character: There is no ; (U+003B) in font nullfont!
+Missing character: There is no ; (U+003B) in font nullfont!
+Missing character: There is no ; (U+003B) in font nullfont!
+Missing character: There is no ; (U+003B) in font nullfont!
+Missing character: There is no ; (U+003B) in font nullfont!
+Missing character: There is no ; (U+003B) in font nullfont!
+Missing character: There is no ; (U+003B) in font nullfont!
+Missing character: There is no ; (U+003B) in font nullfont!
+Missing character: There is no ; (U+003B) in font nullfont!
+Missing character: There is no ; (U+003B) in font nullfont!
+Missing character: There is no ; (U+003B) in font nullfont!
+Missing character: There is no ; (U+003B) in font nullfont!
+Missing character: There is no ; (U+003B) in font nullfont!
+Missing character: There is no ; (U+003B) in font nullfont!
+]
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `math shift' on input line 493.
+(hyperref)                removing `math shift' on input line 667.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `subscript' on input line 493.
+(hyperref)                removing `subscript' on input line 667.
 
-[7]
+[9
+Missing character: There is no ; (U+003B) in font nullfont!
+Missing character: There is no ; (U+003B) in font nullfont!
+Missing character: There is no ; (U+003B) in font nullfont!
+Missing character: There is no ; (U+003B) in font nullfont!
+Missing character: There is no ; (U+003B) in font nullfont!
+Missing character: There is no ; (U+003B) in font nullfont!
+Missing character: There is no ; (U+003B) in font nullfont!
+Missing character: There is no ; (U+003B) in font nullfont!
+Missing character: There is no ; (U+003B) in font nullfont!
+Missing character: There is no ; (U+003B) in font nullfont!
+Missing character: There is no ; (U+003B) in font nullfont!
+Missing character: There is no ; (U+003B) in font nullfont!
+Missing character: There is no ; (U+003B) in font nullfont!
+Missing character: There is no ; (U+003B) in font nullfont!
+Missing character: There is no ; (U+003B) in font nullfont!
+Missing character: There is no ; (U+003B) in font nullfont!
+Missing character: There is no ; (U+003B) in font nullfont!
+Missing character: There is no ; (U+003B) in font nullfont!
+Missing character: There is no ; (U+003B) in font nullfont!
+Missing character: There is no ; (U+003B) in font nullfont!
+Missing character: There is no ; (U+003B) in font nullfont!
+Missing character: There is no ; (U+003B) in font nullfont!
+Missing character: There is no ; (U+003B) in font nullfont!
+Missing character: There is no ; (U+003B) in font nullfont!
+Missing character: There is no ; (U+003B) in font nullfont!
+Missing character: There is no ; (U+003B) in font nullfont!
+Missing character: There is no ; (U+003B) in font nullfont!
+Missing character: There is no ; (U+003B) in font nullfont!
+Missing character: There is no ; (U+003B) in font nullfont!
+Missing character: There is no ; (U+003B) in font nullfont!
+Missing character: There is no ; (U+003B) in font nullfont!
+Missing character: There is no ; (U+003B) in font nullfont!
+Missing character: There is no ; (U+003B) in font nullfont!
+Missing character: There is no ; (U+003B) in font nullfont!
+Missing character: There is no ; (U+003B) in font nullfont!
+Missing character: There is no ; (U+003B) in font nullfont!
+Missing character: There is no ; (U+003B) in font nullfont!
+Missing character: There is no ; (U+003B) in font nullfont!
+Missing character: There is no ; (U+003B) in font nullfont!
+Missing character: There is no ; (U+003B) in font nullfont!
+Missing character: There is no ; (U+003B) in font nullfont!
+Missing character: There is no ; (U+003B) in font nullfont!
+Missing character: There is no ; (U+003B) in font nullfont!
+] <figures/read-count-regr-1.pdf, id=300, 505.89pt x 505.89pt>
+File: figures/read-count-regr-1.pdf Graphic file (type pdf)
+ <use figures/read-count-regr-1.pdf>
+Package pdftex.def Info: figures/read-count-regr-1.pdf used on input line 810.
+(pdftex.def)             Requested size: 252.94437pt x 252.94437pt.
+
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `math shift' on input line 576.
+(hyperref)                removing `math shift' on input line 823.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `\theta' on input line 576.
+(hyperref)                removing `\theta' on input line 823.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `subscript' on input line 576.
+(hyperref)                removing `subscript' on input line 823.
 
-[8]
+[10]
 
-LaTeX Warning: Command \nobreakspace invalid in math mode on input line 611.
+LaTeX Warning: Command \nobreakspace invalid in math mode on input line 894.
 
 
-LaTeX Warning: Command \nobreakspace invalid in math mode on input line 614.
+LaTeX Warning: Command \nobreakspace invalid in math mode on input line 897.
+
+[11<./figures/read-count-regr-1.pdf>]
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `math shift' on input line 951.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `math shift' on input line 668.
+(hyperref)                removing `\pi' on input line 951.
 
-
-Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `\pi' on input line 668.
-
-[9] [10] [11]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 819.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 819.
- (/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/.tmp/I3D2hV/2016-02-19-binomial-models.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 819.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 819.
+[12
+Missing character: There is no ; (U+003B) in font nullfont!
+Missing character: There is no ; (U+003B) in font nullfont!
+Missing character: There is no ; (U+003B) in font nullfont!
+Missing character: There is no ; (U+003B) in font nullfont!
+Missing character: There is no ; (U+003B) in font nullfont!
+Missing character: There is no ; (U+003B) in font nullfont!
+Missing character: There is no ; (U+003B) in font nullfont!
+Missing character: There is no ; (U+003B) in font nullfont!
+Missing character: There is no ; (U+003B) in font nullfont!
+Missing character: There is no ; (U+003B) in font nullfont!
+Missing character: There is no ; (U+003B) in font nullfont!
+Missing character: There is no ; (U+003B) in font nullfont!
+Missing character: There is no ; (U+003B) in font nullfont!
+Missing character: There is no ; (U+003B) in font nullfont!
+Missing character: There is no ; (U+003B) in font nullfont!
+Missing character: There is no ; (U+003B) in font nullfont!
+Missing character: There is no ; (U+003B) in font nullfont!
+Missing character: There is no ; (U+003B) in font nullfont!
+Missing character: There is no ; (U+003B) in font nullfont!
+Missing character: There is no ; (U+003B) in font nullfont!
+Missing character: There is no ; (U+003B) in font nullfont!
+] [13] [14]
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 1102.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 1102.
+ (/home/attila/projects/monoallelic-brain/notebook/2016-02-19-binomial-models/.tmp/gsGsBm/2016-02-19-binomial-models.aux)
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 1102.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 1102.
 Package rerunfilecheck Info: File `2016-02-19-binomial-models.out' has not changed.
 (rerunfilecheck)             Checksum: 3B0EC398A6B820499D8F4DAD26E469B8;1595.
 )
 
 Here is how much of LuaTeX's memory you used:
- 32515 strings out of 494695
+ 33202 strings out of 494695
  100000,794899 words of node,token memory allocated
- 515 words of node memory still in use:
+ 519 words of node memory still in use:
    6 hlist, 2 vlist, 2 rule, 2 glue, 7 kern, 11 attribute, 48 glue_spec, 11 attribute_list, 1 write nodes
-   avail lists: 1:4,2:11576,3:187,4:1355,5:279,6:3827,7:147,8:38,9:262,10:389
- 35186 multiletter control sequences out of 65536+600000
+   avail lists: 1:4,2:11576,3:782,4:2184,5:272,6:3827,7:147,8:39,9:543,10:389
+ 35858 multiletter control sequences out of 65536+600000
  53 fonts using 3831095 bytes
- 61i,13n,78p,923b,414s stack positions out of 5000i,500n,10000p,200000b,100000s
-</home/attila/texlive/2014/texmf-dist/fonts/opentype/public/lm/lmroman8-regular.otf></home/attila/texlive/2014/texmf-dist/fonts/opentype/public/lm/lmmono8-regular.otf></home/attila/texlive/2014/texmf-dist/fonts/opentype/public/lm/lmroman6-regular.otf></home/attila/texlive/2014/texmf-dist/fonts/opentype/public/lm/lmroman10-italic.otf></home/attila/texlive/2014/texmf-dist/fonts/opentype/public/lm/lmroman7-regular.otf></home/attila/texlive/2014/texmf-dist/fonts/opentype/public/lm/lmroman10-regular.otf></home/attila/texlive/2014/texmf-dist/fonts/opentype/public/lm/lmroman10-bold.otf></home/attila/texlive/2014/texmf-dist/fonts/opentype/public/lm/lmroman12-bold.otf></home/attila/texlive/2014/texmf-dist/fonts/opentype/public/lm/lmroman12-regular.otf></home/attila/texlive/2014/texmf-dist/fonts/opentype/public/lm/lmroman17-regular.otf><</home/attila/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb><</home/attila/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb><</home/attila/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb><</home/attila/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi5.pfb><</home/attila/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi6.pfb><</home/attila/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb><</home/attila/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb><</home/attila/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb><</home/attila/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmr5.pfb><</home/attila/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb><</home/attila/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb><</home/attila/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy5.pfb><</home/attila/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb>
-Output written on 2016-02-19-binomial-models.pdf (11 pages, 227223 bytes).
+ 61i,13n,78p,974b,833s stack positions out of 5000i,500n,10000p,200000b,100000s
+</home/attila/texlive/2014/texmf-dist/fonts/opentype/public/lm/lmroman8-regular.otf></home/attila/texlive/2014/texmf-dist/fonts/opentype/public/lm/lmmono8-regular.otf></home/attila/texlive/2014/texmf-dist/fonts/opentype/public/lm/lmroman6-regular.otf></home/attila/texlive/2014/texmf-dist/fonts/opentype/public/lm/lmroman10-italic.otf></home/attila/texlive/2014/texmf-dist/fonts/opentype/public/lm/lmroman7-regular.otf></home/attila/texlive/2014/texmf-dist/fonts/opentype/public/lm/lmroman10-regular.otf></home/attila/texlive/2014/texmf-dist/fonts/opentype/public/lm/lmroman10-bold.otf></home/attila/texlive/2014/texmf-dist/fonts/opentype/public/lm/lmroman12-bold.otf></home/attila/texlive/2014/texmf-dist/fonts/opentype/public/lm/lmroman12-regular.otf></home/attila/texlive/2014/texmf-dist/fonts/opentype/public/lm/lmroman17-regular.otf><</home/attila/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb><</home/attila/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb><</home/attila/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb><</home/attila/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi5.pfb><</home/attila/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi6.pfb><</home/attila/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb><</home/attila/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb><</home/attila/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb><</home/attila/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmr5.pfb><</home/attila/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb><</home/attila/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb><</home/attila/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb><</home/attila/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb><</home/attila/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy5.pfb><</home/attila/texlive/2014/texmf-dist/font
+s/type1/public/amsfonts/cm/cmsy6.pfb><</home/attila/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb><</home/attila/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb>
+Output written on 2016-02-19-binomial-models.pdf (14 pages, 281713 bytes).
 
-PDF statistics: 427 PDF objects out of 1000 (max. 8388607)
- 367 compressed objects within 4 object streams
- 63 named destinations out of 1000 (max. 131072)
+PDF statistics: 528 PDF objects out of 1000 (max. 8388607)
+ 441 compressed objects within 5 object streams
+ 72 named destinations out of 1000 (max. 131072)
  184 words of extra memory for PDF output out of 10000 (max. 10000000)
 
