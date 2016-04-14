@@ -1,3 +1,11 @@
 data
 test
 .tmp
+*.log
+*._log
+*.aux
+*._aux
+*synctex
+*synctex.gz
+*project.vim
+*.out
