@@ -1,5 +1,52 @@
 library(plyr)
 
+# get data
+S <- get.data("pop_skew_3June15.txt", sep="\t")
+C <- get.data("pop_cov_3June15.txt", sep="\t")
+samples <- get.data("samples.csv", id.string="RNAseq_ID", sep=",")
+covariates <- get.data("DLPFC.ensembl.KNOWN_AND_SVA.ADJUST.SAMPLE_COVARIATES.tsv",
+                       id.string="DLPFC_RNA_isolation..Sample.RNA.ID", sep="\t")
+
+# clean responses
+S <- clean.response(S)
+C <- clean.response(C)
+
+# filter responses
+S <- filter.response(S, C)
+C <- filter.response(C, C)
+
+################################# new functions #################################
+
+# read data and set row names
+get.data <- function(filename, id.string='ID', ...) {
+    df <- read.delim(filename, na.strings=c('NA', 'ND'), ...)
+    row.names(df) <- df[, id.string]
+    return(df)
+}
+
+# clean response variables by removing contaminating other variables
+clean.response <- function(df, remove.cols=c("age")) {
+    # remove non-numeric columns
+    df <- df[, sapply(df, is.numeric)]
+    # remove columns specified by remove.cols
+    df <- df[, setdiff(names(df), remove.cols)]
+    return(df)
+}
+
+# replace elements in df.A where df.B <= thrs
+filter.response <- function(df.A, df.B, thrs=50) {
+    if(! all( dim(df.A) == dim(df.B))) return(NaN)
+    A <- as.vector(as.matrix(df.A))
+    B <- as.vector(as.matrix(df.B))
+    df <- as.data.frame(matrix(ifelse(B > thrs, A, NA), nrow=nrow(df.A),
+                         ncol=ncol(df.A)))
+    names(df) <- names(df.A)
+    row.names(df) <- row.names(df.A)
+    return(df)
+}
+
+################################# Ifat's code #################################
+
 transform.data <- function(genes13, genes.subset=genes13[1:8]){
 genes <- genes13
 

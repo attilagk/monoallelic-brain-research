@@ -1,0 +1,19 @@
+ID	
+Individual ID	
+RNAseq_ID	
+DNA_report: Genotyping Sample_ID	
+Institution	
+Gender	
+Ethnicity	
+Age of Death	
+Dx	
+DNA_isolation: Sample DNA ID	
+DNA_report: Genotyping Sample_ID	
+DLPFC_RNA_dissection: Institution DLPFC Sample ID	
+FPKM_ID	
+Ancestry EV.1	
+Ancestry EV.2	
+Ancestry EV.3	
+Ancestry EV.4	
+Ancestry EV.5	
+DLPFC_RNA_ID	

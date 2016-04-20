@@ -1,0 +1,26 @@
+#! /bin/sh
+
+# Perform two operations:
+# 1. make a column from the entries of the header row in DELIM-separated FILE 
+# 2. add tabs before the end of lines
+
+USAGE=$(cat <<EOF
+usage: $(basename $0) FILE [DELIM]
+EOF
+)
+
+case $# in
+    1) DELIM='\t' ;;
+    2) DELIM=$2 ;;
+    *) echo $USAGE 2>&1; exit 1;;
+esac
+
+FILE=$1
+
+# get header (top line)
+sed 1q $FILE |
+# replace each DELIM character with a new line
+tr $DELIM '\n' |
+# append a tab at the end of each line, delete empty lines
+# and optionally write result to an appropriately named info file
+sed 's/$/\t/; /^\s*$/d' #1> ${FILE}.info
