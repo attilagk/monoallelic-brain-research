@@ -1,20 +1,5 @@
 library(plyr)
 
-# get data
-S <- get.data("pop_skew_3June15.txt", sep="\t")
-C <- get.data("pop_cov_3June15.txt", sep="\t")
-samples <- get.data("samples.csv", id.string="RNAseq_ID", sep=",")
-covariates <- get.data("DLPFC.ensembl.KNOWN_AND_SVA.ADJUST.SAMPLE_COVARIATES.tsv",
-                       id.string="DLPFC_RNA_isolation..Sample.RNA.ID", sep="\t")
-
-# clean responses
-S <- clean.response(S)
-C <- clean.response(C)
-
-# filter responses
-S <- filter.response(S, C)
-C <- filter.response(C, C)
-
 ################################# new functions #################################
 
 # read data and set row names
@@ -24,17 +9,30 @@ get.data <- function(filename, id.string='ID', ...) {
     return(df)
 }
 
-# clean response variables by removing contaminating other variables
-clean.response <- function(df, remove.cols=c("age")) {
+# Copies and pastes the the column with 'select.col' from one data frame to
+# another, then sets row names
+paste.column <- function(from.df, to.df, select.col=c("RNAseq_ID"),
+                         row.n="RNAseq_ID") {
+    from.df <- from.df[select.col]
+    to.df <- merge(from.df, to.df, by="row.names")
+    row.names(to.df) <- to.df[[row.n]]
+    # remove annoying "Row.names" column inserted by the merge function
+    to.df <- to.df[, ! grepl("Row.names", names(to.df))]
+    return(to.df)
+}
+
+# clean.obs variables by removing contaminating other variables
+clean.obs <- function(df, remove.cols=c("age")) {
     # remove non-numeric columns
     df <- df[, sapply(df, is.numeric)]
     # remove columns specified by remove.cols
     df <- df[, setdiff(names(df), remove.cols)]
+    df <- df[sort.list(row.names(df)), ]
     return(df)
 }
 
 # replace elements in df.A where df.B <= thrs
-filter.response <- function(df.A, df.B, thrs=50) {
+filter.obs <- function(df.A, df.B, thrs=50) {
     if(! all( dim(df.A) == dim(df.B))) return(NaN)
     A <- as.vector(as.matrix(df.A))
     B <- as.vector(as.matrix(df.B))
@@ -44,6 +42,92 @@ filter.response <- function(df.A, df.B, thrs=50) {
     row.names(df) <- row.names(df.A)
     return(df)
 }
+
+# transform 'S' statistics into LOI_R based on selected 'genes'
+loir.tform <- function(S, genes) {
+    loir.rank <- function(x) {
+        y <- rank(x, ties.method = "min", na.last = "keep")
+        as.numeric(round(y / max(y, na.rm = TRUE) * 100, 0))
+    }
+    S.mat <- as.matrix(as.data.frame(lapply(S[, genes, drop=FALSE], loir.rank)))
+    S.avg <- as.data.frame(apply(S.mat, 1, mean, na.rm=TRUE))
+    row.names(S.avg) <- row.names(S)
+    names(S.avg) <- "response"
+    return(S.avg)
+}
+
+# high level function preparing data for fitting (filtering, column pasting)
+prepare.fit.data <- function(obs=S.stat, input=expl.var,
+                             filter.df.B=tot.read.n, filter.thrs=50,
+                             genes=genes[1:8], tform=TRUE,
+                             weights=as.data.frame(rep(1, nrow(tot.read.n))))
+{
+    # filter
+    obs <- filter.obs(obs, filter.df.B, thrs=filter.thrs)
+    # merge weights into the response (i.e. the transformed obs)
+    names(weights) <- "weights"
+    row.names(weights) <- row.names(filter.df.B)
+    if(tform)
+        tform.fun <- function(x) loir.tform(x, genes)
+    else
+        tform.fun <- identity
+    response <- tform.fun(obs)
+    response <- merge(response, weights, by="row.names")
+    response <- response[-1]
+    row.names(response) <- row.names(S.stat)
+    # merge with expl.var
+    fit.data <- paste.column(response, expl.var,
+                             select.col=c("response", "weights"), row.n="RNAseq_ID")
+    return(fit.data)
+}
+
+# fit glm for a selected 'gene'
+do.fit <- function(gene, family=gaussian,
+                   tform=TRUE, weights=as.data.frame(rep(1, nrow(tot.read.n)))) {
+    dat <- prepare.fit.data(obs=S.stat, input=expl.var, filter.df.B=tot.read.n,
+                            filter.thrs=50, genes=gene, tform=tform,
+                            weights=weights)
+    glm(formula=lin.pred, family=family, data=dat, weights=weights)
+}
+
+################################# analysis #################################
+
+# get data
+S.stat <- get.data("pop_skew_3June15.txt", sep="\t")
+tot.read.n <- get.data("pop_cov_3June15.txt", sep="\t")
+tissue.smpl <- get.data("samples.csv", id.string="DLPFC_RNA_ID", sep=",")
+expl.var <- get.data("DLPFC.ensembl.KNOWN_AND_SVA.ADJUST.SAMPLE_COVARIATES.tsv",
+                       id.string="DLPFC_RNA_isolation..Sample.RNA.ID", sep="\t")
+
+# clean up explanatory variables
+expl.var <- paste.column(tissue.smpl, expl.var, select.col=c("RNAseq_ID"), row.n="RNAseq_ID")
+expl.var <- expl.var[sort.list(row.names(expl.var)), ]
+rm(tissue.smpl)
+
+# clean observed (response) variables
+S.stat <- clean.obs(S.stat)
+tot.read.n <- clean.obs(tot.read.n)
+
+# selected genes
+genes <- c("PEG3", "INPP5F", "SNRPN", "PWAR6", "ZDBF2", "MEG3", "ZNF331",
+           "GRB10", "PEG10", "SNHG14", "NAP1L5", "KCNQ1OT1", "MEST" )
+names(genes) <- genes
+
+# Linear predictor.  Note that not all available explanatory variables are
+# selected (following Ifat's work)
+lin.pred <- (response ~ `Age.of.Death` + Institution + Gender +
+             `PMI..in.hours.` + Dx + `DLPFC_RNA_isolation..RIN` +
+             `DLPFC_RNA_isolation..RIN.2` +
+             `DLPFC_RNA_report..Clustered.Library.Batch` + `Ancestry.EV.1` +
+             `Ancestry.EV.2` + `Ancestry.EV.3` + `Ancestry.EV.4` +
+             `Ancestry.EV.5` )
+
+# Reproducing Ifat's previous results.
+# Should match closely but not precisely due to my omission of a rounding step
+data.loir.8 <- prepare.fit.data(obs=S.stat, input=expl.var, filter.df.B=tot.read.n, filter.thrs=50, genes=genes[1:8])
+nlm.loir.8 <- glm(formula=lin.pred, family=gaussian, data=data.loir.8)
+
+nlm.loir <- lapply(genes, do.fit, family=gaussian)
 
 ################################# Ifat's code #################################
 
