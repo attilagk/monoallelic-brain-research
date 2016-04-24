@@ -1,0 +1,122 @@
+<h2>Introduction</h2>
+
+<h2>Preparations</h2>
+
+<h3>Data</h3>
+
+<p>Data files</p>
+
+<pre><code class="r">files &lt;- list(S=&quot;pop_skew_3June15.txt&quot;,
+              N=&quot;pop_cov_3June15.txt&quot;,
+              X=&quot;DLPFC.ensembl.KNOWN_AND_SVA.ADJUST.SAMPLE_COVARIATES.tsv&quot;,
+              X2=&quot;samples.csv&quot;)
+</code></pre>
+
+<p>Selected gene sets of size \(8, 13, 16\), sequentially nested in each other</p>
+
+<pre><code class="r">             # 8 genes analyzed by Ifat
+genes &lt;- c(&quot;PEG3&quot;, &quot;INPP5F&quot;, &quot;SNRPN&quot;, &quot;PWAR6&quot;, &quot;ZDBF2&quot;, &quot;MEG3&quot;, &quot;ZNF331&quot;, &quot;GRB10&quot;,
+             # 5 more genes analyzed by AGK 3/2/16
+             &quot;PEG10&quot;, &quot;SNHG14&quot;, &quot;NAP1L5&quot;, &quot;KCNQ1OT1&quot;, &quot;MEST&quot;,
+             # 3 more genes present in data files
+             &quot;IGF2&quot;, &quot;NLRP2&quot;, &quot;UBE3A&quot;)
+</code></pre>
+
+<p>Response variables, characterized by</p>
+
+<ol>
+<li><em>filtering</em>: whether the \(S_{ig}\) statistic is excluded for individual \(i\) and gene \(g\) if the total read count \(N_{ig}\le 50\)</li>
+<li><em>transformation</em>: whether \(S_{ig}\) is transformed into a rank \(R_{ig}\) for a given \(g\) across all individuals \(i\)</li>
+<li><em>aggregation</em>: whether \(S_{ig}\) or \(R_{ig}\) are aggregated across genes based on gene sets of size \(8, 13, 16\)</li>
+</ol>
+
+<p>Explanatory variables \(X\); only those that are included in the linear predictor (see below).</p>
+
+<pre><code class="r">expl.var &lt;- c(&quot;`Age.of.Death`&quot;,
+               &quot;Institution&quot;,
+               &quot;Gender&quot;,
+               &quot;`PMI..in.hours.`&quot;,
+               &quot;Dx&quot;,
+               &quot;`DLPFC_RNA_isolation..RIN`&quot;, &quot;`DLPFC_RNA_isolation..RIN.2`&quot;,
+               &quot;`DLPFC_RNA_report..Clustered.Library.Batch`&quot;,
+               &quot;`Ancestry.EV.1`&quot;, &quot;`Ancestry.EV.2`&quot;, &quot;`Ancestry.EV.3`&quot;, &quot;`Ancestry.EV.4`&quot;, &quot;`Ancestry.EV.5`&quot; )
+</code></pre>
+
+<h3>Regression models</h3>
+
+<p>Three regression models are considered.  All three fit into the generalized linear model (glm) framework, and characterized by</p>
+
+<ol>
+<li>the <em>linear predictor</em> \(\eta = \sum_r x_r \beta_r\), where \(r\) indexes explanatory variables \(x_r\) and the corresponding regression <em>coefficients</em> \(\beta_r\) mediating <em>effects</em></li>
+<li>the <em>link function</em>: a one to one mapping of \(\eta\) onto the mean response \(\mu\equiv \mathrm{E} Y\)</li>
+<li>\(Y_i|\eta_i\), the <em>conditional distribution of the response</em> given the predictor for observation (individual) \(i\)</li>
+</ol>
+
+<p>Logistic models are part of the generalized linear family, which use linear predictors but a non-linear link function and non-normal conditional distribution of the response given the predictors.  For logistic models the link function is the sigmoid-shaped logistic function and the conditional distribution is binomial, whose denominator is used as weight.  In the present case the denominator is the total read count \(n_{ig}\), whereas the response is \(S_{ig}\) without any transformation.  Thus, \(S_{ig}\) is assumed to be binomially distributed.</p>
+
+<h3>Implementation</h3>
+
+<p>Ifat&#39;s earlier implementation and my <strong>reimplementation</strong> of data filtering, transformation and fitting procedures, which was necessary for implementing newer regression models and to facilitate reproducibility.</p>
+
+<pre><code class="r">source(&#39;2016-04-22-glm-for-s-statistic.R&#39;)
+source(&#39;../2016-03-02-ifats-regression-analysis/2016-03-02-ifats-regression-analysis.R&#39;)
+</code></pre>
+
+<pre><code class="r">m.ifat.g8 &lt;- fit.lm(transform.data(genes[1:13], genes[1:8]), do.thrs=FALSE)
+</code></pre>
+
+<p>The new script provides four implementations for three regression models.</p>
+
+<pre><code class="r">f &lt;- list(
+          nlm = function(y, d) { # normal linear model with rank R as response
+              glm(formula = mk.form(paste0(&quot;R_&quot;, y)), family = gaussian, data = d)
+          } ,
+          nlm2 = function(y, d) { # as above but with the R&#39;s lm function instead of glm
+              lm(formula = mk.form(paste0(&quot;R_&quot;, y)), data = d)
+          } ,
+          logi = function(y, d) { # logistic regression with the S statistic as response
+              glm(formula = mk.form(paste0(&quot;S_&quot;, y)), family = binomial, data = d, weights = d[[paste0(&quot;N_&quot;, y)]])
+          } ,
+          logi2 = function(y, d) { # as above but with rescaled and offset logistic link function
+              glm(formula = mk.form(paste0(&quot;S_&quot;, y, &quot; * 2 - 1&quot;)), family = binomial, data = d, weights = d[[paste0(&quot;N_&quot;, y)]])
+          } )
+</code></pre>
+
+<h2>Results</h2>
+
+<h3>Comparing implementations</h3>
+
+<p>Comparing the normal linear model obtained with Ifat&#39;s implementation to that with the new implementation (see <code>nlm</code> function above).</p>
+
+<pre><code class="r">sapply( c(&quot;deviance&quot;, &quot;aic&quot;, &quot;coefficients&quot;), function(s) all.equal(m.ifat.g8[[s]], m$g8$nlm[[s]]))
+</code></pre>
+
+<pre><code>##                                deviance 
+##  &quot;Mean relative difference: 0.04045548&quot; 
+##                                     aic 
+## &quot;Mean relative difference: 0.004622527&quot; 
+##                            coefficients 
+##  &quot;Mean relative difference: 0.02769083&quot;
+</code></pre>
+
+<p>These results show a close but not perfect match between Ifat&#39;s and my implementation (the following numbers are given up to 4 significant digits).  The discrepancy is due to my omission of a rounding step and only slightly affects the results.</p>
+
+<h3>Effect of filtering</h3>
+
+<p>The difference is larger (but still small) when we omit a filtering step that excludes \(S_{ig}\) values for which the total read count \(n_{ig}\le 50\) for a given individual \(i\) and gene \(g\) (third column).  For instance, the residual deviance (residual sum of squares in case of NLM), Akaike information criterion (AIC) and regression coefficient for <code>Age.of.Death</code> between are:</p>
+
+<h3>Comparing models</h3>
+
+<h3>Effects on aggregated responses (gene sets)</h3>
+
+<h3>Variability of effects on individual genes</h3>
+
+<p>Fit a NLM for each gene separately (after transformation).  It is clear that there is much variability among genes, since for some of them (e.g. ZDBF2) the regression coefficient for age is more significantly different from 0 than when \(\mathrm{LOI\_R}\) was based on 8 genes (see results above).  On the other hand for some other genes, (e.g. PEG3) the difference is far from significant.</p>
+
+<pre><code class="r">#nlm.loir &lt;- lapply(genes, do.fit, family=gaussian, weights=as.data.frame(rep(1, nrow(tot.read.n))), filter.thrs=50)
+#print(sapply(nlm.loir, function(x) summary(x)$coefficients[&quot;Age.of.Death&quot;, 4]), digits=3)
+##print(sapply(nlm.loir, function(x) summary(x)$aic), digits=3)
+</code></pre>
+
+<h2>Conclusion</h2>
+
