@@ -1,10 +1,8 @@
-<h2>Introduction</h2>
-
 <h2>Preparations</h2>
 
 <h3>Data</h3>
 
-<p>Data files</p>
+<p>Data files:</p>
 
 <pre><code class="r">files &lt;- list(S=&quot;pop_skew_3June15.txt&quot;,
               N=&quot;pop_cov_3June15.txt&quot;,
@@ -12,7 +10,9 @@
               X2=&quot;samples.csv&quot;)
 </code></pre>
 
-<p>Selected gene sets of size \(8, 13, 16\), sequentially nested in each other</p>
+<p>File <code>S</code> contains the matrix \(S=[s_{ig}]\) of the observed \(s_{ig}\) statistic for all individuals \(i\) and selected genes \(g\). (The capitalized \(S_{ig}\) denotes the corresponding random variable).  Similarly, <code>N</code> contains a matrix of total read counts \(N_{ig}\), where &ldquo;total&rdquo; reflects summing over both alleles.  <code>X</code> contains the design matrix \(X=[X_{ir}]\), where \(r\) indexes <em>explanatory variables</em>. <code>X2</code> contains a subset of explanatory variables found in <code>X</code> but, unlike <code>X</code>, <code>X2</code> contains <code>RNAseq_ID</code>s that are used for mapping from \(X\) to \(S\) (and to \(N\)) and are absent from <code>X2</code>.</p>
+
+<p>Selected gene sets of size \(8, 13, 16\), sequentially nested in each other:</p>
 
 <pre><code class="r">             # 8 genes analyzed by Ifat
 genes &lt;- c(&quot;PEG3&quot;, &quot;INPP5F&quot;, &quot;SNRPN&quot;, &quot;PWAR6&quot;, &quot;ZDBF2&quot;, &quot;MEG3&quot;, &quot;ZNF331&quot;, &quot;GRB10&quot;,
@@ -22,15 +22,19 @@ genes &lt;- c(&quot;PEG3&quot;, &quot;INPP5F&quot;, &quot;SNRPN&quot;, &quot;PWA
              &quot;IGF2&quot;, &quot;NLRP2&quot;, &quot;UBE3A&quot;)
 </code></pre>
 
-<p>Response variables, characterized by</p>
+<p>Manipulations of \(S\) and \(N\) give rise to \(response\) variables \(Y=[y_{ig}]\) of
+various regression models (below). These manipulations fall in the following
+categories:</p>
 
 <ol>
-<li><em>filtering</em>: whether the \(S_{ig}\) statistic is excluded for individual \(i\) and gene \(g\) if the total read count \(N_{ig}\le 50\)</li>
-<li><em>transformation</em>: whether \(S_{ig}\) is transformed into a rank \(R_{ig}\) for a given \(g\) across all individuals \(i\)</li>
-<li><em>aggregation</em>: whether \(S_{ig}\) or \(R_{ig}\) are aggregated across genes based on gene sets of size \(8, 13, 16\)</li>
+<li><em>filtering</em>: whether the \(s_{ig}\) statistic is excluded for individual \(i\) and gene \(g\) if the total read count \(N_{ig}\le 50\)</li>
+<li><em>transformation</em>: whether \(s_{ig}\) is transformed into a rank \(r_{ig}\) for a given \(g\) across all individuals \(i\)</li>
+<li><em>aggregation</em>: whether \(s_{ig}\) or \(r_{ig}\) are aggregated across genes based on gene sets of size \(8, 13, 16\)</li>
 </ol>
 
-<p>Explanatory variables \(X\); only those that are included in the linear predictor (see below).</p>
+<p>Ifat&#39;s earlier work used only one set of manipulations: filtering + rank transformation + aggregation by averaging across the set of \(8\) genes.  The resulting response variable was termed \(\mathrm{LOI\_R}\) for &ldquo;loss of imprinting ratio&rdquo;.  This term is avoided here because imprinting (or allelic imbalance) may increase with age for certain genes or sets of genes, and also because \(r_{ig}\) is more concise than \(\mathrm{LOI\_R}_{ig}\).</p>
+
+<p>The explanatory variables in \(X\) are</p>
 
 <pre><code class="r">expl.var &lt;- c(&quot;`Age.of.Death`&quot;,
                &quot;Institution&quot;,
@@ -42,30 +46,68 @@ genes &lt;- c(&quot;PEG3&quot;, &quot;INPP5F&quot;, &quot;SNRPN&quot;, &quot;PWA
                &quot;`Ancestry.EV.1`&quot;, &quot;`Ancestry.EV.2`&quot;, &quot;`Ancestry.EV.3`&quot;, &quot;`Ancestry.EV.4`&quot;, &quot;`Ancestry.EV.5`&quot; )
 </code></pre>
 
+<p>Note that there are additional variables in <code>X</code> but those are not included in the models, following Ifat&#39;s earlier work.</p>
+
 <h3>Regression models</h3>
 
-<p>Three regression models are considered.  All three fit into the generalized linear model (glm) framework, and characterized by</p>
+<p>Three regression models are considered here: <strong>nlm</strong> (normal linear), <strong>logi</strong> (logistic) and <strong>logi2</strong> (scaled logistic). All three fit into the <em>generalized linear model</em> (glm) framework, and
+characterized by</p>
 
 <ol>
-<li>the <em>linear predictor</em> \(\eta = \sum_r x_r \beta_r\), where \(r\) indexes explanatory variables \(x_r\) and the corresponding regression <em>coefficients</em> \(\beta_r\) mediating <em>effects</em></li>
+<li>the <em>linear predictor</em> \(\eta = \sum_r x_r \beta_r\), where \(\beta_r\) are regression <em>coefficients</em> mediating the <em>effects</em> of \(X\) on the response</li>
 <li>the <em>link function</em>: a one to one mapping of \(\eta\) onto the mean response \(\mu\equiv \mathrm{E} Y\)</li>
-<li>\(Y_i|\eta_i\), the <em>conditional distribution of the response</em> given the predictor for observation (individual) \(i\)</li>
+<li>\(P(Y_i|\eta_i)\), the <em>conditional distribution of the response</em> given the predictor for observation (individual) \(i\)</li>
 </ol>
 
-<p>Logistic models are part of the generalized linear family, which use linear predictors but a non-linear link function and non-normal conditional distribution of the response given the predictors.  For logistic models the link function is the sigmoid-shaped logistic function and the conditional distribution is binomial, whose denominator is used as weight.  In the present case the denominator is the total read count \(n_{ig}\), whereas the response is \(S_{ig}\) without any transformation.  Thus, \(S_{ig}\) is assumed to be binomially distributed.</p>
+<p>Although, in principle, the models could be freely combined with various data filtering, transformation and aggregation, the focus here is to use the best fitting combinations of models and transformations.  Therefore the optimal response is \(R_{ig}\) for nlm (i.e. transformation) and \(S_{ig}\) for logi and logi2 (no transformation).</p>
+
+<p>For the logi and logi2 models the response, for each observation (individual) is distributed binomially and the denominator is used as weight for that observation.  Using \(S_{ig}\) as response suggests using the corresponding observed \(n_{ig}\) as weight.</p>
+
+<p>The table summarizes the models&#39; properties.</p>
+
+<table><thead>
+<tr>
+<th align="center"></th>
+<th align="center">nlm</th>
+<th align="center">logi</th>
+<th align="center">logi2</th>
+</tr>
+</thead><tbody>
+<tr>
+<td align="center">link function</td>
+<td align="center">linear</td>
+<td align="center">logistic</td>
+<td align="center">scaled logistic</td>
+</tr>
+<tr>
+<td align="center">response distrib.</td>
+<td align="center">normal (Gaussian)</td>
+<td align="center">binomial</td>
+<td align="center">binomial</td>
+</tr>
+<tr>
+<td align="center">optimal response</td>
+<td align="center">\(R_{ig}\)</td>
+<td align="center">\(S_{ig}\)</td>
+<td align="center">\(S_{ig}\)</td>
+</tr>
+<tr>
+<td align="center">weights</td>
+<td align="center">1 (uniform)</td>
+<td align="center">\(n_{ig}\)</td>
+<td align="center">\(n_{ig}\)</td>
+</tr>
+</tbody></table>
 
 <h3>Implementation</h3>
 
-<p>Ifat&#39;s earlier implementation and my <strong>reimplementation</strong> of data filtering, transformation and fitting procedures, which was necessary for implementing newer regression models and to facilitate reproducibility.</p>
+<p>The multifaceted goals of the present analysis called for a completely <em>new implementation</em> of data manipulations and models because the earlier implementation (by Ifat) lacked the necessary modularity.  The script files for the new and old implementation:</p>
 
 <pre><code class="r">source(&#39;2016-04-22-glm-for-s-statistic.R&#39;)
 source(&#39;../2016-03-02-ifats-regression-analysis/2016-03-02-ifats-regression-analysis.R&#39;)
 </code></pre>
 
-<pre><code class="r">m.ifat.g8 &lt;- fit.lm(transform.data(genes[1:13], genes[1:8]), do.thrs=FALSE)
-</code></pre>
-
-<p>The new script provides four implementations for three regression models.</p>
+<p>The new script provides the function <code>nlm</code> for the nlm model, <code>logi</code> for logi, and <code>logi2</code> for logi2.  Additionally, the <code>nlm2</code> function also implements nlm, but instead of calling <code>R</code>&#39;s <code>glm</code> function (which is also called by <code>logi</code> and <code>logi2</code>), it calls <code>lm</code>.   The definition of <code>logi2</code> is nearly identical to  <code>logi</code>; the only difference is using <code>C2</code> as response variable instead of <code>C</code>.  Wheres <code>C</code> contains the original observed &ldquo;higher&rdquo; and &ldquo;lower&rdquo; read counts, <code>C2</code> is a transformation of those that corresponds to the (inverse) scaling function of the logistic functiion in logi2.</p>
 
 <pre><code class="r">f &lt;- list(
           nlm = function(y, d) { # normal linear model with rank R as response
@@ -75,18 +117,20 @@ source(&#39;../2016-03-02-ifats-regression-analysis/2016-03-02-ifats-regression-
               lm(formula = mk.form(paste0(&quot;R_&quot;, y)), data = d)
           } ,
           logi = function(y, d) { # logistic regression with the S statistic as response
-              glm(formula = mk.form(paste0(&quot;S_&quot;, y)), family = binomial, data = d, weights = d[[paste0(&quot;N_&quot;, y)]])
+              glm(formula = mk.form(paste0(&quot;C_&quot;, y)), family = binomial, data = d)
           } ,
           logi2 = function(y, d) { # as above but with rescaled and offset logistic link function
-              glm(formula = mk.form(paste0(&quot;S_&quot;, y, &quot; * 2 - 1&quot;)), family = binomial, data = d, weights = d[[paste0(&quot;N_&quot;, y)]])
+              glm(formula = mk.form(paste0(&quot;C2_&quot;, y)), family = binomial, data = d)
           } )
 </code></pre>
+
+<p>All results with <code>nlm2</code> were fournd to be identical to <code>nlm</code> (not shown) so the <code>nlm2</code>-related results will not be presented furthermore.</p>
 
 <h2>Results</h2>
 
 <h3>Comparing implementations</h3>
 
-<p>Comparing the normal linear model obtained with Ifat&#39;s implementation to that with the new implementation (see <code>nlm</code> function above).</p>
+<p>Let&#39;s compare the normal linear model obtained with Ifat&#39;s implementation to that with the new implementation!  For consistency with Ifat&#39;s <a href="https://docs.google.com/presentation/d/1YvpA1AJ-zzir1Iw0F25tO9x8gkSAzqaO4fjB7K3zBhE/">previous results</a> the data manipulations are: filtering, rank-transformation, and averaging over \(8\) selected genes.</p>
 
 <pre><code class="r">sapply( c(&quot;deviance&quot;, &quot;aic&quot;, &quot;coefficients&quot;), function(s) all.equal(m.ifat.g8[[s]], m$g8$nlm[[s]]))
 </code></pre>
@@ -99,24 +143,75 @@ source(&#39;../2016-03-02-ifats-regression-analysis/2016-03-02-ifats-regression-
 ##  &quot;Mean relative difference: 0.02769083&quot;
 </code></pre>
 
-<p>These results show a close but not perfect match between Ifat&#39;s and my implementation (the following numbers are given up to 4 significant digits).  The discrepancy is due to my omission of a rounding step and only slightly affects the results.</p>
+<p>These results show a close but not perfect match between the old and new implementation.  The slight discrepancy seems to be due to a rounding step in the old code, for which I found no justification and therefore omitted from the new implementation.</p>
 
 <h3>Effect of filtering</h3>
 
-<p>The difference is larger (but still small) when we omit a filtering step that excludes \(S_{ig}\) values for which the total read count \(n_{ig}\le 50\) for a given individual \(i\) and gene \(g\) (third column).  For instance, the residual deviance (residual sum of squares in case of NLM), Akaike information criterion (AIC) and regression coefficient for <code>Age.of.Death</code> between are:</p>
+<p>The table lists the relative change in AIC induced by omission of filtering, defined as \((\mathrm{AIC}_{f=1} - \mathrm{AIC}_{f=0}) / \mathrm{AIC}_{f=1}\), where \(f=1\) indicates filtering.</p>
+
+<pre><code>##               nlm      logi     logi2
+## PEG3     -0.01880 -3.52e-03 -3.53e-03
+## INPP5F   -0.00204 -3.60e-04 -4.62e-04
+## SNRPN    -0.22500 -4.35e-02 -4.85e-02
+## PWAR6    -0.00558 -6.90e-05 -7.54e-05
+## ZDBF2    -0.12900 -3.73e-02 -3.70e-02
+## MEG3     -0.10800 -2.23e-02 -2.21e-02
+## ZNF331   -0.35300 -2.86e-01 -3.66e-01
+## GRB10    -1.11000 -7.95e-01 -9.46e-01
+## PEG10    -0.08210 -3.75e-02 -3.93e-02
+## SNHG14   -0.12300 -3.07e-02 -3.10e-02
+## NAP1L5   -0.22300 -1.88e-01 -2.43e-01
+## KCNQ1OT1 -1.01000 -5.37e-01 -6.48e-01
+## MEST     -0.44400 -2.85e-01 -3.08e-01
+## IGF2     -3.55000 -8.59e+00 -1.54e+01
+## NLRP2    -5.43000 -3.74e+00 -5.71e+00
+## UBE3A    -1.97000 -3.03e+00 -4.77e+00
+## g8        0.01430 -9.99e-05 -2.17e-04
+## g13       0.01710 -3.75e-03 -4.34e-03
+## g16       0.02860  1.43e-02  1.59e-02
+</code></pre>
+
+<p>Filtering has small effect in most cases.  The exceptions are those genes for which filtering removed many points such as NLRP2 and IGF2 (169 and 149 points removed, respectively) in contrast with genes like PEG3 (only 8 points removed).</p>
+
+<p>All results below were obtained with filtering.</p>
 
 <h3>Comparing models</h3>
 
-<h3>Effects on aggregated responses (gene sets)</h3>
+<p>Below are relative AIC of logi compared to nlm, defined as \((\mathrm{AIC}_{\mathrm{logi}} - \mathrm{AIC}_{\mathrm{nlm}}) / \mathrm{AIC}_{\mathrm{logi}}\).  Note that the response is \(S_{ig}\) for logi and \(R_{ig}\) for nlm.</p>
 
-<h3>Variability of effects on individual genes</h3>
-
-<p>Fit a NLM for each gene separately (after transformation).  It is clear that there is much variability among genes, since for some of them (e.g. ZDBF2) the regression coefficient for age is more significantly different from 0 than when \(\mathrm{LOI\_R}\) was based on 8 genes (see results above).  On the other hand for some other genes, (e.g. PEG3) the difference is far from significant.</p>
-
-<pre><code class="r">#nlm.loir &lt;- lapply(genes, do.fit, family=gaussian, weights=as.data.frame(rep(1, nrow(tot.read.n))), filter.thrs=50)
-#print(sapply(nlm.loir, function(x) summary(x)$coefficients[&quot;Age.of.Death&quot;, 4]), digits=3)
-##print(sapply(nlm.loir, function(x) summary(x)$aic), digits=3)
+<pre><code>##     PEG3   INPP5F    SNRPN    PWAR6    ZDBF2     MEG3   ZNF331    GRB10 
+##  0.18100  0.37500 -0.04590  0.00951 -0.25100 -0.05240 -0.32300 -1.11000 
+##    PEG10   SNHG14   NAP1L5 KCNQ1OT1     MEST     IGF2    NLRP2    UBE3A 
+## -0.36700 -0.60400 -1.20000 -1.20000 -0.65000  8.90000 -0.21600  9.09000 
+##       g8      g13      g16 
+##  0.72200  0.72500  0.72800
 </code></pre>
 
+<p>For 12 out of 16 single genes nlm performs better than logi.  But for all
+aggregated (averaged) gene sets logi clearly performs better because it takes a
+weighted average of genes using the total read counts \(n_{ig}\), which nlm
+ignores.</p>
+
+<p>The relative AIC of logi2 compared to logi:</p>
+
+<pre><code>##     PEG3   INPP5F    SNRPN    PWAR6    ZDBF2     MEG3   ZNF331    GRB10 
+##   0.4470   0.4470   0.4580   0.4650   0.4610   0.4610   0.3800   0.3210 
+##    PEG10   SNHG14   NAP1L5 KCNQ1OT1     MEST     IGF2    NLRP2    UBE3A 
+##   0.4090   0.4370   0.3800   0.3760   0.3200   0.0521   0.3080   0.0670 
+##       g8      g13      g16 
+##   0.4750   0.4700   0.4700
+</code></pre>
+
+<p>This shows that logi2 fits all data sets better than logi altough for genes with sparse data </p>
+
+<p>The figure compares all three model families using (the absolute) AIC
+<img src="data:image/png;base64,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" alt="plot of chunk unnamed-chunk-11"/> </p>
+
+<p>logi2 clearly outperforms logi and nlm when fitted to the any of the three aggregated datasets.  This tendency holds for individual genes as well, at least for genes with ample data (large number \(n_{ig}\) of total read counts).  For genes with sparse data (e.g. NLRP2 and IGF2 mentioned before) nlm and logi2 fit similarly well; but for these genes cases AIC is much smaller (under any given model) underscoring the sparsity of data and weakening conclusions.</p>
+
+<p>Both logi and logi2 benefit from data aggregation to a great degree.  This is attributable to the regression weights gained from total read counts, which the unweighted nlm ignores.</p>
+
 <h2>Conclusion</h2>
+
+<p>[nlm g13]: {% post_url 2016-03-02-ifats-regression-analysis %}</p>
 
