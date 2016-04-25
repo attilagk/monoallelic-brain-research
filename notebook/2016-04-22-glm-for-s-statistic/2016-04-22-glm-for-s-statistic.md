@@ -107,7 +107,7 @@ All results with `nlm2` were fournd to be identical to `nlm` (not shown) so the 
 Let's compare the normal linear model obtained with Ifat's implementation to that with the new implementation!  For consistency with Ifat's [previous results][ifat] the data manipulations are: filtering, rank-transformation, and averaging over $8$ selected genes.
 
 ```r
-sapply( c("deviance", "aic", "coefficients"), function(s) all.equal(m.ifat.g8[[s]], m$g8$nlm[[s]]))
+sapply( c("deviance", "aic", "coefficients"), function(s) all.equal(m.ifat.a8[[s]], m$a8$nlm.R[[s]]))
 ```
 
 ```
@@ -122,29 +122,32 @@ These results show a close but not perfect match between the old and new impleme
 
 ### Effect of filtering
 
-The table lists the relative change in AIC induced by omission of filtering, defined as $(\mathrm{AIC}_{f=1} - \mathrm{AIC}_{f=0}) / \mathrm{AIC}_{f=1}$, where $f=1$ indicates filtering.
+The table lists the relative change in AIC induced by omission of filtering, defined as $(\mathrm{AIC}_{f1} - \mathrm{AIC}_{f0}) / \mathrm{AIC}_{f1}$, where $f1$ indicates filtering and $f0$ no filtering.
 
 ```
-##               nlm      logi     logi2
-## PEG3     -0.01880 -3.52e-03 -3.53e-03
-## INPP5F   -0.00204 -3.60e-04 -4.62e-04
-## SNRPN    -0.22500 -4.35e-02 -4.85e-02
-## PWAR6    -0.00558 -6.90e-05 -7.54e-05
-## ZDBF2    -0.12900 -3.73e-02 -3.70e-02
-## MEG3     -0.10800 -2.23e-02 -2.21e-02
-## ZNF331   -0.35300 -2.86e-01 -3.66e-01
-## GRB10    -1.11000 -7.95e-01 -9.46e-01
-## PEG10    -0.08210 -3.75e-02 -3.93e-02
-## SNHG14   -0.12300 -3.07e-02 -3.10e-02
-## NAP1L5   -0.22300 -1.88e-01 -2.43e-01
-## KCNQ1OT1 -1.01000 -5.37e-01 -6.48e-01
-## MEST     -0.44400 -2.85e-01 -3.08e-01
-## IGF2     -3.55000 -8.59e+00 -1.54e+01
-## NLRP2    -5.43000 -3.74e+00 -5.71e+00
-## UBE3A    -1.97000 -3.03e+00 -4.77e+00
-## g8        0.01430 -9.99e-05 -2.17e-04
-## g13       0.01710 -3.75e-03 -4.34e-03
-## g16       0.02860  1.43e-02  1.59e-02
+##             nlm.R     nlm.S    logi.S   logi2.S
+## PEG3     -0.01880  0.015100 -3.52e-03 -3.53e-03
+## INPP5F   -0.00204  0.002730 -3.60e-04 -4.62e-04
+## SNRPN    -0.22500  0.082400 -4.35e-02 -4.85e-02
+## PWAR6    -0.00558  0.006350 -6.90e-05 -7.54e-05
+## ZDBF2    -0.12900  0.125000 -3.73e-02 -3.70e-02
+## MEG3     -0.10800  0.096000 -2.23e-02 -2.21e-02
+## ZNF331   -0.35300 -0.128000 -2.86e-01 -3.66e-01
+## GRB10    -1.11000  0.629000 -7.95e-01 -9.46e-01
+## PEG10    -0.08210  0.060200 -3.75e-02 -3.93e-02
+## SNHG14   -0.12300  0.089200 -3.07e-02 -3.10e-02
+## NAP1L5   -0.22300 -0.193000 -1.88e-01 -2.43e-01
+## KCNQ1OT1 -1.01000  0.540000 -5.37e-01 -6.48e-01
+## MEST     -0.44400  0.179000 -2.85e-01 -3.08e-01
+## IGF2     -3.55000 -0.757000 -8.59e+00 -1.54e+01
+## NLRP2    -5.43000  4.660000 -3.74e+00 -5.71e+00
+## UBE3A    -1.97000 -0.875000 -3.03e+00 -4.77e+00
+## a8        0.01430  0.005920 -9.99e-05 -2.17e-04
+## a13       0.01710 -0.001680 -3.75e-03 -4.34e-03
+## a16       0.02860 -0.000266  1.43e-02  1.59e-02
+## p8       -0.16900  0.002850 -4.05e-02 -4.19e-02
+## p13      -0.21300  0.051700 -5.52e-02 -5.66e-02
+## p16      -0.30000 -0.095100 -1.33e-01 -1.43e-01
 ```
 Filtering has small effect in most cases.  The exceptions are those genes for which filtering removed many points such as NLRP2 and IGF2 (169 and 149 points removed, respectively) in contrast with genes like PEG3 (only 8 points removed).
 
@@ -152,39 +155,8 @@ All results below were obtained with filtering.
 
 ### Comparing models
 
-Below are relative AIC of logi compared to nlm, defined as $(\mathrm{AIC}_{\mathrm{logi}} - \mathrm{AIC}_{\mathrm{nlm}}) / \mathrm{AIC}_{\mathrm{logi}}$.  Note that the response is $S_{ig}$ for logi and $R_{ig}$ for nlm.
-
-```
-##     PEG3   INPP5F    SNRPN    PWAR6    ZDBF2     MEG3   ZNF331    GRB10 
-##  0.18100  0.37500 -0.04590  0.00951 -0.25100 -0.05240 -0.32300 -1.11000 
-##    PEG10   SNHG14   NAP1L5 KCNQ1OT1     MEST     IGF2    NLRP2    UBE3A 
-## -0.36700 -0.60400 -1.20000 -1.20000 -0.65000  8.90000 -0.21600  9.09000 
-##       g8      g13      g16 
-##  0.72200  0.72500  0.72800
-```
-For 12 out of 16 single genes nlm performs better than logi.  But for all
-aggregated (averaged) gene sets logi clearly performs better because it takes a
-weighted average of genes using the total read counts $n_{ig}$, which nlm
-ignores.
-
-The relative AIC of logi2 compared to logi:
-
-```
-##     PEG3   INPP5F    SNRPN    PWAR6    ZDBF2     MEG3   ZNF331    GRB10 
-##   0.4470   0.4470   0.4580   0.4650   0.4610   0.4610   0.3800   0.3210 
-##    PEG10   SNHG14   NAP1L5 KCNQ1OT1     MEST     IGF2    NLRP2    UBE3A 
-##   0.4090   0.4370   0.3800   0.3760   0.3200   0.0521   0.3080   0.0670 
-##       g8      g13      g16 
-##   0.4750   0.4700   0.4700
-```
-This shows that logi2 fits all data sets better than logi altough for genes with sparse data 
-
-The figure compares all three model families using (the absolute) AIC
-![plot of chunk unnamed-chunk-11](figure/unnamed-chunk-11-1.png) 
-
-logi2 clearly outperforms logi and nlm when fitted to the any of the three aggregated datasets.  This tendency holds for individual genes as well, at least for genes with ample data (large number $n_{ig}$ of total read counts).  For genes with sparse data (e.g. NLRP2 and IGF2 mentioned before) nlm and logi2 fit similarly well; but for these genes cases AIC is much smaller (under any given model) underscoring the sparsity of data and weakening conclusions.
-
-Both logi and logi2 benefit from data aggregation to a great degree.  This is attributable to the regression weights gained from total read counts, which the unweighted nlm ignores.
+The figure compares all three model families using AIC
+![plot of chunk unnamed-chunk-9](figure/unnamed-chunk-9-1.png) 
 
 ## Conclusion
 

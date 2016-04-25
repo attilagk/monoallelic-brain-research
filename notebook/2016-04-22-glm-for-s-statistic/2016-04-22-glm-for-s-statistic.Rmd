@@ -75,7 +75,7 @@ source('2016-04-22-glm-for-s-statistic.R')
 source('../2016-03-02-ifats-regression-analysis/2016-03-02-ifats-regression-analysis.R')
 ```
 ```{r cache=TRUE, warning=FALSE, echo=FALSE}
-m.ifat.g8 <- fit.lm(transform.data(genes[1:13], genes[1:8]), do.thrs=FALSE)
+m.ifat.a8 <- fit.lm(transform.data(genes[1:13], genes[1:8]), do.thrs=FALSE)
 ```
 
 The new script provides the function `nlm` for the nlm model, `logi` for logi, and `logi2` for logi2.  Additionally, the `nlm2` function also implements nlm, but instead of calling `R`'s `glm` function (which is also called by `logi` and `logi2`), it calls `lm`.   The definition of `logi2` is nearly identical to  `logi`; the only difference is using `C2` as response variable instead of `C`.  Wheres `C` contains the original observed "higher" and "lower" read counts, `C2` is a transformation of those that corresponds to the (inverse) scaling function of the logistic functiion in logi2.
@@ -103,22 +103,22 @@ All results with `nlm2` were fournd to be identical to `nlm` (not shown) so the 
 
 Let's compare the normal linear model obtained with Ifat's implementation to that with the new implementation!  For consistency with Ifat's [previous results][ifat] the data manipulations are: filtering, rank-transformation, and averaging over $8$ selected genes.
 ```{r}
-sapply( c("deviance", "aic", "coefficients"), function(s) all.equal(m.ifat.g8[[s]], m$g8$nlm[[s]]))
+sapply( c("deviance", "aic", "coefficients"), function(s) all.equal(m.ifat.a8[[s]], m$a8$nlm.R[[s]]))
 ```
 These results show a close but not perfect match between the old and new implementation.  The slight discrepancy seems to be due to a rounding step in the old code, for which I found no justification and therefore omitted from the new implementation.
 
 ### Effect of filtering
 
-The table lists the relative change in AIC induced by omission of filtering, defined as $(\mathrm{AIC}_{f=1} - \mathrm{AIC}_{f=0}) / \mathrm{AIC}_{f=1}$, where $f=1$ indicates filtering.
+The table lists the relative change in AIC induced by omission of filtering, defined as $(\mathrm{AIC}_{f1} - \mathrm{AIC}_{f0}) / \mathrm{AIC}_{f1}$, where $f1$ indicates filtering and $f0$ no filtering.
 ```{r echo=FALSE}
 # compare model 1 to model 2; ml1 and ml2 are lists of models fitted to
-# different data; mf1 and mf2 are strings of model families ("nlm", "logi", "logi2")
+# different data; mf1 and mf2 are strings of model families ("nlm.R", "logi.S", "logi2.S")
 # fun compares the models's AIC values, default is scaled difference
 m2m <- function(ml1, ml2, mf1, mf2, fun = function(x, y) (x - y) / abs(x)) {
     sapply(responses, function(r) fun(ml1[[r]][[mf1]]$aic, ml2[[r]][[mf2]]$aic))
 }
 # test the effect of filtering
-signif(sapply(c("nlm", "logi", "logi2"), function(x) m2m(m, m.nof, x, x)), 3)
+signif(sapply(c("nlm.R","nlm.S", "logi.S", "logi2.S"), function(x) m2m(m, m.nof, x, x)), 3)
 ```
 Filtering has small effect in most cases.  The exceptions are those genes for which filtering removed many points such as NLRP2 and IGF2 (`r sum(is.na(d$S_IGF2)) - sum(is.na(d.nof$S_IGF2))` and `r sum(is.na(d$S_NLRP2)) - sum(is.na(d.nof$S_NLRP2))` points removed, respectively) in contrast with genes like PEG3 (only `r sum(is.na(d$S_PEG3)) - sum(is.na(d.nof$S_PEG3))` points removed).
 
@@ -126,32 +126,27 @@ All results below were obtained with filtering.
 
 ### Comparing models
 
-Below are relative AIC of logi compared to nlm, defined as $(\mathrm{AIC}_{\mathrm{logi}} - \mathrm{AIC}_{\mathrm{nlm}}) / \mathrm{AIC}_{\mathrm{logi}}$.  Note that the response is $S_{ig}$ for logi and $R_{ig}$ for nlm.
-```{r echo=FALSE}
-# compare logi to nlm
-signif(m2m(m, m, "logi", "nlm"), 3)
+The figure compares all three model families using AIC
+```{r echo=FALSE, fig.width=10}
+par(mar = c(5, 6, 4, 2), mfrow = c(1, 2))
+barplot(sapply(genes, function(r)
+               sapply(c("nlm.R", "nlm.S", "logi.S", "logi2.S"), function(mod) m[[r]][[mod]]$aic)),
+        horiz=TRUE, beside=TRUE, names.arg=genes, las=1, col=c("red", "pink",
+                                                               "green",
+                                                               "blue"),
+        xlab="AIC", main="gene-wise fit", legend.text=c("nlm.R",
+                                                                     "nlm.S",
+                                                                     "logi.S",
+                                                                     "logi2.S"),
+        args.legend=list(x = "topright"))
+barplot(sapply(setdiff(responses, genes), function(r)
+               sapply(c("nlm.R", "nlm.S", "logi.S", "logi2.S"), function(mod) m[[r]][[mod]]$aic)),
+        horiz=TRUE, beside=TRUE, names.arg=setdiff(responses, genes), las=1,
+        col=c("red", "pink", "green", "blue"), xlab="AIC", main="fit to
+        aggregated data", legend.text=c("nlm.R", "nlm.S", "logi.S", "logi2.S"),
+        args.legend=list(x = "bottomright"))
+
 ```
-For 12 out of 16 single genes nlm performs better than logi.  But for all
-aggregated (averaged) gene sets logi clearly performs better because it takes a
-weighted average of genes using the total read counts $n_{ig}$, which nlm
-ignores.
-
-The relative AIC of logi2 compared to logi:
-```{r echo=FALSE}
-# compare logi2 to logi
-signif(m2m(m, m, "logi2", "logi"), 3)
-```
-This shows that logi2 fits all data sets better than logi altough for genes with sparse data 
-
-The figure compares all three model families using (the absolute) AIC
-```{r echo=FALSE}
-par(mar = c(5, 6, 4, 2))
-barplot(sapply(responses, function(r) sapply(c("nlm", "logi", "logi2"), function(mod) m[[r]][[mod]]$aic)), horiz=TRUE, beside=TRUE, names.arg=responses, las=1, col=c("red", "green", "blue"), xlab="AIC", main="fit of models to data sets", legend.text=c("nlm", "logi", "logi2"), args.legend=list(x = "right"))
-```
-
-logi2 clearly outperforms logi and nlm when fitted to the any of the three aggregated datasets.  This tendency holds for individual genes as well, at least for genes with ample data (large number $n_{ig}$ of total read counts).  For genes with sparse data (e.g. NLRP2 and IGF2 mentioned before) nlm and logi2 fit similarly well; but for these genes cases AIC is much smaller (under any given model) underscoring the sparsity of data and weakening conclusions.
-
-Both logi and logi2 benefit from data aggregation to a great degree.  This is attributable to the regression weights gained from total read counts, which the unweighted nlm ignores.
 
 ## Conclusion
 
