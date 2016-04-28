@@ -166,29 +166,29 @@ data4fit <- function(S.f=files$S, N.f=files$N, X.f=files$X,
     N <- filter.S(N, N, thrs=thrs)
     # ranks and their averages
     R <- as.data.frame(lapply(S, loir.rank))
-    R.16 <- stat.Y(R, gns=gns, stat=mean, col.name="R_a16", na.rm=TRUE)
-    R.13 <- stat.Y(R, gns=gns[1:13], stat=mean, col.name="R_a13", na.rm=TRUE)
-    R.8 <- stat.Y(R, gns=gns[1:8], stat=mean, col.name="R_a8", na.rm=TRUE)
+    R.16 <- stat.Y(R, gns=gns, stat=mean, col.name="R_avg16", na.rm=TRUE)
+    R.13 <- stat.Y(R, gns=gns[1:13], stat=mean, col.name="R_avg13", na.rm=TRUE)
+    R.8 <- stat.Y(R, gns=gns[1:8], stat=mean, col.name="R_avg8", na.rm=TRUE)
     # higher read counts and their sums
     H <- as.data.frame(lapply(names(S), function(g) as.integer(S[[g]] * N[[g]])))
     names(H) <- names(S)
-    H.16 <- stat.Y(H, gns=gns, stat=sum, col.name="H_a16", na.rm=TRUE)
-    H.13 <- stat.Y(H, gns=gns[1:13], stat=sum, col.name="H_a13", na.rm=TRUE)
-    H.8 <- stat.Y(H, gns=gns[1:8], stat=sum, col.name="H_a8", na.rm=TRUE)
+    H.16 <- stat.Y(H, gns=gns, stat=sum, col.name="H_avg16", na.rm=TRUE)
+    H.13 <- stat.Y(H, gns=gns[1:13], stat=sum, col.name="H_avg13", na.rm=TRUE)
+    H.8 <- stat.Y(H, gns=gns[1:8], stat=sum, col.name="H_avg8", na.rm=TRUE)
     # lower read counts and their sums
     L <- as.data.frame(lapply(names(S), function(g) N[[g]] - H[[g]]))
     names(L) <- names(S)
-    L.16 <- stat.Y(L, gns=gns, stat=sum, col.name="L_a16", na.rm=TRUE)
-    L.13 <- stat.Y(L, gns=gns[1:13], stat=sum, col.name="L_a13", na.rm=TRUE)
-    L.8 <- stat.Y(L, gns=gns[1:8], stat=sum, col.name="L_a8", na.rm=TRUE)
+    L.16 <- stat.Y(L, gns=gns, stat=sum, col.name="L_avg16", na.rm=TRUE)
+    L.13 <- stat.Y(L, gns=gns[1:13], stat=sum, col.name="L_avg13", na.rm=TRUE)
+    L.8 <- stat.Y(L, gns=gns[1:8], stat=sum, col.name="L_avg8", na.rm=TRUE)
     # total read count sums
-    N.16 <- stat.Y(N, gns=gns, stat=sum, col.name="N_a16", na.rm=TRUE)
-    N.13 <- stat.Y(N, gns=gns[1:13], stat=sum, col.name="N_a13", na.rm=TRUE)
-    N.8 <- stat.Y(N, gns=gns[1:8], stat=sum, col.name="N_a8", na.rm=TRUE)
+    N.16 <- stat.Y(N, gns=gns, stat=sum, col.name="N_avg16", na.rm=TRUE)
+    N.13 <- stat.Y(N, gns=gns[1:13], stat=sum, col.name="N_avg13", na.rm=TRUE)
+    N.8 <- stat.Y(N, gns=gns[1:8], stat=sum, col.name="N_avg8", na.rm=TRUE)
     # S averages
-    S.16 <- H.16 / N.16; names(S.16) <- "S_a16"
-    S.13 <- H.13 / N.13; names(S.13) <- "S_a13"
-    S.8 <- H.8 / N.8; names(S.8) <- "S_a8"
+    S.16 <- H.16 / N.16; names(S.16) <- "S_avg16"
+    S.13 <- H.13 / N.13; names(S.13) <- "S_avg13"
+    S.8 <- H.8 / N.8; names(S.8) <- "S_avg8"
     # give columns unique names
     names(S) <- paste("S", sep="_", names(S))
     names(N) <- paste("N", sep="_", names(N))
@@ -202,7 +202,7 @@ data4fit <- function(S.f=files$S, N.f=files$N, X.f=files$X,
                  N, N.16, N.13, N.8,
                  X)
     # two-column matrices for fitting with binomial response distribution
-    for(r in c(gns, "a8", "a13", "a16")) {
+    for(r in c(gns, "avg8", "avg13", "avg16")) {
         df[[ paste0("C_", r) ]] <- cbind( df[[ paste0("H_", r) ]], df[[ paste0("L_", r) ]])
         df[[ paste0("C2_", r) ]] <- scale4log2(df[[ paste0("C_", r) ]])
     }
@@ -229,16 +229,16 @@ pool.gset <- function(gns, din) {
     dout <- as.data.frame(lapply(din[ expl ], rep, n))
     # for each response pool points across genes
     for(s in unlist(strsplit(resps, ""))) {
-        dout[[paste0(s, "_p", n)]] <- as.vector(unlist(din[ paste0(s, "_", gns) ]))
+        dout[[paste0(s, "_pool", n)]] <- as.vector(unlist(din[ paste0(s, "_", gns) ]))
     }
     # the higher and lower read counts go into 2 column matrices with optional # rescaling
-    dout[[paste0("C_p", n)]] <- C <- cbind(dout[[paste0("H_p", n)]], dout[[paste0("L_p", n)]]) 
-    dout[[paste0("C2_p", n)]] <- scale4log2(C) 
+    dout[[paste0("C_pool", n)]] <- C <- cbind(dout[[paste0("H_pool", n)]], dout[[paste0("L_pool", n)]]) 
+    dout[[paste0("C2_pool", n)]] <- scale4log2(C) 
     dout
 }
 
 # Wrapper for various regression models; argument 'y' is the name of the gene
-# or gene set, e.g 'PEG3' or 'a13' and 'd' is the data frame of the fitted # data
+# or gene set, e.g 'PEG3' or 'avg13' and 'd' is the data frame of the fitted # data
 f <- list(
           nlm.R = function(y, d) { # normal linear model with rank R as response
               glm(formula = mk.form(paste0("R_", y)), family = gaussian, data = d)
@@ -287,7 +287,7 @@ expl.var <- c("`Age.of.Death`",
                "`Ancestry.EV.1`", "`Ancestry.EV.2`", "`Ancestry.EV.3`", "`Ancestry.EV.4`", "`Ancestry.EV.5`" )
 
 # response variables
-responses <- c(genes, "a8", "a13", "a16", "p8", "p13", "p16")
+responses <- c(genes, "avg8", "avg13", "avg16", "pool8", "pool13", "pool16")
 names(responses) <- responses
 
 
@@ -296,19 +296,19 @@ d <- data4fit(thrs=50, gns=genes)
 # using no filter
 d.nof <- data4fit(thrs=0)
 # pool data across genes of sets 8, 13, 16
-d.p <- lapply(list(p8=8, p13=13, p16=16), function(n) pool.gset(genes[1:n], d))
-d.p.nof <- lapply(list(p8=8, p13=13, p16=16), function(n) pool.gset(genes[1:n], d.nof))
+d.p <- lapply(list(pool8=8, pool13=13, pool16=16), function(n) pool.gset(genes[1:n], d))
+d.p.nof <- lapply(list(pool8=8, pool13=13, pool16=16), function(n) pool.gset(genes[1:n], d.nof))
 
 
 # fit models
 m <- list()
 m.nof <- list()
-# omit p8, p13, p16 from this loop
+# omit pool8, pool13, pool16 from this loop
 for(y in responses[ setdiff(responses, names(d.p)) ] ) {
     m[[y]] <- lapply(f, function(fun) fun(y, d))
     m.nof[[y]] <- lapply(f, function(fun) fun(y, d.nof))
 }
-# include only p8, p13, p16 in this loop
+# include only pool8, pool13, pool16 in this loop
 for(y in names(d.p)) {
     m[[y]] <- lapply(f, function(fun) fun(y, d.p[[y]]))
     m.nof[[y]] <- lapply(f, function(fun) fun(y, d.p.nof[[y]]))
@@ -354,6 +354,97 @@ barplot(sapply(setdiff(responses, genes), function(r)
         col=c("red", "pink", "green", "blue"), xlab="AIC", main="fit to
         aggregated data", legend.text=c("nlm.R", "nlm.S", "logi.S", "logi2.S"),
         args.legend=list(x = "bottomright"))
+
+
+# illustration of models
+m.S_PEG3 <- list()
+m.S_PEG3$nlm <- glm(S_PEG3 ~ Age.of.Death, data=d)
+m.S_PEG3$logi <- glm(C_PEG3 ~ Age.of.Death, data=d, family=binomial)
+m.S_PEG3$logi2 <- glm(C2_PEG3 ~ Age.of.Death, data=d, family=binomial)
+f.S_PEG3 <- list()
+f.S_PEG3$logi <-
+    function(x) 1 / (1 + exp( - m.S_PEG3$logi$coefficients[1] - x * m.S_PEG3$logi$coefficients[2]) )
+f.S_PEG3$logi2 <-
+    function(x) 0.5 + 0.5 / (1 + exp( - m.S_PEG3$logi2$coefficients[1] - x * m.S_PEG3$logi2$coefficients[2]) )
+par(mfrow=c(1,2), mar=c(4,4,2,1))
+# extended time scale
+plot(S_PEG3 ~ Age.of.Death, data=d, pch="+", col="grey", xlim=c(0, 600), ylim = c(0, 1))
+abline(h=0.5, lty=3); abline(h=0, lty=3); abline(h=1, lty=3)
+abline(coef(m.S_PEG3$nlm), col=3)
+plot(f.S_PEG3$logi, from=0, to=600, add=TRUE, col=2)
+plot(f.S_PEG3$logi2, from=0, to=600, add=TRUE, col=4, lty=2)
+# compressed time scale
+plot(S_PEG3 ~ Age.of.Death, data=d, pch="+", col="grey", xlim = c(0, 100),
+     ylim = c(0.96, 1))
+abline(h=0.5, lty=3)
+abline(coef(m.S_PEG3$nlm), col=3)
+plot(f.S_PEG3$logi, from=0, to=120, add=TRUE, col=2)
+plot(f.S_PEG3$logi2, from=0, to=120, add=TRUE, col=4, lty=2)
+#calculate deviance and AIC
+sapply(m.S_PEG3, deviance)
+sapply(m.S_PEG3, function(x) x$aic)
+
+# plot 4 types of responses pairwise against all explanatory variables
+par(mfrow=c(3,4), mar=c(4,4,2,1))
+plot(mk.form("S_pool16", expl = expl.var[1:12]), data=d.p$pool16, pch=".")
+par(mfrow=c(3,4))
+plot(mk.form("R_pool16", expl = expl.var[1:12]), data=d.p$pool16, pch=".")
+par(mfrow=c(3,4))
+plot(mk.form("S_avg16", expl = expl.var[1:12]), data=d, pch=".")
+par(mfrow=c(3,4))
+plot(mk.form("R_avg16", expl = expl.var[1:12]), data=d, pch=".")
+
+plot.smooth.stat.age <- function(stat = "S", ar = TRUE) {
+    bar <- function(g) {
+        if(ar) {
+            d.x <- d$Age.of.Death
+            d.y <- d[[ paste0(stat, "_", g) ]]
+        } else {
+            d.x <- d.p$pool16$Age.of.Death
+            d.y <- d.p$pool16[[ paste0(stat, "_pool16") ]]
+        }
+        plot(d.x, d.y,
+             type="n", xlab = ifelse(ar, "", "Age.of.Death"),
+             ylab = ifelse(ar, "", stat),
+             main = ifelse(ar, g, ""),
+             mar = ifelse(ar, c(0,0,0,0), c(5,4,4,2)),
+             ylim = c(quantile(d.y, 1e-2, na.rm=TRUE), max(d.y, na.rm=TRUE))
+             )
+    }
+    foo <- function(i) {
+        g <- genes[i]
+        if(ar) bar(g)
+        S.sm <- lowess(age <- d$Age.of.Death,
+                       ifelse(is.na(s.g <- d[[ paste0(stat, "_", g) ]]),
+                              mean(s.g, na.rm=TRUE), s.g), f = 1/2)
+        lines(S.sm, col = col <- ifelse(ar, 1, i + 1))
+        points(age, s.g, col = col, pch=".")
+    }
+    if(ar) {
+        par(mfrow=c(4,4), mar=c(2,2,3,1))
+        par(cex=1, cex.lab=1)
+    }
+    else {
+        bar("")
+    }
+    sapply(seq_along(genes), foo)
+    return(invisible())
+}
+plot.smooth.stat.age(stat = "S", ar = TRUE)
+plot.smooth.stat.age(stat = "R", ar = TRUE)
+
+# condition R_PEG3 vs age on a given institution and RIN value
+#par(cex=1, cex.lab=1.5)
+# condition R_PEG3 vs age on a given institution and RIN value
+coplot(R_PEG3 ~ Age.of.Death | Institution, data=d)
+coplot(R_PEG3 ~ Age.of.Death | DLPFC_RNA_isolation..RIN, data=d)
+# further conditioning on RIN.2 is not necessary because of its high correlation with RIN
+signif(with(d, cor(DLPFC_RNA_isolation..RIN, DLPFC_RNA_isolation..RIN.2)), 3)
+
+coplot(R_PEG3 ~ Age.of.Death | Institution, data=d)
+coplot(R_PEG3 ~ Age.of.Death | DLPFC_RNA_isolation..RIN, data=d)
+# further conditioning on RIN.2 is not necessary because of its high correlation with RIN
+signif(with(d, cor(DLPFC_RNA_isolation..RIN, DLPFC_RNA_isolation..RIN.2)), 3)
 
 }
 
