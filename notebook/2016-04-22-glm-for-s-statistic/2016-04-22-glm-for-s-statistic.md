@@ -1,5 +1,12 @@
 ## Preparations
 
+
+```r
+source('2016-04-22-glm-for-s-statistic.R')
+source('../2016-03-02-ifats-regression-analysis/2016-03-02-ifats-regression-analysis.R')
+```
+
+
 ### Data
 
 Data files:
@@ -22,6 +29,9 @@ genes <- c("PEG3", "INPP5F", "SNRPN", "PWAR6", "ZDBF2", "MEG3", "ZNF331", "GRB10
              "PEG10", "SNHG14", "NAP1L5", "KCNQ1OT1", "MEST",
              # 3 more genes present in data files
              "IGF2", "NLRP2", "UBE3A")
+# response variables
+genes.or.gsets <- c(genes, "avg8", "avg13", "avg16", "pool8", "pool13", "pool16")
+names(genes.or.gsets) <- genes.or.gsets
 ```
 
 Manipulations of $S$ and $N$ give rise to $response$ variables $Y=[y_{ig}]$ of
@@ -78,33 +88,47 @@ $$
 \end{equation}
 $$
 
-These functions are illustrated by the following plot; nlm: solid green, logi: solid red, and logi2: dashed blue.  They reflect simple models with $S_{i\mathrm{PEG3}}$ as response and `Age.of.Death` as the only explanatory variable.  Thus there are two regression coefficients in all three cases, and these were estimated with iterative weighted least squares using `R`'s `glm` function.  logi and logi2 are almost indistinguishable in the range of all observed ages but become quite different around 300 years (much longer than the human lifespan).
+These functions are illustrated by the following plot; nlm: solid green, logi: solid red, and logi2: dashed blue.  They reflect simple (univariate) regression models with $S_{i\mathrm{PEG3}}$ as response and `Age.of.Death` as the only explanatory variable.  Thus there are two regression coefficients in all three cases, and these were estimated with iterative weighted least squares using `R`'s `glm` function.  logi and logi2 are almost indistinguishable in the range of all observed ages but become quite different around 300 years (much longer than the human lifespan).
 
-![plot of chunk unnamed-chunk-4](figure/unnamed-chunk-4-1.png) 
+![plot of chunk unnamed-chunk-6](figure/unnamed-chunk-6-1.png) 
 
-Residual deviance (top) and AIC (bottom) as measures of fit.
+Below printed are two measures of fit: residual deviance (top block) and AIC (bottom block).
 
-
-```
-##          nlm         logi        logi2 
-## 2.028023e-01 5.484768e+03 1.127678e+04
-```
 
 ```
-##       nlm      logi     logi2 
-## -2432.414  7116.834 13207.780
+##        nlm.R       nlm2.R        nlm.S       logi.S      logi2.S 
+## 4.348327e+05 4.348327e+05 2.028023e-01 5.484768e+03 1.127678e+04
+```
+
+```
+## $nlm.R
+## [1] 4740.081
+## 
+## $nlm2.R
+## NULL
+## 
+## $nlm.S
+## [1] -2432.414
+## 
+## $logi.S
+## [1] 7116.834
+## 
+## $logi2.S
+## [1] 13207.78
 ```
 
 Although the models might appear freely combinable with both data transformations, it is not clear how logistic model(s) might be fitted after rank transformation of $S_{ig}$.  Because how should total read counts $n_{ig}$ (the weights) be transformed?  But the converse case is straight-forward: to fit nlm to untransformed $S_{ig}$ despite its apparent heteroscedasticity and nonlinearity (see [Ifat's plots][ifat] and the data exploration below).
 
-The table summarizes the models' properties.
+Therefore the three model families give rise to four types of models depending on whether the response is rank-transformed or not.  These are summarized in the table below:
 
-|                   |    nlm            |    logi           |       logi2       |
-|:-----------------:|:-----------------:|:-----------------:|:-----------------:|
-|    link function  |    linear         |    logistic       |  scaled logistic  |
-|response distrib.  |normal (Gaussian)  |   binomial        |     binomial      |
-|         response  |  $R_{ig}, S_{ig}$ |   $S_{ig}$        |   $S_{ig}$        |
-|   weights         |      1 (uniform)  |   $n_{ig}$        |   $n_{ig}$        |
+|                   |    nlm.R          |    nlm.S          |    logi.S         |       logi2.S     |
+|:-----------------:|:-----------------:|:-----------------:|:-----------------:|:-----------------:|
+|    link function  |    linear         |    linear         |    logistic       |  scaled logistic  |
+|response distrib.  |normal (Gaussian)  |normal (Gaussian)  |   binomial        |     binomial      |
+|         response  |  $R_{ig}$         |          $S_{ig}$ |   $S_{ig}$        |   $S_{ig}$        |
+|   weights         |      1 (uniform)  |      1 (uniform)  |   $n_{ig}$        |   $n_{ig}$        |
+
+So, considering these 4 types combined with 16 genes separately, or with the two kinds of data aggregations (averaging and pooling) using 3 gene sets, each with or without filtering, there are $4 \times (16 + 2 \times 3) \times 2 = 176$ fitted models in the present analysis.
 
 ### Implementation
 
@@ -115,8 +139,7 @@ source('2016-04-22-glm-for-s-statistic.R')
 source('../2016-03-02-ifats-regression-analysis/2016-03-02-ifats-regression-analysis.R')
 ```
 
-
-The new script provides the function `nlm` for the nlm model, `logi` for logi, and `logi2` for logi2.  Additionally, the `nlm2` function also implements nlm, but instead of calling `R`'s `glm` function (which is also called by `logi` and `logi2`), it calls `lm`.   The definition of `logi2` is nearly identical to  `logi`; the only difference is using `C2` as response variable instead of `C`.  Wheres `C` contains the original observed "higher" and "lower" read counts, `C2` is a transformation of those that corresponds to the (inverse) scaling function of the logistic functiion in logi2.
+The new code provides the function `nlm` for the nlm model, `logi` for logi, and `logi2` for logi2.  Additionally, the `nlm2` function also implements nlm, but instead of calling `R`'s `glm` function (which is also called by `logi` and `logi2`), it calls `lm`.   The definition of `logi2` is nearly identical to  `logi`; the only difference is using `C2` as response variable instead of `C`.  Wheres `C` contains the original observed "higher" and "lower" read counts, `C2` is a transformation of those that corresponds to the (inverse) scaling function of the logistic functiion in logi2.
 
 
 ```r
@@ -142,62 +165,69 @@ f <- list(
 ```
 As expected, all results with `nlm2` were found to be identical to `nlm` (not shown).
 
-## Results
-
-### Data exploration
+## Exploratory analysis
 
 The following plots explore the relationship between a given response variable and 12 of the 13 explanatory variables (the 13th one, Ancestry.EV.5 showed no systematic relationship and is omitted here so that plots can be arranged in $3 \times 4$ arrays).  In this document only filtered data are presented because filtering had no visually appreciable effect on the plot.
 
-#### Responses averaged across genes
+### Responses averaged across genes
 
 When the response is the average $\bar{S}_{i}=\left( \sum_g n_g \right)^{-1} \sum_{g=1}S_{ig} n_{ig}$ (below), a qualitatively similar, inverse, relationship emerges between $\bar{S}$ statistic and age as seen in [Ifat's plots][ifat], which depicted 13 genes separately.   Some of the remaining 11 explanatory variables, like Institution or PMI.in.hours seem to effect $\bar{S}$, while others like Gender don't.
 
-![plot of chunk unnamed-chunk-9](figure/unnamed-chunk-9-1.png) 
+![plot of chunk unnamed-chunk-10](figure/unnamed-chunk-10-1.png) 
 
 When ranks are averaged as $\bar{R}_i=\sum_gR_{ig}$, the response appears more homoscedastic (its dispersion appears unaffected by explanatory variables) but some of the systematic effects that are seen without transformation (e.g. PMI.in.hours) are diminished.
 
-![plot of chunk unnamed-chunk-10](figure/unnamed-chunk-10-1.png) 
+![plot of chunk unnamed-chunk-11](figure/unnamed-chunk-11-1.png) 
 
-#### Responses pooled across genes
+### Responses pooled across genes
 
 The next set of plots shows data points for all genes pooled together rather than averaged together so each plot has many more points than before.  Below are plots with $s_{ig}$ as response for $g\in$ all 16 genes.
 
-![plot of chunk unnamed-chunk-11](figure/unnamed-chunk-11-1.png) 
+![plot of chunk unnamed-chunk-12](figure/unnamed-chunk-12-1.png) 
 
 Below are plots with $r_{ig}$ (observed ranks) as response.  Compared to the corresponding results obtained with averaging there is clearly less systematic variation of the response with explanatory variables, which hints at their differential effects on various genes.
 
-![plot of chunk unnamed-chunk-12](figure/unnamed-chunk-12-1.png) 
+![plot of chunk unnamed-chunk-13](figure/unnamed-chunk-13-1.png) 
 
-#### Response vs age for each gene separately
+### Response vs age for each gene separately
 
 The differential effect of age on the response of various genes is illustrated now.
 Plotted below is the observed $s_{ig}$ statistic versus age for each gene $g$ separately.  Dots are data points and the solid line is the smoothed data with the Lowess filter.  The lower percentile of $s_{ig}$, for each $g$, has been trimmed off to enhance clarity.  Judged from the smooth curves the effect of age appears quite small.  Still, gene-to-gene variation is apparent.
 
-![plot of chunk unnamed-chunk-13](figure/unnamed-chunk-13-1.png) 
+![plot of chunk unnamed-chunk-14](figure/unnamed-chunk-14-1.png) 
 
 Below are similar plots to the ones above but now with $R$ as response (i.e. with rank-transformation).  The among genes variation is quite clear.
 
-![plot of chunk unnamed-chunk-14](figure/unnamed-chunk-14-1.png) 
+![plot of chunk unnamed-chunk-15](figure/unnamed-chunk-15-1.png) 
 
 ### Conditional dependence on age given other explanatory variables
 
-The apparent dependence of the response on age is marginal in the sense that other explanatory variables are disregarded in the previous plots.  However, those other variables may induce spurious dependence between the response and age even if those are conditionally independent.  Therefore, the next two sets of plots are conditioned on one of two explanatory variables, `Institution` and the RNA quality measure `DLPFC_RNA_isolation..RIN`, that were found to exert highly significant effect in Ifat's earlier regression analysis.  `DLPFC_RNA_isolation..RIN.2` had also highly significant effect, but it correlates so tightly with `DLPFC_RNA_isolation..RIN` (Pearson corr. coef 1) that it carries no additional information.
+The apparent dependence of the response on age is marginal in the sense that other explanatory variables are disregarded in the previous plots.  However, those other variables may induce spurious dependence between the response and age even if those are conditionally independent.  Therefore, the next two sets of plots are conditioned on one of three explanatory variables, `Institution`, the RNA quality measure `DLPFC_RNA_isolation..RIN`, and `Ancestry.EV.2` reporting on the population structure(?) that were found to exert highly significant effect in Ifat's earlier regression analysis.  `DLPFC_RNA_isolation..RIN.2` had also highly significant effect, but it correlates so tightly with `DLPFC_RNA_isolation..RIN` (Pearson corr. coef 1) that it carries no additional information.
 
-Importantly, these plots below suggest that, at least for PEG3, the response's dependence on age is genuine and not due to confounding effects of other variables.
+Importantly, these plots below suggest that, at least for PEG3, the response's dependence on age seems genuine and not entirely due to confounding effects of other variables.
 
-![plot of chunk unnamed-chunk-15](figure/unnamed-chunk-15-1.png) 
+![plot of chunk unnamed-chunk-16](figure/unnamed-chunk-16-1.png) 
+
+```
+## 
+##  Missing rows: 8, 13, 16, 17, 32, 54, 57, 59, 60, 66, 67, 68, 77, 79, 84, 100, 116, 122, 131, 142, 150, 161, 177, 189, 192, 194, 197, 205, 208, 212, 216, 219, 226, 234, 246, 251, 252, 264, 277, 279, 284, 285, 289, 300, 302, 311, 312, 321, 322, 339, 341, 347, 349, 350, 358, 359, 366, 369, 372, 376, 377, 384, 394, 409, 418, 423, 429, 432, 439, 445, 446, 451, 472, 475, 480, 490, 492, 508, 512, 513, 519, 520, 524, 532, 536, 554, 575
+```
+
+![plot of chunk unnamed-chunk-16](figure/unnamed-chunk-16-2.png) 
 
 ```
 ## 
 ##  Missing rows: 8, 13, 16, 17, 32, 54, 57, 59, 60, 66, 67, 68, 77, 79, 84, 100, 116, 122, 131, 142, 150, 161, 177, 189, 192, 194, 197, 205, 208, 212, 216, 219, 226, 234, 246, 251, 252, 264, 277, 279, 284, 285, 289, 300, 302, 311, 312, 321, 322, 339, 341, 347, 349, 350, 358, 359, 366, 369, 372, 376, 377, 384, 394, 409, 418, 423, 429, 432, 439, 445, 446, 451, 472, 475, 480, 490, 492, 508, 512, 513, 519, 520, 524, 532, 536, 554, 575
 ```
 
-![plot of chunk unnamed-chunk-15](figure/unnamed-chunk-15-2.png) 
+![plot of chunk unnamed-chunk-16](figure/unnamed-chunk-16-3.png) 
 
 ```
 ## 
 ##  Missing rows: 8, 13, 16, 17, 32, 54, 57, 59, 60, 66, 67, 68, 77, 79, 84, 100, 116, 122, 131, 142, 150, 161, 177, 189, 192, 194, 197, 205, 208, 212, 216, 219, 226, 234, 246, 251, 252, 264, 277, 279, 284, 285, 289, 300, 302, 311, 312, 321, 322, 339, 341, 347, 349, 350, 358, 359, 366, 369, 372, 376, 377, 384, 394, 409, 418, 423, 429, 432, 439, 445, 446, 451, 472, 475, 480, 490, 492, 508, 512, 513, 519, 520, 524, 532, 536, 554, 575
 ```
+
+## Regression analysis
 
 ### Comparing implementations
 
@@ -219,41 +249,52 @@ These results show a close but not perfect match between the old and new impleme
 
 ### Effect of filtering
 
-The table lists the relative change in AIC induced by omission of filtering, defined as $(\mathrm{AIC}_{f1} - \mathrm{AIC}_{f0}) / \mathrm{AIC}_{f1}$, where $f1$ indicates filtering and $f0$ no filtering.
+Filtering out "noisy" observations (those with low total read counts) is expected to improve model fit to data.  When too few points are retained after filtering, overfitting may occur.  This is illustrated by the plots below, where filtering induces extremely large improvement for genes with scarce data, like IGF2 or NLRP2.  Improvement is expressed as *minus relative AIC* defined as
+$- (\mathrm{AIC}_{f1} - \mathrm{AIC}_{f0}) / \mathrm{AIC}_{f1}$, where $f1$ indicates filtering and $f0$ no filtering.
 
-```
-##             nlm.R     nlm.S    logi.S   logi2.S
-## PEG3     -0.01880  0.015100 -3.52e-03 -3.53e-03
-## INPP5F   -0.00204  0.002730 -3.60e-04 -4.62e-04
-## SNRPN    -0.22500  0.082400 -4.35e-02 -4.85e-02
-## PWAR6    -0.00558  0.006350 -6.90e-05 -7.54e-05
-## ZDBF2    -0.12900  0.125000 -3.73e-02 -3.70e-02
-## MEG3     -0.10800  0.096000 -2.23e-02 -2.21e-02
-## ZNF331   -0.35300 -0.128000 -2.86e-01 -3.66e-01
-## GRB10    -1.11000  0.629000 -7.95e-01 -9.46e-01
-## PEG10    -0.08210  0.060200 -3.75e-02 -3.93e-02
-## SNHG14   -0.12300  0.089200 -3.07e-02 -3.10e-02
-## NAP1L5   -0.22300 -0.193000 -1.88e-01 -2.43e-01
-## KCNQ1OT1 -1.01000  0.540000 -5.37e-01 -6.48e-01
-## MEST     -0.44400  0.179000 -2.85e-01 -3.08e-01
-## IGF2     -3.55000 -0.757000 -8.59e+00 -1.54e+01
-## NLRP2    -5.43000  4.660000 -3.74e+00 -5.71e+00
-## UBE3A    -1.97000 -0.875000 -3.03e+00 -4.77e+00
-## avg8      0.01430  0.005920 -9.99e-05 -2.17e-04
-## avg13     0.01710 -0.001680 -3.75e-03 -4.34e-03
-## avg16     0.02860 -0.000266  1.43e-02  1.59e-02
-## pool8    -0.16900  0.002850 -4.05e-02 -4.19e-02
-## pool13   -0.21300  0.051700 -5.52e-02 -5.66e-02
-## pool16   -0.30000 -0.095100 -1.33e-01 -1.43e-01
-```
-Filtering has small effect in most cases.  The exceptions are those genes for which filtering removed many points such as NLRP2 and IGF2 (169 and 149 points removed, respectively) in contrast with genes like PEG3 (only 8 points removed).
-
-All results below were obtained with filtering.
-
-### Comparing models
-
-The figure compares all three model families using AIC
 ![plot of chunk unnamed-chunk-18](figure/unnamed-chunk-18-1.png) 
+
+All results presented in this document were obtained with filtering unless otherwise noted.
+
+### To what extent is the apparent effect of age confounded?
+
+The previous conditional plots of $R_{i\mathrm{PEG3}}$ vs age qualitatively examined the extent of confounding by three additional variables such as Institution.  The regression coefficient $\beta_{\mathrm{age}}$ under some model reports the effect of age on the response.  In *simple regression* $\beta_{\mathrm{age}}$ is estimated from a model where the linear predictor contains only age so that $\eta = \beta_0 + x_\mathrm{age} \beta_{\mathrm{age}}$.  Then the additional variables $x_r, \; r=2,...$ behave as latent variables confounding the effect $\beta_\mathrm{age}$ of age.  *Multiple regression* includes these additional variables in the linear predictor removes their confounding effect from $\beta_\mathrm{age}$.
+
+Here I compare $\beta_\mathrm{age}$ estimated from simple and multiple regression under the nlm.S, logi.S and logi2.S model types.  First let's return to the earlier plot of fitted simple regression models to the $S_{i\mathrm{PEG3}}$ and $x_\mathrm{age}$ data.  Given a model family such as nlm, the mean $\mu$ of $S_{i\mathrm{PEG3}}$ is a function of $x_\mathrm{age}$ and as well as $\beta_0, \beta_\mathrm{age}$ estimated from simple regression, shown by the left graph.  This function is changed when $\beta_0, \beta_\mathrm{age}$ are estimated from multiple regression, shown on the right.  Because the estimated intercept $\beta_0$ is different, the baselines are shifted.  And because the estimated $\beta_\mathrm{age}$ differs the steepness of the "fitted lines" is also changed: it became much shallower indicating that a large confounding effect by other variables was removed by multiple regression.
+
+![plot of chunk unnamed-chunk-19](figure/unnamed-chunk-19-1.png) 
+
+The changes in the "fitted lines" are qualitatively similar for all genes and aggregated gene sets.  ZNF331 shows the most profound effect of age on $S_{ig}$ after the removal of the confounding effects by multiple regression.
+![plot of chunk unnamed-chunk-20](figure/unnamed-chunk-20-1.png) 
+
+### Estimates of the effect of age and confounding
+
+The following set of plots compares estimates of $\beta_\mathrm{age}$ from the simple (dark grey) and multiple (light grey) regression under various model families.  These results can be summarized as
+
+1. age has a negative effect on the response (loss of imprinting)
+1. based on multiple regression, the estimated effect size and significance of age is smaller, which indicates substantial confounding in simple regression 
+1. for genes with scarce data the effect size can be large without being significantly different from zero
+
+#### nlm.R
+
+![plot of chunk unnamed-chunk-21](figure/unnamed-chunk-21-1.png) 
+
+#### nlm.S
+
+![plot of chunk unnamed-chunk-22](figure/unnamed-chunk-22-1.png) 
+
+#### logi.S
+
+![plot of chunk unnamed-chunk-23](figure/unnamed-chunk-23-1.png) 
+
+#### logi2.S
+
+![plot of chunk unnamed-chunk-24](figure/unnamed-chunk-24-1.png) 
+
+### Comparing models using AIC
+
+The figure compares all three model families using AIC; nlm is used both
+![plot of chunk unnamed-chunk-25](figure/unnamed-chunk-25-1.png) 
 
 ## Conclusion
 
