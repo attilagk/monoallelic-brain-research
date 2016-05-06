@@ -331,33 +331,48 @@ fit.S.x1 <- function(g = genes.or.gsets[1], dt = d, x1 = "Age.of.Death") {
 }
 # Plots simple models S ~ x1 in model list 'md.l', supposed to contain "nlm.S", "logi.S", "logi2.S"
 # Data are also plotted
-plot.S.x1 <- function(md.l, xlim = c(0, 600), ylim = c(0, 1), x1 = "Age.of.Death") {
+plot.S.x1 <- function(md.l, xlim = c(0, 600), ylim = c(0, 1),
+                      x1 = "Age.of.Death", offset = c(0,0,0), add = FALSE,
+                      fun.RIN = mean, ...) {
     # ensure that nlm.S, logi.S, logi2.S are contained in md.l
     stopifnot(length(intersect(names(md.l), md.types <- c("nlm.S", "logi.S", "logi2.S"))) == 3)
+    names(offset) <- md.types
+    # offset according to RIN
+    rin <- "DLPFC_RNA_isolation..RIN"
+    rin2 <- "DLPFC_RNA_isolation..RIN.2"
+    if (length(grep(rin, names(coef(md.l[[1]]))))) {
+        off <- sapply( md.l, function(m) coef(m)[[rin]] * fun.RIN(m$data[[rin]]))
+        off2 <- sapply( md.l, function(m) coef(m)[[rin2]] * fun.RIN(m$data[[rin2]]))
+        # add to offset
+        offset <- offset + off + off2
+    }
     # create a list of link functions
     lf <- list()
     lf$nlm.S <-
-        function(x) md.l[["nlm.S"]]$coefficients[1] + x * md.l[["nlm.S"]]$coefficients[x1]
+        function(x) md.l[["nlm.S"]]$coefficients[1] + x * md.l[["nlm.S"]]$coefficients[x1] + offset["nlm.S"]
     lf$logi.S <-
-        function(x) 1 / (1 + exp( - md.l[["logi.S"]]$coefficients[1] - x * md.l[["logi.S"]]$coefficients[x1]) )
+        function(x) 1 / (1 + exp( - md.l[["logi.S"]]$coefficients[1] - x * md.l[["logi.S"]]$coefficients[x1] - offset["logi.S"]) )
     lf$logi2.S <-
-        function(x) 0.5 + 0.5 / (1 + exp( - md.l[["logi2.S"]]$coefficients[1] - x * md.l[["logi2.S"]]$coefficients[x1]) )
-    # plot data
-    fm <- mk.form(as.character(formula( md.l[[ md.types[1] ]] ))[2], x1)
-    plot(fm, data=md.l[[1]]$data, pch="+", col="grey", xlim=xlim, ylim=ylim)
+        function(x) 0.5 + 0.5 / (1 + exp( - md.l[["logi2.S"]]$coefficients[1] - x * md.l[["logi2.S"]]$coefficients[x1] - offset["logi2.S"]) )
+    if (! add) {
+        # plot data
+        fm <- mk.form(as.character(formula( md.l[[ md.types[1] ]] ))[2], x1)
+        plot(fm, data=md.l[[1]]$data, pch="+", col="grey", xlim=xlim, ylim=ylim)
+    }
     # 'baseline' guide lines
     if (all(ylim == c(0, 1))) {
         abline(h=0.5, lty=3); abline(h=0, lty=3); abline(h=1, lty=3)
     }
     # plot model lines
     sapply(seq_along(lf), function(i)
-           plot(lf[[i]], from=xlim[1], to=xlim[2], add=TRUE, col=c(3,4,2)[i], lty=1))
+           plot(lf[[i]], from=xlim[1], to=xlim[2], add=TRUE, col=c(3,4,2)[i], ...))
     return(lf)
 }
 # plot fitted lines for PEG3 using the simple Y ~ age model
 g <- genes.or.gsets[1]
 par(mfrow=c(1,2), mar=c(4,4,2,1))
 invisible(plot.S.x1(md.l <- fit.S.x1(g)))
+legend("bottomleft", bg="white", c("nlm.S", "logi.S", "logi2.S"), col=c(3,4,2), lty=1)
 invisible(plot.S.x1(md.l, xlim=c(0,120), ylim=(c(quantile(md.l[[1]]$data[[ paste0("S_", g) ]],0.05,na.rm=TRUE),1))))
 
 # calculate deviance and AIC
@@ -488,8 +503,12 @@ plot.simple.cmp.multiple <- function(g = "PEG3") {
     par(mfrow=c(1,2))
     plot.S.x1(fit.S.x1(g))
     title(main=expression(paste(beta[0], ", ", beta[age], " from simple regr.")))
+    legend("left", bg="white", c("nlm.S", "logi.S", "logi2.S"), col=c(3,4,2), lty=1)
     plot.S.x1(m[[g]])
+    plot.S.x1(m[[g]], add=TRUE, fun.RIN=min, lty=2)
     title(main=expression(paste(beta[0], ", ", beta[age], " from multiple. regr.")))
+    legend("left", bg="white", c("avg RIN", "nlm.S", "logi.S", "logi2.S"), col=c(NA, 3,4,2), lty=1)
+    legend("bottomleft", bg="white", c("min RIN", "nlm.S", "logi.S", "logi2.S"), col=c(NA, 3,4,2), lty=2)
 }
 plot.simple.cmp.multiple("PEG3") 
 
@@ -519,7 +538,7 @@ for(g in genes.or.gsets[20:22])
 betas <- coefs.from.md.lists(m.smpl, m, prop = 1)
 pvals <- coefs.from.md.lists(m.smpl, m, prop = 4)
 plot.beta.pval <- function(mod = "nlm.S", bts = betas, pvs = pvals,
-                           xlim.b=c(-2e-3,2e-3), xlim.logp=c(0,20)) {
+                           xlim.b=c(-1e-3,1.5e-3), xlim.logp=c(0,20)) {
     par(mar = c(5, 6, 4, 2), mfrow = c(1, 2))
     barplot(t(bts[[ mod ]]), beside=TRUE, horiz=TRUE, las=1, xlim=xlim.b,
             xlab=expression(hat(beta)[age]), main="estim. effect of age")
@@ -529,7 +548,7 @@ plot.beta.pval <- function(mod = "nlm.S", bts = betas, pvs = pvals,
 }
 plot.beta.pval("nlm.R", xlim.b=c(-1e-0,1e-0), xlim.logp=c(0,15))
 
-plot.beta.pval("nlm.S", xlim.logp=c(0,15))
+plot.beta.pval("nlm.S", xlim.b=c(-1.5e-3,0.5e-3), xlim.logp=c(0,15))
 
 plot.beta.pval("logi.S", xlim.b=c(-5e-2,5e-2), xlim.logp=c(0,40))
 

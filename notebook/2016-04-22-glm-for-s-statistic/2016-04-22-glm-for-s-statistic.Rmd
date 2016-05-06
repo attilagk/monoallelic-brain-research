@@ -88,7 +88,7 @@ $$
 
 These functions are illustrated by the following plot; nlm: solid green, logi: solid red, and logi2: dashed blue.  They reflect simple (univariate) regression models with $S_{i\mathrm{PEG3}}$ as response and `Age.of.Death` as the only explanatory variable.  Thus there are two regression coefficients in all three cases, and these were estimated with iterative weighted least squares using `R`'s `glm` function.  logi and logi2 are almost indistinguishable in the range of all observed ages but become quite different around 300 years (much longer than the human lifespan).
 
-```{r cache=TRUE, echo=FALSE, fig.width=9}
+```{r s-stat-simple-regr, cache=TRUE, echo=FALSE, fig.width=9, dev=c('png','pdf')}
 # Fits simple models S ~ x2 (ignoring all other explanatory variables). Returns a list of fitted models
 fit.S.x1 <- function(g = genes.or.gsets[1], dt = d, x1 = "Age.of.Death") {
     md.l <- list()
@@ -101,34 +101,50 @@ fit.S.x1 <- function(g = genes.or.gsets[1], dt = d, x1 = "Age.of.Death") {
 }
 # Plots simple models S ~ x1 in model list 'md.l', supposed to contain "nlm.S", "logi.S", "logi2.S"
 # Data are also plotted
-plot.S.x1 <- function(md.l, xlim = c(0, 600), ylim = c(0, 1), x1 = "Age.of.Death") {
+plot.S.x1 <- function(md.l, xlim = c(0, 600), ylim = c(0, 1),
+                      x1 = "Age.of.Death", offset = c(0,0,0), add = FALSE,
+                      fun.RIN = mean, ...) {
     # ensure that nlm.S, logi.S, logi2.S are contained in md.l
     stopifnot(length(intersect(names(md.l), md.types <- c("nlm.S", "logi.S", "logi2.S"))) == 3)
+    names(offset) <- md.types
+    # offset according to RIN
+    rin <- "DLPFC_RNA_isolation..RIN"
+    rin2 <- "DLPFC_RNA_isolation..RIN.2"
+    if (length(grep(rin, names(coef(md.l[[1]]))))) {
+        off <- sapply( md.l, function(m) coef(m)[[rin]] * fun.RIN(m$data[[rin]]))
+        off2 <- sapply( md.l, function(m) coef(m)[[rin2]] * fun.RIN(m$data[[rin2]]))
+        # add to offset
+        offset <- offset + off + off2
+    }
     # create a list of link functions
     lf <- list()
     lf$nlm.S <-
-        function(x) md.l[["nlm.S"]]$coefficients[1] + x * md.l[["nlm.S"]]$coefficients[x1]
+        function(x) md.l[["nlm.S"]]$coefficients[1] + x * md.l[["nlm.S"]]$coefficients[x1] + offset["nlm.S"]
     lf$logi.S <-
-        function(x) 1 / (1 + exp( - md.l[["logi.S"]]$coefficients[1] - x * md.l[["logi.S"]]$coefficients[x1]) )
+        function(x) 1 / (1 + exp( - md.l[["logi.S"]]$coefficients[1] - x * md.l[["logi.S"]]$coefficients[x1] - offset["logi.S"]) )
     lf$logi2.S <-
-        function(x) 0.5 + 0.5 / (1 + exp( - md.l[["logi2.S"]]$coefficients[1] - x * md.l[["logi2.S"]]$coefficients[x1]) )
-    # plot data
-    fm <- mk.form(as.character(formula( md.l[[ md.types[1] ]] ))[2], x1)
-    plot(fm, data=md.l[[1]]$data, pch="+", col="grey", xlim=xlim, ylim=ylim)
+        function(x) 0.5 + 0.5 / (1 + exp( - md.l[["logi2.S"]]$coefficients[1] - x * md.l[["logi2.S"]]$coefficients[x1] - offset["logi2.S"]) )
+    if (! add) {
+        # plot data
+        fm <- mk.form(as.character(formula( md.l[[ md.types[1] ]] ))[2], x1)
+        plot(fm, data=md.l[[1]]$data, pch="+", col="grey", xlim=xlim, ylim=ylim)
+    }
     # 'baseline' guide lines
     if (all(ylim == c(0, 1))) {
         abline(h=0.5, lty=3); abline(h=0, lty=3); abline(h=1, lty=3)
     }
     # plot model lines
     sapply(seq_along(lf), function(i)
-           plot(lf[[i]], from=xlim[1], to=xlim[2], add=TRUE, col=c(3,4,2)[i], lty=1))
+           plot(lf[[i]], from=xlim[1], to=xlim[2], add=TRUE, col=c(3,4,2)[i], ...))
     return(lf)
 }
 # plot fitted lines for PEG3 using the simple Y ~ age model
 g <- genes.or.gsets[1]
 par(mfrow=c(1,2), mar=c(4,4,2,1))
 invisible(plot.S.x1(md.l <- fit.S.x1(g)))
+legend("bottomleft", bg="white", c("nlm.S", "logi.S", "logi2.S"), col=c(3,4,2), lty=1)
 invisible(plot.S.x1(md.l, xlim=c(0,120), ylim=(c(quantile(md.l[[1]]$data[[ paste0("S_", g) ]],0.05,na.rm=TRUE),1))))
+
 ```
 
 Below printed are two measures of fit: residual deviance (top block) and AIC (bottom block).
@@ -193,14 +209,14 @@ The following plots explore the relationship between a given response variable a
 
 When the response is the average $\bar{S}_{i}=\left( \sum_g n_g \right)^{-1} \sum_{g=1}S_{ig} n_{ig}$ (below), a qualitatively similar, inverse, relationship emerges between $\bar{S}$ statistic and age as seen in [Ifat's plots][ifat], which depicted 13 genes separately.   Some of the remaining 11 explanatory variables, like Institution or PMI.in.hours seem to effect $\bar{S}$, while others like Gender don't.
 
-```{r fig.width=12, fig.height=9, echo=FALSE}
+```{r s-avg16-all-expl-var, fig.width=12, fig.height=9, echo=FALSE, dev=c('png','pdf')}
 par(mfrow=c(3,4), cex=1, cex.lab=1, mar=c(4,4,2,1))
 plot(mk.form("S_avg16", expl = expl.var[1:12]), data=d, pch=".")
 ```
 
 When ranks are averaged as $\bar{R}_i=\sum_gR_{ig}$, the response appears more homoscedastic (its dispersion appears unaffected by explanatory variables) but some of the systematic effects that are seen without transformation (e.g. PMI.in.hours) are diminished.
 
-```{r fig.width=12, fig.height=9, echo=FALSE}
+```{r r-avg16-all-expl-var, fig.width=12, fig.height=9, echo=FALSE, dev=c('png','pdf')}
 par(mfrow=c(3,4), cex=1, cex.lab=1, mar=c(4,4,2,1))
 plot(mk.form("R_avg16", expl = expl.var[1:12]), data=d, pch=".")
 ```
@@ -209,14 +225,14 @@ plot(mk.form("R_avg16", expl = expl.var[1:12]), data=d, pch=".")
 
 The next set of plots shows data points for all genes pooled together rather than averaged together so each plot has many more points than before.  Below are plots with $s_{ig}$ as response for $g\in$ all 16 genes.
 
-```{r fig.width=12, fig.height=9, echo=FALSE}
+```{r s-pool16-all-expl-var, fig.width=12, fig.height=9, echo=FALSE, dev=c('png','pdf')}
 par(mfrow=c(3,4), cex=1, cex.lab=1, mar=c(4,4,2,1))
 plot(mk.form("S_pool16", expl = expl.var[1:12]), data=d.p$pool16, pch=".")
 ```
 
 Below are plots with $r_{ig}$ (observed ranks) as response.  Compared to the corresponding results obtained with averaging there is clearly less systematic variation of the response with explanatory variables, which hints at their differential effects on various genes.
 
-```{r fig.width=12, fig.height=9, echo=FALSE}
+```{r r-pool16-all-expl-var, fig.width=12, fig.height=9, echo=FALSE, dev=c('png','pdf')}
 par(mfrow=c(3,4), cex=1, cex.lab=1, mar=c(4,4,2,1))
 plot(mk.form("R_pool16", expl = expl.var[1:12]), data=d.p$pool16, pch=".")
 ```
@@ -226,7 +242,7 @@ plot(mk.form("R_pool16", expl = expl.var[1:12]), data=d.p$pool16, pch=".")
 The differential effect of age on the response of various genes is illustrated now.
 Plotted below is the observed $s_{ig}$ statistic versus age for each gene $g$ separately.  Dots are data points and the solid line is the smoothed data with the Lowess filter.  The lower percentile of $s_{ig}$, for each $g$, has been trimmed off to enhance clarity.  Judged from the smooth curves the effect of age appears quite small.  Still, gene-to-gene variation is apparent.
 
-```{r fig.width=12, fig.height=12, echo=FALSE}
+```{r s-stat-age-12genes, fig.width=12, fig.height=12, echo=FALSE, dev=c('png','pdf')}
 # Plots response stat Y against explanatory variable x1.
 # When 'ar' is TRUE an array of plots is produced presenting genes on separate
 # plots; when 'ar' is FALSE data for all genes are shown in a single plot with
@@ -272,7 +288,7 @@ plot.smooth.Y.x1(Y = "S", ar = TRUE)
 
 Below are similar plots to the ones above but now with $R$ as response (i.e. with rank-transformation).  The among genes variation is quite clear.
 
-```{r fig.width=12, fig.height=12, echo=FALSE}
+```{r r-stat-age-12genes, fig.width=12, fig.height=12, echo=FALSE, dev=c('png','pdf')}
 plot.smooth.Y.x1(Y = "R", ar = TRUE)
 ```
 
@@ -282,7 +298,7 @@ The apparent dependence of the response on age is marginal in the sense that oth
 
 Importantly, these plots below suggest that, at least for PEG3, the response's dependence on age seems genuine and not entirely due to confounding effects of other variables.
 
-```{r echo=FALSE, warning=FALSE}
+```{r coplot-r-peg3, echo=FALSE, warning=FALSE, dev=c('png','pdf')}
 # condition R_PEG3 vs age on a given institution, RIN value and ancestry
 coplot(R_PEG3 ~ Age.of.Death | Institution, data=d)
 coplot(R_PEG3 ~ Age.of.Death | DLPFC_RNA_isolation..RIN, data=d)
@@ -304,7 +320,7 @@ These results show a close but not perfect match between the old and new impleme
 Filtering out "noisy" observations (those with low total read counts) is expected to improve model fit to data.  When too few points are retained after filtering, overfitting may occur.  This is illustrated by the plots below, where filtering induces extremely large improvement for genes with scarce data, like IGF2 or NLRP2.  Improvement is expressed as *minus relative AIC* defined as
 $- (\mathrm{AIC}_{f1} - \mathrm{AIC}_{f0}) / \mathrm{AIC}_{f1}$, where $f1$ indicates filtering and $f0$ no filtering.
 
-```{r echo=FALSE, fig.width=10}
+```{r s-stat-filtering, echo=FALSE, fig.width=10, dev=c('png','pdf')}
 # compare model 1 to model 2; ml1 and ml2 are lists of models fitted to
 # different data; mf1 and mf2 are strings of model families ("nlm.R", "logi.S", "logi2.S")
 # fun compares the models's AIC values, default is scaled difference
@@ -341,21 +357,27 @@ All results presented in this document were obtained with filtering unless other
 
 The previous conditional plots of $R_{i\mathrm{PEG3}}$ vs age qualitatively examined the extent of confounding by three additional variables such as Institution.  The regression coefficient $\beta_{\mathrm{age}}$ under some model reports the effect of age on the response.  In *simple regression* $\beta_{\mathrm{age}}$ is estimated from a model where the linear predictor contains only age so that $\eta = \beta_0 + x_\mathrm{age} \beta_{\mathrm{age}}$.  Then the additional variables $x_r, \; r=2,...$ behave as latent variables confounding the effect $\beta_\mathrm{age}$ of age.  *Multiple regression* includes these additional variables in the linear predictor removes their confounding effect from $\beta_\mathrm{age}$.
 
-Here I compare $\beta_\mathrm{age}$ estimated from simple and multiple regression under the nlm.S, logi.S and logi2.S model types.  First let's return to the earlier plot of fitted simple regression models to the $S_{i\mathrm{PEG3}}$ and $x_\mathrm{age}$ data.  Given a model family such as nlm, the mean $\mu$ of $S_{i\mathrm{PEG3}}$ is a function of $x_\mathrm{age}$ and as well as $\beta_0, \beta_\mathrm{age}$ estimated from simple regression, shown by the left graph.  This function is changed when $\beta_0, \beta_\mathrm{age}$ are estimated from multiple regression, shown on the right.  Because the estimated intercept $\beta_0$ is different, the baselines are shifted.  And because the estimated $\beta_\mathrm{age}$ differs the steepness of the "fitted lines" is also changed: it became much shallower indicating that a large confounding effect by other variables was removed by multiple regression.
+Here I compare $\beta_\mathrm{age}$ estimated from simple and multiple regression under the nlm.S, logi.S and logi2.S model types.  First let's return to the earlier plot of fitted simple regression models to the $S_{i\mathrm{PEG3}}$ and $x_\mathrm{age}$ data.  Given a model family such as nlm, the mean $\mu$ of $S_{i\mathrm{PEG3}}$ is a function of $x_\mathrm{age}$ and as well as $\beta_0, \beta_\mathrm{age}$ estimated from simple regression, shown by the left graph.  This function is changed when $\beta_0, \beta_\mathrm{age}$ are estimated from multiple regression together with 21 other regression coefficients $\beta_r$ (right panel).  For instance, $\beta_\mathrm{RIN}$ and $\beta_\mathrm{RIN2}$ mediate the effects of RNA quality measures $x_\mathrm{RIN}$ and $x_\mathrm{RIN2}$.  Two fitted curves are shown for each model: the solid lines correspond to the case when $x_\mathrm{RIN}=\bar{x}_\mathrm{RIN}$ and $x_\mathrm{RIN2}=\bar{x}_\mathrm{RIN2}$ that is the average of the observed $x_{i\mathrm{RIN}}$ and $x_{i\mathrm{RIN2}}$ across all individuals $i$, respectively; on the other hand, the dashed lines correspond to $x_\mathrm{RIN}=\mathrm{min}_i x_{i \mathrm{RIN}}$ and $x_\mathrm{RIN2}=\mathrm{min}_i x_{i \mathrm{RIN2}}$.
 
-```{r echo=FALSE, fig.width=9}
+The main point, though, is that for any given model the $\beta_\mathrm{age}$ estimated from multiple regression is less negative in that from simple regression.  This appears visually as shallower fitted curves.  The interpretation is that a large confounding effect by other variables was removed by multiple regression.
+
+```{r s-stat-cmp-simple-multiple-regr-peg3, echo=FALSE, fig.width=9, warning=FALSE, dev=c('png','pdf')}
 plot.simple.cmp.multiple <- function(g = "PEG3") {
     par(mfrow=c(1,2))
     plot.S.x1(fit.S.x1(g))
     title(main=expression(paste(beta[0], ", ", beta[age], " from simple regr.")))
+    legend("left", bg="white", c("nlm.S", "logi.S", "logi2.S"), col=c(3,4,2), lty=1)
     plot.S.x1(m[[g]])
+    plot.S.x1(m[[g]], add=TRUE, fun.RIN=min, lty=2)
     title(main=expression(paste(beta[0], ", ", beta[age], " from multiple. regr.")))
+    legend("left", bg="white", c("avg RIN", "nlm.S", "logi.S", "logi2.S"), col=c(NA, 3,4,2), lty=1)
+    legend("bottomleft", bg="white", c("min RIN", "nlm.S", "logi.S", "logi2.S"), col=c(NA, 3,4,2), lty=2)
 }
 plot.simple.cmp.multiple("PEG3") 
 ```
 
-The changes in the "fitted lines" are qualitatively similar for all genes and aggregated gene sets.  ZNF331 shows the most profound effect of age on $S_{ig}$ after the removal of the confounding effects by multiple regression.
-```{r echo=FALSE, fig.width=9}
+The changes in the fitted curves are qualitatively similar for all genes and aggregated gene sets.  ZNF331 shows the most profound effect of age on $S_{ig}$ after the removal of the confounding effects by multiple regression.
+```{r s-stat-cmp-simple-multiple-regr-znf331, echo=FALSE, fig.width=9, warning=FALSE, dev=c('png','pdf')}
 plot.simple.cmp.multiple("ZNF331")
 ```
 
@@ -369,7 +391,7 @@ The following set of plots compares estimates of $\beta_\mathrm{age}$ from the s
 
 #### nlm.R
 
-```{r echo=FALSE, fig.width=9}
+```{r r-stat-beta-age-nlm, echo=FALSE, fig.width=9, dev=c('png','pdf')}
 # Gets property 'prop' of 'coef' from both md.l1 and md.l2 model lists
 # The property 'prop' is an index for the vector c("Estimate", "Std. Error", "t value", "Pr(>|t|)")
 coefs.from.md.lists <- function(md.l1, md.l2,
@@ -407,26 +429,26 @@ plot.beta.pval("nlm.R", xlim.b=c(-1e-0,1e-0), xlim.logp=c(0,15))
 
 #### nlm.S
 
-```{r echo=FALSE, fig.width=9}
+```{r s-stat-beta-age-nlm, echo=FALSE, fig.width=9, dev=c('png','pdf')}
 plot.beta.pval("nlm.S", xlim.logp=c(0,15))
 ```
 
 #### logi.S
 
-```{r echo=FALSE, fig.width=9}
+```{r s-stat-beta-age-logi, echo=FALSE, fig.width=9, dev=c('png','pdf')}
 plot.beta.pval("logi.S", xlim.b=c(-5e-2,5e-2), xlim.logp=c(0,40))
 ```
 
 #### logi2.S
 
-```{r echo=FALSE, fig.width=9}
+```{r s-stat-beta-age-logi2, echo=FALSE, fig.width=9, dev=c('png','pdf')}
 plot.beta.pval("logi2.S", xlim.b=c(-5e-2,5e-2), xlim.logp=c(0,60))
 ```
 
 ### Comparing models using AIC
 
 The figure compares all three model families using AIC; nlm is used both
-```{r echo=FALSE, fig.width=10}
+```{r s-stat-regr-auc, echo=FALSE, fig.width=10, dev=c('png','pdf')}
 # barplot presentation of AIC for genes separately
 par(mar = c(5, 6, 4, 2), mfrow = c(1, 2))
 # barplot presentation of AIC for genes separately

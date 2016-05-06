@@ -90,7 +90,7 @@ $$
 
 These functions are illustrated by the following plot; nlm: solid green, logi: solid red, and logi2: dashed blue.  They reflect simple (univariate) regression models with $S_{i\mathrm{PEG3}}$ as response and `Age.of.Death` as the only explanatory variable.  Thus there are two regression coefficients in all three cases, and these were estimated with iterative weighted least squares using `R`'s `glm` function.  logi and logi2 are almost indistinguishable in the range of all observed ages but become quite different around 300 years (much longer than the human lifespan).
 
-![plot of chunk unnamed-chunk-6](figure/unnamed-chunk-6-1.png) 
+![plot of chunk s-stat-simple-regr](figure/s-stat-simple-regr-1.png) 
 
 Below printed are two measures of fit: residual deviance (top block) and AIC (bottom block).
 
@@ -173,32 +173,32 @@ The following plots explore the relationship between a given response variable a
 
 When the response is the average $\bar{S}_{i}=\left( \sum_g n_g \right)^{-1} \sum_{g=1}S_{ig} n_{ig}$ (below), a qualitatively similar, inverse, relationship emerges between $\bar{S}$ statistic and age as seen in [Ifat's plots][ifat], which depicted 13 genes separately.   Some of the remaining 11 explanatory variables, like Institution or PMI.in.hours seem to effect $\bar{S}$, while others like Gender don't.
 
-![plot of chunk unnamed-chunk-10](figure/unnamed-chunk-10-1.png) 
+![plot of chunk s-avg16-all-expl-var](figure/s-avg16-all-expl-var-1.png) 
 
 When ranks are averaged as $\bar{R}_i=\sum_gR_{ig}$, the response appears more homoscedastic (its dispersion appears unaffected by explanatory variables) but some of the systematic effects that are seen without transformation (e.g. PMI.in.hours) are diminished.
 
-![plot of chunk unnamed-chunk-11](figure/unnamed-chunk-11-1.png) 
+![plot of chunk r-avg16-all-expl-var](figure/r-avg16-all-expl-var-1.png) 
 
 ### Responses pooled across genes
 
 The next set of plots shows data points for all genes pooled together rather than averaged together so each plot has many more points than before.  Below are plots with $s_{ig}$ as response for $g\in$ all 16 genes.
 
-![plot of chunk unnamed-chunk-12](figure/unnamed-chunk-12-1.png) 
+![plot of chunk s-pool16-all-expl-var](figure/s-pool16-all-expl-var-1.png) 
 
 Below are plots with $r_{ig}$ (observed ranks) as response.  Compared to the corresponding results obtained with averaging there is clearly less systematic variation of the response with explanatory variables, which hints at their differential effects on various genes.
 
-![plot of chunk unnamed-chunk-13](figure/unnamed-chunk-13-1.png) 
+![plot of chunk r-pool16-all-expl-var](figure/r-pool16-all-expl-var-1.png) 
 
 ### Response vs age for each gene separately
 
 The differential effect of age on the response of various genes is illustrated now.
 Plotted below is the observed $s_{ig}$ statistic versus age for each gene $g$ separately.  Dots are data points and the solid line is the smoothed data with the Lowess filter.  The lower percentile of $s_{ig}$, for each $g$, has been trimmed off to enhance clarity.  Judged from the smooth curves the effect of age appears quite small.  Still, gene-to-gene variation is apparent.
 
-![plot of chunk unnamed-chunk-14](figure/unnamed-chunk-14-1.png) 
+![plot of chunk s-stat-age-12genes](figure/s-stat-age-12genes-1.png) 
 
 Below are similar plots to the ones above but now with $R$ as response (i.e. with rank-transformation).  The among genes variation is quite clear.
 
-![plot of chunk unnamed-chunk-15](figure/unnamed-chunk-15-1.png) 
+![plot of chunk r-stat-age-12genes](figure/r-stat-age-12genes-1.png) 
 
 ### Conditional dependence on age given other explanatory variables
 
@@ -206,21 +206,21 @@ The apparent dependence of the response on age is marginal in the sense that oth
 
 Importantly, these plots below suggest that, at least for PEG3, the response's dependence on age seems genuine and not entirely due to confounding effects of other variables.
 
-![plot of chunk unnamed-chunk-16](figure/unnamed-chunk-16-1.png) 
+![plot of chunk coplot-r-peg3](figure/coplot-r-peg3-1.png) 
 
 ```
 ## 
 ##  Missing rows: 8, 13, 16, 17, 32, 54, 57, 59, 60, 66, 67, 68, 77, 79, 84, 100, 116, 122, 131, 142, 150, 161, 177, 189, 192, 194, 197, 205, 208, 212, 216, 219, 226, 234, 246, 251, 252, 264, 277, 279, 284, 285, 289, 300, 302, 311, 312, 321, 322, 339, 341, 347, 349, 350, 358, 359, 366, 369, 372, 376, 377, 384, 394, 409, 418, 423, 429, 432, 439, 445, 446, 451, 472, 475, 480, 490, 492, 508, 512, 513, 519, 520, 524, 532, 536, 554, 575
 ```
 
-![plot of chunk unnamed-chunk-16](figure/unnamed-chunk-16-2.png) 
+![plot of chunk coplot-r-peg3](figure/coplot-r-peg3-2.png) 
 
 ```
 ## 
 ##  Missing rows: 8, 13, 16, 17, 32, 54, 57, 59, 60, 66, 67, 68, 77, 79, 84, 100, 116, 122, 131, 142, 150, 161, 177, 189, 192, 194, 197, 205, 208, 212, 216, 219, 226, 234, 246, 251, 252, 264, 277, 279, 284, 285, 289, 300, 302, 311, 312, 321, 322, 339, 341, 347, 349, 350, 358, 359, 366, 369, 372, 376, 377, 384, 394, 409, 418, 423, 429, 432, 439, 445, 446, 451, 472, 475, 480, 490, 492, 508, 512, 513, 519, 520, 524, 532, 536, 554, 575
 ```
 
-![plot of chunk unnamed-chunk-16](figure/unnamed-chunk-16-3.png) 
+![plot of chunk coplot-r-peg3](figure/coplot-r-peg3-3.png) 
 
 ```
 ## 
@@ -252,7 +252,7 @@ These results show a close but not perfect match between the old and new impleme
 Filtering out "noisy" observations (those with low total read counts) is expected to improve model fit to data.  When too few points are retained after filtering, overfitting may occur.  This is illustrated by the plots below, where filtering induces extremely large improvement for genes with scarce data, like IGF2 or NLRP2.  Improvement is expressed as *minus relative AIC* defined as
 $- (\mathrm{AIC}_{f1} - \mathrm{AIC}_{f0}) / \mathrm{AIC}_{f1}$, where $f1$ indicates filtering and $f0$ no filtering.
 
-![plot of chunk unnamed-chunk-18](figure/unnamed-chunk-18-1.png) 
+![plot of chunk s-stat-filtering](figure/s-stat-filtering-1.png) 
 
 All results presented in this document were obtained with filtering unless otherwise noted.
 
@@ -260,12 +260,14 @@ All results presented in this document were obtained with filtering unless other
 
 The previous conditional plots of $R_{i\mathrm{PEG3}}$ vs age qualitatively examined the extent of confounding by three additional variables such as Institution.  The regression coefficient $\beta_{\mathrm{age}}$ under some model reports the effect of age on the response.  In *simple regression* $\beta_{\mathrm{age}}$ is estimated from a model where the linear predictor contains only age so that $\eta = \beta_0 + x_\mathrm{age} \beta_{\mathrm{age}}$.  Then the additional variables $x_r, \; r=2,...$ behave as latent variables confounding the effect $\beta_\mathrm{age}$ of age.  *Multiple regression* includes these additional variables in the linear predictor removes their confounding effect from $\beta_\mathrm{age}$.
 
-Here I compare $\beta_\mathrm{age}$ estimated from simple and multiple regression under the nlm.S, logi.S and logi2.S model types.  First let's return to the earlier plot of fitted simple regression models to the $S_{i\mathrm{PEG3}}$ and $x_\mathrm{age}$ data.  Given a model family such as nlm, the mean $\mu$ of $S_{i\mathrm{PEG3}}$ is a function of $x_\mathrm{age}$ and as well as $\beta_0, \beta_\mathrm{age}$ estimated from simple regression, shown by the left graph.  This function is changed when $\beta_0, \beta_\mathrm{age}$ are estimated from multiple regression, shown on the right.  Because the estimated intercept $\beta_0$ is different, the baselines are shifted.  And because the estimated $\beta_\mathrm{age}$ differs the steepness of the "fitted lines" is also changed: it became much shallower indicating that a large confounding effect by other variables was removed by multiple regression.
+Here I compare $\beta_\mathrm{age}$ estimated from simple and multiple regression under the nlm.S, logi.S and logi2.S model types.  First let's return to the earlier plot of fitted simple regression models to the $S_{i\mathrm{PEG3}}$ and $x_\mathrm{age}$ data.  Given a model family such as nlm, the mean $\mu$ of $S_{i\mathrm{PEG3}}$ is a function of $x_\mathrm{age}$ and as well as $\beta_0, \beta_\mathrm{age}$ estimated from simple regression, shown by the left graph.  This function is changed when $\beta_0, \beta_\mathrm{age}$ are estimated from multiple regression together with 21 other regression coefficients $\beta_r$ (right panel).  For instance, $\beta_\mathrm{RIN}$ and $\beta_\mathrm{RIN2}$ mediate the effects of RNA quality measures $x_\mathrm{RIN}$ and $x_\mathrm{RIN2}$.  Two fitted curves are shown for each model: the solid lines correspond to the case when $x_\mathrm{RIN}=\bar{x}_\mathrm{RIN}$ and $x_\mathrm{RIN2}=\bar{x}_\mathrm{RIN2}$ that is the average of the observed $x_{i\mathrm{RIN}}$ and $x_{i\mathrm{RIN2}}$ across all individuals $i$, respectively; on the other hand, the dashed lines correspond to $x_\mathrm{RIN}=\mathrm{min}_i x_{i \mathrm{RIN}}$ and $x_\mathrm{RIN2}=\mathrm{min}_i x_{i \mathrm{RIN2}}$.
 
-![plot of chunk unnamed-chunk-19](figure/unnamed-chunk-19-1.png) 
+The main point, though, is that for any given model the $\beta_\mathrm{age}$ estimated from multiple regression is less negative in that from simple regression.  This appears visually as shallower fitted curves.  The interpretation is that a large confounding effect by other variables was removed by multiple regression.
 
-The changes in the "fitted lines" are qualitatively similar for all genes and aggregated gene sets.  ZNF331 shows the most profound effect of age on $S_{ig}$ after the removal of the confounding effects by multiple regression.
-![plot of chunk unnamed-chunk-20](figure/unnamed-chunk-20-1.png) 
+![plot of chunk s-stat-cmp-simple-multiple-regr-peg3](figure/s-stat-cmp-simple-multiple-regr-peg3-1.png) 
+
+The changes in the fitted curves are qualitatively similar for all genes and aggregated gene sets.  ZNF331 shows the most profound effect of age on $S_{ig}$ after the removal of the confounding effects by multiple regression.
+![plot of chunk s-stat-cmp-simple-multiple-regr-znf331](figure/s-stat-cmp-simple-multiple-regr-znf331-1.png) 
 
 ### Estimates of the effect of age and confounding
 
@@ -277,24 +279,24 @@ The following set of plots compares estimates of $\beta_\mathrm{age}$ from the s
 
 #### nlm.R
 
-![plot of chunk unnamed-chunk-21](figure/unnamed-chunk-21-1.png) 
+![plot of chunk r-stat-beta-age-nlm](figure/r-stat-beta-age-nlm-1.png) 
 
 #### nlm.S
 
-![plot of chunk unnamed-chunk-22](figure/unnamed-chunk-22-1.png) 
+![plot of chunk s-stat-beta-age-nlm](figure/s-stat-beta-age-nlm-1.png) 
 
 #### logi.S
 
-![plot of chunk unnamed-chunk-23](figure/unnamed-chunk-23-1.png) 
+![plot of chunk s-stat-beta-age-logi](figure/s-stat-beta-age-logi-1.png) 
 
 #### logi2.S
 
-![plot of chunk unnamed-chunk-24](figure/unnamed-chunk-24-1.png) 
+![plot of chunk s-stat-beta-age-logi2](figure/s-stat-beta-age-logi2-1.png) 
 
 ### Comparing models using AIC
 
 The figure compares all three model families using AIC; nlm is used both
-![plot of chunk unnamed-chunk-25](figure/unnamed-chunk-25-1.png) 
+![plot of chunk s-stat-regr-auc](figure/s-stat-regr-auc-1.png) 
 
 ## Conclusion
 
