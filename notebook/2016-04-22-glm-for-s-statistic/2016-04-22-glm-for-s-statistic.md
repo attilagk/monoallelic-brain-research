@@ -2,9 +2,13 @@
 
 
 ```r
-source('2016-04-22-glm-for-s-statistic.R')
-source('../2016-03-02-ifats-regression-analysis/2016-03-02-ifats-regression-analysis.R')
+source('2016-04-22-glm-for-s-statistic.R') # functions for data filtering and fitting
+source('2016-04-22-glm-for-s-statistic-run.R') # do filtering and fitting
+source('2016-04-22-glm-for-s-statistic-graphs.R') # graphics functions
+source('2016-04-22-glm-for-s-statistic-graphs-run.R') # some objects for graphing
+source('../2016-03-02-ifats-regression-analysis/2016-03-02-ifats-regression-analysis.R') # Ifat's implementation of fitting
 ```
+
 
 
 ### Data
@@ -92,7 +96,7 @@ These functions are illustrated by the following plot; nlm: solid green, logi: s
 
 ![plot of chunk s-stat-simple-regr](figure/s-stat-simple-regr-1.png) 
 
-Below printed are two measures of fit: residual deviance (top block) and AIC (bottom block).
+Below printed are two measures of fit: residual deviance (top block) and AIC (bottom block).  Note the negative estimated AIC for nlm.S, which is unexpected since the theoretical value of AIC for any model must be nonnegative.  Subsequent analysis will investigate this discrepancy surrounding the estimated AIC.
 
 
 ```
@@ -293,12 +297,13 @@ The following set of plots compares estimates of $\beta_\mathrm{age}$ from the s
 
 ![plot of chunk s-stat-beta-age-logi2](figure/s-stat-beta-age-logi2-1.png) 
 
-### Comparing models using AIC
+## Conclusions
 
-The figure compares all three model families using AIC; nlm is used both
-![plot of chunk s-stat-regr-auc](figure/s-stat-regr-auc-1.png) 
-
-## Conclusion
+* age has a weak but significant negative effect on parental bias "response" measured by $S_{ig}$
+* some of the other explanatory variables (Institution, RIN) have substantial and significant effect, and so confound simple regression on age or visual inspection of age vs. $S_{ig}$ plots
+* this confounding is corrected for by multiple regression
+* these findings hold under all model types (nlm, logi and logi2)
+* the next question is how models compare to each other and which one should be selected
 
 
 [ifat]: https://docs.google.com/presentation/d/1YvpA1AJ-zzir1Iw0F25tO9x8gkSAzqaO4fjB7K3zBhE/
