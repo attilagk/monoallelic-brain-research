@@ -1,6 +1,6 @@
 ## Preparations
 
-```{r cache=TRUE}
+```{r cache=FALSE}
 source("../2016-04-22-glm-for-s-statistic/2016-04-22-glm-for-s-statistic.R")
 source("../2016-04-22-glm-for-s-statistic/2016-04-22-glm-for-s-statistic-run.R")
 source("../2016-04-22-glm-for-s-statistic/2016-04-22-glm-for-s-statistic-graphs.R")

@@ -104,4 +104,4 @@ For this point I will consider separately two classes of genes
 
 ## Conclusions
 
-There are some advantages and disadvantages of nlm.R and logi.S
+TODO
