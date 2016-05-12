@@ -14,14 +14,14 @@ genes <- c("PEG3", "INPP5F", "SNRPN", "PWAR6", "ZDBF2", "MEG3", "ZNF331", "GRB10
              "IGF2", "NLRP2", "UBE3A")
 
 # explanatory variables
-expl.var <- c("`Age.of.Death`",
+expl.var <- c("Age.of.Death",
                "Institution",
                "Gender",
-               "`PMI..in.hours.`",
+               "PMI..in.hours.",
                "Dx",
-               "`DLPFC_RNA_isolation..RIN`", "`DLPFC_RNA_isolation..RIN.2`",
-               "`DLPFC_RNA_report..Clustered.Library.Batch`",
-               "`Ancestry.EV.1`", "`Ancestry.EV.2`", "`Ancestry.EV.3`", "`Ancestry.EV.4`", "`Ancestry.EV.5`" )
+               "DLPFC_RNA_isolation..RIN", "DLPFC_RNA_isolation..RIN.2",
+               "DLPFC_RNA_report..Clustered.Library.Batch",
+               "Ancestry.EV.1", "Ancestry.EV.2", "Ancestry.EV.3", "Ancestry.EV.4", "Ancestry.EV.5" )
 
 # response variables
 genes.or.gsets <- c(genes, "avg8", "avg13", "avg16", "pool8", "pool13", "pool16")

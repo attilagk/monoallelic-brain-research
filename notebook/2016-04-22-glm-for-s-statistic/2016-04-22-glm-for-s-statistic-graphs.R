@@ -50,7 +50,7 @@ plot.S.x1 <- function(md.l, xlimits = c(0, 600), ylimits = c(0, 1),
     }
     # plot model lines
     sapply(seq_along(lf), function(i)
-           plot(lf[[i]], from=xlimits[1], to=xlimits[2], add=TRUE, col=c(3,4,2)[i], ...))
+           plot(lf[[i]], from=xlimits[1], to=xlimits[2], add=TRUE, col=c(2,4,3)[i], ...))
     return(lf)
 }
 
@@ -106,12 +106,12 @@ plot.simple.cmp.multiple <- function(g = "PEG3") {
     par(mfrow=c(1,2))
     plot.S.x1(fit.S.x1(g), xlimits = c(0, 200), ylimits = c(0.7, 1))
     title(main=expression(paste(beta[0], ", ", beta[age], " from simple regr.")))
-    legend("left", bg="white", c("nlm.S", "logi.S", "logi2.S"), col=c(3,4,2), lty=1)
+    legend("left", c("nlm.S", "logi.S", "logi2.S"), col=c(2,4,3), lty=1)
     plot.S.x1(m[[g]], xlimits = c(0, 200), ylimits = c(0.7, 1))
     plot.S.x1(m[[g]], add=TRUE, fun.RIN=min, lty=2, xlimits = c(0, 200), ylimits = c(0.7, 1))
     title(main=expression(paste(beta[0], ", ", beta[age], " from multiple. regr.")))
-    legend("left", bg="white", c("avg RIN", "nlm.S", "logi.S", "logi2.S"), col=c(NA, 3,4,2), lty=1)
-    legend("bottomleft", bg="white", c("min RIN", "nlm.S", "logi.S", "logi2.S"), col=c(NA, 3,4,2), lty=2)
+    legend("left", c("avg RIN", "nlm.S", "logi.S", "logi2.S"), col=c(NA, 2,4,3), lty=1)
+    legend("bottomleft", c("min RIN", "nlm.S", "logi.S", "logi2.S"), col=c(NA, 2,4,3), lty=2)
 }
 
 # Gets property 'prop' of 'coef' from both md.l1 and md.l2 model lists
@@ -132,15 +132,46 @@ coefs.from.md.lists <- function(md.l1, md.l2,
 }
 
 plot.beta.pval <- function(mod = "nlm.S", bts = betas, pvs = pvals,
-                           xlim.b=c(-2e-3,2e-3), xlim.logp=c(0,20)) {
+                           xlim.b=c(-2e-3,2e-3), xlim.logp=c(0,20), ...) {
     par(mar = c(5, 6, 4, 2), mfrow = c(1, 2))
     barplot(t(bts[[ mod ]]), beside=TRUE, horiz=TRUE, las=1, xlim=xlim.b,
-            xlab=expression(hat(beta)[age]), main="estim. effect of age")
+            legend.text=c("simple", "multiple"),
+            xlab=expression(hat(beta)[age]), main="estim. effect of age",
+            col=gray(c(7,2)/8), ...)
     barplot(- log10(t(pvs[[ mod ]])), beside=TRUE, horiz=TRUE, las=1,
             xlim=xlim.logp, xlab=expression(-log[10](p)), main="significance",
-            legend.text=c("simple", "multiple"), args.legend=list(x = "right"))
+            col=gray(c(7,2)/8))
 }
 
+# Extracts a matrix of effects under model type 'md.ty' for each gene or
+# aggregated set
+fx.summary <- function(md.l, md.ty="nlm.S", coefs = names(coef(m[[1]][[md.ty]])) ) {
+    f <- function(cf)
+        sapply(md.l, function(x) effects(x[[ md.ty ]])[ cf ])
+    sapply(coefs, f)
+}
+
+# Extracts a matrix of deviance from ANOVA under model type 'md.ty' for each gene or
+# aggregated set
+anova.summary <- function(md.l, md.ty="nlm.S", coefs = row.names(anova(m[[1]][[md.ty]]))) {
+    f <- function(cf)
+        sapply(md.l, function(x) anova(x[[ md.ty ]])[ cf, 'Deviance' ])
+    sapply(coefs, f)
+}
+
+# Prettify coefficient names by removing long substrings
+nice.cf.names <- function(coef.n = names(coef(m[[1]][[1]]))) {
+    sub("DLPFC_RNA_(report..Clustered.Library|isolation)\\.+", "RNA.", coef.n)
+}
+
+# Produces a boxplot of the matrix of effects.
+# Also works with the matrix of deviances from ANOVA.
+fx.summary.boxplot <- function(eff, names=nice.cf.names()[-1], ...) {
+    par(mar = c(5, 8, 4, 2), mfrow = c(1, 1))
+    boxplot(eff, horizontal=TRUE, las=1, add=FALSE, names=names, ...)
+    grid()
+    abline(v=0, col="red", lty="solid")
+}
 
 ########################## CALCULATE A FEW OBJECTS ###########################
 

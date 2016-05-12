@@ -92,12 +92,12 @@ $$
 
 These functions are illustrated by the following plot; nlm: solid green, logi: solid red, and logi2: dashed blue.  They reflect simple (univariate) regression models with $S_{i\mathrm{PEG3}}$ as response and `Age.of.Death` as the only explanatory variable.  Thus there are two regression coefficients in all three cases, and these were estimated with iterative weighted least squares using `R`'s `glm` function.  logi and logi2 are almost indistinguishable in the range of all observed ages but become quite different around 300 years (much longer than the human lifespan).
 
-```{r s-stat-simple-regr, cache=FALSE, echo=FALSE, fig.width=9, dev=c('png','pdf')}
+```{r s-stat-simple-regr, echo=FALSE, fig.width=9, dev=c('png','pdf')}
 # plot fitted lines for PEG3 using the simple Y ~ age model
 g <- genes.or.gsets[1]
 par(mfrow=c(1,2), mar=c(4,4,2,1))
 invisible(plot.S.x1(md.l <- fit.S.x1(g)))
-legend("bottomleft", bg="white", c("nlm.S", "logi.S", "logi2.S"), col=c(3,4,2), lty=1)
+legend("bottomleft", c("nlm.S", "logi.S", "logi2.S"), col=c(2,4,3), lty=1)
 invisible(plot.S.x1(md.l, xlim=c(0,120), ylim=(c(quantile(md.l[[1]]$data[[ paste0("S_", g) ]],0.05,na.rm=TRUE),1))))
 ```
 
@@ -212,11 +212,11 @@ The apparent dependence of the response on age is marginal in the sense that oth
 
 Importantly, these plots below suggest that, at least for PEG3, the response's dependence on age seems genuine and not entirely due to confounding effects of other variables.
 
-```{r coplot-r-peg3, echo=FALSE, warning=FALSE, dev=c('png','pdf')}
+```{r coplot-s-peg3, echo=FALSE, warning=FALSE, dev=c('png','pdf')}
 # condition R_PEG3 vs age on a given institution, RIN value and ancestry
-coplot(R_PEG3 ~ Age.of.Death | Institution, data=d, pch='.', cex=2)
-coplot(R_PEG3 ~ Age.of.Death | DLPFC_RNA_isolation..RIN, data=d, pch='.', cex=2)
-coplot(R_PEG3 ~ Age.of.Death | Ancestry.EV.2, data=d, pch='.', cex=2)
+coplot(S_PEG3 ~ Age.of.Death | Institution, data=d, pch='.', cex=2)
+coplot(S_PEG3 ~ Age.of.Death | DLPFC_RNA_isolation..RIN, data=d, pch='.', cex=2)
+coplot(S_PEG3 ~ Age.of.Death | Ancestry.EV.2, data=d, pch='.', cex=2)
 ```
 
 ## Regression analysis
@@ -240,9 +240,9 @@ barplot(n.i, horiz=TRUE, beside=FALSE, names.arg=genes.or.gsets,
         las=1, xlab="# of points", main="size of dataset",
         args.legend=list(x = "right"), legend.text=c("retained", "filtered out"))
 barplot(rel.aic,
-        horiz=TRUE, beside=TRUE, names.arg=genes.or.gsets, las=1, col=c("red", "pink",
-                                                               "green",
-                                                               "blue"),
+        horiz=TRUE, beside=TRUE, names.arg=genes.or.gsets, las=1, col=c("orange", "red",
+                                                               "blue",
+                                                               "green"),
         xlab="minus relative AIC", main="improvement by filtering", legend.text=c("nlm.R",
                                                                      "nlm.S",
                                                                      "logi.S",
@@ -269,7 +269,7 @@ The changes in the fitted curves are qualitatively similar for all genes and agg
 plot.simple.cmp.multiple("ZNF331")
 ```
 
-### Estimates of the effect of age and confounding
+### The effect of age with and without correction for confounding
 
 The following set of plots compares estimates of $\beta_\mathrm{age}$ from the simple (dark grey) and multiple (light grey) regression under various model families.  These results can be summarized as
 
@@ -280,31 +280,93 @@ The following set of plots compares estimates of $\beta_\mathrm{age}$ from the s
 #### nlm.R
 
 ```{r r-stat-beta-age-nlm, echo=FALSE, fig.width=9, dev=c('png','pdf')}
-plot.beta.pval("nlm.R", xlim.b=c(-1e-0,1e-0), xlim.logp=c(0,15))
+plot.beta.pval("nlm.R", xlim.b=c(-0.8,0.4), xlim.logp=c(0,10), args.legend=list(x = "topleft"))
+abline(v=-log10(0.01), lty=3)
 ```
 
 #### nlm.S
 
 ```{r s-stat-beta-age-nlm, echo=FALSE, fig.width=9, dev=c('png','pdf')}
-plot.beta.pval("nlm.S", xlim.logp=c(0,15))
+plot.beta.pval("nlm.S", xlim.b=c(-0.0015,0.0005), xlim.logp=c(0,10), args.legend=list(x = "topleft"))
+abline(v=-log10(0.01), lty=3)
 ```
 
 #### logi.S
 
 ```{r s-stat-beta-age-logi, echo=FALSE, fig.width=9, dev=c('png','pdf')}
-plot.beta.pval("logi.S", xlim.b=c(-5e-2,5e-2), xlim.logp=c(0,40))
+plot.beta.pval("logi.S", xlim.b=c(-3e-2,1e-2), xlim.logp=c(0,10), args.legend=list(x = "topleft"))
+abline(v=-log10(0.01), lty=3)
 ```
 
 #### logi2.S
 
 ```{r s-stat-beta-age-logi2, echo=FALSE, fig.width=9, dev=c('png','pdf')}
-plot.beta.pval("logi2.S", xlim.b=c(-5e-2,5e-2), xlim.logp=c(0,60))
+plot.beta.pval("logi2.S", xlim.b=c(-3e-2,1e-2), xlim.logp=c(0,10), args.legend=list(x = "topleft"))
+abline(v=-log10(0.01), lty=3)
 ```
+
+### Gain of imprinting?
+
+The above results suggest gain of imprinting with age for PEG10 and SNHG14 under all multiple regression models, although with varying effect size and significance.  Below are the p-values for $\beta_\mathrm{age}$
+```{r}
+signif(sapply(m$PEG10, function(x) summary(x)$coefficients['Age.of.Death', 4]), digit=2)
+signif(sapply(m$SNHG14, function(x) summary(x)$coefficients['Age.of.Death', 4]), digit=2)
+```
+
+### Relative effects of explanatory variables
+
+This section presents the relative impact of explanatory variables using two ways.  **Effects** decomposes the observed response vector ($S_{g}=(S_{1g},...,S_{mg}$, or $R_{g}$) to orthogonal components, where the first $r$ components are associated with the coefficients $\beta_0,...,\beta_{r-1}$.  **Deviance** from ANOVA is the second way: this partitions systematic variation according to explanatory variables.  Note that there are fewer explanatory variables than coefficients (due to some explanatory variables being factors) and that *effects* provides directional information but *deviance* does not.  Despite this difference, the results show good overall agreement between *effects* and *deviance*.
+
+Both for *effects* and *deviance* 13 genes were used discarding the 3 genes with scarce data.
+
+### Effects
+
+The following set of plots present effects of regression models using the `effects` function of `R`.  Explanation from the documentation of `effects`:
+
+> For a linear model fitted by lm or aov, the effects are the uncorrelated single-degree-of-freedom values obtained by projecting the data onto the successive orthogonal subspaces generated by the QR decomposition during the fitting process. The first r (the rank of the model) are associated with coefficients and the remainder span the space of residuals (but are not associated with particular residuals). 
+
+For each effect all 13 single genes data sets were used but aggregated data sets were discarded to avoid redundancy.
+The plots show that age and institution have the largest effects but RNA quality and RNA library batch are prominent as well.
+
+```{r effects-r-nlm, echo=FALSE, fig.width=7, dev=c('png','pdf')}
+fx.summary.boxplot(fx.summary(m[genes[1:13]], md.ty="nlm.R")[, -1], main = "nlm.R", xlab = expression(paste("effect on ", R[ig])))
+```
+
+```{r effects-s-nlm, echo=FALSE, fig.width=7, dev=c('png','pdf')}
+fx.summary.boxplot(fx.summary(m[genes[1:13]], md.ty="nlm.S")[, -1], main = "nlm.S", xlab = expression(paste("effect on ", S[ig])))
+```
+
+```{r effects-s-logi, echo=FALSE, fig.width=7, dev=c('png','pdf')}
+fx.summary.boxplot(fx.summary(m[genes[1:13]], md.ty="logi.S")[, -1], main = "logi.S", xlab = expression(paste("effect on ", S[ig])))
+```
+
+```{r effects-s-logi2, echo=FALSE, fig.width=7, dev=c('png','pdf')}
+fx.summary.boxplot(fx.summary(m[genes[1:13]], md.ty="logi2.S")[, -1], main = "logi2.S", xlab = expression(paste("effect on ", S[ig])))
+```
+
+#### Deviance from ANOVA
+
+```{r anova-r-nlm, echo=FALSE, fig.width=7, dev=c('png','pdf'), cache=TRUE}
+fx.summary.boxplot(anova.summary(m[1:13], md.ty="nlm.R")[, -1], nice.cf.names(row.names(anova(m[[1]][[1]])))[-1], main = "nlm.R", xlab = "deviance")
+```
+
+```{r anova-s-nlm, echo=FALSE, fig.width=7, dev=c('png','pdf'), cache=TRUE}
+fx.summary.boxplot(anova.summary(m[1:13], md.ty="nlm.S")[, -1], nice.cf.names(row.names(anova(m[[1]][[1]])))[-1], main = "nlm.S", xlab = "deviance")
+```
+
+```{r anova-s-logi, echo=FALSE, fig.width=7, dev=c('png','pdf'), cache=TRUE}
+fx.summary.boxplot(anova.summary(m[1:13], md.ty="logi.S")[, -1], nice.cf.names(row.names(anova(m[[1]][[1]])))[-1], main = "logi.S", xlab = "deviance")
+```
+
+```{r anova-s-logi2, echo=FALSE, fig.width=7, dev=c('png','pdf'), cache=TRUE}
+fx.summary.boxplot(anova.summary(m[1:13], md.ty="logi2.S")[, -1], nice.cf.names(row.names(anova(m[[1]][[1]])))[-1], main = "logi2.S", xlab = "deviance")
+```
+
 
 ## Conclusions
 
-* age has a weak but significant negative effect on parental bias "response" measured by $S_{ig}$
-* some of the other explanatory variables (Institution, RIN) have substantial and significant effect, and so confound simple regression on age or visual inspection of age vs. $S_{ig}$ plots
+* age has a moderate but significant negative effect on parental bias "response" measured by $S_{ig}$
+* some of the other explanatory variables (Institution, RIN) have highly significant effect with size comparable to that of age; therefore these variables confound simple regression on age or visual inspection of age vs. $S_{ig}$ plots
 * this confounding is corrected for by multiple regression
 * these findings hold under all model types (nlm, logi and logi2)
 * the next question is how models compare to each other and which one should be selected
