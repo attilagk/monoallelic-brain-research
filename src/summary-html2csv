@@ -1,0 +1,48 @@
+#! /bin/sh
+
+# Create a csv table from summary html documents presented by
+# http://katahdin.mssm.edu/ifat/web/cm/get_pop_freq.pl
+# Especiall from summary-all-genes.html
+
+bname="summary-all-genes"
+
+# input
+indir="$HOME/projects/monoallelic-brain/data/ifat/website"
+inhtml="$indir/${bname}.html"
+
+# output
+outdir="$HOME/projects/monoallelic-brain/data/readcounts"
+outcsv="$outdir/${bname}.csv"
+outsymbol="$outdir/gene-symbols"
+tmp=$(mktemp)
+
+if [ ! -d $outdir ]
+then mkdir $outdir
+fi
+
+# convert to plain text file
+pandoc -f html -t plain \
+   +RTS -K64M -RTS $inhtml | # increase memory to prevent stack space overflow
+# extract table
+sed -n '/^Symbol/, $ p' |
+# delete every second row (empty) and mark every 36th with an \a
+sed '2~2 d; 37~36 s/^/\a/' |
+# turn 1 column table into a 36 column csv
+tr '\n\a' ',\n' |
+# change 'ND's to 'NA', the default na.string in R
+# remove the string 'chr' from chromosome numbers
+# remove trailing commas
+# and write to tmp
+sed '$ d
+    s/,ND,/,NA,/g
+    s/chr\([[:digit:]]\+\)/\1/
+    s/,$//
+' > $tmp
+# copy header at line 1 to outcsv
+sed '1 q' $tmp > $outcsv
+# remove headers at any lines (there should be two, one at line 1 and another
+# near the bottom of the table)
+sed '/^Symbol/ d' $tmp >> $outcsv
+rm $tmp
+
+cut -d ',' -f 1 $outcsv | sed '1 d' > $outsymbol
