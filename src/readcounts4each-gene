@@ -1,0 +1,50 @@
+#! /bin/bash
+
+if [ $# != 1 ]
+then
+cat 2>&1 <<EOF
+usage: $(basename $0) input.csv
+EOF
+exit 1
+fi
+
+outdir="$(dirname $1)/genes"
+if [ ! -d $outdir ]
+then mkdir $outdir
+fi
+
+process1gene () {
+    gene=$1
+    url="http://katahdin.mssm.edu/ifat/web/cm/get_gene_freq.pl?gene=$gene"
+    html="$gene/$gene.html" 
+    nastr="NA"
+
+    mkdir $gene
+    wget -nv -O $html $url
+
+    # convert to asciidoc format with long lines
+    pandoc -f html -t asciidoc --columns=1000 $html |
+    # extract the table from the entire document
+    sed -n '/^|=\+$/, /^|=\+$/ p' |
+    # delete uninformative rows, then put all SNP-related data on separate line(s)
+    sed -n "1 d; 3 d; $ d; s/\<ND\>/${nastr}/g; \
+        /^|${gene}/ s/^\(\(|[^|]*\)\(|[^|]*\)\(|[^|]*\)\{10\}\)\(.*\)$/\1\n\5/; p" \
+        > ${gene}.tmp
+   # # create not SNP-specific data table
+   # # 1. remove first column (the name of the gene)
+   # sed -n "/^\(|\s*${gene}\s*|\)\(.*\)$/ {s//\2/; p}" ${gene}.tmp |
+   # # 2. duplicate NA values for the L,H column
+   # sed "2 d
+   #     /^\(\([^|]*|\)\{6\}\)\(\s*${nastr}\s*|\)\(.*\)$/ s//\1${nastr},${nastr} |\4/
+   #     s/\s*|\s*/,/g
+   #     " > "$gene/$gene.csv"
+}
+export -f process1gene
+
+cd $outdir
+
+# get first column (i.e. gene symbol)
+cut -d ',' -f 1 $1 |
+# remove column head 'Symbol'
+sed '1 d' |
+xargs -n 1 bash -c 'process1gene "$@"' _
