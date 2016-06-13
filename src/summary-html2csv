@@ -42,5 +42,3 @@ sed '1 q' $tmp1 > $tmp2
 sed '/^Symbol/ d' $tmp1 >> $tmp2
 cat $tmp2
 rm $tmp1 $tmp2
-
-#cut -d ',' -f 1 $tmp2 | sed '1 d' > $outsymbol

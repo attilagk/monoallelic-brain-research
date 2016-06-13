@@ -4,12 +4,15 @@
 # (a.k.a. explanatory variables or covariates).
 
 # input: files from Ifat
-indir="$HOME/projects/monoallelic-brain/data/ifat/age-dependence"
-samples="$indir/samples.csv"
-inpred="$indir/DLPFC.ensembl.KNOWN_AND_SVA.ADJUST.SAMPLE_COVARIATES.tsv"
+#indir="$HOME/projects/monoallelic-brain/data/ifat/age-dependence"
+inpred=$1
+#inpred="$indir/DLPFC.ensembl.KNOWN_AND_SVA.ADJUST.SAMPLE_COVARIATES.tsv"
+samples=$2
+#samples="$indir/samples.csv"
 
 # output: two csv files prepared for import to R
-outdir="$HOME/projects/monoallelic-brain/data/predictors"
+outdir=$3
+#outdir="$HOME/projects/monoallelic-brain/data/predictors"
 if [ ! -d $outdir ]
 then mkdir $outdir
 fi

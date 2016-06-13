@@ -1,0 +1,83 @@
+#! /bin/bash
+
+# Download readcounts and related data for each gene listed in 'input.csv'
+# from Ifat's website and convert the html documents into csv for import to R.
+# For each gene 'G' a pair of files 'G.html' and 'G.csv' is saved in a
+# separate sub directory 'genes/G/', where 'genes' is in the same directory
+# where 'input.csv' resides; all these directories are created.
+
+# usage
+if [ $# != 1 ]
+then
+cat 2>&1 <<EOF
+usage: $(basename $0) input.csv
+EOF
+exit 1
+fi
+
+# input and output dir
+incsv=$(realpath $1)
+outdir="$(dirname $incsv)/genes"
+export outdir
+if [ ! -d $outdir ]
+then mkdir $outdir
+fi
+cd $outdir
+
+# The function that is called once for each gene with the gene's symbol as
+# argument
+process1gene() {
+    gene=$1
+    url="http://katahdin.mssm.edu/ifat/web/cm/get_gene_freq.pl?gene=$gene"
+    html=$(mktemp)
+    #html="$outdir/$gene/$gene.html" 
+    csv="$outdir/$gene/$gene.csv" 
+    nastr="NA"
+
+    # create the gene's subdir and download html
+    mkdir "$outdir/$gene"
+    wget -nv -O $html $url
+
+    # convert to asciidoc format with long lines
+    pandoc -f html -t asciidoc --columns=1000 $html |
+
+    # initial formatting on the asciidoc
+    sed -e "
+        # delete rows above and below table
+        0,/^|=\+$/ d
+        /^|=\+$/, $ d
+        # replace 'ND's by the R friendly 'nastr'
+        s/\<ND\>/${nastr}/g
+        # duplicate ${nastr} values for the L,H column
+        /^\(\(|[^|]*\)\{7\}\)\(|\s*${nastr}\s*\)\(.*\)$/ s//\1|${nastr},${nastr}\4/
+        # mark the start of each future row with an '\a'
+        /^|\(${gene}\s*|\([^|]*|\)\{11\}\)\(.*\)$/ s//\a\1\a\3/
+    " |
+    tr -d '\n' | tr '\a' '\n' |
+
+    # second formatting
+    sed -e "
+        # delete unnecessary rows
+        1 d; 4 d; 5 d
+        /${gene}\s*|\(.*\)$/ {
+        # remove first column (gene symbol)
+        s//\a\1/
+        # change the '|' delimiter to ','
+        s/\s*|\s*/,/g
+        }
+    " |
+    tr -d '\n' | tr '\a' '\n' |
+    sed -e "1 d" > $csv
+    rm $html
+    exit 0
+}
+export -f process1gene
+
+# get first column (i.e. gene symbol)
+cut -d ',' -f 1 $incsv |
+# remove column head 'Symbol'
+sed '1 d' |
+# call the function for each gene symbol
+xargs -n 1 bash -c 'process1gene "$@"' _
+
+exit 0

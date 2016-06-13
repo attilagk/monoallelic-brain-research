@@ -1,0 +1,70 @@
+## Preparing data for analysis in `R`
+
+### Read counts from Ifat's website
+
+The source of read count data is the largest HTML table generated dynamically using the `All genes` option in [Ifat's website][summary].  The output is a `csv` file for each gene within a gene-specific subdirectory.  Due to the specifics of Ifat's html tables and the general difficulty of the `html` to `csv` conversion only the "higher" and "lower" read counts could be formatted in a usable way; the underlying SNP-specific read counts could not be neatly retrieved just as the corresponding genotypes.
+
+```{r, engine='bash', eval=TRUE, echo=TRUE}
+# directories
+PDIR=$HOME/projects/monoallelic-brain # project directory
+RCDIR=$PDIR/data/readcount/ # directory for readcounts
+OUTDIR=$RCDIR/genes # subdir for gene-wise readcount
+
+# data files
+SUMMARYHTML=$RCDIR/summary-all-genes.html # should already exist
+SUMMARYCSV=$RCDIR/summary-all-genes.csv # will be created
+
+# script files
+SCRIPT1=$PDIR/src/summary-html2csv
+SCRIPT2=$PDIR/src/all-genes-readcounts-for-R 
+
+# run scripts
+test -f $SUMMARYHTML || exit 1
+test -f $SUMMARYCSV || $SCRIPT1 $SUMMARYHTML > $SUMMARYCSV
+test -d $OUTDIR || $SCRIPT2 $SUMMARYCSV 2> /dev/null
+echo "number of gene-wise read count datasets:"
+find $OUTDIR -type d | wc -l
+echo "total size:"
+du -sh $OUTDIR
+
+```
+
+### Predictors
+
+The data on predictors (explanatory variables, which can be either covariates or factors) was sent to me by Andy as email attached files.  The following code produces two files: `predictors.csv` is the main data table whereas `RNAseq_ID.DLPFC_RNA_ID.csv` is a mapping between RNAseqID (present in read count tables) and DLPFC_RNA_ID (present in the table of predictors).  Putting together those two is much easier in `R` than in shell scripts.
+
+```{r, engine='bash', eval=TRUE, echo=TRUE}
+# directories
+PDIR=$HOME/projects/monoallelic-brain # project directory
+INDIR=$PDIR/data/ifat/age-dependence # input directory
+OUTDIR=$PDIR/data/predictors/ # output directory
+
+# input files from Ifat via Andy
+INPRED="$INDIR/DLPFC.ensembl.KNOWN_AND_SVA.ADJUST.SAMPLE_COVARIATES.tsv"
+INID="$INDIR/samples.csv"
+
+# script files
+SCRIPT=$PDIR/src/predictors-for-R
+
+# run scripts
+test -d $OUTDIR || $SCRIPT $INPRED $INID $OUTDIR
+echo "output files:"
+file $OUTDIR/*
+```
+
+## Importing into `R`
+
+Given `predictors.csv` and `RNAseq_ID.DLPFC_RNA_ID.csv` the data frame `predictors` has the following structure:
+
+```{r}
+source("~/projects/monoallelic-brain/src/import-data.R")
+str(predictors[ , 1:15])
+```
+
+Each observation corresponds to an RNA sample (and the corresponding individual)
+
+```{r}
+head(row.names(predictors))
+```
+
+[summary]: http://katahdin.mssm.edu/ifat/web/cm/get_pop_freq.pl
