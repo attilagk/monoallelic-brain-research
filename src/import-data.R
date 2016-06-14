@@ -22,6 +22,7 @@ get.predictors <- function(f.predictors = "~/projects/monoallelic-brain/data/pre
     predictors
 }
 
+
 # Get observed readcounts for a set of selected genes
 #
 # Parameters
@@ -29,7 +30,7 @@ get.predictors <- function(f.predictors = "~/projects/monoallelic-brain/data/pre
 # data.dir: the main directory containing gene-wise subdirectories and read count files
 # count.thrs: lower filtering threshold for the total readcount (summing over alleles and SNPs)
 # sel.obs: the RNA IDs of selected observations (normally those on predictors)
-# aggregators: a list of functions to be used to aggregate read counts over sets of genes according to some method (i.e. averaging or pooling)
+# g.subsets: a named list of subsets of genes for aggregation over each subset using each of two methods (weighted and unweighted average)
 #
 # Value
 # a list of data frames, one data frame for each gene or "aggregate", whose
@@ -43,13 +44,12 @@ get.readcounts <- function(gene.ids,
                            data.dir = "~/projects/monoallelic-brain/data/readcount/genes",
                            count.thrs = 50,
                            sel.obs = row.names(get.predictors()),
-                           aggregators = list(identity)) {
+                           g.subsets = list(A.8 = gene.ids[1:8], A = gene.ids)) {
     import.rc <- function(gene) {
         fpath <- paste0(data.dir, "/", gene, "/", gene, ".csv")
-        y <- read.csv(fpath, row.names = NULL, header = FALSE, skip = 1)
-        #y <- read.csv(fpath, row.names = NULL)
-        #y[ , c("L", "H") ] # retain only lower and higher read counts
-        y[ , c(1, 7, 8) ] # retain only lower and higher read counts
+        # shell command to select 'Sample RNA ID', 'L' and 'H' columns using GNU's cut;
+        cmd <- "cut --delimiter=, --fields=1,7,8"
+        read.csv(pipe(paste(cmd, fpath)), row.names = 1)
     }
     get.sel.obs <- function(counts) {
         y <- counts[ sel.obs, ]
@@ -69,12 +69,49 @@ get.readcounts <- function(gene.ids,
         y$R <- S.rank(y$S)
         y
     }
-    #Y <- lapply(gene.ids, function(g) derive.stats(get.sel.obs(import.rc(g))))
-    Y <- lapply(gene.ids, import.rc)
+    aggregator <- function(g.subset, Z, vars = c("S", "R"), fun = mean) {
+        helper <- function(var) {
+            M <- as.matrix(as.data.frame(lapply(Z[g.subset], function(y) y[[var]])))
+            apply(M, 1, fun, na.rm = TRUE)
+        }
+        names(vars) <- vars
+        res <- data.frame(lapply(vars, helper))
+        row.names(res) <- row.names(Z[[1]])
+        res
+    }
+    filter.rc <- function(y) {
+        # observations pass filter if total read count is >= threshold
+        passed <- y$N >= count.thrs
+        # apply filter to each statistic, i.e. each column of the data frame
+        z <- data.frame(lapply(y, function(x) ifelse(passed, x, NA)))
+        row.names(z) <- row.names(y)
+        z
+    }
+    # import and adjust set of observations
+    Y <- lapply(gene.ids, function(g) get.sel.obs(import.rc(g)))
     names(Y) <- gene.ids
-    filter.rc <- function(counts) {}
-    Y
+    # aggregation: sum up L and H over each gene subset; used for 'W'eighted average
+    Y.pre <- lapply(g.subsets, aggregator, Y, vars = c("L", "H"), fun = sum)
+    # derive additional stats and do the filtering
+    Y <- lapply(Y, function(y) filter.rc(derive.stats(y)))
+    Y.pre <- lapply(Y.pre, function(y) filter.rc(derive.stats(y)))
+    # aggregation: 'U'nweigthed average of S and R over each gene subset
+    Y.post <- lapply(g.subsets, aggregator, Y, vars = c("S", "R"), fun = mean)
+    names(Y.pre) <- paste0(rep("W", length(Y.pre)), names(g.subsets))
+    names(Y.post) <- paste0(rep("U", length(Y.pre)), names(g.subsets))
+    # return gene-wise data Y together with aggregates Y.pre and Y.post
+    c(Y, Y.pre, Y.post)
 }
+
+             # 8 genes analyzed by Ifat
+gene.ids <- c("PEG3", "INPP5F", "SNRPN", "PWAR6", "ZDBF2", "MEG3", "ZNF331", "GRB10",
+             # 5 more genes analyzed by AGK 3/2/16
+             "PEG10", "SNHG14", "NAP1L5", "KCNQ1OT1", "MEST",
+             # 3 more genes present in data files
+             "IGF2", "NLRP2", "UBE3A",
+             # 'green' novel 1 MB imprinted genes; note that PWAR6 is already
+             # included above
+             "TMEM261P1", "AL132709.5", "RP11-909M7.3", "SNORD116-20", "RP13-487P22.1", "hsa-mir-335", "PWRN1")
 
 
 # explanatory variables
