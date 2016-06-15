@@ -76,15 +76,15 @@ get.readcounts <- function(gene.ids,
         }
         names(vars) <- vars
         res <- data.frame(lapply(vars, helper))
-        row.names(res) <- row.names(Z[[1]])
+        row.names(res) <- sel.obs
         res
     }
     filter.rc <- function(y) {
-        # observations pass filter if total read count is >= threshold
-        passed <- y$N >= count.thrs
+        # observations pass filter if total read count is > threshold
+        passed <- y$L + y$H > count.thrs
         # apply filter to each statistic, i.e. each column of the data frame
         z <- data.frame(lapply(y, function(x) ifelse(passed, x, NA)))
-        row.names(z) <- row.names(y)
+        row.names(z) <- sel.obs
         z
     }
     # import and adjust set of observations
@@ -92,9 +92,9 @@ get.readcounts <- function(gene.ids,
     names(Y) <- gene.ids
     # aggregation: sum up L and H over each gene subset; used for 'W'eighted average
     Y.pre <- lapply(g.subsets, aggregator, Y, vars = c("L", "H"), fun = sum)
-    # derive additional stats and do the filtering
-    Y <- lapply(Y, function(y) filter.rc(derive.stats(y)))
-    Y.pre <- lapply(Y.pre, function(y) filter.rc(derive.stats(y)))
+    # do the filtering and derive the additional stats
+    Y <- lapply(Y, function(y) derive.stats(filter.rc(y)))
+    Y.pre <- lapply(Y.pre, function(y) derive.stats(filter.rc(y)))
     # aggregation: 'U'nweigthed average of S and R over each gene subset
     Y.post <- lapply(g.subsets, aggregator, Y, vars = c("S", "R"), fun = mean)
     names(Y.pre) <- paste0(rep("W", length(Y.pre)), names(g.subsets))
@@ -112,14 +112,3 @@ gene.ids <- c("PEG3", "INPP5F", "SNRPN", "PWAR6", "ZDBF2", "MEG3", "ZNF331", "GR
              # 'green' novel 1 MB imprinted genes; note that PWAR6 is already
              # included above
              "TMEM261P1", "AL132709.5", "RP11-909M7.3", "SNORD116-20", "RP13-487P22.1", "hsa-mir-335", "PWRN1")
-
-
-# explanatory variables
-expl.var <- c("Age",
-               "Institution",
-               "Gender",
-               "PMI",
-               "Dx",
-               "RIN", "RIN2",
-               "RNA_lib_batch",
-               "Ancestry_EV.1", "Ancestry_EV.2", "Ancestry_EV.3", "Ancestry_EV.4", "Ancestry_EV.5" )
