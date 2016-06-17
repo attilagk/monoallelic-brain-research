@@ -90,16 +90,16 @@ get.readcounts <- function(gene.ids,
     # import and adjust set of observations
     Y <- lapply(gene.ids, function(g) get.sel.obs(import.rc(g)))
     names(Y) <- gene.ids
-    # aggregation: sum up L and H over each gene subset; used for 'W'eighted average
+    # 1st aggregation: take 'W'eighted average by summing up L and H over each gene subset
     Y.pre <- lapply(g.subsets, aggregator, Y, vars = c("L", "H"), fun = sum)
-    # do the filtering and derive the additional stats
+    # filter and derive the additional stats
     Y <- lapply(Y, function(y) derive.stats(filter.rc(y)))
     Y.pre <- lapply(Y.pre, function(y) derive.stats(filter.rc(y)))
-    # aggregation: 'U'nweigthed average of S and R over each gene subset
+    # 2nd aggregation: take 'U'nweigthed average of S and R over each gene subset
     Y.post <- lapply(g.subsets, aggregator, Y, vars = c("S", "R"), fun = mean)
+    # name columns and return gene-wise data Y together with 'WA' and 'UA' aggregates
     names(Y.pre) <- paste0(rep("W", length(Y.pre)), names(g.subsets))
     names(Y.post) <- paste0(rep("U", length(Y.pre)), names(g.subsets))
-    # return gene-wise data Y together with aggregates Y.pre and Y.post
     c(Y, Y.pre, Y.post)
 }
 

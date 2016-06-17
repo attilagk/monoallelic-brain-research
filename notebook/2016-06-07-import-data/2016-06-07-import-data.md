@@ -98,9 +98,7 @@ Given threshold $t$ (`count.thrs`) and gene $g$, an observation $i$ is filtered 
 
 ### Results
 
-#### New implementation
-
-Using the new implementation...
+Using a new `R` implementation of data import and processing:
 
 ```r
 source("~/projects/monoallelic-brain/src/import-data.R")
@@ -142,82 +140,6 @@ sapply(Y, function(y) sum(! is.na(y)))
 ##            35            20            50          2890          2890 
 ##          UA.8            UA 
 ##          1156          1156
-```
-
-#### Agreement with previous implementation
-
-Comparing with my previous implementation (which was shown to give results consistent with Ifat's)...
-
-```r
-source("../2016-04-22-glm-for-s-statistic/2016-04-22-glm-for-s-statistic.R")
-source("../2016-04-22-glm-for-s-statistic/2016-04-22-glm-for-s-statistic-run.R")
-```
-
-The old (left arguments) and new (right arguments) implementation agree perfectly on $N_g$ and $\bar{R}_{i;k\mathcal{G}_j}$.  For instance:
-
-```r
-c(identical(d$N_MEST, Y$MEST$N),
-identical(d$R_MEST, Y$MEST$R),
-identical(d$R_avg8, Y$UA.8$R))
-```
-
-```
-## [1] TRUE TRUE TRUE
-```
-
-But there are slight differences regarding $S_g$ because the new implementation calculates it afresh from $L_g$ and $H_g$ whereas the old implementation imported rounded numbers from Ifat's `pop_skew_3June15.txt` file loosing some precision.
-
-```r
-c(identical(d$S_MEST, Y$MEST$S), all.equal(d$S_MEST, Y$MEST$S))
-```
-
-```
-## [1] FALSE  TRUE
-```
-Moreover:
-
-```r
-c(identical(d$S_avg8, Y$WA.8$S), all.equal(d$S_avg8, Y$WA.8$S))
-```
-
-```
-## [1] "FALSE"                                
-## [2] "Mean relative difference: 0.001112457"
-```
-
-```r
-c(identical(d$S_avg8, Y$UA.8$S), all.equal(d$S_avg8, Y$UA.8$S))
-```
-
-```
-## [1] "FALSE"                                
-## [2] "Mean relative difference: 0.009172348"
-```
-which shows that the `S_avg8` statistic corresponds to the `WA.8` weighted average $\bar{S}_{i}$ more closely than to the unweighted `UA.8`.  Analyzing the code of the old implementation in `../2016-04-22-glm-for-s-statistic/2016-04-22-glm-for-s-statistic.R` confirms this.
-
-Finally, note that the names of predictors have been simplified in the new implementation:
-
-```r
-str(E[ , 1:15])
-```
-
-```
-## 'data.frame':	579 obs. of  15 variables:
-##  $ Institution  : Factor w/ 3 levels "MSSM","Penn",..: 1 1 1 1 1 1 1 1 1 1 ...
-##  $ Gender       : Factor w/ 2 levels "Female","Male": 2 2 1 1 2 1 1 2 1 2 ...
-##  $ Age          : int  42 58 28 36 52 78 49 62 60 51 ...
-##  $ PMI          : num  22.3 19.5 22.8 17.3 22.2 16 20 20.8 24 21.3 ...
-##  $ Dx           : Factor w/ 3 levels "AFF","Control",..: 1 1 1 1 1 1 1 1 1 1 ...
-##  $ RIN          : num  6.9 7 6.9 6.9 7.6 7.4 8 8.4 7.7 7.9 ...
-##  $ RIN2         : num  47.6 49 47.6 47.6 57.8 ...
-##  $ RNA_lib_batch: Factor w/ 9 levels "0","A","B","C",..: 6 6 5 6 2 7 8 7 6 3 ...
-##  $ Ancestry_EV.1: num  0.0214 0.0213 0.0202 0.0213 0.0213 ...
-##  $ Ancestry_EV.2: num  0.00459 0.03477 -0.00671 0.02264 -0.00656 ...
-##  $ Ancestry_EV.3: num  -0.003252 0.002797 0.000894 0.003056 0.006738 ...
-##  $ Ancestry_EV.4: num  0.0381 -0.0202 0.0461 -0.0182 0.041 ...
-##  $ Ancestry_EV.5: num  0.000824 -0.00345 -0.005654 -0.007156 -0.013422 ...
-##  $ SV1          : num  0.02559 -0.00105 -0.00124 0.02031 -0.02787 ...
-##  $ SV2          : num  -0.00651 -0.04842 -0.00523 -0.01151 -0.00416 ...
 ```
 
 [summary]: http://katahdin.mssm.edu/ifat/web/cm/get_pop_freq.pl
