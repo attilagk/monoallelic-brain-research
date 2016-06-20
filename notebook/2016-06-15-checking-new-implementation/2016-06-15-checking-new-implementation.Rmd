@@ -14,7 +14,7 @@ Y <- get.readcounts(gene.ids = gene.ids)
 ```
 
 Get data and fitted models obtained with my previous implementation (which was shown to give results consistent with Ifat's)...
-```{r cache=TRUE}
+```{r cache=FALSE}
 source("../2016-04-22-glm-for-s-statistic/2016-04-22-glm-for-s-statistic.R")
 source("../2016-04-22-glm-for-s-statistic/2016-04-22-glm-for-s-statistic-run.R")
 ```

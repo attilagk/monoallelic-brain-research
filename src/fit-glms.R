@@ -22,7 +22,7 @@ e.vars <- c("Age",
 do.fit <- function(y = Y[[1]]$S,
                    X = E,
                    e.v = e.vars,
-                   thrs = 100,
+                   thrs = 0, # setting to Inf tolerates all points
                    ...) {
     # check if number of observations is tolerable
     if(sum(! is.na(y)) < thrs) return(NULL)
@@ -51,17 +51,25 @@ do.fit <- function(y = Y[[1]]$S,
 do.all.fits <- function(Z = Y,
                         G = E,
                         preds = e.vars,
-                        min.obs = 100,
+                        min.obs = 0,
                         sel.models = NULL) {
     # list of fitter functions, one for each combination of a model and a transformation
     l.fitters <- list(
-                      # normal linear model with R
-    nlm.R = function(z) {
-        do.fit(y = z$R, X = G, e.v = preds, thrs = min.obs, family = gaussian)
+                      # unweighted normal linear model with R
+    unlm.R = function(z) {
+        do.fit(y = z$R, X = G, e.v = preds, thrs = min.obs, family = gaussian, weights = NULL)
     },
-                      # normal linear model with S
-    nlm.S = function(z) {
-        do.fit(y = z$S, X = G, e.v = preds, thrs = min.obs, family = gaussian)
+                      # weighted normal linear model with R
+    wnlm.R = function(z) {
+        do.fit(y = z$R, X = G, e.v = preds, thrs = min.obs, family = gaussian, weights = z$N)
+    },
+                      # unweighted normal linear model with S
+    unlm.S = function(z) {
+        do.fit(y = z$S, X = G, e.v = preds, thrs = min.obs, family = gaussian, weights = NULL)
+    },
+                      # weighted normal linear model with S
+    wnlm.S = function(z) {
+        do.fit(y = z$S, X = G, e.v = preds, thrs = min.obs, family = gaussian, weights = z$N)
     },
                       # logistic model with S
     logi.S = function(z) {
@@ -87,6 +95,11 @@ do.all.fits <- function(Z = Y,
                                    fitter)) # ...perform the fit!
 }
 
+mean.rel.diff <- function(target, current, ...){
+    x <- mean(abs(target - current), ...) # mean absolute difference
+    return(x / mean(abs(target)))
+}
+
 coefs4plot <- function(l.models, coef = "Age", sort.on = "estimate") {
     #sapply(l.models, function(m) summary(m)$coefficients[coef, 1])
     nulls <- sapply(l.models, is.null)
@@ -104,7 +117,7 @@ plot.betas <- function(coefs) {
     par(mar = c(5, 7, 4, 2))
     plot.new()
     plot.window(ylim = c(1, nr),
-                xlim = c(min(coefs[ , "CL.lo"], na.rm = TRUE), max(coefs[ , "CL.up"], na.rm = TRUE)))
+                xlim = c(min(coefs[ , "estimate"], na.rm = TRUE), max(coefs[ , "estimate"], na.rm = TRUE)))
     axis(1)
     axis(2, labels = rownames(coefs), at = seq_len(nr), las = 1)
     points(coefs[ , "estimate" ], seq_len(nr),

@@ -30,7 +30,7 @@ get.predictors <- function(f.predictors = "~/projects/monoallelic-brain/data/pre
 # data.dir: the main directory containing gene-wise subdirectories and read count files
 # count.thrs: lower filtering threshold for the total readcount (summing over alleles and SNPs)
 # sel.obs: the RNA IDs of selected observations (normally those on predictors)
-# g.subsets: a named list of subsets of genes for aggregation over each subset using each of two methods (weighted and unweighted average)
+# g.subsets: a named list of subsets of genes for aggregation over each subset using each of two methods: weighted and unweighted average
 #
 # Value
 # a list of data frames, one data frame for each gene or "aggregate", whose
@@ -42,7 +42,7 @@ get.predictors <- function(f.predictors = "~/projects/monoallelic-brain/data/pre
 # shell scripts summary-html2csv and all-genes-readcounts-for-R, both in ~/projects/monoallelic-brain/src/
 get.readcounts <- function(gene.ids,
                            data.dir = "~/projects/monoallelic-brain/data/readcount/genes",
-                           count.thrs = 50,
+                           count.thrs = 0,
                            sel.obs = row.names(get.predictors()),
                            g.subsets = list(A.8 = gene.ids[1:8], A = gene.ids)) {
     import.rc <- function(gene) {
@@ -101,6 +101,7 @@ get.readcounts <- function(gene.ids,
     names(Y.pre) <- paste0(rep("W", length(Y.pre)), names(g.subsets))
     names(Y.post) <- paste0(rep("U", length(Y.pre)), names(g.subsets))
     c(Y, Y.pre, Y.post)
+    c(Y, Y.pre)
 }
 
              # 8 genes analyzed by Ifat
