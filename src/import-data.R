@@ -101,7 +101,6 @@ get.readcounts <- function(gene.ids,
     names(Y.pre) <- paste0(rep("W", length(Y.pre)), names(g.subsets))
     names(Y.post) <- paste0(rep("U", length(Y.pre)), names(g.subsets))
     c(Y, Y.pre, Y.post)
-    c(Y, Y.pre)
 }
 
              # 8 genes analyzed by Ifat

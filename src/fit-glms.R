@@ -101,7 +101,6 @@ mean.rel.diff <- function(target, current, ...){
 }
 
 coefs4plot <- function(l.models, coef = "Age", sort.on = "estimate") {
-    #sapply(l.models, function(m) summary(m)$coefficients[coef, 1])
     nulls <- sapply(l.models, is.null)
     x <- sapply(c(estimate=1, SE=2, t.val=3, p.val=4),
            function(k) sapply(l.models[ ! nulls ],
@@ -112,9 +111,12 @@ coefs4plot <- function(l.models, coef = "Age", sort.on = "estimate") {
     cbind(x, CI)[ sort(x[ , sort.on], index.return = TRUE)$ix, ]
 }
 
-plot.betas <- function(coefs) {
+plot.betas <- function(coefs, ...) {
     nr <- nrow(coefs) # number of rows
-    par(mar = c(5, 7, 4, 2))
+    par(mfcol = 1:2)
+    par(mar = c(5, 8, 2, 0), fig = c(1,3,1,9))
+    plot(1:10)
+    par(mar = c(5, 0, 2, 2), fig = c(3,9,1,9), new = TRUE)
     plot.new()
     plot.window(ylim = c(1, nr),
                 xlim = c(min(coefs[ , "estimate"], na.rm = TRUE), max(coefs[ , "estimate"], na.rm = TRUE)))
@@ -126,5 +128,22 @@ plot.betas <- function(coefs) {
            function(g) lines(coefs[g, c("CL.lo", "CL.up")], c(g, g))))
     abline(v = 0, lty = "dashed")
     grid(nx = NA, ny = NULL)
-    title(xlab = expression(hat(beta)[age] %+-% s.e.))
+    title(xlab = expression(hat(beta)[age] %+-% s.e.), ...)
 }
+
+#plot.betas <- function(coefs, ...) {
+#    nr <- nrow(coefs) # number of rows
+#    par(mar = c(5, 8, 4, 2))
+#    plot.new()
+#    plot.window(ylim = c(1, nr),
+#                xlim = c(min(coefs[ , "estimate"], na.rm = TRUE), max(coefs[ , "estimate"], na.rm = TRUE)))
+#    axis(1)
+#    axis(2, labels = rownames(coefs), at = seq_len(nr), las = 1)
+#    points(coefs[ , "estimate" ], seq_len(nr),
+#         pch = 15)
+#    invisible(lapply(seq_len(nr),
+#           function(g) lines(coefs[g, c("CL.lo", "CL.up")], c(g, g))))
+#    abline(v = 0, lty = "dashed")
+#    grid(nx = NA, ny = NULL)
+#    title(xlab = expression(hat(beta)[age] %+-% s.e.), ...)
+#}

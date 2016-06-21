@@ -17,7 +17,7 @@ Filtering for *genes* was then preformed using the rule that a gene be removed i
 
 Filtering units in general can be considered as "all or none" weighting so that weight $w_{i}$ of unit $i$ is 1 if $i$ passed the filter and 0 otherwise.  It is theoretically beneficial to replace this crude weighting scheme with a more subtle one that uses finer grained weights because that way relatively strong observations that would be filtered out are still allowed to provide some information and, on the other hand, relatively week observations that would pass the filter have smaller impact on the results.
 
-In the current application, given $i,g$, the total read count lends itself as a natural weight, so $w_{ig} = N_{ig}$.  Such weighting scheme is natural if we assume that $S_{ig}$ is binomial with denominator $N_{ig}$, which is the case for logistic regression `logi.S`. Under the normal linear regression model using $S_{g}$ and $R_g$ as response there is no such "natural" argument but it is still tempting and seemingly reasonable to use $N_{ig}$ as weight.  In the computational objects below this will be denoted as `wnlm.S` and `wnlm.R`, whereas no weighting will be labeled with `unlm.S` and `unlm.R`, respectively (see `fit-glms.R`).
+In the current application, given $i,g$, the total read count lends itself as a natural weight, so $w_{ig} = N_{ig}$.  Such weighting scheme is natural if we assume that the higher read count $H_{ig} = S_{ig} N_{ig}$ is binomial with denominator $N_{ig}$, which is the case for logistic regression `logi.S`. Under the normal linear regression model using $S_{g}$ and $R_g$ as response there is no such "natural" argument but it is still tempting and seemingly reasonable to use $N_{ig}$ as weight.  In the computational objects below this will be denoted as `wnlm.S` and `wnlm.R`, whereas no weighting will be labeled with `unlm.S` and `unlm.R`, respectively (see `fit-glms.R`).
 
 #### Weighting genes instead of filtering them
 
@@ -51,31 +51,47 @@ Get data: observations on predictors (explanatory variables) and on the higher a
 E <- get.predictors() # default arguments
 Y <- get.readcounts(gene.ids = gene.ids, count.thrs = 0)
 Y.f <- get.readcounts(gene.ids = gene.ids, count.thrs = 50)
-#Y <- list(f0 = # do not filter out observations
-#          get.readcounts(gene.ids = gene.ids, count.thrs = 0),
-#          f50 = # filter at count threshold 50 
-#          get.readcounts(gene.ids = gene.ids, count.thrs = 50))
 ```
 
 ### The number of available observations
 
-The number of available observations is closely (and inversely) related to the standard error of estimated regression coefficients such as of $\hat{\beta}_\mathrm{age}$, on which our attention is centered. The number of observations before and after filtering at total read count threshold $\le 50$):
+The number of available observations is closely (and inversely) related to the standard error of estimated regression coefficients such as of $\hat{\beta}_\mathrm{age}$, on which our attention is centered. The number of observations before and after filtering at total read count threshold $\le 50$)...
 ```{r}
-(nobs <- as.data.frame(lapply(list(unfiltered=Y, filtered=Y.f), function(y) sapply(y[ gene.ids ], function(x) sum(! is.na(x[[1]]))))))
+(nobs <- as.data.frame(lapply(list(unfiltered=Y, filtered=Y.f), function(y) sapply(y, function(x) sum(! is.na(x[[1]]))))))
 ```
-This shows that the largest trade-off of filtering arises for genes for which the number of observations is ab ovo small, in particular for most genes in the "novel 1 MB" category.
+which shows that the largest trade-off of filtering arises for genes for which the number of observations is ab ovo small, in particular for most genes in the "novel 1 MB" category.  The same information is plotted below; *blue* denotes known imprinted genes, *green* candidate imprinted genes (<1 MB) and *magenta* two gene sets aggregated by weighted average (`WA.8` and `WA`, overlapping each other).  The horizontal dashed line shows the filtering threshold of 180 observations that was defined previously to remove genes with little data.
 
-```{r filtering-on-nobs, dev=c('png','pdf')}
-plot(nobs$unfiltered, nobs$filtered, xlim = c(0, nrow(E)), ylim = c(0, nrow(E)), pch = 16,
-     main = "number of observations", xlab = "unfiltered", ylab = "filtered")
-abline(0, 1)
+```{r filtering-on-nobs, dev=c('png','pdf'), echo=FALSE}
+plot.new()
+plot.window(xlim = c(0, nrow(E)), ylim = c(0, nrow(E)))
+axis(1); axis(2); box() #; abline(h = 0, lty = "dotted"); abline(v = 0, lty = "dotted")
+abline(0, 1); abline(h = 180, lty = "dashed")
+title(main = "number of observations", xlab = "unfiltered", ylab = "filtered")
+points(nobs[ 1:16, "unfiltered" ], nobs[ 1:16, "filtered" ], pch = 16, col = "blue")
+points(nobs[ 17:23, "unfiltered" ], nobs[ 17:23, "filtered" ], pch = 16, col = "green")
+points(nobs[ 24:25, "unfiltered" ], nobs[ 24:25, "filtered" ], pch = 16, col = "magenta")
+```
+
+#### Conclusion
+
+The above results show that the previously used gene filter would remove 6 out of the 7 candidate genes with which the analysis now is extended.  This points to one of the benefits of the new weighting schemes introduced above.
+
+$$$ Apparent age dependence of $S_g$ for candidate genes $g$
+
+```{r S-vs-age-candidate-imprinted, fig.width=12, fig.height=12, echo=FALSE, dev=c('png','pdf')}
+par(mfcol = c(3,3))
+invisible(sapply(names(Y)[17:23], function(y) plot(E$Age, Y[[ y ]]$S,
+                                                   xlab = "age", ylab = "S",
+                                                   main = y, ylim = c(0.5, 1))))
 ```
 
 ## Estimation of regression coefficients
 
+### Fitting models
+
 Fitting all models to all retained gene-wise and aggregated read count data sets
 ```{r cache=TRUE, warning=TRUE}
-M <- do.all.fits(Y[ids4fit])
+M <- do.all.fits(Y[-26:-27]) # exclude unweighed aggregates UA.8 and UA from fitting
 ```
 
 The following models have been fit...
@@ -87,34 +103,58 @@ names(M)
 names(M[[1]])
 ```
 
-
 The warnings arising during the fit also reflect the fact that for TMEM261P1 the fit failed to converge both under `logi.S` and `logi2.S`, so let
 ```{r}
 f.ids <- as.data.frame(lapply(M, function(m) ! sapply(m, is.null)))
 f.ids["TMEM261P1", c("logi.S", "logi2.S")] <- FALSE
 ```
-Note that `NULL` results reflect genes that have been filtered out---by default none.
+Note that potential `NULL` results reflect genes that have been filtered out---by default none.
 
-Regression coefficients under logistic model fitted on $S$
+### Regression coefficient $\beta_\mathrm{age}$ 
 
-```{r}
-plot.betas(coefs4plot(M$logi.S[f.ids$logi.S]))
+```{r beta-age-logi.S, dev=c('png','pdf'), echo=FALSE}
+plot.betas(coefs4plot(M$logi.S[f.ids$logi.S]), main = "logi.S")
 ```
 
-```{r}
-plot.betas(coefs4plot(M$wnlm.R)) # [f.ids$wnlm.R] subscript to R can be omitted
+```{r beta-age-wnlm.R, dev=c('png','pdf'), echo=FALSE}
+plot.betas(coefs4plot(M$wnlm.R), main = "wnlm.R") # [f.ids$wnlm.R] subscript to R can be omitted
 ```
 
-The mean absolute difference of regression coefficients under `logi2.S` relative to `logi.S` is calculated for each gene or aggregate.
-The difference tends to decrease with increasing number of observations for any given gene (or aggregate)
-```{r}
+### Comparing $\beta_\mathrm{age}$ from different models
+
+```{r beta-age-wnlm.R-vs-logi.S, dev=c('png','pdf'), echo=FALSE}
+plot(coefs4plot(M$wnlm.R)[rownames(f.ids)[f.ids$wnlm.R & f.ids$logi.S], "estimate"],
+     coefs4plot(M$logi.S)[rownames(f.ids)[f.ids$logi.S & f.ids$logi.S], "estimate"],
+     pch = 15,
+     xlab = expression(paste(hat(beta)[age], "under wnlm.R")),
+     ylab = expression(paste(hat(beta)[age], "under logi.S")))
+```
+
+Let $M' / M$ denote the comparison of two models in terms of the mean absolute difference of regression coefficients under $M'$ relative to $M$ for a given gene or aggregate $g$, defined as
+$$
+\frac{\sum_j | \beta'_{jg} - \beta_{jg} | }{\sum_j | \beta_{jg} | }
+$$
+where $\{\beta_{jg} : j=1,..,p\}$ and $\{\beta'_{jg} : j=1,..,p\}$ is a set of $p$ regression coefficients under $M$ and $M'$, respectively.
+
+The plot below shows such differences for three model comparisons and all genes and aggregates.  Two systematic trends be seen:
+
+1. the difference tends to decrease with increasing number of observations indicating that some of the difference comes from sampling error due to limited number of observations
+1. the `logi2.S` / `logi.S` differences (both can be considered weighted averages) tend to be smaller than the differences between weighed and unweighted averaging of $\{S_{g}\}_g$ and especially that of $\{R_{g}\}_g$.
+
+```{r mean-abs-diff-coefs, echo=FALSE}
 mrds <- list(logi =
              sapply(names(M$logi.S[f.ids$logi.S]), function(x) mean.rel.diff(coef(M$logi.S[[x]]), coef(M$logi2.S[[x]]))),
+         nlm.R = 
+             sapply(names(M$wnlm.R[f.ids$wnlm.R]), function(x) mean.rel.diff(coef(M$wnlm.R[[x]]), coef(M$unlm.R[[x]]))),
          nlm.S = 
              sapply(names(M$wnlm.S[f.ids$wnlm.S]), function(x) mean.rel.diff(coef(M$wnlm.S[[x]]), coef(M$unlm.S[[x]]))))
-plot(nobs <- sapply(names(mrds$logi), function(x) sum(! is.na(Y[[x]][[1]]))), mrds$logi,
-     xlab = "number of observations", ylab = "mean abs. re. difference", add = TRUE)
-lines(sapply(names(mrds$mrds$nlm.S), function(x) sum(! is.na(Y[[x]][[1]]))), mrds$nlm.S, pch = "+")
+plot.new(); plot.window(xlim = c(0, nrow(E)), ylim = c(0, max(sapply(mrds, max))))
+axis(1); axis(2)
+points(nobs[ names(mrds$logi), "unfiltered" ], mrds$logi, pch = 16)
+points(nobs[ names(mrds$nlm.S), "unfiltered" ], mrds$nlm.S, pch = 10)
+points(nobs[ names(mrds$nlm.R), "unfiltered" ], mrds$nlm.R, pch = 1)
+legend("topright", c("logi2.S / logi.S", "unlm.S / wnlm.S", "unlm.R / wnlm.R") , pch = c(16, 10, 1))
+title(xlab = "number of observations", ylab = "relative difference")
 ```
 
 
