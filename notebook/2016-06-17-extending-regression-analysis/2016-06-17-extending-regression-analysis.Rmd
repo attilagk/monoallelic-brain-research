@@ -91,7 +91,9 @@ invisible(sapply(names(Y)[17:23], function(y) plot(E$Age, Y[[ y ]]$S,
 
 Fitting all models to all retained gene-wise and aggregated read count data sets
 ```{r cache=TRUE, warning=TRUE}
-M <- do.all.fits(Y[-26:-27]) # exclude unweighed aggregates UA.8 and UA from fitting
+# exclude unweighed aggregates UA.8 and UA from fitting
+to.fit.ids <- grep("^UA(.8)?$", names(Y), value = TRUE, invert = TRUE)
+M <- do.all.fits(Y[to.fit.ids], preds = e.vars)
 ```
 
 The following models have been fit...
@@ -112,23 +114,35 @@ Note that potential `NULL` results reflect genes that have been filtered out---b
 
 ### Regression coefficient $\beta_\mathrm{age}$ 
 
-```{r beta-age-logi.S, dev=c('png','pdf'), echo=FALSE}
-plot.betas(coefs4plot(M$logi.S[f.ids$logi.S]), main = "logi.S")
+Under the `logi.S` model $\beta_\mathrm{age}$ seems to vary greatly accross genes suggesting both gain or loss of imprinting with age or no effect of age.  Genes with fewer observations (as typical for candidate imprinted genes) have broad confidence intervals and so tend support the null hypothesis of $\beta_\mathrm{age}=0$ at a given significance level $\alpha$.  Aggregating read counts using weighted average is hugely beneficial as evidenced by dramatically shrunken confidence intervals (`WA.8`, `WA`) because the logistic model takes advantage of the increased total read counts.
+
+```{r beta-age-logi.S, dev=c('png','pdf'), echo=FALSE, warning=FALSE, message=FALSE}
+plot.betas(M$logi.S[f.ids$logi.S], coef.name = "Age", conf.lev = 0.99, main = "logi.S")
 ```
 
-```{r beta-age-wnlm.R, dev=c('png','pdf'), echo=FALSE}
-plot.betas(coefs4plot(M$wnlm.R), main = "wnlm.R") # [f.ids$wnlm.R] subscript to R can be omitted
+Under the `wnlm.R` model the above picture slightly changes.  In general, confidence intervals are broader than under `logi.S`. In particular, the normal linear model fails to benefit from data aggregation by ignoring total read counts; therefore the confidence intervals for `WA.8` or `WA` are *not* shrunken relative to single-gene data sets under this model.
+
+```{r beta-age-wnlm.R, dev=c('png','pdf'), echo=FALSE, warning=FALSE, message=FALSE}
+plot.betas(M$wnlm.R[f.ids$wnlm.R], coef.name = "Age", conf.lev = 0.99, main = "wnlm.R")
 ```
 
 ### Comparing $\beta_\mathrm{age}$ from different models
 
+#### Consistency between `wnlm.R` and `logi.S`
+
 ```{r beta-age-wnlm.R-vs-logi.S, dev=c('png','pdf'), echo=FALSE}
-plot(coefs4plot(M$wnlm.R)[rownames(f.ids)[f.ids$wnlm.R & f.ids$logi.S], "estimate"],
-     coefs4plot(M$logi.S)[rownames(f.ids)[f.ids$logi.S & f.ids$logi.S], "estimate"],
-     pch = 15,
-     xlab = expression(paste(hat(beta)[age], "under wnlm.R")),
-     ylab = expression(paste(hat(beta)[age], "under logi.S")))
+par(mar = c(5,5,4,2))
+plot(sapply(c("wnlm.R", "logi.S"),
+            function(m) (sapply(rownames(f.ids)[f.ids$wnlm.R & f.ids$logi.S],
+                                function(x) coef(M[[m]][[x]])["Age"]))),
+     pch = 16,
+     xlab = expression(paste(hat(beta)[age], " under wnlm.R")),
+     ylab = expression(paste(hat(beta)[age], " under logi.S")))
+abline(v = 0, lty = "dashed")
+abline(h = 0, lty = "dashed")
 ```
+
+#### Impact of S rescaling (`logi2.S`) and of weighting observations (`nlm`)
 
 Let $M' / M$ denote the comparison of two models in terms of the mean absolute difference of regression coefficients under $M'$ relative to $M$ for a given gene or aggregate $g$, defined as
 $$
@@ -156,8 +170,5 @@ points(nobs[ names(mrds$nlm.R), "unfiltered" ], mrds$nlm.R, pch = 1)
 legend("topright", c("logi2.S / logi.S", "unlm.S / wnlm.S", "unlm.R / wnlm.R") , pch = c(16, 10, 1))
 title(xlab = "number of observations", ylab = "relative difference")
 ```
-
-
-## ANOVA
 
 [manuscript]: https://docs.google.com/document/d/1cWd4UH98SJR5lihDihC0ZO-C_A1-8MQ5COcixxCLzHE/edit

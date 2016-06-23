@@ -95,55 +95,81 @@ do.all.fits <- function(Z = Y,
                                    fitter)) # ...perform the fit!
 }
 
+# Calculate the mean difference of 'current' Y relative to 'target' X
+#
+# Parameters
+# target: the reference vector
+# current: the other vector
+#
+# Value
+# a vector of mean relative differes
+#
+# Details
+# mean difference of Y relative to X is avg(|X - Y|) / avg(|X|)
 mean.rel.diff <- function(target, current, ...){
     x <- mean(abs(target - current), ...) # mean absolute difference
     return(x / mean(abs(target)))
 }
 
-coefs4plot <- function(l.models, coef = "Age", sort.on = "estimate") {
-    nulls <- sapply(l.models, is.null)
-    x <- sapply(c(estimate=1, SE=2, t.val=3, p.val=4),
-           function(k) sapply(l.models[ ! nulls ],
-                              function(m) summary(m)$coefficients[coef, k]))
-    # confidence intervals (composed of lower and upper confidence limits)
-    CI <- cbind(x[ , "estimate"] - x[ , "SE"], x[ , "estimate"] + x[ , "SE"])
-    colnames(CI) <- c("CL.lo", "CL.up")
-    cbind(x, CI)[ sort(x[ , sort.on], index.return = TRUE)$ix, ]
-}
-
-plot.betas <- function(coefs, ...) {
-    nr <- nrow(coefs) # number of rows
-    par(mfcol = 1:2)
-    par(mar = c(5, 8, 2, 0), fig = c(1,3,1,9))
-    plot(1:10)
-    par(mar = c(5, 0, 2, 2), fig = c(3,9,1,9), new = TRUE)
+# Plot estimated coefficients and confidence intervals for a list of models
+#
+# Parameters
+# l.models: list of models of class lm or glm
+# coef.name: in case of multiple regression selects a coefficient
+# conf.lev: confidence level
+#
+# Value
+# irrelevant, this function is called for the side effect of plotting
+plot.betas <- function(l.models, coef.name = "Age", conf.lev = 0.99, ...) {
+    nr <- length(l.models) # number of models
+    par(mar = c(5, 8, 4, 2))
+    beta.hat <- sapply(l.models, function(m) coef(m)[coef.name])
+    ix <- sort(beta.hat, index.return = TRUE)$ix
+    beta.hat <- beta.hat[ix]
+    CI <- lapply(l.models, confint, parm = coef.name, level = conf.lev)[ix]
     plot.new()
     plot.window(ylim = c(1, nr),
-                xlim = c(min(coefs[ , "estimate"], na.rm = TRUE), max(coefs[ , "estimate"], na.rm = TRUE)))
+                xlim = c(min(beta.hat, na.rm = TRUE), max(beta.hat, na.rm = TRUE)))
     axis(1)
-    axis(2, labels = rownames(coefs), at = seq_len(nr), las = 1)
-    points(coefs[ , "estimate" ], seq_len(nr),
+    axis(2, labels = names(l.models[ix]), at = seq_len(nr), las = 1)
+    points(beta.hat, seq_len(nr),
          pch = 15)
     invisible(lapply(seq_len(nr),
-           function(g) lines(coefs[g, c("CL.lo", "CL.up")], c(g, g))))
+           function(g) lines(CI[[g]], c(g, g))))
     abline(v = 0, lty = "dashed")
-    grid(nx = NA, ny = NULL)
-    title(xlab = expression(hat(beta)[age] %+-% s.e.), ...)
+    #grid(nx = NA, ny = NULL)
+    legend("bottomright",
+           c(expression(paste("estimate ", hat(beta))), paste(100 * conf.lev, "% conf. int.")),
+           lty = c(0, 1), pch = c(15, NA))
+    title(xlab = expression(paste("coefficient ", beta)), ...)
 }
 
-#plot.betas <- function(coefs, ...) {
-#    nr <- nrow(coefs) # number of rows
-#    par(mar = c(5, 8, 4, 2))
-#    plot.new()
-#    plot.window(ylim = c(1, nr),
-#                xlim = c(min(coefs[ , "estimate"], na.rm = TRUE), max(coefs[ , "estimate"], na.rm = TRUE)))
-#    axis(1)
-#    axis(2, labels = rownames(coefs), at = seq_len(nr), las = 1)
-#    points(coefs[ , "estimate" ], seq_len(nr),
-#         pch = 15)
-#    invisible(lapply(seq_len(nr),
-#           function(g) lines(coefs[g, c("CL.lo", "CL.up")], c(g, g))))
-#    abline(v = 0, lty = "dashed")
-#    grid(nx = NA, ny = NULL)
-#    title(xlab = expression(hat(beta)[age] %+-% s.e.), ...)
-#}
+# creates a data frame of ANOVA deviances
+#
+# Parameters
+# l.m: a list of models
+#
+# Value
+# a data frame of ANOVA deviances where each column is a term and rows are genes
+l.anova <- function(l.m) {
+    y <- sapply(l.m, function(m) anova(m)[ , "Deviance" ])[ -1, ]
+    row.names(y) <- attributes(terms(l.m[[1]]))$term.labels
+    data.frame(t(y))
+}
+
+# creates a data frame of effects
+#
+# Parameters
+# l.m: a list of models
+# ref.m: a reference model with a complete set of coefficients
+#
+# Value
+# a data frame of ANOVA deviances where each column is a term and rows are genes
+#
+# Details
+# ref.m is needed to check if every other model has the same number of parameters
+l.effects <- function(l.m, ref.m = 1) {
+    ix <- sapply(l.m, function(m) length(coef(m)) == length(coef(l.m[[ ref.m ]])))
+    y <- sapply(l.m[ ix ], function(m) effects(m)[ names(coef(l.m[[ref.m]]))[-1] ])
+    data.frame(t(y))
+}

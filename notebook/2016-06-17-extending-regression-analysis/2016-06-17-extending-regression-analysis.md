@@ -111,7 +111,9 @@ $$$ Apparent age dependence of $S_g$ for candidate genes $g$
 Fitting all models to all retained gene-wise and aggregated read count data sets
 
 ```r
-M <- do.all.fits(Y[-26:-27]) # exclude unweighed aggregates UA.8 and UA from fitting
+# exclude unweighed aggregates UA.8 and UA from fitting
+to.fit.ids <- grep("^UA(.8)?$", names(Y), value = TRUE, invert = TRUE)
+M <- do.all.fits(Y[to.fit.ids], preds = e.vars)
 ```
 
 ```
@@ -165,13 +167,21 @@ Note that potential `NULL` results reflect genes that have been filtered out---b
 
 ### Regression coefficient $\beta_\mathrm{age}$ 
 
+Under the `logi.S` model $\beta_\mathrm{age}$ seems to vary greatly accross genes suggesting both gain or loss of imprinting with age or no effect of age.  Genes with fewer observations (as typical for candidate imprinted genes) have broad confidence intervals and so tend support the null hypothesis of $\beta_\mathrm{age}=0$ at a given significance level $\alpha$.  Aggregating read counts using weighted average is hugely beneficial as evidenced by dramatically shrunken confidence intervals (`WA.8`, `WA`) because the logistic model takes advantage of the increased total read counts.
+
 ![plot of chunk beta-age-logi.S](figure/beta-age-logi.S-1.png)
+
+Under the `wnlm.R` model the above picture slightly changes.  In general, confidence intervals are broader than under `logi.S`. In particular, the normal linear model fails to benefit from data aggregation by ignoring total read counts; therefore the confidence intervals for `WA.8` or `WA` are *not* shrunken relative to single-gene data sets under this model.
 
 ![plot of chunk beta-age-wnlm.R](figure/beta-age-wnlm.R-1.png)
 
 ### Comparing $\beta_\mathrm{age}$ from different models
 
+#### Consistency between `wnlm.R` and `logi.S`
+
 ![plot of chunk beta-age-wnlm.R-vs-logi.S](figure/beta-age-wnlm.R-vs-logi.S-1.png)
+
+#### Impact of S rescaling (`logi2.S`) and of weighting observations (`nlm`)
 
 Let $M' / M$ denote the comparison of two models in terms of the mean absolute difference of regression coefficients under $M'$ relative to $M$ for a given gene or aggregate $g$, defined as
 $$
@@ -185,8 +195,5 @@ The plot below shows such differences for three model comparisons and all genes 
 1. the `logi2.S` / `logi.S` differences (both can be considered weighted averages) tend to be smaller than the differences between weighed and unweighted averaging of $\{S_{g}\}_g$ and especially that of $\{R_{g}\}_g$.
 
 ![plot of chunk mean-abs-diff-coefs](figure/mean-abs-diff-coefs-1.png)
-
-
-## ANOVA
 
 [manuscript]: https://docs.google.com/document/d/1cWd4UH98SJR5lihDihC0ZO-C_A1-8MQ5COcixxCLzHE/edit
