@@ -19,15 +19,15 @@ e.vars <- c("Age",
 #
 # Value
 # an objects of class glm (or NULL if n.obs < thrs)
-do.fit <- function(y = Y[[1]]$S,
+do.fit <- function(response = Y[[1]]$S,
                    X = E,
                    e.v = e.vars,
                    thrs = 0, # setting to Inf tolerates all points
                    ...) {
     # check if number of observations is tolerable
-    if(sum(! is.na(y)) < thrs) return(NULL)
-    # append explanatory variable y to the 'data' X
-    X$Y <- y
+    if(sum(! is.na(response)) < thrs) return(NULL)
+    # append response variable the 'data' X
+    X$Y <- response
     # construct formula and fit some model on 'data' X
     fm <- as.formula(paste("Y", "~", paste0(e.v, collapse = " + ")))
     glm(fm, data = X, ...)
@@ -52,28 +52,29 @@ do.all.fits <- function(Z = Y,
                         G = E,
                         preds = e.vars,
                         min.obs = 0,
-                        sel.models = NULL) {
+                        sel.models = NULL,
+                        ...) {
     # list of fitter functions, one for each combination of a model and a transformation
     l.fitters <- list(
                       # unweighted normal linear model with R
     unlm.R = function(z) {
-        do.fit(y = z$R, X = G, e.v = preds, thrs = min.obs, family = gaussian, weights = NULL)
+        do.fit(response = z$R, X = G, e.v = preds, thrs = min.obs, family = gaussian, weights = NULL, ...)
     },
                       # weighted normal linear model with R
     wnlm.R = function(z) {
-        do.fit(y = z$R, X = G, e.v = preds, thrs = min.obs, family = gaussian, weights = z$N)
+        do.fit(response = z$R, X = G, e.v = preds, thrs = min.obs, family = gaussian, weights = z$N, ...)
     },
                       # unweighted normal linear model with S
     unlm.S = function(z) {
-        do.fit(y = z$S, X = G, e.v = preds, thrs = min.obs, family = gaussian, weights = NULL)
+        do.fit(response = z$S, X = G, e.v = preds, thrs = min.obs, family = gaussian, weights = NULL, ...)
     },
                       # weighted normal linear model with S
     wnlm.S = function(z) {
-        do.fit(y = z$S, X = G, e.v = preds, thrs = min.obs, family = gaussian, weights = z$N)
+        do.fit(response = z$S, X = G, e.v = preds, thrs = min.obs, family = gaussian, weights = z$N, ...)
     },
                       # logistic model with S
     logi.S = function(z) {
-        do.fit(y = cbind(z$H, z$L), X = G, e.v = preds, thrs = min.obs * 2, family = binomial)
+        do.fit(response = cbind(z$H, z$L), X = G, e.v = preds, thrs = min.obs * 2, family = binomial, ...)
     },
                       # logistic model with affine transformed S
     logi2.S = function(z) {
@@ -83,7 +84,7 @@ do.all.fits <- function(Z = Y,
             C[ C < 0 & ! is.na(C) ] <- 0
             return(C)
         }
-        do.fit(y = affine.transform.S(z), X = G, e.v = preds, thrs = min.obs * 2, family = binomial)
+        do.fit(response = affine.transform.S(z), X = G, e.v = preds, thrs = min.obs * 2, family = binomial)
     }
     )
     # select fitters that correspond to selected models in 'sel.models'

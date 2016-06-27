@@ -137,7 +137,7 @@ Again with weighted (`WA`) average $S$ as response the agreement is also reasona
 
 ```r
 logi.S <- function(g)
-    do.fit(y = cbind(Y[[g]]$H, Y[[g]]$L), X = E, e.v = e.vars, family = binomial)
+    do.fit(response = cbind(Y[[g]]$H, Y[[g]]$L), X = E, e.v = e.vars, family = binomial)
 old <- coef(m$avg8$logi.S)
 new <- coef(logi.S("WA.8"))
 all.equal(old, new, check.attributes = FALSE)
@@ -156,7 +156,7 @@ affine.transform.S <- function(y) {
     return(C)
 }
 logi2.S <- function(g)
-    do.fit(y = affine.transform.S(Y[[g]]), X = E, e.v = e.vars, family = binomial)
+    do.fit(response = affine.transform.S(Y[[g]]), X = E, e.v = e.vars, family = binomial)
 old <- coef(m$avg8$logi.S)
 new <- coef(logi2.S("WA.8"))
 all.equal(old, new, check.attributes = FALSE)
