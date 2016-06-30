@@ -104,12 +104,13 @@ Compare estimated coefficients using the new and my old implementation under nor
 
 ```r
 old <- coef(m$avg8$nlm.R)
+e.vars <- names(E)[1:13]
 new <- coef(do.fit(Y$UA.8$R, X = E, e.v = e.vars, family = gaussian))
 all.equal(old, new, tolerance = 0, check.attributes = FALSE)
 ```
 
 ```
-## [1] TRUE
+## [1] "Mean relative difference: 0.2097885"
 ```
 Using weighted (`WA`) average $S$ as response agrees reasonably but not perfectly since $S$ shows differences due to rounding between old and new importers (as discussed above):
 
@@ -120,7 +121,7 @@ all.equal(old, new, check.attributes = FALSE)
 ```
 
 ```
-## [1] "Mean relative difference: 0.02600831"
+## [1] "Mean relative difference: 0.05311764"
 ```
 In case of unweighted (`UA`) average $S$ the agreement is poor as expected based on the results concerning import:
 
@@ -131,7 +132,7 @@ all.equal(old, new, check.attributes = FALSE)
 ```
 
 ```
-## [1] "Mean relative difference: 0.321898"
+## [1] "Mean relative difference: 0.3497726"
 ```
 Again with weighted (`WA`) average $S$ as response the agreement is also reasonable under the logistic model:
 
@@ -144,7 +145,7 @@ all.equal(old, new, check.attributes = FALSE)
 ```
 
 ```
-## [1] "Mean relative difference: 0.06142334"
+## [1] "Mean relative difference: 0.1879356"
 ```
 Using weighted average (`WA`) but subjecting $S$ to an affine transformation $T$ such that $T(S)$ is supported on the interval $[0,1]$ as opposed to $S$'s support on $[1/2,1]$ results in less reasonable agreement between implementations because the "rounding differences" are further amplified:
 
@@ -163,5 +164,5 @@ all.equal(old, new, check.attributes = FALSE)
 ```
 
 ```
-## [1] "Mean relative difference: 0.1552438"
+## [1] "Mean relative difference: 0.2820372"
 ```

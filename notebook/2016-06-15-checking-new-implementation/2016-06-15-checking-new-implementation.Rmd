@@ -50,6 +50,7 @@ source("~/projects/monoallelic-brain/src/fit-glms.R")
 Compare estimated coefficients using the new and my old implementation under normal linear model fitted to unweighted average (`UA`) $R$ as response to find perfect agreement:
 ```{r}
 old <- coef(m$avg8$nlm.R)
+e.vars <- names(E)[1:13]
 new <- coef(do.fit(Y$UA.8$R, X = E, e.v = e.vars, family = gaussian))
 all.equal(old, new, tolerance = 0, check.attributes = FALSE)
 ```

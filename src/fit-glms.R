@@ -5,8 +5,8 @@ e.vars <- c("Age",
                "PMI",
                "Dx",
                "RIN", "RIN2",
-               "RNA_lib_batch",
-               "Ancestry_EV.1", "Ancestry_EV.2", "Ancestry_EV.3", "Ancestry_EV.4", "Ancestry_EV.5" )
+               "RNA_batch",
+               "Ancestry.1", "Ancestry.2", "Ancestry.3", "Ancestry.4", "Ancestry.5" )
 
 # Construct a formula from data and names of predictors and fit some glm
 #
@@ -21,7 +21,7 @@ e.vars <- c("Age",
 # an objects of class glm (or NULL if n.obs < thrs)
 do.fit <- function(response = Y[[1]]$S,
                    X = E,
-                   e.v = e.vars,
+                   e.v = names(E)[1:13],
                    thrs = 0, # setting to Inf tolerates all points
                    ...) {
     # check if number of observations is tolerable
@@ -50,7 +50,7 @@ do.fit <- function(response = Y[[1]]$S,
 # Details: this is a wrapper around 'do.fit'
 do.all.fits <- function(Z = Y,
                         G = E,
-                        preds = e.vars,
+                        preds = names(E)[1:13],
                         min.obs = 0,
                         sel.models = NULL,
                         ...) {

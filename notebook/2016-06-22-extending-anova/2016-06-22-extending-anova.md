@@ -30,7 +30,8 @@ Y <- get.readcounts(gene.ids = gene.ids, count.thrs = 0)
 Fit both `wnlm.R` and `logi.S` using both the forward and the reverse order permutation.
 
 ```r
-e.v <- list(forward = e.vars, reverse = rev(e.vars))
+# e.vars defined in fit-glms.R
+e.v <- list(forward = e.vars, reverse = rev(e.vars), custom = names(E)[1:13])
 # exclude unweighed aggregates UA.8 and UA from fitting
 to.fit.ids <- grep("^UA(.8)?$", names(Y), value = TRUE, invert = TRUE)
 M <- lapply(list(wnlm.R = "wnlm.R", logi.S = "logi.S"),

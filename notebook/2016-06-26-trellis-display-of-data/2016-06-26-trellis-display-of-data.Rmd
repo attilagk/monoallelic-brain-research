@@ -12,6 +12,7 @@ source("../../src/fit-glms.R")
 ```{r cache=TRUE, echo=FALSE}
 E <- get.predictors()
 Y <- get.readcounts(gene.ids) # gene.ids is predifined
+# e.vars defined in fit-glms.R
 S.long <- reshape(cbind(lapply(Y, getElement, "S"), E[ e.vars ]), # the data to be reshaped; e.vars is predifined
                   v.names = "S", varying = list(names(Y)), # the component that varies with genes ('time')
                   timevar = "Gene", times = names(Y), # the 'time' variable, i.e. gene symbol

@@ -32,7 +32,8 @@ tr '\t' ',' < $inpred | \
     s/PMI (in hours)/PMI/
     s/DLPFC_RNA_isolation: RIN/RIN/
     s/DLPFC_RNA_isolation: RIN\^2/RIN2/
-    s/DLPFC_RNA_report: Clustered Library Batch/RNA_lib_batch/
+    s/DLPFC_RNA_report: Clustered Library Batch/RNA_batch/
+    s/Ancestry.EV/Ancestry/g
     s/\s\+/_/g
     }
     ' > $outpred

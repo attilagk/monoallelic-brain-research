@@ -89,11 +89,12 @@ identical(d$R_avg8, Y$UA.8$R))
 <p>Compare estimated coefficients using the new and my old implementation under normal linear model fitted to unweighted average (<code>UA</code>) \(R\) as response to find perfect agreement:</p>
 
 <pre><code class="r">old &lt;- coef(m$avg8$nlm.R)
+e.vars &lt;- names(E)[1:13]
 new &lt;- coef(do.fit(Y$UA.8$R, X = E, e.v = e.vars, family = gaussian))
 all.equal(old, new, tolerance = 0, check.attributes = FALSE)
 </code></pre>
 
-<pre><code>## [1] TRUE
+<pre><code>## [1] &quot;Mean relative difference: 0.2097885&quot;
 </code></pre>
 
 <p>Using weighted (<code>WA</code>) average \(S\) as response agrees reasonably but not perfectly since \(S\) shows differences due to rounding between old and new importers (as discussed above):</p>
@@ -103,7 +104,7 @@ new &lt;- coef(do.fit(Y$WA.8$S, X = E, e.v = e.vars, family = gaussian))
 all.equal(old, new, check.attributes = FALSE)
 </code></pre>
 
-<pre><code>## [1] &quot;Mean relative difference: 0.02600831&quot;
+<pre><code>## [1] &quot;Mean relative difference: 0.05311764&quot;
 </code></pre>
 
 <p>In case of unweighted (<code>UA</code>) average \(S\) the agreement is poor as expected based on the results concerning import:</p>
@@ -113,7 +114,7 @@ new &lt;- coef(do.fit(Y$UA.8$S, X = E, e.v = e.vars, family = gaussian))
 all.equal(old, new, check.attributes = FALSE)
 </code></pre>
 
-<pre><code>## [1] &quot;Mean relative difference: 0.321898&quot;
+<pre><code>## [1] &quot;Mean relative difference: 0.3497726&quot;
 </code></pre>
 
 <p>Again with weighted (<code>WA</code>) average \(S\) as response the agreement is also reasonable under the logistic model:</p>
@@ -125,7 +126,7 @@ new &lt;- coef(logi.S(&quot;WA.8&quot;))
 all.equal(old, new, check.attributes = FALSE)
 </code></pre>
 
-<pre><code>## [1] &quot;Mean relative difference: 0.06142334&quot;
+<pre><code>## [1] &quot;Mean relative difference: 0.1879356&quot;
 </code></pre>
 
 <p>Using weighted average (<code>WA</code>) but subjecting \(S\) to an affine transformation \(T\) such that \(T(S)\) is supported on the interval \([0,1]\) as opposed to \(S\)&#39;s support on \([&frac12;,1]\) results in less reasonable agreement between implementations because the &ldquo;rounding differences&rdquo; are further amplified:</p>
@@ -143,6 +144,6 @@ new &lt;- coef(logi2.S(&quot;WA.8&quot;))
 all.equal(old, new, check.attributes = FALSE)
 </code></pre>
 
-<pre><code>## [1] &quot;Mean relative difference: 0.1552438&quot;
+<pre><code>## [1] &quot;Mean relative difference: 0.2820372&quot;
 </code></pre>
 
