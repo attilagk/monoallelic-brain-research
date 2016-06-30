@@ -5,48 +5,51 @@
 library(lattice)
 library(latticeExtra)
 library(ggplot2)
+library(GGally)
 source("../../src/import-data.R")
 source("../../src/fit-glms.R")
 ```
 
 
-```r
-E <- get.predictors()
-Y <- get.readcounts(gene.ids) # gene.ids is predifined
-S.long <- reshape(cbind(lapply(Y, getElement, "S"), E[ e.vars ]), # the data to be reshaped; e.vars is predifined
-                  v.names = "S", varying = list(names(Y)), # the component that varies with genes ('time')
-                  timevar = "Gene", times = names(Y), # the 'time' variable, i.e. gene symbol
-                  ids = rownames(E), idvar = "sample.id", # observation names: RNA sample ids
-                  direction = "long")
-S.long$Gene <- factor(S.long$Gene, levels = names(Y), ordered = TRUE)
-# in what follows exclude the unweighted averages 'UA.8' and 'UA' because total read count 'N' is not available for those
-Y.long <- cbind(stack(lapply(Y[ c(gene.ids, "WA.8", "WA") ], getElement, "S")),
-                stack(lapply(Y[ c(gene.ids, "WA.8", "WA") ], getElement, "N")),
-                E[ rep(seq_len(nrow(E)), length(gene.ids) + 2), e.vars ])
-names(Y.long)[1:3] <- c("S", "Gene", "N")
-Y.long$Gene <- factor(Y.long$Gene, levels = names(Y)[ 0:1 - length(Y) ], ordered = TRUE)
-Y.long[[4]] <- NULL
-```
 
+## Dependence of $S$ on certain variables
 
+### Dependence on gene, age, and institution
 
+Implementation of the same plot both with the `lattice` and the `ggplot2` package.
 
 ```r
-plot(plot.s.age.inst)
+lattice.options(default.args = list(as.table = TRUE))
+P <- list()
+# lattice implementation
+P$s.age.inst$lattice <-
+    xyplot(S ~ Age | Gene, data = S.long, groups = Institution,
+           panel = function(x, y, ...) {
+               panel.xyplot(x, y, pch = "o", ...)
+               panel.smoother(x, y, col = "black", lwd = 2, ...)
+           },
+           auto.key = list(title = "Insitution", space = "right"),
+           aspect = "fill", layout = c(6, 5))
+# ggplot2 implementation
+g <- ggplot(data = S.long, aes(x = Age, y = S))
+g <- g + geom_point(pch = "o", aes(color = Institution))
+g <- g + geom_smooth(method = "loess", color = "black")
+g <- g + facet_wrap(~ Gene)
+P$s.age.inst$ggplot2 <- g
+plot(P$s.age.inst$lattice)
 ```
 
 ![plot of chunk S-age-smooth](figure/S-age-smooth-1.png)
 
-
-
 ```r
-plot(plot.s.age.n)
+plot(P$s.age.inst$ggplot2)
 ```
 
-```
-## Warning: Removed 6319 rows containing missing values (geom_point).
-```
+![plot of chunk S-age-smooth](figure/S-age-smooth-2.png)
 
+### Dependence on gene, age, and total read count $N$
+
+It is unclear how to best implement the `ggplot2` figure below using the `lattice` package.
 ![plot of chunk S-age-tot-read-count](figure/S-age-tot-read-count-1.png)
 
 
@@ -63,3 +66,9 @@ M <- do.all.fits(Y[ 0:1 - length(Y) ], # omit the last two components: "UA.8" an
 ```
 ## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
 ```
+
+## Associations between explanatory variables
+
+![plot of chunk rin-rin2](figure/rin-rin2-1.png)![plot of chunk rin-rin2](figure/rin-rin2-2.png)
+
+![plot of chunk evar-scatterplot-matrix](figure/evar-scatterplot-matrix-1.png)![plot of chunk evar-scatterplot-matrix](figure/evar-scatterplot-matrix-2.png)

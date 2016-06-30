@@ -1,3 +1,9 @@
+```{r}
+library(ggplot2)
+library(lattice)
+library(latticeExtra)
+```
+
 ## Changes in filtering
 
 ### The original filtering setup
@@ -76,7 +82,7 @@ points(nobs[ 24:25, "unfiltered" ], nobs[ 24:25, "filtered" ], pch = 16, col = "
 
 The above results show that the previously used gene filter would remove 6 out of the 7 candidate genes with which the analysis now is extended.  This points to one of the benefits of the new weighting schemes introduced above.
 
-$$$ Apparent age dependence of $S_g$ for candidate genes $g$
+### Apparent age dependence of $S_g$ for candidate genes $g$
 
 ```{r S-vs-age-candidate-imprinted, fig.width=12, fig.height=12, echo=FALSE, dev=c('png','pdf')}
 par(mfcol = c(3,3))
@@ -114,16 +120,22 @@ Note that potential `NULL` results reflect genes that have been filtered out---b
 
 ### Regression coefficient $\beta_\mathrm{age}$ 
 
-Under the `logi.S` model $\beta_\mathrm{age}$ seems to vary greatly accross genes suggesting both gain or loss of imprinting with age or no effect of age.  Genes with fewer observations (as typical for candidate imprinted genes) have broad confidence intervals and so tend support the null hypothesis of $\beta_\mathrm{age}=0$ at a given significance level $\alpha$.  Aggregating read counts using weighted average is hugely beneficial as evidenced by dramatically shrunken confidence intervals (`WA.8`, `WA`) because the logistic model takes advantage of the increased total read counts.
+#### Logistic model
+
+Under the `logi.S` model $\beta_\mathrm{age}$ seems to vary greatly accross genes suggesting both gain or loss of imprinting with age or no effect of age.  Genes with fewer observations (as typical for candidate imprinted genes) have broad confidence intervals and so tend support the null hypothesis of $\beta_\mathrm{age}=0$ at a given significance level $\alpha$.  Aggregating read counts using weighted average is hugely beneficial as evidenced by dramatically shrunken confidence intervals (`WA.8`, `WA`) because the logistic model takes advantage of the increased total read counts.  The following pair of plots (obtained with the `lattice` and `ggplot2` package, respectively) illustrate these result:
 
 ```{r beta-age-logi.S, dev=c('png','pdf'), echo=FALSE, warning=FALSE, message=FALSE}
-plot.betas(M$logi.S[f.ids$logi.S], coef.name = "Age", conf.lev = 0.99, main = "logi.S")
+plot.CI(get.CI(M$logi.S[f.ids$logi.S]), package = "lattice")
+plot.CI(get.CI(M$logi.S[f.ids$logi.S]), package = "ggplot2")
 ```
 
-Under the `wnlm.R` model the above picture slightly changes.  In general, confidence intervals are broader than under `logi.S`. In particular, the normal linear model fails to benefit from data aggregation by ignoring total read counts; therefore the confidence intervals for `WA.8` or `WA` are *not* shrunken relative to single-gene data sets under this model.
+#### Normal linear model on rank-transformed data
+
+Under the `wnlm.R` model the above picture slightly changes.  In general, confidence intervals are broader than under `logi.S`. In particular, the normal linear model fails to benefit from data aggregation by ignoring total read counts; therefore the confidence intervals for `WA.8` or `WA` are *not* shrunken relative to single-gene data sets under this model.  The `lattice` and `ggplot2` implementation, as above:
 
 ```{r beta-age-wnlm.R, dev=c('png','pdf'), echo=FALSE, warning=FALSE, message=FALSE}
-plot.betas(M$wnlm.R[f.ids$wnlm.R], coef.name = "Age", conf.lev = 0.99, main = "wnlm.R")
+plot.CI(get.CI(M$wnlm.R[f.ids$wnlm.R]), package = "lattice")
+plot.CI(get.CI(M$wnlm.R[f.ids$wnlm.R]), package = "ggplot2")
 ```
 
 ### Comparing $\beta_\mathrm{age}$ from different models

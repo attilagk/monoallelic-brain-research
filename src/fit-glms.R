@@ -112,7 +112,7 @@ mean.rel.diff <- function(target, current, ...){
     return(x / mean(abs(target)))
 }
 
-# Plot estimated coefficients and confidence intervals for a list of models
+# Get estimated coefficients and confidence intervals for a list of models
 #
 # Parameters
 # l.models: list of models of class lm or glm
@@ -120,29 +120,40 @@ mean.rel.diff <- function(target, current, ...){
 # conf.lev: confidence level
 #
 # Value
-# irrelevant, this function is called for the side effect of plotting
-plot.betas <- function(l.models, coef.name = "Age", conf.lev = 0.99, ...) {
-    nr <- length(l.models) # number of models
-    par(mar = c(5, 8, 4, 2))
+# A data frame with components (columns) lower.CI, upper.CI, beta.hat, and
+# Gene.  Gene is a factor ordered by beta.hat, which is useful for plotting.
+get.CI <- function(l.models, coef.name = "Age", conf.lev = 0.99, ...) {
     beta.hat <- sapply(l.models, function(m) coef(m)[coef.name])
-    ix <- sort(beta.hat, index.return = TRUE)$ix
-    beta.hat <- beta.hat[ix]
-    CI <- lapply(l.models, confint, parm = coef.name, level = conf.lev)[ix]
-    plot.new()
-    plot.window(ylim = c(1, nr),
-                xlim = c(min(beta.hat, na.rm = TRUE), max(beta.hat, na.rm = TRUE)))
-    axis(1)
-    axis(2, labels = names(l.models[ix]), at = seq_len(nr), las = 1)
-    points(beta.hat, seq_len(nr),
-         pch = 15)
-    invisible(lapply(seq_len(nr),
-           function(g) lines(CI[[g]], c(g, g))))
-    abline(v = 0, lty = "dashed")
-    #grid(nx = NA, ny = NULL)
-    legend("bottomright",
-           c(expression(paste("estimate ", hat(beta))), paste(100 * conf.lev, "% conf. int.")),
-           lty = c(0, 1), pch = c(15, NA))
-    title(xlab = expression(paste("coefficient ", beta)), ...)
+    CI <- t(sapply(l.models, confint, parm = coef.name, level = conf.lev))
+    df <- as.data.frame(cbind(CI, beta.hat))
+    names(df)[1:2] <- c("lower.CI", "upper.CI")
+    df$Gene <- reorder(factor(row.names(df)), df$beta.hat)
+    return(df)
+}
+
+plot.CI <- function(df, package = "lattice", ...) {
+    plotter <-
+        list(lattice =
+             function() {
+                 segplot(Gene ~ lower.CI + upper.CI, data = df,
+                         panel = function(x, y, ...) {
+                             panel.grid(h = -1, v = -1)
+                             panel.abline(v = 0, lty = "dashed", ...)
+                             panel.segplot(x, y, ...)
+                         },
+                         draw.bands = FALSE, centers = beta.hat, xlab = expression(beta[age]),
+                         main = expression(paste(hat(beta)[age], " and CI")))
+             },
+           ggplot2 =
+               function() {
+                   g <- ggplot(data = df, aes(x = Gene, y = beta.hat))
+                   g <- g + coord_flip()
+                   g <- g + geom_hline(yintercept = 0, linetype = 2)
+                   g <- g + geom_pointrange(aes(ymin = lower.CI, ymax = upper.CI))
+                   g <- g + labs(x = "", y = expression(beta[age]), title = expression(paste(hat(beta)[age], " and CI")))
+                   g
+               })
+    plot(plotter[[ package ]]())
 }
 
 # creates a data frame of ANOVA deviances

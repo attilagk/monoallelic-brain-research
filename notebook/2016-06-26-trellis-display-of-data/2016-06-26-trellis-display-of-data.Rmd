@@ -1,14 +1,15 @@
 ## Prepare data
 
-```{r}
+```{r message=FALSE, warning=FALSE}
 library(lattice)
 library(latticeExtra)
 library(ggplot2)
+library(GGally)
 source("../../src/import-data.R")
 source("../../src/fit-glms.R")
 ```
 
-```{r cache=TRUE}
+```{r cache=TRUE, echo=FALSE}
 E <- get.predictors()
 Y <- get.readcounts(gene.ids) # gene.ids is predifined
 S.long <- reshape(cbind(lapply(Y, getElement, "S"), E[ e.vars ]), # the data to be reshaped; e.vars is predifined
@@ -26,31 +27,68 @@ Y.long$Gene <- factor(Y.long$Gene, levels = names(Y)[ 0:1 - length(Y) ], ordered
 Y.long[[4]] <- NULL
 ```
 
+## Dependence of $S$ on certain variables
 
-```{r cache=TRUE, echo=FALSE}
-plot.s.age.inst <- xyplot(S ~ Age | Gene, data = S.long, groups = Institution,
-       panel = function(x, y, ...) {
-           panel.xyplot(x, y, pch = "+", ...)
-           panel.smoother(x, y, col = "black", lwd = 2, ...)
-       },
-       aspect = "fill", as.table = TRUE, auto.key = TRUE)
-```
-```{r S-age-smooth, dev=c("png", "pdf"), fig.width=10}
-plot(plot.s.age.inst)
+### Dependence on gene, age, and institution
+
+Implementation of the same plot both with the `lattice` and the `ggplot2` package.
+```{r S-age-smooth, dev=c("png", "pdf"), fig.width=10, cache=TRUE, warning=FALSE}
+lattice.options(default.args = list(as.table = TRUE))
+P <- list()
+# lattice implementation
+P$s.age.inst$lattice <-
+    xyplot(S ~ Age | Gene, data = S.long, groups = Institution,
+           panel = function(x, y, ...) {
+               panel.xyplot(x, y, pch = "o", ...)
+               panel.smoother(x, y, col = "black", lwd = 2, ...)
+           },
+           auto.key = list(title = "Insitution", space = "right"),
+           aspect = "fill", layout = c(6, 5))
+# ggplot2 implementation
+g <- ggplot(data = S.long, aes(x = Age, y = S))
+g <- g + geom_point(pch = "o", aes(color = Institution))
+g <- g + geom_smooth(method = "loess", color = "black")
+g <- g + facet_wrap(~ Gene)
+P$s.age.inst$ggplot2 <- g
+plot(P$s.age.inst$lattice)
+plot(P$s.age.inst$ggplot2)
 ```
 
-```{r cache=TRUE, echo=FALSE}
-plot.s.age.n <- ggplot(Y.long, aes(x = Age, y = S, color = log10(N)))
-plot.s.age.n <- plot.s.age.n + geom_point(alpha = I(0.2))
-plot.s.age.n <- plot.s.age.n + scale_color_gradient(low = "blue", high = "red")
-plot.s.age.n <- plot.s.age.n + facet_wrap(~ Gene)
-```
-```{r S-age-tot-read-count, dev=c("png", "pdf"), fig.width=10}
-plot(plot.s.age.n)
+### Dependence on gene, age, and total read count $N$
+
+It is unclear how to best implement the `ggplot2` figure below using the `lattice` package.
+```{r S-age-tot-read-count, dev=c("png", "pdf"), fig.width=10, cache=TRUE, warning=FALSE, echo=FALSE}
+g <- ggplot(Y.long, aes(x = Age, y = S, color = log10(N)))
+g <- g + geom_point(alpha = I(0.2))
+g <- g + scale_color_gradient(low = "blue", high = "red")
+g <- g + facet_wrap(~ Gene)
+P$s.age.n$ggplot2 <- g
+plot(P$s.age.n$ggplot2)
 ```
 
 ```{r cache=TRUE}
 M <- do.all.fits(Y[ 0:1 - length(Y) ], # omit the last two components: "UA.8" and "UA"
                  E, preds = e.vars, sel.models = c("wnlm.R", "logi.S"),
                  x = TRUE, y = TRUE) # store model matrix 'x' and response 'y'
+```
+
+## Associations between explanatory variables
+
+```{r rin-rin2, dev=c("png", "pdf"), fig.width=5, cache=TRUE, warning=FALSE, echo=FALSE}
+xyplot(RIN2 ~ RIN, data = E[sort.int(E$RIN, index.return = TRUE)$ix, ],
+       type = "l", grid = TRUE, aspect = 1)
+qplot(RIN, RIN2, data = E[sort.int(E$RIN, index.return = TRUE)$ix, ],
+      geom = "line", asp = 1)
+```
+
+```{r evar-scatterplot-matrix, dev=c("png", "pdf"), fig.width=10, fig.asp=1, cache=TRUE, warning=FALSE, echo=FALSE, message=FALSE}
+P$splom$lattice <-
+    splom(E[ e.vars[c(1:6, 10)]], pch = "o", alpha = 0.3, xlab = "", pscales=0,
+          panel = function(x, y, ...)
+              panel.splom(x, y, ..., jitter.x = ! is.numeric(x), jitter.y = ! is.numeric(y))
+          )
+#P$splom$ggplot2 <- ggpairs(E[ e.vars[c(1:6, 10)]])
+plot(P$splom$lattice)
+#plot(P$splom$ggplot2)
+ggpairs(E[ e.vars[c(1:6, 10)]])
 ```

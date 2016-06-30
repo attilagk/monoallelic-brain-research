@@ -1,3 +1,10 @@
+
+```r
+library(ggplot2)
+library(lattice)
+library(latticeExtra)
+```
+
 ## Changes in filtering
 
 ### The original filtering setup
@@ -91,6 +98,8 @@ The number of available observations is closely (and inversely) related to the s
 ## PWRN1                155       10
 ## WA.8                 579      578
 ## WA                   579      578
+## UA.8                 579      578
+## UA                   579      578
 ```
 which shows that the largest trade-off of filtering arises for genes for which the number of observations is ab ovo small, in particular for most genes in the "novel 1 MB" category.  The same information is plotted below; *blue* denotes known imprinted genes, *green* candidate imprinted genes (<1 MB) and *magenta* two gene sets aggregated by weighted average (`WA.8` and `WA`, overlapping each other).  The horizontal dashed line shows the filtering threshold of 180 observations that was defined previously to remove genes with little data.
 
@@ -100,7 +109,7 @@ which shows that the largest trade-off of filtering arises for genes for which t
 
 The above results show that the previously used gene filter would remove 6 out of the 7 candidate genes with which the analysis now is extended.  This points to one of the benefits of the new weighting schemes introduced above.
 
-$$$ Apparent age dependence of $S_g$ for candidate genes $g$
+### Apparent age dependence of $S_g$ for candidate genes $g$
 
 ![plot of chunk S-vs-age-candidate-imprinted](figure/S-vs-age-candidate-imprinted-1.png)
 
@@ -167,13 +176,17 @@ Note that potential `NULL` results reflect genes that have been filtered out---b
 
 ### Regression coefficient $\beta_\mathrm{age}$ 
 
-Under the `logi.S` model $\beta_\mathrm{age}$ seems to vary greatly accross genes suggesting both gain or loss of imprinting with age or no effect of age.  Genes with fewer observations (as typical for candidate imprinted genes) have broad confidence intervals and so tend support the null hypothesis of $\beta_\mathrm{age}=0$ at a given significance level $\alpha$.  Aggregating read counts using weighted average is hugely beneficial as evidenced by dramatically shrunken confidence intervals (`WA.8`, `WA`) because the logistic model takes advantage of the increased total read counts.
+#### Logistic model
 
-![plot of chunk beta-age-logi.S](figure/beta-age-logi.S-1.png)
+Under the `logi.S` model $\beta_\mathrm{age}$ seems to vary greatly accross genes suggesting both gain or loss of imprinting with age or no effect of age.  Genes with fewer observations (as typical for candidate imprinted genes) have broad confidence intervals and so tend support the null hypothesis of $\beta_\mathrm{age}=0$ at a given significance level $\alpha$.  Aggregating read counts using weighted average is hugely beneficial as evidenced by dramatically shrunken confidence intervals (`WA.8`, `WA`) because the logistic model takes advantage of the increased total read counts.  The following pair of plots (obtained with the `lattice` and `ggplot2` package, respectively) illustrate these result:
 
-Under the `wnlm.R` model the above picture slightly changes.  In general, confidence intervals are broader than under `logi.S`. In particular, the normal linear model fails to benefit from data aggregation by ignoring total read counts; therefore the confidence intervals for `WA.8` or `WA` are *not* shrunken relative to single-gene data sets under this model.
+![plot of chunk beta-age-logi.S](figure/beta-age-logi.S-1.png)![plot of chunk beta-age-logi.S](figure/beta-age-logi.S-2.png)
 
-![plot of chunk beta-age-wnlm.R](figure/beta-age-wnlm.R-1.png)
+#### Normal linear model on rank-transformed data
+
+Under the `wnlm.R` model the above picture slightly changes.  In general, confidence intervals are broader than under `logi.S`. In particular, the normal linear model fails to benefit from data aggregation by ignoring total read counts; therefore the confidence intervals for `WA.8` or `WA` are *not* shrunken relative to single-gene data sets under this model.  The `lattice` and `ggplot2` implementation, as above:
+
+![plot of chunk beta-age-wnlm.R](figure/beta-age-wnlm.R-1.png)![plot of chunk beta-age-wnlm.R](figure/beta-age-wnlm.R-2.png)
 
 ### Comparing $\beta_\mathrm{age}$ from different models
 
