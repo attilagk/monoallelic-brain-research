@@ -15,6 +15,7 @@ Take two permutations of explanatory variables:
 Relevant scripts
 
 ```r
+library(lattice)
 source("~/projects/monoallelic-brain/src/import-data.R")
 source("~/projects/monoallelic-brain/src/fit-glms.R")
 ```
@@ -59,7 +60,20 @@ grep("TRUE", sapply(to.fit.ids, function(g) all.equal(coef(M$logi.S$forward[[g]]
 
 
 ```r
-A <- lapply(M, lapply, l.anova)
+#A <- lapply(M, lapply, l.anova)
+A.long <- lapply(lapply(M, lapply, l.anova), reshape.2, type = "anova")
+my.stripplot <- function(fm = Predictor ~ Deviance | Order, data = A.long$logi.S) {
+    stripplot(fm,
+              groups = Gene,
+              data = data[ data$Order %in% c("forward", "reverse"), ],
+              jitter.data = TRUE, fun = identity, type = "p", pch = 21,
+              grid = TRUE,
+              #auto.key = TRUE,
+              panel = function(x, y, ...) {
+                  panel.bwplot(x, y, do.out = FALSE, ...)
+                  panel.stripplot(x, y, ...)
+              })
+}
 ```
 
 Under `logi.S`:
@@ -72,7 +86,8 @@ The same tendencies emerge under `wnlm.R`:
 
 
 ```r
-Ef <- lapply(M, lapply, l.effects)
+#Ef <- lapply(M, lapply, l.effects)
+Ef.long <- lapply(lapply(M, lapply, l.effects), reshape.2, type = "effects")
 ```
 
 Under `logi.S`:

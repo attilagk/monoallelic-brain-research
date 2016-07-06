@@ -18,14 +18,14 @@ source("../../src/fit-glms.R")
 
 Implementation of the same plot both with the `lattice` and the `ggplot2` package.
 
+
 ```r
-lattice.options(default.args = list(as.table = TRUE))
 P <- list()
 # lattice implementation
 P$s.age.inst$lattice <-
     xyplot(S ~ Age | Gene, data = S.long, groups = Institution,
            panel = function(x, y, ...) {
-               panel.xyplot(x, y, pch = "o", ...)
+               panel.xyplot(x, y, pch = 21, ...)
                panel.smoother(x, y, col = "black", lwd = 2, ...)
            },
            auto.key = list(title = "Insitution", space = "right"),
@@ -49,8 +49,7 @@ plot(P$s.age.inst$ggplot2)
 
 ### Dependence on gene, age, and total read count $N$
 
-It is unclear how to best implement the `ggplot2` figure below using the `lattice` package.
-![plot of chunk S-age-tot-read-count](figure/S-age-tot-read-count-1.png)
+![plot of chunk S-age-tot-read-count](figure/S-age-tot-read-count-1.png)![plot of chunk S-age-tot-read-count](figure/S-age-tot-read-count-2.png)
 
 
 ```r
@@ -72,3 +71,24 @@ M <- do.all.fits(Y[ 0:1 - length(Y) ], # omit the last two components: "UA.8" an
 ![plot of chunk rin-rin2](figure/rin-rin2-1.png)![plot of chunk rin-rin2](figure/rin-rin2-2.png)
 
 ![plot of chunk evar-scatterplot-matrix](figure/evar-scatterplot-matrix-1.png)![plot of chunk evar-scatterplot-matrix](figure/evar-scatterplot-matrix-2.png)
+
+### Regression coefficients
+
+
+```r
+Betas <- lapply(M, get.estimate.CI)
+A.long <- lapply(M, function(m) reshape.1(l.anova(m), type = "anova"))
+Ef.long <- lapply(M, function(m) reshape.1(l.effects(m), type = "effects"))
+```
+
+![plot of chunk reg-coef-logi.S](figure/reg-coef-logi.S-1.png)
+
+![plot of chunk reg-coef-wnlm.R](figure/reg-coef-wnlm.R-1.png)
+
+![plot of chunk anova-logi.S](figure/anova-logi.S-1.png)
+
+![plot of chunk anova-wnlm.R](figure/anova-wnlm.R-1.png)
+
+![plot of chunk effects-logi.S](figure/effects-logi.S-1.png)
+
+![plot of chunk effects-wnlm.R](figure/effects-wnlm.R-1.png)

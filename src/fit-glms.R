@@ -120,14 +120,38 @@ mean.rel.diff <- function(target, current, ...){
 # conf.lev: confidence level
 #
 # Value
-# A data frame with components (columns) lower.CI, upper.CI, beta.hat, and
+# A data frame with components (columns) Lower.CL, Upper.CL, beta.hat, and
 # Gene.  Gene is a factor ordered by beta.hat, which is useful for plotting.
-get.CI <- function(l.models, coef.name = "Age", conf.lev = 0.99, ...) {
+get.CI <- function(l.models,
+                   all.coefs = names(coef(l.models[[ order(sapply(lapply(l.models, coef), length), decreasing=TRUE)[1] ]])),
+                   coef.name = "Age",
+                   conf.lev = 0.99,
+                   ...) {
     beta.hat <- sapply(l.models, function(m) coef(m)[coef.name])
     CI <- t(sapply(l.models, confint, parm = coef.name, level = conf.lev))
     df <- as.data.frame(cbind(CI, beta.hat))
-    names(df)[1:2] <- c("lower.CI", "upper.CI")
-    df$Gene <- reorder(factor(row.names(df)), df$beta.hat)
+    names(df)[1:2] <- c("Lower.CL", "Upper.CL")
+    #df$Gene <- reorder(factor(row.names(df)), df$beta.hat)
+    cbind(df,
+          list(Gene = factor(row.names(df), levels = row.names(df), ordered = TRUE)),
+          list(Coefficient = factor(coef.name, levels = all.coefs, ordered = TRUE)))
+    #return(df)
+}
+
+get.estimate.CI <- function(l.M, conf.lev = 0.99) {
+    # get the names of all coefficients from one of the genes with a full set of coefs
+    all.coefs <- names(coef(l.M[[ order(sapply(lapply(l.M, coef), length), decreasing=TRUE)[1] ]]))
+    l.M.names <- names(l.M)
+    helper <- function(n) {
+        df <- data.frame(cbind(coef(l.M[[ n ]]), confint(l.M[[ n ]], level = conf.lev)))
+        names(df) <- c("Estimate", "Lower.CL", "Upper.CL")
+        cbind(df,
+              list(Coefficient = factor(row.names(df), levels = all.coefs, ordered = TRUE)),
+              list(Gene = factor(n, levels = l.M.names, ordered = TRUE)))
+    }
+    df <- Reduce(rbind, lapply(l.M.names, helper))
+    not.converged <- df$Gene %in% names(l.M)[ ! sapply(l.M, `[[`, "converged") ]
+    df[ not.converged, ] <- NA
     return(df)
 }
 
@@ -135,7 +159,7 @@ plot.CI <- function(df, package = "lattice", ...) {
     plotter <-
         list(lattice =
              function() {
-                 segplot(Gene ~ lower.CI + upper.CI, data = df,
+                 segplot(Gene ~ Lower.CL + Upper.CL, data = df,
                          panel = function(x, y, ...) {
                              panel.grid(h = -1, v = -1)
                              panel.abline(v = 0, lty = "dashed", ...)
@@ -149,7 +173,7 @@ plot.CI <- function(df, package = "lattice", ...) {
                    g <- ggplot(data = df, aes(x = Gene, y = beta.hat))
                    g <- g + coord_flip()
                    g <- g + geom_hline(yintercept = 0, linetype = 2)
-                   g <- g + geom_pointrange(aes(ymin = lower.CI, ymax = upper.CI))
+                   g <- g + geom_pointrange(aes(ymin = Lower.CL, ymax = Upper.CL))
                    g <- g + labs(x = "", y = expression(beta[age]), title = expression(paste(hat(beta)[age], " and CI")))
                    g
                })
@@ -168,6 +192,42 @@ l.anova <- function(l.m) {
     row.names(y) <- attributes(terms(l.m[[1]]))$term.labels
     data.frame(t(y))
 }
+
+#reshape.anova <- function(A, type = "anova") {
+#    A$Gene <- factor(row.names(A))
+#    B <- stack(A)
+#    types <- list(anova = c("Deviance", "Predictor"), effects = c("Effect", "Coefficient"))
+#    names(B)[1:2] <- types[[ type ]]
+#    B[[2]] <- factor(B[[2]], levels = names(A), ordered = TRUE)
+#    return(B)
+#}
+
+reshape.1 <- function(A, type = "anova") {
+    types <- list(anova = c("Deviance", "Predictor"), effects = c("Effect", "Coefficient"))
+    reshape(A,
+            v.names = types[[type]][1], varying = list(names(A)),
+            timevar = types[[type]][2], times = factor(names(A), levels = names(A), ordered = TRUE),
+            idvar = "Gene", ids = factor(row.names(A), levels = row.names(A), ordered = TRUE),
+            direction = "long")
+}
+
+reshape.2 <- function(l.A, type = "anova") {
+    Reduce(rbind, lapply(names(l.A), function(n)
+                         cbind(reshape.1(l.A[[n]], type = type),
+                                   list(Order = factor(n, levels = names(l.A), ordered = TRUE)))))
+}
+
+extract.reshape.l.M <- function(l.M, extractor = coef) {
+    helper <- function(n) {
+        res <- t(as.matrix(extractor(l.M[[ n ]])))
+        #res <- data.frame(t(as.matrix(extractor(l.M[[ n ]]))))
+        row.names(res) <- n
+        res
+    }
+    sapply(names(l.M), helper)
+}
+
+#Reduce(rbind, lapply(Ef$logi.S, reshape.anova, type = "effects"))
 
 # creates a data frame of effects
 #

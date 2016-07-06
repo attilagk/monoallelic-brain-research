@@ -14,6 +14,7 @@ Take two permutations of explanatory variables:
 
 Relevant scripts
 ```{r}
+library(lattice)
 source("~/projects/monoallelic-brain/src/import-data.R")
 source("~/projects/monoallelic-brain/src/fit-glms.R")
 ```
@@ -49,43 +50,71 @@ grep("TRUE", sapply(to.fit.ids, function(g) all.equal(coef(M$logi.S$forward[[g]]
 ## ANOVA
 
 ```{r cache=TRUE, warning=FALSE}
-A <- lapply(M, lapply, l.anova)
+#A <- lapply(M, lapply, l.anova)
+A.long <- lapply(lapply(M, lapply, l.anova), reshape.2, type = "anova")
+my.stripplot <- function(fm = Predictor ~ Deviance | Order, data = A.long$logi.S) {
+    stripplot(fm,
+              groups = Gene,
+              data = data[ data$Order %in% c("forward", "reverse"), ],
+              jitter.data = TRUE, fun = identity, type = "p", pch = 21,
+              grid = TRUE,
+              #auto.key = TRUE,
+              panel = function(x, y, ...) {
+                  panel.bwplot(x, y, do.out = FALSE, ...)
+                  panel.stripplot(x, y, ...)
+              })
+}
 ```
 
 Under `logi.S`:
-```{r anova-fw-rv-logi.S, dev=c("png","pdf"), fig.width=12, echo=FALSE}
-par(mar = c(8, 3, 2, 1), mfrow = c(1, 1), mfrow = 1:2)
-boxplot(A$logi.S$forward, las=2, add=FALSE, main = "forward", ylab = "deviance", ylim = c(0, max(sapply(A$logi.S, max))))
-boxplot(A$logi.S$reverse, las=2, add=FALSE, main = "reverse", ylab = "deviance", ylim = c(0, max(sapply(A$logi.S, max))))
+```{r anova-fw-rv-logi.S, dev=c("png","pdf"), fig.width=10, echo=FALSE, cache=FALSE}
+#par(mar = c(8, 3, 2, 1), mfrow = c(1, 1), mfrow = 1:2)
+#boxplot(A$logi.S$forward, las=2, add=FALSE, main = "forward", ylab = "deviance", ylim = c(0, max(sapply(A$logi.S, max))))
+#boxplot(A$logi.S$reverse, las=2, add=FALSE, main = "reverse", ylab = "deviance", ylim = c(0, max(sapply(A$logi.S, max))))
+my.stripplot(fm = Predictor ~ Deviance | Order, data = A.long$logi.S)
 ```
 
 The same tendencies emerge under `wnlm.R`:
-```{r anova-fw-rv-wnlm.R, dev=c("png","pdf"), fig.width=12, echo=FALSE}
-par(mar = c(8, 3, 2, 1), mfrow = c(1, 1), mfrow = 1:2)
-boxplot(A$wnlm.R$forward, las=2, add=FALSE, main = "forward", ylab = "deviance", ylim = c(0, max(sapply(A$wnlm.R, max))))
-boxplot(A$wnlm.R$reverse, las=2, add=FALSE, main = "reverse", ylab = "deviance", ylim = c(0, max(sapply(A$wnlm.R, max))))
+```{r anova-fw-rv-wnlm.R, dev=c("png","pdf"), fig.width=10, echo=FALSE}
+#par(mar = c(8, 3, 2, 1), mfrow = c(1, 1), mfrow = 1:2)
+#boxplot(A$wnlm.R$forward, las=2, add=FALSE, main = "forward", ylab = "deviance", ylim = c(0, max(sapply(A$wnlm.R, max))))
+#boxplot(A$wnlm.R$reverse, las=2, add=FALSE, main = "reverse", ylab = "deviance", ylim = c(0, max(sapply(A$wnlm.R, max))))
+my.stripplot(fm = Predictor ~ Deviance | Order, data = A.long$wnlm.R)
 ```
 
 ## Effects
 
 ```{r cache=TRUE, warning=FALSE}
-Ef <- lapply(M, lapply, l.effects)
+#Ef <- lapply(M, lapply, l.effects)
+Ef.long <- lapply(lapply(M, lapply, l.effects), reshape.2, type = "effects")
 ```
 
 Under `logi.S`:
-```{r effects-fw-rv-logi.S, dev=c("png","pdf"), fig.width=12, echo=FALSE}
-par(mar = c(8, 3, 2, 1), mfrow = c(1, 1), mfrow = 1:2)
-boxplot(Ef$logi.S$forward, las=2, add=FALSE, main = "forward", ylim = c(min(sapply(Ef$logi.S, min)), max(sapply(Ef$logi.S, max))))
-abline(h = 0, lty = "dashed")
-boxplot(Ef$logi.S$reverse, las=2, add=FALSE, main = "reverse", ylim = c(min(sapply(Ef$logi.S, min)), max(sapply(Ef$logi.S, max))))
-abline(h = 0, lty = "dashed")
+```{r effects-fw-rv-logi.S, dev=c("png","pdf"), fig.width=10, echo=FALSE}
+#par(mar = c(8, 3, 2, 1), mfrow = c(1, 1), mfrow = 1:2)
+#boxplot(Ef$logi.S$forward, las=2, add=FALSE, main = "forward", ylim = c(min(sapply(Ef$logi.S, min)), max(sapply(Ef$logi.S, max))))
+#abline(h = 0, lty = "dashed")
+#boxplot(Ef$logi.S$reverse, las=2, add=FALSE, main = "reverse", ylim = c(min(sapply(Ef$logi.S, min)), max(sapply(Ef$logi.S, max))))
+#abline(h = 0, lty = "dashed")
+#stripplot(Coefficient ~ Effect | Order,
+#          groups = Gene,
+#          data = Ef.long$logi.S[ Ef.long$logi.S$Order %in% c("forward", "reverse"), ],
+#          jitter.data = TRUE, fun = identity, type = "p", pch = 21,
+#          grid = TRUE,
+#          #auto.key = TRUE,
+#          panel = function(x, y, ...) {
+#              panel.bwplot(x, y, do.out = FALSE, ...)
+#              panel.stripplot(x, y, ...)
+#          })
+my.stripplot(fm = Coefficient ~ Effect | Order, data = Ef.long$logi.S)
 ```
 
 Again, similar tendencies are observed under `wnlm.R`:
-```{r effects-fw-rv-wnlm.R, dev=c("png","pdf"), fig.width=12, echo=FALSE}
-par(mar = c(8, 3, 2, 1), mfrow = c(1, 1), mfrow = 1:2)
-boxplot(Ef$wnlm.R$forward, las=2, add=FALSE, main = "forward", ylim = c(min(sapply(Ef$wnlm.R, min)), max(sapply(Ef$wnlm.R, max))))
-abline(h = 0, lty = "dashed")
-boxplot(Ef$wnlm.R$reverse, las=2, add=FALSE, main = "reverse", ylim = c(min(sapply(Ef$wnlm.R, min)), max(sapply(Ef$wnlm.R, max))))
-abline(h = 0, lty = "dashed")
+```{r effects-fw-rv-wnlm.R, dev=c("png","pdf"), fig.width=10, echo=FALSE}
+#par(mar = c(8, 3, 2, 1), mfrow = c(1, 1), mfrow = 1:2)
+#boxplot(Ef$wnlm.R$forward, las=2, add=FALSE, main = "forward", ylim = c(min(sapply(Ef$wnlm.R, min)), max(sapply(Ef$wnlm.R, max))))
+#abline(h = 0, lty = "dashed")
+#boxplot(Ef$wnlm.R$reverse, las=2, add=FALSE, main = "reverse", ylim = c(min(sapply(Ef$wnlm.R, min)), max(sapply(Ef$wnlm.R, max))))
+#abline(h = 0, lty = "dashed")
+my.stripplot(fm = Coefficient ~ Effect | Order, data = Ef.long$wnlm.R)
 ```

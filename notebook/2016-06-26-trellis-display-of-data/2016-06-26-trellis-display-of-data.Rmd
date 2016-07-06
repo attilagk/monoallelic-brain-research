@@ -33,14 +33,18 @@ Y.long[[4]] <- NULL
 ### Dependence on gene, age, and institution
 
 Implementation of the same plot both with the `lattice` and the `ggplot2` package.
-```{r S-age-smooth, dev=c("png", "pdf"), fig.width=10, cache=TRUE, warning=FALSE}
+```{r echo=FALSE}
 lattice.options(default.args = list(as.table = TRUE))
+lattice.options(default.theme = "standard.theme")
+#lattice.options(default.theme = "ggplot2like"); lattice.options(ggplot2like.opts())
+```
+```{r S-age-smooth, dev=c("png", "pdf"), fig.width=10, cache=TRUE, warning=FALSE}
 P <- list()
 # lattice implementation
 P$s.age.inst$lattice <-
     xyplot(S ~ Age | Gene, data = S.long, groups = Institution,
            panel = function(x, y, ...) {
-               panel.xyplot(x, y, pch = "o", ...)
+               panel.xyplot(x, y, pch = 21, ...)
                panel.smoother(x, y, col = "black", lwd = 2, ...)
            },
            auto.key = list(title = "Insitution", space = "right"),
@@ -57,13 +61,28 @@ plot(P$s.age.inst$ggplot2)
 
 ### Dependence on gene, age, and total read count $N$
 
-It is unclear how to best implement the `ggplot2` figure below using the `lattice` package.
 ```{r S-age-tot-read-count, dev=c("png", "pdf"), fig.width=10, cache=TRUE, warning=FALSE, echo=FALSE}
+# easy lattice implementation
+P$s.age.n$lattice <-
+    levelplot(log10(N) ~ Age + S | Gene, data = Y.long, alpha = 1.0, col = "white",
+              panel = panel.levelplot.points,
+              par.settings = list(regions = list(col = colorRampPalette(c("blue", "red")))))
+#
+# alternative lattice implementation without color scale, see Fig 5.5 in 'Lattice: Multivariate Data Visualization with R', http://lmdvr.r-forge.r-project.org
+#xyplot(S ~ Age | Gene, data = Y.long, alpha = 0.5, col = "white",
+#       groups = colorRampPalette(c("blue", "red"))(100)[ with(Y.long, cut(log10(N), 100, labels = FALSE)) ],
+#       panel = function(x, y, subscripts, groups, ...) {
+#           fill <- groups[subscripts]
+#           panel.xyplot(x, y, pch = 21, fill = fill, ...)
+#       })
+#
+# ggplot2 implementation
 g <- ggplot(Y.long, aes(x = Age, y = S, color = log10(N)))
 g <- g + geom_point(alpha = I(0.2))
 g <- g + scale_color_gradient(low = "blue", high = "red")
 g <- g + facet_wrap(~ Gene)
 P$s.age.n$ggplot2 <- g
+plot(P$s.age.n$lattice)
 plot(P$s.age.n$ggplot2)
 ```
 
@@ -92,4 +111,41 @@ P$splom$lattice <-
 plot(P$splom$lattice)
 #plot(P$splom$ggplot2)
 ggpairs(E[ e.vars[c(1:6, 10)]])
+```
+
+### Regression coefficients
+
+```{r cache=TRUE, warning=FALSE, message=FALSE}
+Betas <- lapply(M, get.estimate.CI)
+A.long <- lapply(M, function(m) reshape.1(l.anova(m), type = "anova"))
+Ef.long <- lapply(M, function(m) reshape.1(l.effects(m), type = "effects"))
+```
+
+```{r reg-coef-logi.S, dev=c("png", "pdf"), fig.width=10, fig.asp=1, cache=TRUE, warning=FALSE, echo=FALSE, message=FALSE}
+my.segplot <- function(data = Betas$logi.S) {
+    segplot(Gene ~ Lower.CL + Upper.CL | Coefficient, data = data,
+            scales = list(x = list(relation = "free")),
+            as.table = TRUE, center = data$Estimate, draw.bands = FALSE)
+}
+my.segplot(data = Betas$logi.S)
+```
+
+```{r reg-coef-wnlm.R, dev=c("png", "pdf"), fig.width=10, fig.asp=1, cache=TRUE, warning=FALSE, echo=FALSE, message=FALSE}
+my.segplot(data = Betas$wnlm.R)
+```
+
+```{r anova-logi.S, dev=c("png", "pdf"), fig.width=10, fig.asp=1, cache=TRUE, warning=FALSE, echo=FALSE, message=FALSE}
+dotplot(Gene ~ Deviance | Predictor, data = A.long$logi.S)
+```
+
+```{r anova-wnlm.R, dev=c("png", "pdf"), fig.width=10, fig.asp=1, cache=TRUE, warning=FALSE, echo=FALSE, message=FALSE}
+dotplot(Gene ~ Deviance | Predictor, data = A.long$wnlm.R)
+```
+
+```{r effects-logi.S, dev=c("png", "pdf"), fig.width=10, fig.asp=1, cache=TRUE, warning=FALSE, echo=FALSE, message=FALSE}
+dotplot(Gene ~ Effect | Coefficient, data = Ef.long$logi.S)
+```
+
+```{r effects-wnlm.R, dev=c("png", "pdf"), fig.width=10, fig.asp=1, cache=TRUE, warning=FALSE, echo=FALSE, message=FALSE}
+dotplot(Gene ~ Effect | Coefficient, data = Ef.long$wnlm.R)
 ```
