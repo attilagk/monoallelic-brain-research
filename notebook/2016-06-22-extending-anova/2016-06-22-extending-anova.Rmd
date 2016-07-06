@@ -15,8 +15,11 @@ Take two permutations of explanatory variables:
 Relevant scripts
 ```{r}
 library(lattice)
+library(latticeExtra)
 source("~/projects/monoallelic-brain/src/import-data.R")
 source("~/projects/monoallelic-brain/src/fit-glms.R")
+opts_chunk$set(dpi = 144)
+opts_chunk$set(fig.width = 10)
 ```
 
 Import data
@@ -47,74 +50,134 @@ Consistent with the theory above, wherever the fit converged (with the exception
 grep("TRUE", sapply(to.fit.ids, function(g) all.equal(coef(M$logi.S$forward[[g]]), coef(M$logi.S$reverse[[g]])[ names(coef(M$logi.S$forward[[g]])) ])), invert = TRUE, value = TRUE)
 ```
 
-## ANOVA
+## Components of variation
+
+ANOVA allows *direct* comparison of predictors (explanatory variables) by partitioning all explained/systematic variation in the response ($S$ or $R$) among them.  Similarly, the directly comparable effect of each of the $p$ regression coefficients on the response (an $n$-vector) can be obtained from QR decomposition of the response into a set of $n$ orthogonal vectors, in which a subset of $p$ vectors corresponds to the coefficients. 
+
+In the above sentences "directly comparable" means that the effects are on a uniform scale for all predictors/coefficients for a given gene as that scale is closely related to the one on which the response varies.  But the total variation of the response $S$ itself shows variation across genes, which leaves two options in gene-gene comparisons: compare components of variation with or without correction for across gene variation of the total variance.  The first one will be referred below as **genes on uniform scale** and the second as **genes on relative scale**.
+
+### Comparing predictors with genes on uniform scale
 
 ```{r cache=TRUE, warning=FALSE}
-#A <- lapply(M, lapply, l.anova)
 A.long <- lapply(lapply(M, lapply, l.anova), reshape.2, type = "anova")
-my.stripplot <- function(fm = Predictor ~ Deviance | Order, data = A.long$logi.S) {
+```
+
+```{r lattice-functions, cache=TRUE, warning=FALSE, echo=FALSE}
+lattice.options(default.args = list(as.table = TRUE))
+lattice.options(default.theme = "standard.theme")
+#
+my.stripplot <- function(fm = Predictor ~ Deviance | Order, data = A.long$logi.S, ...) {
     stripplot(fm,
               groups = Gene,
               data = data[ data$Order %in% c("forward", "reverse"), ],
-              jitter.data = TRUE, fun = identity, type = "p", pch = 21,
+              jitter.data = TRUE, fun = identity, type = "p",
+              pch = 21, abline = list(v = 0, col = "gray"),
               grid = TRUE,
               #auto.key = TRUE,
               panel = function(x, y, ...) {
                   panel.bwplot(x, y, do.out = FALSE, ...)
                   panel.stripplot(x, y, ...)
-              })
+              }, ...)
+}
+#
+my.dotplot <- function(fm = Predictor ~ Deviance | Gene, data = A.long$logi.S, ...) {
+    dotplot(fm,
+              groups = Order,
+              data = data[ data$Order %in% c("forward", "reverse"), ],
+              pch = 21, abline = list(v = 0, lty = 2),
+              #scales = list(x = "free"),
+              auto.key = TRUE,
+              aspect = 3, between = list(x = 0.2),
+              ...)
 }
 ```
 
 Under `logi.S`:
-```{r anova-fw-rv-logi.S, dev=c("png","pdf"), fig.width=10, echo=FALSE, cache=FALSE}
-#par(mar = c(8, 3, 2, 1), mfrow = c(1, 1), mfrow = 1:2)
-#boxplot(A$logi.S$forward, las=2, add=FALSE, main = "forward", ylab = "deviance", ylim = c(0, max(sapply(A$logi.S, max))))
-#boxplot(A$logi.S$reverse, las=2, add=FALSE, main = "reverse", ylab = "deviance", ylim = c(0, max(sapply(A$logi.S, max))))
-my.stripplot(fm = Predictor ~ Deviance | Order, data = A.long$logi.S)
+```{r anova-fw-rv-logi.S, dev=c("png","pdf"), echo=FALSE, cache=FALSE}
+my.stripplot(fm = Predictor ~ Deviance | Order, data = A.long$logi.S, main = "ANOVA under logi.S")
 ```
 
 The same tendencies emerge under `wnlm.R`:
-```{r anova-fw-rv-wnlm.R, dev=c("png","pdf"), fig.width=10, echo=FALSE}
-#par(mar = c(8, 3, 2, 1), mfrow = c(1, 1), mfrow = 1:2)
-#boxplot(A$wnlm.R$forward, las=2, add=FALSE, main = "forward", ylab = "deviance", ylim = c(0, max(sapply(A$wnlm.R, max))))
-#boxplot(A$wnlm.R$reverse, las=2, add=FALSE, main = "reverse", ylab = "deviance", ylim = c(0, max(sapply(A$wnlm.R, max))))
-my.stripplot(fm = Predictor ~ Deviance | Order, data = A.long$wnlm.R)
+```{r anova-fw-rv-wnlm.R, dev=c("png","pdf"), echo=FALSE}
+my.stripplot(fm = Predictor ~ Deviance | Order, data = A.long$wnlm.R, main = "ANOVA under wnlm.R")
 ```
 
-## Effects
-
 ```{r cache=TRUE, warning=FALSE}
-#Ef <- lapply(M, lapply, l.effects)
 Ef.long <- lapply(lapply(M, lapply, l.effects), reshape.2, type = "effects")
 ```
 
 Under `logi.S`:
-```{r effects-fw-rv-logi.S, dev=c("png","pdf"), fig.width=10, echo=FALSE}
-#par(mar = c(8, 3, 2, 1), mfrow = c(1, 1), mfrow = 1:2)
-#boxplot(Ef$logi.S$forward, las=2, add=FALSE, main = "forward", ylim = c(min(sapply(Ef$logi.S, min)), max(sapply(Ef$logi.S, max))))
-#abline(h = 0, lty = "dashed")
-#boxplot(Ef$logi.S$reverse, las=2, add=FALSE, main = "reverse", ylim = c(min(sapply(Ef$logi.S, min)), max(sapply(Ef$logi.S, max))))
-#abline(h = 0, lty = "dashed")
-#stripplot(Coefficient ~ Effect | Order,
-#          groups = Gene,
-#          data = Ef.long$logi.S[ Ef.long$logi.S$Order %in% c("forward", "reverse"), ],
-#          jitter.data = TRUE, fun = identity, type = "p", pch = 21,
-#          grid = TRUE,
-#          #auto.key = TRUE,
-#          panel = function(x, y, ...) {
-#              panel.bwplot(x, y, do.out = FALSE, ...)
-#              panel.stripplot(x, y, ...)
-#          })
-my.stripplot(fm = Coefficient ~ Effect | Order, data = Ef.long$logi.S)
+```{r effects-fw-rv-logi.S, dev=c("png","pdf"), echo=FALSE}
+my.stripplot(fm = Coefficient ~ Effect | Order, data = Ef.long$logi.S, main = "Effects under logi.S")
 ```
 
 Again, similar tendencies are observed under `wnlm.R`:
-```{r effects-fw-rv-wnlm.R, dev=c("png","pdf"), fig.width=10, echo=FALSE}
-#par(mar = c(8, 3, 2, 1), mfrow = c(1, 1), mfrow = 1:2)
-#boxplot(Ef$wnlm.R$forward, las=2, add=FALSE, main = "forward", ylim = c(min(sapply(Ef$wnlm.R, min)), max(sapply(Ef$wnlm.R, max))))
-#abline(h = 0, lty = "dashed")
-#boxplot(Ef$wnlm.R$reverse, las=2, add=FALSE, main = "reverse", ylim = c(min(sapply(Ef$wnlm.R, min)), max(sapply(Ef$wnlm.R, max))))
-#abline(h = 0, lty = "dashed")
-my.stripplot(fm = Coefficient ~ Effect | Order, data = Ef.long$wnlm.R)
+```{r effects-fw-rv-wnlm.R, dev=c("png","pdf"), echo=FALSE}
+my.stripplot(fm = Coefficient ~ Effect | Order, data = Ef.long$wnlm.R, main = "Effects under wnlm.R")
+```
+
+### Comparison with genes on relative scale
+
+```{r anova-fw-rv-logi.S-trellis, dev=c("png","pdf"), echo=FALSE}
+my.dotplot(fm = Predictor ~ Deviance | Gene, data = A.long$logi.S, main = "ANOVA under logi.S", scales = list(x = "free"))
+```
+
+```{r effects-fw-rv-logi.S-trellis, dev=c("png","pdf"), echo=FALSE}
+my.dotplot(fm = Coefficient ~ Effect | Gene, data = Ef.long$logi.S, main = "Effects under logi.S", scales = list(x = "free"))
+```
+
+```{r anova-fw-rv-wnlm.R-trellis, dev=c("png","pdf"), echo=FALSE}
+my.dotplot(fm = Predictor ~ Deviance | Gene, data = A.long$wnlm.R, main = "ANOVA under wnlm.R", scales = list(x = "free"))
+```
+
+```{r effects-fw-rv-wnlm.R-trellis, dev=c("png","pdf"), echo=FALSE}
+my.dotplot(fm = Coefficient ~ Effect | Gene, data = Ef.long$wnlm.R, main = "Effects under wnlm.R", scales = list(x = "free"))
+```
+
+### Another view, genes on uniform scale
+
+This display is meant to be comparable to a similarly structured trellis display of estimated regression coefficients.
+
+```{r cache=TRUE, warning=FALSE, message=FALSE}
+Betas <- lapply(M, function(m) get.estimate.CI(m$forward))
+```
+
+#### Under logi.S
+
+```{r warning=FALSE, echo=FALSE, message=FALSE}
+my.segplot <- function(data = Betas$logi.S,
+                       main = expression(paste("99 % CI for ", beta, " under logi.S")),
+                       ...) {
+    segplot(Gene ~ Lower.CL + Upper.CL | Coefficient,
+            data = data,
+            #data = data[ ! data$Coefficient %in% "(Intercept)", ],
+            scales = list(x = list(relation = "free")),
+            aspect = 3,
+            panel = function(x, y, ...) {
+                panel.grid(h = -1, v = 0)
+                panel.segplot(x, y, ...)
+                panel.abline(v = 0, col = "red")
+            },
+            main = main, as.table = TRUE, center = data$Estimate, draw.bands = FALSE, ...)
+}
+```
+
+```{r effects-fw-rv-logi.S-trellis-coef-cond, dev=c("png","pdf"), fig.asp=1, echo=FALSE}
+# conditioning on the Coefficient instead of Gene
+my.dotplot(fm = Gene ~ Effect | Coefficient, data = Ef.long$logi.S, main = "Effects under logi.S")
+```
+
+```{r reg-coef-logi.S, dev=c("png", "pdf"), fig.width=10, fig.asp=1, warning=FALSE, echo=FALSE, message=FALSE}
+my.segplot(data = Betas$logi.S)[-1]
+```
+
+#### Under wnlm.R
+
+```{r effects-fw-rv-wnlm.R-trellis-coef-cond, dev=c("png","pdf"), fig.asp=1, echo=FALSE}
+# conditioning on the Coefficient instead of Gene
+my.dotplot(fm = Gene ~ Effect | Coefficient, data = Ef.long$wnlm.R, main = "Effects under wnlm.R")
+```
+
+```{r reg-coef-wnlm.R, dev=c("png", "pdf"), fig.width=10, fig.asp=1, warning=FALSE, echo=FALSE, message=FALSE}
+my.segplot(data = Betas$wnlm.R, main = expression(paste("99 % CI for ", beta, " under wnlm.R")))[-1]
 ```

@@ -16,8 +16,11 @@ Relevant scripts
 
 ```r
 library(lattice)
+library(latticeExtra)
 source("~/projects/monoallelic-brain/src/import-data.R")
 source("~/projects/monoallelic-brain/src/fit-glms.R")
+opts_chunk$set(dpi = 144)
+opts_chunk$set(fig.width = 10)
 ```
 
 Import data
@@ -56,25 +59,20 @@ grep("TRUE", sapply(to.fit.ids, function(g) all.equal(coef(M$logi.S$forward[[g]]
 ## "Mean relative difference: 1.508896e-08"
 ```
 
-## ANOVA
+## Components of variation
+
+ANOVA allows *direct* comparison of predictors (explanatory variables) by partitioning all explained/systematic variation in the response ($S$ or $R$) among them.  Similarly, the directly comparable effect of each of the $p$ regression coefficients on the response (an $n$-vector) can be obtained from QR decomposition of the response into a set of $n$ orthogonal vectors, in which a subset of $p$ vectors corresponds to the coefficients. 
+
+In the above sentences "directly comparable" means that the effects are on a uniform scale for all predictors/coefficients for a given gene as that scale is closely related to the one on which the response varies.  But the total variation of the response $S$ itself shows variation across genes, which leaves two options in gene-gene comparisons: compare components of variation with or without correction for across gene variation of the total variance.  The first one will be referred below as **genes on uniform scale** and the second as **genes on relative scale**.
+
+### Comparing predictors with genes on uniform scale
 
 
 ```r
-#A <- lapply(M, lapply, l.anova)
 A.long <- lapply(lapply(M, lapply, l.anova), reshape.2, type = "anova")
-my.stripplot <- function(fm = Predictor ~ Deviance | Order, data = A.long$logi.S) {
-    stripplot(fm,
-              groups = Gene,
-              data = data[ data$Order %in% c("forward", "reverse"), ],
-              jitter.data = TRUE, fun = identity, type = "p", pch = 21,
-              grid = TRUE,
-              #auto.key = TRUE,
-              panel = function(x, y, ...) {
-                  panel.bwplot(x, y, do.out = FALSE, ...)
-                  panel.stripplot(x, y, ...)
-              })
-}
 ```
+
+
 
 Under `logi.S`:
 ![plot of chunk anova-fw-rv-logi.S](figure/anova-fw-rv-logi.S-1.png)
@@ -82,11 +80,8 @@ Under `logi.S`:
 The same tendencies emerge under `wnlm.R`:
 ![plot of chunk anova-fw-rv-wnlm.R](figure/anova-fw-rv-wnlm.R-1.png)
 
-## Effects
-
 
 ```r
-#Ef <- lapply(M, lapply, l.effects)
 Ef.long <- lapply(lapply(M, lapply, l.effects), reshape.2, type = "effects")
 ```
 
@@ -95,3 +90,36 @@ Under `logi.S`:
 
 Again, similar tendencies are observed under `wnlm.R`:
 ![plot of chunk effects-fw-rv-wnlm.R](figure/effects-fw-rv-wnlm.R-1.png)
+
+### Comparison with genes on relative scale
+
+![plot of chunk anova-fw-rv-logi.S-trellis](figure/anova-fw-rv-logi.S-trellis-1.png)
+
+![plot of chunk effects-fw-rv-logi.S-trellis](figure/effects-fw-rv-logi.S-trellis-1.png)
+
+![plot of chunk anova-fw-rv-wnlm.R-trellis](figure/anova-fw-rv-wnlm.R-trellis-1.png)
+
+![plot of chunk effects-fw-rv-wnlm.R-trellis](figure/effects-fw-rv-wnlm.R-trellis-1.png)
+
+### Another view, genes on uniform scale
+
+This display is meant to be comparable to a similarly structured trellis display of estimated regression coefficients.
+
+
+```r
+Betas <- lapply(M, function(m) get.estimate.CI(m$forward))
+```
+
+#### Under logi.S
+
+
+
+![plot of chunk effects-fw-rv-logi.S-trellis-coef-cond](figure/effects-fw-rv-logi.S-trellis-coef-cond-1.png)
+
+![plot of chunk reg-coef-logi.S](figure/reg-coef-logi.S-1.png)
+
+#### Under wnlm.R
+
+![plot of chunk effects-fw-rv-wnlm.R-trellis-coef-cond](figure/effects-fw-rv-wnlm.R-trellis-coef-cond-1.png)
+
+![plot of chunk reg-coef-wnlm.R](figure/reg-coef-wnlm.R-1.png)

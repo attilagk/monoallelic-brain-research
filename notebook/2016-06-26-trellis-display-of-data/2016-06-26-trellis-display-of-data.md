@@ -8,6 +8,7 @@ library(ggplot2)
 library(GGally)
 source("../../src/import-data.R")
 source("../../src/fit-glms.R")
+opts_chunk$set(dpi = 144)
 ```
 
 
@@ -68,27 +69,12 @@ M <- do.all.fits(Y[ 0:1 - length(Y) ], # omit the last two components: "UA.8" an
 
 ## Associations between explanatory variables
 
+### Deterministic association: RIN and RIN2
+
 ![plot of chunk rin-rin2](figure/rin-rin2-1.png)![plot of chunk rin-rin2](figure/rin-rin2-2.png)
 
+### Stochastic (statistical) associations
+
+Both "scatter plot matrices" show the same set of pairwise associations (top: `lattice`, bottom: `ggplot2` and `GGally` packages).
+
 ![plot of chunk evar-scatterplot-matrix](figure/evar-scatterplot-matrix-1.png)![plot of chunk evar-scatterplot-matrix](figure/evar-scatterplot-matrix-2.png)
-
-### Regression coefficients
-
-
-```r
-Betas <- lapply(M, get.estimate.CI)
-A.long <- lapply(M, function(m) reshape.1(l.anova(m), type = "anova"))
-Ef.long <- lapply(M, function(m) reshape.1(l.effects(m), type = "effects"))
-```
-
-![plot of chunk reg-coef-logi.S](figure/reg-coef-logi.S-1.png)
-
-![plot of chunk reg-coef-wnlm.R](figure/reg-coef-wnlm.R-1.png)
-
-![plot of chunk anova-logi.S](figure/anova-logi.S-1.png)
-
-![plot of chunk anova-wnlm.R](figure/anova-wnlm.R-1.png)
-
-![plot of chunk effects-logi.S](figure/effects-logi.S-1.png)
-
-![plot of chunk effects-wnlm.R](figure/effects-wnlm.R-1.png)

@@ -7,6 +7,7 @@ library(ggplot2)
 library(GGally)
 source("../../src/import-data.R")
 source("../../src/fit-glms.R")
+opts_chunk$set(dpi = 144)
 ```
 
 ```{r cache=TRUE, echo=FALSE}
@@ -94,12 +95,18 @@ M <- do.all.fits(Y[ 0:1 - length(Y) ], # omit the last two components: "UA.8" an
 
 ## Associations between explanatory variables
 
-```{r rin-rin2, dev=c("png", "pdf"), fig.width=5, cache=TRUE, warning=FALSE, echo=FALSE}
+### Deterministic association: RIN and RIN2
+
+```{r rin-rin2, dev=c("png", "pdf"), fig.width=3, warning=FALSE, echo=FALSE, dpi=72}
 xyplot(RIN2 ~ RIN, data = E[sort.int(E$RIN, index.return = TRUE)$ix, ],
        type = "l", grid = TRUE, aspect = 1)
 qplot(RIN, RIN2, data = E[sort.int(E$RIN, index.return = TRUE)$ix, ],
       geom = "line", asp = 1)
 ```
+
+### Stochastic (statistical) associations
+
+Both "scatter plot matrices" show the same set of pairwise associations (top: `lattice`, bottom: `ggplot2` and `GGally` packages).
 
 ```{r evar-scatterplot-matrix, dev=c("png", "pdf"), fig.width=10, fig.asp=1, cache=TRUE, warning=FALSE, echo=FALSE, message=FALSE}
 P$splom$lattice <-
@@ -111,41 +118,4 @@ P$splom$lattice <-
 plot(P$splom$lattice)
 #plot(P$splom$ggplot2)
 ggpairs(E[ e.vars[c(1:6, 10)]])
-```
-
-### Regression coefficients
-
-```{r cache=TRUE, warning=FALSE, message=FALSE}
-Betas <- lapply(M, get.estimate.CI)
-A.long <- lapply(M, function(m) reshape.1(l.anova(m), type = "anova"))
-Ef.long <- lapply(M, function(m) reshape.1(l.effects(m), type = "effects"))
-```
-
-```{r reg-coef-logi.S, dev=c("png", "pdf"), fig.width=10, fig.asp=1, cache=TRUE, warning=FALSE, echo=FALSE, message=FALSE}
-my.segplot <- function(data = Betas$logi.S) {
-    segplot(Gene ~ Lower.CL + Upper.CL | Coefficient, data = data,
-            scales = list(x = list(relation = "free")),
-            as.table = TRUE, center = data$Estimate, draw.bands = FALSE)
-}
-my.segplot(data = Betas$logi.S)
-```
-
-```{r reg-coef-wnlm.R, dev=c("png", "pdf"), fig.width=10, fig.asp=1, cache=TRUE, warning=FALSE, echo=FALSE, message=FALSE}
-my.segplot(data = Betas$wnlm.R)
-```
-
-```{r anova-logi.S, dev=c("png", "pdf"), fig.width=10, fig.asp=1, cache=TRUE, warning=FALSE, echo=FALSE, message=FALSE}
-dotplot(Gene ~ Deviance | Predictor, data = A.long$logi.S)
-```
-
-```{r anova-wnlm.R, dev=c("png", "pdf"), fig.width=10, fig.asp=1, cache=TRUE, warning=FALSE, echo=FALSE, message=FALSE}
-dotplot(Gene ~ Deviance | Predictor, data = A.long$wnlm.R)
-```
-
-```{r effects-logi.S, dev=c("png", "pdf"), fig.width=10, fig.asp=1, cache=TRUE, warning=FALSE, echo=FALSE, message=FALSE}
-dotplot(Gene ~ Effect | Coefficient, data = Ef.long$logi.S)
-```
-
-```{r effects-wnlm.R, dev=c("png", "pdf"), fig.width=10, fig.asp=1, cache=TRUE, warning=FALSE, echo=FALSE, message=FALSE}
-dotplot(Gene ~ Effect | Coefficient, data = Ef.long$wnlm.R)
 ```

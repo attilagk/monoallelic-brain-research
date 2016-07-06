@@ -138,6 +138,14 @@ get.CI <- function(l.models,
     #return(df)
 }
 
+# extract estimates and confidence intervals for regression coefficients
+#
+# Parameters
+# l.M: a list of models
+# conf.lev: confidence level
+#
+# Value
+# a data frame in a long form for easy plotting
 get.estimate.CI <- function(l.M, conf.lev = 0.99) {
     # get the names of all coefficients from one of the genes with a full set of coefs
     all.coefs <- names(coef(l.M[[ order(sapply(lapply(l.M, coef), length), decreasing=TRUE)[1] ]]))
@@ -193,42 +201,6 @@ l.anova <- function(l.m) {
     data.frame(t(y))
 }
 
-#reshape.anova <- function(A, type = "anova") {
-#    A$Gene <- factor(row.names(A))
-#    B <- stack(A)
-#    types <- list(anova = c("Deviance", "Predictor"), effects = c("Effect", "Coefficient"))
-#    names(B)[1:2] <- types[[ type ]]
-#    B[[2]] <- factor(B[[2]], levels = names(A), ordered = TRUE)
-#    return(B)
-#}
-
-reshape.1 <- function(A, type = "anova") {
-    types <- list(anova = c("Deviance", "Predictor"), effects = c("Effect", "Coefficient"))
-    reshape(A,
-            v.names = types[[type]][1], varying = list(names(A)),
-            timevar = types[[type]][2], times = factor(names(A), levels = names(A), ordered = TRUE),
-            idvar = "Gene", ids = factor(row.names(A), levels = row.names(A), ordered = TRUE),
-            direction = "long")
-}
-
-reshape.2 <- function(l.A, type = "anova") {
-    Reduce(rbind, lapply(names(l.A), function(n)
-                         cbind(reshape.1(l.A[[n]], type = type),
-                                   list(Order = factor(n, levels = names(l.A), ordered = TRUE)))))
-}
-
-extract.reshape.l.M <- function(l.M, extractor = coef) {
-    helper <- function(n) {
-        res <- t(as.matrix(extractor(l.M[[ n ]])))
-        #res <- data.frame(t(as.matrix(extractor(l.M[[ n ]]))))
-        row.names(res) <- n
-        res
-    }
-    sapply(names(l.M), helper)
-}
-
-#Reduce(rbind, lapply(Ef$logi.S, reshape.anova, type = "effects"))
-
 # creates a data frame of effects
 #
 # Parameters
@@ -244,4 +216,49 @@ l.effects <- function(l.m, ref.m = 1) {
     ix <- sapply(l.m, function(m) length(coef(m)) == length(coef(l.m[[ ref.m ]])))
     y <- sapply(l.m[ ix ], function(m) effects(m)[ names(coef(l.m[[ref.m]]))[-1] ])
     data.frame(t(y))
+}
+
+# reshape a data frame of ANOVA/Effects info to long format for easy plotting
+#
+# Parameters
+# A: a "wide" data frame of deviances/effects, whose rows are genes and columns predictors/coefficients
+# type: type of informatino either "anova" for ANOVA deviances or "effects" for effects
+#
+# Value
+# 'A' reshaped into a long format
+
+# Details
+# In the reshaped 'A' all deviances/effects are accumulated into a single
+# component (i.e. column), and two new components are added: (1) Gene and (2),
+# depending on 'type', Predictor/Coefficient; both of these components are
+# ordered factors.
+reshape.1 <- function(A, type = "anova") {
+    types <- list(anova = c("Deviance", "Predictor"), effects = c("Effect", "Coefficient"))
+    reshape(A,
+            v.names = types[[type]][1], varying = list(names(A)),
+            timevar = types[[type]][2], times = factor(names(A), levels = names(A), ordered = TRUE),
+            idvar = "Gene", ids = factor(row.names(A), levels = row.names(A), ordered = TRUE),
+            direction = "long")
+}
+
+# reshape a *list* of data frames of ANOVA/Effects info to long format for easy plotting
+#
+# Parameters
+# l.A: a list of data frames in "wide" format; see parameter 'A' in reshape.1
+# type: either "anova" or "effects"; see parameter 'A' in reshape.1
+#
+# Value
+# 'l.A' reshaped into a *single* data frame in a long format
+#
+# Details
+# Each data frame in 'l.A' is assumed to correspond to some *order* in which
+# predictors are added successively in ANOVA.  Like in the case of 'reshape.1'
+# all deviances/effects are accumulated into a single
+# component (i.e. column), and a Gene as well as a Predictor/Coefficient
+# component is added.  But unlike in 'reshape.1' and 'Order' component (also
+# an ordered factor) is also created.
+reshape.2 <- function(l.A, type = "anova") {
+    Reduce(rbind, lapply(names(l.A), function(n)
+                         cbind(reshape.1(l.A[[n]], type = type),
+                                   list(Order = factor(n, levels = names(l.A), ordered = TRUE)))))
 }
