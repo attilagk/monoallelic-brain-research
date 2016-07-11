@@ -125,6 +125,30 @@ Note that potential `NULL` results reflect genes that have been filtered out---b
 Under the `logi.S` model $\beta_\mathrm{age}$ seems to vary greatly accross genes suggesting both gain or loss of imprinting with age or no effect of age.  Genes with fewer observations (as typical for candidate imprinted genes) have broad confidence intervals and so tend support the null hypothesis of $\beta_\mathrm{age}=0$ at a given significance level $\alpha$.  Aggregating read counts using weighted average is hugely beneficial as evidenced by dramatically shrunken confidence intervals (`WA.8`, `WA`) because the logistic model takes advantage of the increased total read counts.  The following pair of plots (obtained with the `lattice` and `ggplot2` package, respectively) illustrate these result:
 
 ```{r beta-age-logi.S, dev=c('png','pdf'), echo=FALSE, warning=FALSE, message=FALSE}
+plot.CI <- function(df, package = "lattice", ...) {
+    plotter <-
+        list(lattice =
+             function() {
+                 segplot(Gene ~ Lower.CL + Upper.CL, data = df,
+                         panel = function(x, y, ...) {
+                             panel.grid(h = -1, v = -1)
+                             panel.abline(v = 0, lty = "dashed", ...)
+                             panel.segplot(x, y, ...)
+                         },
+                         draw.bands = FALSE, centers = beta.hat, xlab = expression(beta[age]),
+                         main = expression(paste(hat(beta)[age], " and CI")))
+             },
+           ggplot2 =
+               function() {
+                   g <- ggplot(data = df, aes(x = Gene, y = beta.hat))
+                   g <- g + coord_flip()
+                   g <- g + geom_hline(yintercept = 0, linetype = 2)
+                   g <- g + geom_pointrange(aes(ymin = Lower.CL, ymax = Upper.CL))
+                   g <- g + labs(x = "", y = expression(beta[age]), title = expression(paste(hat(beta)[age], " and CI")))
+                   g
+               })
+    plot(plotter[[ package ]]())
+}
 plot.CI(get.CI(M$logi.S[f.ids$logi.S]), package = "lattice")
 plot.CI(get.CI(M$logi.S[f.ids$logi.S]), package = "ggplot2")
 ```

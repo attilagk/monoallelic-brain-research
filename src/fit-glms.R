@@ -131,11 +131,9 @@ get.CI <- function(l.models,
     CI <- t(sapply(l.models, confint, parm = coef.name, level = conf.lev))
     df <- as.data.frame(cbind(CI, beta.hat))
     names(df)[1:2] <- c("Lower.CL", "Upper.CL")
-    #df$Gene <- reorder(factor(row.names(df)), df$beta.hat)
     cbind(df,
           list(Gene = factor(row.names(df), levels = row.names(df), ordered = TRUE)),
           list(Coefficient = factor(coef.name, levels = all.coefs, ordered = TRUE)))
-    #return(df)
 }
 
 # extract estimates and confidence intervals for regression coefficients
@@ -146,7 +144,30 @@ get.CI <- function(l.models,
 #
 # Value
 # a data frame in a long form for easy plotting
+#
+# Details
+# Data are set to NA for models that haven't converged.
 get.estimate.CI <- function(l.M, conf.lev = 0.99) {
+    df <- do.call(make.groups,
+                  lapply(l.M,
+                         function(m) {
+                             d <- cbind(data.frame(Estimate = cf <- coef(m)),
+                                        data.frame(Coefficient =
+                                                   factor(n.cf <- names(cf), levels = n.cf, ordered = TRUE)),
+                                        data.frame(tryCatch(confint(m, level = conf.lev),
+                                                            error = function(e) matrix(NA, nrow = 1, ncol = 2))))
+                             names(d)[3:4] <- c("Lower.CL", "Upper.CL")
+                             return(d)
+                         }))
+    names(df)[5] <- c("Gene")
+    not.converged <- df$Gene %in% names(l.M)[ ! sapply(l.M, `[[`, "converged") ]
+    df[ not.converged, c("Estimate", "Lower.CL", "Upper.CL") ] <- NA
+    return(df)
+}
+
+# Earlier implementation of 'get.estimate.CI'.  Essentially the same behavior
+# but somewhat less elegant program.
+get.estimate.CI.old <- function(l.M, conf.lev = 0.99) {
     # get the names of all coefficients from one of the genes with a full set of coefs
     all.coefs <- names(coef(l.M[[ order(sapply(lapply(l.M, coef), length), decreasing=TRUE)[1] ]]))
     l.M.names <- names(l.M)
@@ -163,29 +184,56 @@ get.estimate.CI <- function(l.M, conf.lev = 0.99) {
     return(df)
 }
 
-plot.CI <- function(df, package = "lattice", ...) {
-    plotter <-
-        list(lattice =
-             function() {
-                 segplot(Gene ~ Lower.CL + Upper.CL, data = df,
-                         panel = function(x, y, ...) {
-                             panel.grid(h = -1, v = -1)
-                             panel.abline(v = 0, lty = "dashed", ...)
-                             panel.segplot(x, y, ...)
-                         },
-                         draw.bands = FALSE, centers = beta.hat, xlab = expression(beta[age]),
-                         main = expression(paste(hat(beta)[age], " and CI")))
-             },
-           ggplot2 =
-               function() {
-                   g <- ggplot(data = df, aes(x = Gene, y = beta.hat))
-                   g <- g + coord_flip()
-                   g <- g + geom_hline(yintercept = 0, linetype = 2)
-                   g <- g + geom_pointrange(aes(ymin = Lower.CL, ymax = Upper.CL))
-                   g <- g + labs(x = "", y = expression(beta[age]), title = expression(paste(hat(beta)[age], " and CI")))
-                   g
-               })
-    plot(plotter[[ package ]]())
+# creates a long data frame of effects from a list of models
+#
+# Parameters
+# l.m: a list of models
+# coef.names: the name of all coefficients across all genes
+#
+# Value
+# a long data frame with 3 columns: Effect, Coefficient, Gene. The latter two are ordered factors
+l.effects <- function(l.m, coef.names = names(coef(l.m[[1]]))) {
+    df <- do.call(make.groups,
+                  lapply(l.m,
+                         function(m) {
+                             ef <- effects(m)
+                             data.frame(Effect = ef <- ef[ names(ef) != "" ],
+                                              Coefficient = factor(names(ef), levels = coef.names, ordered = TRUE))
+                         }))
+    names(df)[3] <- "Gene"
+    return(df)
+}
+
+# Earlier implementation of 'l.effects' with slightly different behavior.  The
+# difference concerns those genes for which some of the coefficients lack the
+# corresponding component in the vector produced by calling 'effects'.  In
+# this old implementation these genes are removed but in the new 'l.effects'
+# they are retained.
+l.effects.old <- function(l.m, ref.m = 1) {
+    ix <- sapply(l.m, function(m) length(coef(m)) == length(coef(l.m[[ ref.m ]])))
+    y <- sapply(l.m[ ix ], function(m) effects(m)[ names(coef(l.m[[ref.m]]))[-1] ])
+    data.frame(t(y))
+}
+
+# creates a long data frame of effects from a list of lists of models
+#
+# Parameters
+# l.l.m: a list of lists of models (see Details)
+# coef.names: the name of all coefficients across all genes
+#
+# Value
+# A long data frame with 4 columns: Effect, Coefficient, Gene, Order. The
+# latter three are ordered factors.
+#
+# Details
+# The structure of 'l.l.m' shows the following pattern: the main (outer) list
+# corresponds to the *order* of predictors whereas the inner lists correspond
+# to the set of genes/gene aggregates.  The latter is obtained with
+# 'do.all.fits'.
+l.l.effects <- function(l.l.m, coef.names = names(coef(l.l.m[[1]][[1]]))) {
+    df <- do.call(make.groups, lapply(l.l.m, l.effects, coef.names = coef.names))
+    names(df)[4] <- "Order"
+    return(df)
 }
 
 # creates a data frame of ANOVA deviances
@@ -198,23 +246,6 @@ plot.CI <- function(df, package = "lattice", ...) {
 l.anova <- function(l.m) {
     y <- sapply(l.m, function(m) anova(m)[ , "Deviance" ])[ -1, ]
     row.names(y) <- attributes(terms(l.m[[1]]))$term.labels
-    data.frame(t(y))
-}
-
-# creates a data frame of effects
-#
-# Parameters
-# l.m: a list of models
-# ref.m: a reference model with a complete set of coefficients
-#
-# Value
-# a data frame of ANOVA deviances where each column is a term and rows are genes
-#
-# Details
-# ref.m is needed to check if every other model has the same number of parameters
-l.effects <- function(l.m, ref.m = 1) {
-    ix <- sapply(l.m, function(m) length(coef(m)) == length(coef(l.m[[ ref.m ]])))
-    y <- sapply(l.m[ ix ], function(m) effects(m)[ names(coef(l.m[[ref.m]]))[-1] ])
     data.frame(t(y))
 }
 
@@ -261,4 +292,40 @@ reshape.2 <- function(l.A, type = "anova") {
     Reduce(rbind, lapply(names(l.A), function(n)
                          cbind(reshape.1(l.A[[n]], type = type),
                                    list(Order = factor(n, levels = names(l.A), ordered = TRUE)))))
+}
+
+# Value
+# a character vector to be used as row name indeces for the subset to be extracted
+sset.obs <- function(predictor, lvls, X = E) {
+    row.names(X)[X[[predictor]] %in% lvls]
+}
+
+do.all.fits.sset <- function(sel.pred, levs,
+                             Z = Y, G = E,
+                             preds = e.vars[! e.vars %in% sel.pred],
+                             s.mod = "logi2.S") {
+    ss <- sset.obs(sel.pred, levs, G)
+    Z <- lapply(Z, `[`, ss, TRUE)
+    G <- G[ss, preds]
+    do.all.fits(Z, G, preds = preds, sel.models = s.mod)[[s.mod]]
+}
+
+l.do.all.fits.sset <- function(sel.pred = "Institution", Z = Y, G = E,
+                               preds = e.vars[! e.vars %in% sel.pred],
+                               s.mod = "logi2.S") {
+    l <- levels(G[[sel.pred]])
+    names(l) <- l
+    lapply(l, function(lev)
+           do.all.fits.sset(sel.pred, lev, Z, G, preds, s.mod))
+}
+
+l.l.do.all.fits.sset <- function(sel.preds = c("Institution", "Gender"),
+                                 Z = Y, G = E, e.v = e.vars, s.mod = "logi.S") {
+    names(sel.preds) <- sel.preds
+    M <- lapply(sel.preds,
+                function(s.p)
+                    l.do.all.fits.sset(s.p, Z, G, preds = e.v[! e.v %in% s.p], s.mod))
+    M$Marginal <-
+        list(All = do.all.fits(Z = Z, G = G, preds = e.v, min.obs = 0, sel.models = s.mod)[[s.mod]])
+    return(M)
 }

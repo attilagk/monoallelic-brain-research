@@ -20,6 +20,8 @@ source("~/projects/monoallelic-brain/src/import-data.R")
 source("~/projects/monoallelic-brain/src/fit-glms.R")
 opts_chunk$set(dpi = 144)
 opts_chunk$set(fig.width = 10)
+lattice.options(default.args = list(as.table = TRUE))
+lattice.options(default.theme = "standard.theme")
 ```
 
 Import data
@@ -62,14 +64,13 @@ In the above sentences "directly comparable" means that the effects are on a uni
 A.long <- lapply(lapply(M, lapply, l.anova), reshape.2, type = "anova")
 ```
 
-```{r lattice-functions, cache=TRUE, warning=FALSE, echo=FALSE}
-lattice.options(default.args = list(as.table = TRUE))
-lattice.options(default.theme = "standard.theme")
-#
+```{r lattice-functions, warning=FALSE, echo=FALSE}
+
 my.stripplot <- function(fm = Predictor ~ Deviance | Order, data = A.long$logi.S, ...) {
     stripplot(fm,
               groups = Gene,
-              data = data[ data$Order %in% c("forward", "reverse"), ],
+              data = data,
+              subset = Order %in% c("forward", "reverse"),
               jitter.data = TRUE, fun = identity, type = "p",
               pch = 21, abline = list(v = 0, col = "gray"),
               grid = TRUE,
@@ -79,15 +80,17 @@ my.stripplot <- function(fm = Predictor ~ Deviance | Order, data = A.long$logi.S
                   panel.stripplot(x, y, ...)
               }, ...)
 }
-#
+
 my.dotplot <- function(fm = Predictor ~ Deviance | Gene, data = A.long$logi.S, ...) {
     dotplot(fm,
               groups = Order,
-              data = data[ data$Order %in% c("forward", "reverse"), ],
-              pch = 21, abline = list(v = 0, lty = 2),
+              data = data,
+              subset = Order %in% c("forward", "reverse"),
+              abline = list(v = 0, lty = 2),
               #scales = list(x = "free"),
-              auto.key = TRUE,
+              auto.key = list(text = levels(data$Order)[1:2], columns = 2),
               aspect = 3, between = list(x = 0.2),
+              par.settings = list(superpose.symbol = list(pch = 21, alpha = 0.5)),
               ...)
 }
 ```
@@ -103,7 +106,7 @@ my.stripplot(fm = Predictor ~ Deviance | Order, data = A.long$wnlm.R, main = "AN
 ```
 
 ```{r cache=TRUE, warning=FALSE}
-Ef.long <- lapply(lapply(M, lapply, l.effects), reshape.2, type = "effects")
+Ef.long <- lapply(M, function(m) { x <- l.l.effects(m); x <- x[ ! x$Coefficient %in% "(Intercept)", ] })
 ```
 
 Under `logi.S`:
@@ -139,7 +142,7 @@ my.dotplot(fm = Coefficient ~ Effect | Gene, data = Ef.long$wnlm.R, main = "Effe
 This display is meant to be comparable to a similarly structured trellis display of estimated regression coefficients.
 
 ```{r cache=TRUE, warning=FALSE, message=FALSE}
-Betas <- lapply(M, function(m) get.estimate.CI(m$forward))
+Betas <- lapply(M, function(m) { x <- get.estimate.CI(m$forward); x <- x[ ! x$Coefficient %in% "(Intercept)", ] })
 ```
 
 #### Under logi.S
@@ -150,15 +153,14 @@ my.segplot <- function(data = Betas$logi.S,
                        ...) {
     segplot(Gene ~ Lower.CL + Upper.CL | Coefficient,
             data = data,
-            #data = data[ ! data$Coefficient %in% "(Intercept)", ],
             scales = list(x = list(relation = "free")),
-            aspect = 3,
+            aspect = 3, between = list(x = 0.2),
             panel = function(x, y, ...) {
                 panel.grid(h = -1, v = 0)
                 panel.segplot(x, y, ...)
                 panel.abline(v = 0, col = "red")
             },
-            main = main, as.table = TRUE, center = data$Estimate, draw.bands = FALSE, ...)
+            main = main, as.table = TRUE, center = Estimate, draw.bands = FALSE, ...)
 }
 ```
 
@@ -168,7 +170,7 @@ my.dotplot(fm = Gene ~ Effect | Coefficient, data = Ef.long$logi.S, main = "Effe
 ```
 
 ```{r reg-coef-logi.S, dev=c("png", "pdf"), fig.width=10, fig.asp=1, warning=FALSE, echo=FALSE, message=FALSE}
-my.segplot(data = Betas$logi.S)[-1]
+my.segplot(data = Betas$logi.S)
 ```
 
 #### Under wnlm.R
@@ -179,5 +181,5 @@ my.dotplot(fm = Gene ~ Effect | Coefficient, data = Ef.long$wnlm.R, main = "Effe
 ```
 
 ```{r reg-coef-wnlm.R, dev=c("png", "pdf"), fig.width=10, fig.asp=1, warning=FALSE, echo=FALSE, message=FALSE}
-my.segplot(data = Betas$wnlm.R, main = expression(paste("99 % CI for ", beta, " under wnlm.R")))[-1]
+my.segplot(data = Betas$wnlm.R, main = expression(paste("99 % CI for ", beta, " under wnlm.R")))
 ```

@@ -17,10 +17,19 @@ Relevant scripts
 ```r
 library(lattice)
 library(latticeExtra)
+```
+
+```
+## Loading required package: RColorBrewer
+```
+
+```r
 source("~/projects/monoallelic-brain/src/import-data.R")
 source("~/projects/monoallelic-brain/src/fit-glms.R")
 opts_chunk$set(dpi = 144)
 opts_chunk$set(fig.width = 10)
+lattice.options(default.args = list(as.table = TRUE))
+lattice.options(default.theme = "standard.theme")
 ```
 
 Import data
@@ -82,7 +91,7 @@ The same tendencies emerge under `wnlm.R`:
 
 
 ```r
-Ef.long <- lapply(lapply(M, lapply, l.effects), reshape.2, type = "effects")
+Ef.long <- lapply(M, function(m) { x <- l.l.effects(m); x <- x[ ! x$Coefficient %in% "(Intercept)", ] })
 ```
 
 Under `logi.S`:
@@ -107,7 +116,7 @@ This display is meant to be comparable to a similarly structured trellis display
 
 
 ```r
-Betas <- lapply(M, function(m) get.estimate.CI(m$forward))
+Betas <- lapply(M, function(m) { x <- get.estimate.CI(m$forward); x <- x[ ! x$Coefficient %in% "(Intercept)", ] })
 ```
 
 #### Under logi.S

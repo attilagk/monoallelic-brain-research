@@ -9,6 +9,8 @@ test
 *synctex.gz
 *project.vim
 *.out
+*.png
+*.pdf
 
 # ignore knitr's cache
 **/cache/

@@ -1,0 +1,66 @@
+Hello World
+
+
+```r
+library(lattice)
+library(latticeExtra)
+source("~/projects/monoallelic-brain/src/import-data.R")
+source("~/projects/monoallelic-brain/src/fit-glms.R")
+opts_chunk$set(dpi = 144)
+opts_chunk$set(fig.width = 10)
+lattice.options(default.args = list(as.table = TRUE))
+lattice.options(default.theme = "standard.theme")
+```
+
+Import data
+
+```r
+E <- get.predictors() # default arguments
+Y <- get.readcounts(gene.ids = gene.ids, count.thrs = 0)
+# predictors for conditioning
+s.p <- c("Institution", "Gender")
+# exclude unweighed aggregates UA.8 and UA from fitting
+Z <- Y[grep("^UA(.8)?$", names(Y), value = TRUE, invert = TRUE)]
+M <- list(logi.S = l.l.do.all.fits.sset(s.p, Z, E, e.vars, "logi.S"),
+          wnlm.R = l.l.do.all.fits.sset(s.p, Z, E, e.vars, "wnlm.R"))
+# regression coefficients: estimates and CI at 99 % level
+Betas <- lapply(M, function(l3m) {
+    df <- do.call(make.groups,
+                  lapply(l3m,
+                         function(l2m)
+                             do.call(make.groups,
+                                     lapply(l2m,
+                                            get.estimate.CI, conf.lev = 0.99))))
+    names(df)[-(1:5)] <- c("Level", "Cond.Var")
+    return(df)
+})
+```
+
+```r
+L.levels <- c("All", "MSSM", "Penn", "Pitt", "Female", "Male")
+Betas$logi.S$Level <- ordered(Betas$logi.S$Level, levels = L.levels)
+Betas$wnlm.R$Level <- ordered(Betas$wnlm.R$Level, levels = L.levels)
+# prepare parameters
+sup.polygon <- Rows(trellis.par.get("superpose.polygon"), 1:6)
+# customized segment plot
+my.segplot <- function(dt) {
+segplot(ordered(Level, levels = rev(levels(Level))) ~ Lower.CL + Upper.CL | Gene, data = dt,
+        subset = Coefficient %in% "Age" & ! Gene %in% "TMEM261P1",
+        scales = list(relation = "free", draw = FALSE),
+        level = Level[Coefficient %in% "Age" & ! Gene %in% "TMEM261P1"],
+        centers = Estimate[Coefficient %in% "Age" & ! Gene %in% "TMEM261P1"], draw.bands = TRUE,
+        panel = function(x, y, ...) {
+            panel.segplot(x, y, ...)
+            panel.abline(v = 0, col = "black")
+        },
+        par.settings = list(regions = list(col = sup.polygon$col), strip.background = list(col = "lightgray")),
+        col.symbol = "black", pch = "I",
+        at = 0:6,
+        colorkey = FALSE,
+        key = simpleKey(text = levels(dt$Level), space = "right", points = FALSE, rectangles = TRUE))
+}
+```
+
+![plot of chunk beta-age-cond-logi.S](figure/beta-age-cond-logi.S-1.png)
+
+![plot of chunk beta-age-cond-wnlm.R](figure/beta-age-cond-wnlm.R-1.png)
