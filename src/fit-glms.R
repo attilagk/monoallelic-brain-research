@@ -294,12 +294,30 @@ reshape.2 <- function(l.A, type = "anova") {
                                    list(Order = factor(n, levels = names(l.A), ordered = TRUE)))))
 }
 
+# Make index for a subset of observations
+#
+# Parameters
+# X: a data frame of observed values of predictors
+# predictor: a component (column) in 'X' interpreted as an explanatory variable
+# lvls: the character vector of one or more levels of 'predictor' to be selected
+#
 # Value
 # a character vector to be used as row name indeces for the subset to be extracted
 sset.obs <- function(predictor, lvls, X = E) {
     row.names(X)[X[[predictor]] %in% lvls]
 }
 
+# Fit a single model to the same subset for each dataset
+#
+# Parameters
+# sel.pred: a selected predictor (character)
+# levs: one or more levels of 'sel.pred' to be used for subsetting
+# preds, Z, G: see the corresponding parameters of 'do.all.fits'
+# s.mod: a *single* selected model (unlike in 'do.all.fits', where 'sel.models' may name multiple models)
+#
+# Value
+# a list of model (l1m) objects (see 'do.all.fits'), where each component
+# corresponds to a specific dataset (i.e. a gene)
 do.all.fits.sset <- function(sel.pred, levs,
                              Z = Y, G = E,
                              preds = e.vars[! e.vars %in% sel.pred],
@@ -310,6 +328,15 @@ do.all.fits.sset <- function(sel.pred, levs,
     do.all.fits(Z, G, preds = preds, sel.models = s.mod)[[s.mod]]
 }
 
+# Fit a single model to a *l*ist of subsets for each dataset given a single predictor
+#
+# Parameters
+# see 'do.all.fits.sset' and 'do.all.fits'
+#
+# Value
+# a list of lists of models (l2m) where the outer list corresponds to subsets
+# (i.e. levels of the selected predictor) and the inner list to genes (see
+# 'do.all.fits.sset')
 l.do.all.fits.sset <- function(sel.pred = "Institution", Z = Y, G = E,
                                preds = e.vars[! e.vars %in% sel.pred],
                                s.mod = "logi2.S") {
@@ -319,6 +346,16 @@ l.do.all.fits.sset <- function(sel.pred = "Institution", Z = Y, G = E,
            do.all.fits.sset(sel.pred, lev, Z, G, preds, s.mod))
 }
 
+# Fit a single model to a *l*ist of subsets for each dataset given *multiple* predictor
+#
+# Parameters
+# see 'do.all.fits.sset' and 'do.all.fits'
+#
+# Value
+# a list of lists of lists of models (l3m), where the outermost list
+# corresponds to selected predictors and the lower level nestings (l2m, l1m)
+# have structures that are described in 'l.do.all.fits.sset' and
+# 'do.all.fits.sset'
 l.l.do.all.fits.sset <- function(sel.preds = c("Institution", "Gender"),
                                  Z = Y, G = E, e.v = e.vars, s.mod = "logi.S") {
     names(sel.preds) <- sel.preds
