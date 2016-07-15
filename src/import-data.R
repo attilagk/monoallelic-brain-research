@@ -44,7 +44,8 @@ get.readcounts <- function(gene.ids,
                            data.dir = "~/projects/monoallelic-brain/data/readcount/genes",
                            count.thrs = 0,
                            sel.obs = row.names(get.predictors()),
-                           g.subsets = list(A.8 = gene.ids[1:8], A = gene.ids)) {
+                           g.subsets = list(A.8 = gene.ids[1:8], A = gene.ids),
+                           sel.var = c("L", "H", "N", "S", "R")) {
     import.rc <- function(gene) {
         fpath <- paste0(data.dir, "/", gene, "/", gene, ".csv")
         # shell command to select 'Sample RNA ID', 'L' and 'H' columns using GNU's cut;
@@ -67,7 +68,7 @@ get.readcounts <- function(gene.ids,
         # S statistic
         y$S <- y$H / y$N
         y$R <- S.rank(y$S)
-        y
+        y[sel.var]
     }
     aggregator <- function(g.subset, Z, vars = c("S", "R"), fun = mean) {
         helper <- function(var) {

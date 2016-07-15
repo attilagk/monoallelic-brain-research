@@ -73,6 +73,29 @@ segplot(ordered(Level, levels = rev(levels(Level))) ~ Lower.CL + Upper.CL | Gene
         ylab = "condition",
         ...)
 }
+# an alternative implementation without resorting to the latticeExtra package
+my.segplot2 <- function(dt, ...) {
+    with(dt,
+         dotplot(ordered(Level, levels = rev(levels(Level))) ~ Estimate | Gene,
+                 groups = Level,
+                 subset = Coefficient %in% "Age" & ! Gene %in% "TMEM261P1",
+                 scales = list(relation = "free", draw = FALSE),
+                 prepanel = function(x, y, subscripts, ...)
+                     list(xlim = range(c(Lower.CL[subscripts], Upper.CL[subscripts]), na.rm = TRUE)),
+                 panel = function(x, y, groups, subscripts, ...) {
+                     fill <- trellis.par.get("superpose.symbol")$fill[ groups[subscripts] ]
+                     col <- trellis.par.get("superpose.symbol")$col[ groups[subscripts] ]
+                     lsegments(x0 = Lower.CL[subscripts], y0 = y, x1 = Upper.CL[subscripts], y1 = y, col = col, ...)
+                     panel.xyplot(x, y, col = col, fill = fill, ...)
+                     panel.abline(v = 0, lty = 2)
+                 },
+                 par.settings =
+                     list(strip.background = list(col = "lightgray"), plot.symbol =
+                          list(pch = 21), superpose.symbol = list(pch = 21)),
+                 auto.key = list(space = "right"),
+                 xlab = expression(paste("regression coefficient ", beta[age])),
+                 ylab = "condition", ...))
+}
 ```
 
 In the following plots the effect of 5 conditions (*MSSM*, ..., *Female*) is explored on the inferred $\beta_\mathrm{age}$.  *All* denotes the full set of observations (no conditioning), as done before.  Note the following
@@ -90,6 +113,7 @@ In the following plots the effect of 5 conditions (*MSSM*, ..., *Female*) is exp
 
 ```{r beta-age-cond-logi.S, dev=c("png", "pdf"), fig.width=10, warning=FALSE, echo=FALSE, message=FALSE}
 my.segplot(Betas$logi.S, main = expression(paste("Estimate and 99 % CI for ", beta[age] , " under logi.S")))
+#my.segplot2(Betas$logi.S, main = expression(paste("Estimate and 99 % CI for ", beta[age] , " under logi.S")))
 ```
 
 ```{r beta-age-cond-wnlm.R, dev=c("png", "pdf"), fig.width=10, warning=FALSE, echo=FALSE, message=FALSE}

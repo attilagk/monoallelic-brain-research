@@ -6,13 +6,6 @@ Load libraries and my custom functions.
 ```r
 library(lattice)
 library(latticeExtra)
-```
-
-```
-## Loading required package: RColorBrewer
-```
-
-```r
 source("~/projects/monoallelic-brain/src/import-data.R")
 source("~/projects/monoallelic-brain/src/fit-glms.R")
 ```
