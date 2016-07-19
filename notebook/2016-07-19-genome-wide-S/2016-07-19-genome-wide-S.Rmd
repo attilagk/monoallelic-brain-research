@@ -1,0 +1,86 @@
+Load data importer functions:
+```{r}
+source("../../src/import-data.R")
+```
+
+Finally!
+
+```{r echo=FALSE}
+library(lattice)
+library(latticeExtra)
+opts_chunk$set(dpi = 144)
+opts_chunk$set(fig.width = 10)
+opts_chunk$set(dev=c("png", "pdf"))
+lattice.options(default.args = list(as.table = TRUE))
+lattice.options(default.theme = "standard.theme")
+```
+
+
+### Missing data due to bug
+
+For each gene $g$ of 16026 genes the higher and lower read counts across $I_g\le 579$ individuals $\{H_{ig}, L_{ig} \,|\, i=1,...,I_g\}$ are stored in a `.csv` file.  However, nearly 3 % of those files are empty due to a bug that resulted in multiple headers in [Ifat's html tables][ifat] (see for instance gene AK3) and to the inability of my converter script to deal with such tables.  To see this:
+
+```{r engine="bash"}
+DATADIR="../../data/readcount/"
+SEDCMD='s/^.*attila attila\s\+\([[:digit:]]\+\).*\/\([^/]\+\)\.csv$/\1,\2/'
+OUTFILE="${DATADIR}/fsize-genes.csv"
+[ -f $OUTFILE ] || {
+    # create header
+    echo "file.size,gene.symbol" > $OUTFILE
+    # get file size (in bytes) for each gene under 'genes' directory
+    find "${DATADIR}/genes" -name '*.csv' | xargs ls -l | sed "$SEDCMD" >> $OUTFILE
+}
+cat <<EOF
+Number of .csv files
+
+all: $(grep --count '^[[:digit:]]\+,' $OUTFILE )
+empty: $(grep --count '^0,' $OUTFILE )
+EOF
+```
+
+```{r}
+gene.summary <-
+    read.csv("../../data/readcount/summary-all-genes.csv")
+rownames(gene.summary) <- gene.summary$Symbol
+gene.summary$file.size <-
+    read.csv("../../data/readcount/fsize-genes.csv", row.names = 2)[rownames(gene.summary), , drop = TRUE]
+gene.ids <- with(gene.summary, as.character(Symbol)[ file.size > 0 ])
+```
+
+### Import read count data
+
+```{r genomwide-data-import, cache=TRUE, warning=FALSE}
+Y <- get.readcounts(gene.ids, g.subsets = list(), sel.var = "S")
+Y <- data.frame(lapply(Y, getElement, "S"))
+```
+
+```{r}
+min.n.obs <- 10
+```
+```{r ecdf-n-obs, echo=FALSE, fig.width=7, fig.asp=2/3}
+ecdfplot(sapply(Y, function(y) sum(! is.na(y))), type = c("l", "g"),
+         panel = function(...) {
+             panel.ecdfplot(...)
+             panel.abline(v = min.n.obs, lty = 2)
+         }, xlab = "number of observations on gene",
+         main = paste0("Read count availability (", as.character(ncol(Y)), " genes)"))
+```
+
+```{r echo=FALSE}
+ok.genes <- sapply(Y, function(y) sum(! is.na(y)) >= min.n.obs)
+Z <- Y[ , ok.genes]
+# take a small sample of genes
+set.seed(666)
+Z10 <- Z[ , sample.int(nrow(Z), size = 10)]
+# get ecdf's
+E10 <- lapply(Z10, ecdf)
+# the S values at which to evaluate the ecdf's
+ss <- seq(from = 0.5, to = 1, length.out = 51)
+F10 <- data.frame(lapply(E10, function(f) f(ss)))
+```
+
+```{r ecdf-levelplot, echo=FALSE}
+levelplot(as.matrix(F10))
+```
+
+[ifat]: http://katahdin.mssm.edu/ifat/web/cm/home
