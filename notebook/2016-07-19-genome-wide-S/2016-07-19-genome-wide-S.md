@@ -1,17 +1,3 @@
-Load data importer functions:
-
-```r
-source("../../src/import-data.R")
-```
-
-Finally!
-
-
-```
-## Loading required package: RColorBrewer
-```
-
-
 ### Missing data due to bug
 
 For each gene $g$ of 16026 genes the higher and lower read counts across $I_g\le 579$ individuals $\{H_{ig}, L_{ig} \,|\, i=1,...,I_g\}$ are stored in a `.csv` file.  However, nearly 3 % of those files are empty due to a bug that resulted in multiple headers in [Ifat's html tables][ifat] (see for instance gene AK3) and to the inability of my converter script to deal with such tables.  To see this:
@@ -43,6 +29,22 @@ EOF
 ```
 
 
+```
+## Loading required package: RColorBrewer
+```
+
+### Import read count data
+
+Load data importer functions:
+
+```r
+source("../../src/import-data.R")
+source("2016-07-19-genome-wide-S.R")
+```
+
+The following expressions import $S_{ig}$ for all 1.5584 &times; 10<sup>4</sup> genes for which the csv file is nonempty.
+
+
 ```r
 gene.summary <-
     read.csv("../../data/readcount/summary-all-genes.csv")
@@ -52,13 +54,13 @@ gene.summary$file.size <-
 gene.ids <- with(gene.summary, as.character(Symbol)[ file.size > 0 ])
 ```
 
-### Import read count data
-
 
 ```r
 Y <- get.readcounts(gene.ids, g.subsets = list(), sel.var = "S")
 Y <- data.frame(lapply(Y, getElement, "S"))
 ```
+
+For more than half of even the genes $g$ with nonempty files the number $I_g$ of observations (the number of individuals/RNA samples with read count data on $g$) is zero.  In what follows, not only these genes are filtered out but also those with less than 10 observations, indicated by the vertical dashed line on the empirical ECDF plot below.
 
 
 ```r
@@ -68,6 +70,11 @@ min.n.obs <- 10
 
 
 
-![plot of chunk ecdf-levelplot](figure/ecdf-levelplot-1.png)
+The next plot is meant to serve a consistency check with Ifat's corresponding plot, that is [Fig 1 of the previous manuscript][Fig 1].
+
+![plot of chunk compare-to-ifats-fig](figure/compare-to-ifats-fig-1.png)
+
+
 
 [ifat]: http://katahdin.mssm.edu/ifat/web/cm/home
+[Fig 1]: https://docs.google.com/presentation/d/1YvpA1AJ-zzir1Iw0F25tO9x8gkSAzqaO4fjB7K3zBhE/edit#slide=id.p4
