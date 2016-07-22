@@ -42,6 +42,10 @@ source("../../src/import-data.R")
 source("2016-07-19-genome-wide-S.R")
 ```
 
+```
+## Error in nrow(ED[[2]]): object 'ED' not found
+```
+
 The following expressions import $S_{ig}$ for all 1.5584 &times; 10<sup>4</sup> genes for which the csv file is nonempty.
 
 
@@ -69,6 +73,26 @@ min.n.obs <- 10
 ![plot of chunk ecdf-n-obs](figure/ecdf-n-obs-1.png)
 
 
+
+
+
+
+
+
+```
+## Warning in complete_names(y, y.scales): Invalid or ambiguous component
+## names: text
+```
+
+![plot of chunk ecdf-plot](figure/ecdf-plot-1.png)
+
+![plot of chunk ecdf-levelplot](figure/ecdf-levelplot-1.png)
+
+![plot of chunk rank-by-ecdf](figure/rank-by-ecdf-1.png)
+
+![plot of chunk ecdf-levelplot-top](figure/ecdf-levelplot-top-1.png)
+
+![plot of chunk rank-by-ecdf-top](figure/rank-by-ecdf-top-1.png)
 
 The next plot is meant to serve a consistency check with Ifat's corresponding plot, that is [Fig 1 of the previous manuscript][Fig 1].
 

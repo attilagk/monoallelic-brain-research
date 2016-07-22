@@ -74,9 +74,26 @@ ok.genes <- names(Y)[sapply(Y, function(y) sum(! is.na(y)) >= min.n.obs)]
 # obtain the ECDF of S_ig for all given genes g
 ED <- emp.distr.S(Y[ , ok.genes],
                   ss = seq(from = 0.5, to = 1, length.out = 101),
-                  with.density = FALSE)
+                  with.density = TRUE)
 # order genes according to the value of the ECDF at 0.9
 gene.order <- order(sapply(ED[[1]], function(f) f(0.9)))
+```
+
+```{r echo=FALSE}
+ecdf.val.w <- ED$ecdf.val[ , gene.order[1:1000]]
+density.w <- ED$density[ , gene.order[1:1000]]
+ED.long <- reshape(ecdf.val.w, v.names = "ECDF", varying = names(ecdf.val.w),
+                   timevar = "gene", times = factor(names(ecdf.val.w)),
+                   idvar = "s", ids = ED$ss, direction = "long")
+density.long <- reshape(density.w, v.names = "density", varying = names(density.w),
+                   timevar = "gene", times = factor(names(density.w)),
+                   idvar = "s", ids = ED$ss, direction = "long")
+ED.long$density <- density.long$density
+ED.long$gene <- factor(ED.long$gene, levels = names(ecdf.val.w), ordered = TRUE)
+rm(list = c("ecdf.val.w", "density.w", "density.long"))
+```
+
+```{r echo=FALSE}
 # the genes selected by Ifat
 gene.ids.ifat <-
     # 8 genes analyzed by Ifat
@@ -91,6 +108,46 @@ gene.ids.ifat <-
 # sel.g <- ok.genes[gene.order][ sort(match(gene.ids.ifat[gene.ids.ifat %in% ok.genes[gene.order]], ok.genes[gene.order])) ]
 ```
 
+```{r ecdf-plot, echo=FALSE, fig.width=7}
+(ep <- with(ED,
+         xyplot(ecdf.val$PEG10 + ecdf.val$ZNF331 + ecdf.val$ZNF286A + ecdf.val$MAPK9 ~ ss,
+                scales = list(y = list(text = letters[1:3])),
+                xlab = "s", ylab = expression(hat(F)[g](s)),
+                main = "Empirical CDF of selected genes g",
+                type = c("g", "s"))))
+```
+
+```{r ecdf-levelplot, echo=FALSE, fig.width=7}
+tp <- standard.theme()
+#tp$regions$col <- rev(tp$regions$col)
+lattice.options(default.theme = tp)
+sc <- list(x = list(at = seq(1, nrow(ED[[2]]), length.out = 6), labels = 5:10 / 10),
+           y = list(draw = FALSE))
+(lp <-
+    levelplot(as.matrix(ED[[2]][rev(gene.order)]),
+              xlab = "s", ylab = "gene rank",
+              main = expression(paste("Genome-wide distribution of", S[g])),
+              aspect = "fill", scales = sc)[rep(1, 1)])
+```
+
+```{r rank-by-ecdf, echo=FALSE, fig.width=7}
+ecdf.at.some.s(ED = ED, sel.g = ok.genes[gene.order], pch = ".", ylab = "gene rank")
+```
+
+```{r ecdf-levelplot-top, echo=FALSE, fig.width=7}
+sc <- list(x = list(at = seq(1, nrow(ED[[2]]), length.out = 6), labels = 5:10 / 10),
+           y = list(draw = TRUE))
+n.top.g <- 50
+(lp <-
+    levelplot(as.matrix(ED[[2]][rev(gene.order[seq_len(n.top.g)])]),
+              xlab = "s", ylab = paste("top", n.top.g, "genes"),
+              aspect = "fill", scales = sc)[rep(1, 1)])
+```
+
+```{r rank-by-ecdf-top, echo=FALSE, fig.width=7}
+ecdf.at.some.s(ED = ED, sel.g = ok.genes[gene.order[seq_len(n.top.g)]], ylab = "gene rank", type = c("g", "p"))
+```
+
 The next plot is meant to serve a consistency check with Ifat's corresponding plot, that is [Fig 1 of the previous manuscript][Fig 1].
 
 ```{r compare-to-ifats-fig, echo=FALSE, fig.width=7}
@@ -101,14 +158,7 @@ ecdf.at.some.s(ED = ED,
                xlim = c(1, 0), type = c("h", "p"))
 ```
 
-```{r ecdf-levelplot, echo=FALSE}
-#set.seed(666)
-#sel.genes <- sort(sample.int(length(ok.genes), size = 100))
-tp <- standard.theme()
-tp$regions$col <- rev(tp$regions$col)
-lattice.options(default.theme = tp)
-sc <- list(x = list(at = seq(1, nrow(ED[[2]]), length.out = 6), labels = 5:10 / 10))
-```
+
 
 [ifat]: http://katahdin.mssm.edu/ifat/web/cm/home
 [Fig 1]: https://docs.google.com/presentation/d/1YvpA1AJ-zzir1Iw0F25tO9x8gkSAzqaO4fjB7K3zBhE/edit#slide=id.p4
