@@ -29,56 +29,91 @@ ecdf.at.some.s <-
             ...)
     }
 
-
 # complex figure on the distribution of S_ig
 
-# separate plot strategy
-# density for selected genes
-plots$density <-
-    densityplot(~ PEG10 + ZNF331, data = Y, plot.points = FALSE, type = c("p", "g"),
-                scales = list(x = list(draw = FALSE), y = list(rot = 90, relation = "free")),
-                xlim = c(0.5, 1),
-                auto.key = list(corner = c(0.1, 0.9), lines = TRUE, points = FALSE),
-                xlab = NULL, ylab = "density")
-
-panel.my.ecdfplot <- function(x, groups, subscripts, ...){
-    xx <- x[groups]
-    yy <- ecdf(xx)(xx)
-    #y1 <- ecdf(x[groups[subscripts]])(0.9)
-    #panel.xyplot(xx, yy, ...)
-    panel.densityplot(xx, ...)
+# reshape Y given selected genes
+reshape.Y <- function(Y, sel.g = c("PEG10", "ZNF331", "AFAP1")){
+    Y.l <- reshape(Y[sel.g], direction = "long", varying = list(sel.g), v.names = "s",
+                   times = sel.g, timevar = "gene")
+    Y.l$gene <- factor(Y.l$gene, levels = sel.g, ordered = TRUE)
+    return(Y.l)
 }
 
-# ECDF for selected genes
-plots$ecdf <-
-    ecdfplot(~ PEG10 + ZNF331, data = Y, type = c("s", "g"),
-             panel = panel.ecdfplot,
+# separate plot strategy
+
+# new density plot
+my.densityplot <- function(Y.long, ...) {
+    panel.my.densityplot <- function(...) {
+        panel.densityplot(...)
+        panel.grid(h = 0, v = -1)
+    }
+
+    densityplot(~ s, data = Y.long, groups = gene, plot.points = FALSE, type = c("p"),
+                panel = panel.my.densityplot,
+                scales = list(x = list(draw = FALSE), y = list(rot = 90, relation = "free")),
+                xlim = c(0.5, 1),
+                par.settings = list(superpose.line = standard.theme(color = FALSE)$superpose.line),
+                auto.key = list(corner = c(0.1, 0.9), lines = TRUE, points = FALSE),
+                xlab = NULL, ylab = "density")
+}
+
+# new ECDF plot
+my.ecdfplot <- function(Y.long, eval.at = c(0.9), ...) {
+    panel.my.ecdfplot <- function(x, groups, subscripts, eval.at = eval.at, ...){
+        panel.superpose(x, groups = groups, subscripts = subscripts,
+                        panel.groups = panel.ecdfplot, type = c("s"), ...)
+        #panel.abline(v = eval.at, lty = 2, col = "blue")
+        panel.grid(h = 0, v = -1)
+        g.lev <- levels(groups)
+        ss <- rep(c(eval.at,
+                    rep(NA, length(x) / length(g.lev) - length(eval.at))),
+                  length(g.lev))
+        yy <- sapply(levels(groups), function(g) ecdf(x[groups == g])(ss))
+        panel.superpose(x = ss, y = yy, groups = groups, subscripts = subscripts,
+                        panel.groups = panel.xyplot, col = "blue", ...)
+    }
+
+    ecdfplot(~ s, data = Y.long, groups = gene, eval.at = c(0.9),
              scales = list(x = list(draw = FALSE), y = list(rot = 90, relation = "free")),
+             panel = panel.my.ecdfplot,
+             par.settings = list(superpose.line = standard.theme(color = FALSE)$superpose.line),
              xlim = c(0.5, 1),
-             ylab = "empirical CDF",
-             xlab = NULL)
+             ylab = "ECDF, F(s)", xlab = NULL)
+
+}
 
 # ECDF genome-wide
-# data manipulation
-ED.long$rank.segment <- factor(rep(1, nrow(ED.long)), levels = c("top", "bottom"), ordered = TRUE)
-ED.long$rank.segment[ with(ED.long, gene %in% levels(gene)[1:100]) ] <- "top"
-ED.long$rank.segment[ with(ED.long, ! gene %in% levels(gene)[1:100]) ] <- "bottom"
-#n.all.g <- length(ok.genes)
-n.all.g <- 1000
-pct.top.g <- 5 # percent 
-n.top.g <- ceiling(n.all.g * pct.top.g / 100)
-plots$level <- levelplot(ECDF ~ s * gene | rank.segment, data = ED.long, legend = NULL, colorkey = FALSE,
-                         scales =
-                             list(y =
-                                  list(rot = 90, relation = "free",
-                                       limits = list(c(n.top.g, 1),
-                                                     c(n.all.g, n.top.g + 1)))),
-                         xlab = "s, imbalance score", ylab = "gene rank",
-                         layout = c(1, 2))
-dimnames(plots$level)$rank.segment <- c(paste("top", pct.top.g, "% of genes"),
-                                        paste("bottom", 100 - pct.top.g, "% of genes"))
+my.levelplot <- function(ED.long, pct.top.g = 2, n.all.g = length(ok.genes), ...) {
 
-if(FALSE) {
+    # data manipulation
+    n.top.g <- ceiling(n.all.g * pct.top.g / 100)
+    ED.long$rank.segment <- factor(rep(1, nrow(ED.long)), levels = c("top", "bottom"), ordered = TRUE)
+    ED.long$rank.segment[ with(ED.long, gene %in% levels(gene)[seq_len(n.top.g)]) ] <- "top"
+    ED.long$rank.segment[ with(ED.long, ! gene %in% levels(gene)[seq_len(n.top.g)]) ] <- "bottom"
+
+    panel.my.levelplot <- function(...) {
+        panel.levelplot(...)
+        panel.grid(h = 0, v = -1)
+    }
+
+    lp <- levelplot(ECDF ~ s * gene | rank.segment, data = ED.long, legend = NULL, colorkey = FALSE,
+                    panel = panel.my.levelplot,
+                    scales =
+                        list(y =
+                             list(rot = 90, relation = "free",
+                                  limits = list(c(n.top.g, 1),
+                                                c(n.all.g, n.top.g + 1)))),
+                    xlab = "imbalance score, s", ylab = "gene rank",
+                    layout = c(1, 2))
+
+    dimnames(lp)$rank.segment <- c(paste("top", pct.top.g, "% of genes"),
+                                   paste("bottom", 100 - pct.top.g, "% of genes"))
+    return(lp)
+}
+
+
+
+plot.all <- function(plots) {
     print(plots$density, position = c(0.0, 0.85, 1.0, 1.0), panel.height = list(0.9, "npc"), more = TRUE)
     print(plots$ecdf, position = c(0.0, 0.7, 1.0, 0.85), panel.height = list(0.9, "npc"), more = TRUE)
     print(plots$level, position = c(0.0, 0.0, 1.0, 0.7), more = FALSE)

@@ -29,9 +29,6 @@ EOF
 ```
 
 
-```
-## Loading required package: RColorBrewer
-```
 
 ### Import read count data
 
@@ -40,10 +37,7 @@ Load data importer functions:
 ```r
 source("../../src/import-data.R")
 source("2016-07-19-genome-wide-S.R")
-```
-
-```
-## Error in nrow(ED[[2]]): object 'ED' not found
+source("2016-07-19-genome-wide-S-complex-fig.R")
 ```
 
 The following expressions import $S_{ig}$ for all 1.5584 &times; 10<sup>4</sup> genes for which the csv file is nonempty.
@@ -73,24 +67,31 @@ min.n.obs <- 10
 ![plot of chunk ecdf-n-obs](figure/ecdf-n-obs-1.png)
 
 
-
-
-
-
-
-
+```r
+# filter genes given the minimum number of allowed observations 'min.n.obs'
+ok.genes <- names(Y)[sapply(Y, function(y) sum(! is.na(y)) >= min.n.obs)]
+# obtain the ECDF of S_ig for all given genes g
+ED <- emp.distr.S(Y[ , ok.genes],
+                  ss = seq(from = 0.5, to = 1, length.out = 101),
+                  with.density = TRUE)
+# order genes according to the value of the ECDF at 0.9
+gene.order <- order(sapply(ED[[1]], function(f) f(0.9)))
+ecdf.val.w <- ED$ecdf.val#[ , gene.order[1:1000]]
+density.w <- ED$density#[ , gene.order[1:1000]]
+ED.long <- reshape(ecdf.val.w, v.names = "ECDF", varying = names(ecdf.val.w),
+                   timevar = "gene", times = factor(names(ecdf.val.w)),
+                   idvar = "s", ids = ED$ss, direction = "long")
+density.long <- reshape(density.w, v.names = "density", varying = names(density.w),
+                   timevar = "gene", times = factor(names(density.w)),
+                   idvar = "s", ids = ED$ss, direction = "long")
+ED.long$density <- density.long$density
+ED.long$gene <- factor(ED.long$gene, levels = names(ecdf.val.w), ordered = TRUE)
+rm(list = c("ecdf.val.w", "density.w", "density.long"))
 ```
-## Warning in complete_names(y, y.scales): Invalid or ambiguous component
-## names: text
-```
 
-![plot of chunk ecdf-plot](figure/ecdf-plot-1.png)
 
-![plot of chunk ecdf-levelplot](figure/ecdf-levelplot-1.png)
 
-![plot of chunk rank-by-ecdf](figure/rank-by-ecdf-1.png)
-
-![plot of chunk ecdf-levelplot-top](figure/ecdf-levelplot-top-1.png)
+![plot of chunk complex-plot](figure/complex-plot-1.png)
 
 ![plot of chunk rank-by-ecdf-top](figure/rank-by-ecdf-top-1.png)
 

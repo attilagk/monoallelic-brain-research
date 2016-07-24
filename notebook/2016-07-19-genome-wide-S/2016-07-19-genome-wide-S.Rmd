@@ -36,11 +36,12 @@ Load data importer functions:
 ```{r}
 source("../../src/import-data.R")
 source("2016-07-19-genome-wide-S.R")
+source("2016-07-19-genome-wide-S-complex-fig.R")
 ```
 
 The following expressions import $S_{ig}$ for all `r 16026 - 442` genes for which the csv file is nonempty.
 
-```{r}
+```{r cache=TRUE}
 gene.summary <-
     read.csv("../../data/readcount/summary-all-genes.csv")
 rownames(gene.summary) <- gene.summary$Symbol
@@ -68,7 +69,7 @@ ecdfplot(sapply(Y, function(y) sum(! is.na(y))), type = c("l", "g"),
          main = paste0("Read count availability (", as.character(ncol(Y)), " genes)"))
 ```
 
-```{r echo=FALSE}
+```{r genomwide-data-shaping, cache=TRUE, warning=FALSE}
 # filter genes given the minimum number of allowed observations 'min.n.obs'
 ok.genes <- names(Y)[sapply(Y, function(y) sum(! is.na(y)) >= min.n.obs)]
 # obtain the ECDF of S_ig for all given genes g
@@ -77,11 +78,8 @@ ED <- emp.distr.S(Y[ , ok.genes],
                   with.density = TRUE)
 # order genes according to the value of the ECDF at 0.9
 gene.order <- order(sapply(ED[[1]], function(f) f(0.9)))
-```
-
-```{r echo=FALSE}
-ecdf.val.w <- ED$ecdf.val[ , gene.order[1:1000]]
-density.w <- ED$density[ , gene.order[1:1000]]
+ecdf.val.w <- ED$ecdf.val#[ , gene.order[1:1000]]
+density.w <- ED$density#[ , gene.order[1:1000]]
 ED.long <- reshape(ecdf.val.w, v.names = "ECDF", varying = names(ecdf.val.w),
                    timevar = "gene", times = factor(names(ecdf.val.w)),
                    idvar = "s", ids = ED$ss, direction = "long")
@@ -108,40 +106,14 @@ gene.ids.ifat <-
 # sel.g <- ok.genes[gene.order][ sort(match(gene.ids.ifat[gene.ids.ifat %in% ok.genes[gene.order]], ok.genes[gene.order])) ]
 ```
 
-```{r ecdf-plot, echo=FALSE, fig.width=7}
-(ep <- with(ED,
-         xyplot(ecdf.val$PEG10 + ecdf.val$ZNF331 + ecdf.val$ZNF286A + ecdf.val$MAPK9 ~ ss,
-                scales = list(y = list(text = letters[1:3])),
-                xlab = "s", ylab = expression(hat(F)[g](s)),
-                main = "Empirical CDF of selected genes g",
-                type = c("g", "s"))))
-```
-
-```{r ecdf-levelplot, echo=FALSE, fig.width=7}
-tp <- standard.theme()
-#tp$regions$col <- rev(tp$regions$col)
-lattice.options(default.theme = tp)
-sc <- list(x = list(at = seq(1, nrow(ED[[2]]), length.out = 6), labels = 5:10 / 10),
-           y = list(draw = FALSE))
-(lp <-
-    levelplot(as.matrix(ED[[2]][rev(gene.order)]),
-              xlab = "s", ylab = "gene rank",
-              main = expression(paste("Genome-wide distribution of", S[g])),
-              aspect = "fill", scales = sc)[rep(1, 1)])
-```
-
-```{r rank-by-ecdf, echo=FALSE, fig.width=7}
-ecdf.at.some.s(ED = ED, sel.g = ok.genes[gene.order], pch = ".", ylab = "gene rank")
-```
-
-```{r ecdf-levelplot-top, echo=FALSE, fig.width=7}
-sc <- list(x = list(at = seq(1, nrow(ED[[2]]), length.out = 6), labels = 5:10 / 10),
-           y = list(draw = TRUE))
-n.top.g <- 50
-(lp <-
-    levelplot(as.matrix(ED[[2]][rev(gene.order[seq_len(n.top.g)])]),
-              xlab = "s", ylab = paste("top", n.top.g, "genes"),
-              aspect = "fill", scales = sc)[rep(1, 1)])
+```{r complex-plot, echo=FALSE, fig.width=7}
+Y.long <- reshape.Y(Y = Y, sel.g = c("PEG10", "ZNF331", "AFAP1"))
+plots <- list()
+plots$density <- my.densityplot(Y.long)
+plots$ecdf <- my.ecdfplot(Y.long, eval.at = c(0.9))
+plots$level <- my.levelplot(ED.long, pct.top.g = 2, n.all.g = length(ok.genes))
+# print to complex layout
+plot.all(plots)
 ```
 
 ```{r rank-by-ecdf-top, echo=FALSE, fig.width=7}
