@@ -40,6 +40,15 @@ source("2016-07-19-genome-wide-S.R")
 source("2016-07-19-genome-wide-S-complex-fig.R")
 ```
 
+```
+## Warning in file(filename, "r", encoding = encoding): cannot open file
+## '2016-07-19-genome-wide-S-complex-fig.R': No such file or directory
+```
+
+```
+## Error in file(filename, "r", encoding = encoding): cannot open the connection
+```
+
 The following expressions import $S_{ig}$ for all 1.5584 &times; 10<sup>4</sup> genes for which the csv file is nonempty.
 
 

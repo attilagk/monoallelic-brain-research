@@ -112,6 +112,7 @@ plots <- list()
 plots$density <- my.densityplot(Y.long)
 plots$ecdf <- my.ecdfplot(Y.long, eval.at = c(0.9))
 plots$level <- my.levelplot(ED.long, pct.top.g = 2, n.all.g = length(ok.genes))
+plots$rank <- rankplot(ED, gene.order, pct.top.g = 2)
 # print to complex layout
 plot.all(plots)
 ```

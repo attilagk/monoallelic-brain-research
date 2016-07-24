@@ -23,8 +23,8 @@ ecdf.at.some.s <-
                 ED$ecdf.val[61, rev(sel.g)] +
                 ED$ecdf.val[41, rev(sel.g)],
             type = type, pch = pch, xlab = xlab, par.settings = par.settings,
-            auto.key = list(text = paste("s =", c(0.7, 0.8, 0.9, 1)), columns = 4),
-            main = "Empirical CDF F at the following s values:",
+            auto.key = list(text = paste("s =", rev(c(0.7, 0.8, 0.9, 1))), columns = 4),
+            main = "ECDF F at the following s values:",
             #scales = list(y = list(draw = FALSE)),
             ...)
     }
@@ -60,6 +60,11 @@ my.densityplot <- function(Y.long, ...) {
 # new ECDF plot
 my.ecdfplot <- function(Y.long, eval.at = c(0.9), ...) {
     panel.my.ecdfplot <- function(x, groups, subscripts, eval.at = eval.at, ...){
+        df <- expand.grid(x = c(0, 0.1), y = 1:10 / 10)
+        df$z <- rep(1:10, each = 2)
+        df$z[seq(2, 20, by = 2)] <- NA
+        with(df, panel.levelplot(x = x, y = y, z = z, subscripts = subscripts, ...))
+        #panel.levelplot(t(matrix(data = c(do.breaks(c(0, 1), 10), rep(NA, 11)), ncol = 2)), subscripts = subscripts, ...)
         panel.superpose(x, groups = groups, subscripts = subscripts,
                         panel.groups = panel.ecdfplot, type = c("s"), ...)
         #panel.abline(v = eval.at, lty = 2, col = "blue")
@@ -78,7 +83,7 @@ my.ecdfplot <- function(Y.long, eval.at = c(0.9), ...) {
              panel = panel.my.ecdfplot,
              par.settings = list(superpose.line = standard.theme(color = FALSE)$superpose.line),
              xlim = c(0.5, 1),
-             ylab = "ECDF, F(s)", xlab = NULL)
+             ylab = "ECDF", xlab = NULL)
 
 }
 
@@ -111,11 +116,32 @@ my.levelplot <- function(ED.long, pct.top.g = 2, n.all.g = length(ok.genes), ...
     return(lp)
 }
 
-
+rankplot <-
+    function(ED, gene.order, pct.top.g = 2, ...) {
+        n.top.g <- ceiling(length(gene.order) * pct.top.g / 100)
+        df <- data.frame(ECDF = sapply(ED$ecdf[gene.order], function(f) f(0.9)))
+        df$rank.segment <-
+            factor(c(rep("top", n.top.g),
+                     rep("bottom", length(gene.order) - n.top.g)),
+                   levels = c("top", "bottom"), ordered = TRUE)
+        lp <-
+            with(df,
+                 xyplot(rev(seq_along(ECDF)) ~ ECDF | rank.segment, layout = c(1, 2),
+                        scales = list(y = list(relation = "free", draw = FALSE)),
+                        col = "blue",
+                        ylab = NULL, xlab = "ECDF at s = 0.9"))
+        dimnames(lp)$rank.segment <- c(paste("top", pct.top.g, "%"),
+                                       paste("bottom", 100 - pct.top.g, "%"))
+        return(lp)
+    }
 
 plot.all <- function(plots) {
-    print(plots$density, position = c(0.0, 0.85, 1.0, 1.0), panel.height = list(0.9, "npc"), more = TRUE)
-    print(plots$ecdf, position = c(0.0, 0.7, 1.0, 0.85), panel.height = list(0.9, "npc"), more = TRUE)
-    print(plots$level, position = c(0.0, 0.0, 1.0, 0.7), more = FALSE)
+    print(plots$density, position = c(0.0, 0.85, 0.8, 1.0), panel.height = list(0.9, "npc"), more = TRUE)
+    print(plots$ecdf, position = c(0.0, 0.7, 0.8, 0.85), panel.height = list(0.9, "npc"), more = TRUE)
+    print(plots$rank, position = c(0.8, 0.0, 1.0, 0.7), more = TRUE)
+    print(plots$level, position = c(0.0, 0.0, 0.8, 0.7), more = FALSE)
 }
+
+
+
 
