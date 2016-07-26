@@ -29,6 +29,9 @@ EOF
 ```
 
 
+```
+## Loading required package: RColorBrewer
+```
 
 ### Import read count data
 
@@ -67,6 +70,8 @@ Y <- get.readcounts(gene.ids, g.subsets = list(), sel.var = "S")
 Y <- data.frame(lapply(Y, getElement, "S"))
 ```
 
+### Filtering genes based on number of observations
+
 For more than half of even the genes $g$ with nonempty files the number $I_g$ of observations (the number of individuals/RNA samples with read count data on $g$) is zero.  In what follows, not only these genes are filtered out but also those with less than 10 observations, indicated by the vertical dashed line on the empirical ECDF plot below.
 
 
@@ -74,6 +79,10 @@ For more than half of even the genes $g$ with nonempty files the number $I_g$ of
 min.n.obs <- 10
 ```
 ![plot of chunk ecdf-n-obs](figure/ecdf-n-obs-1.png)
+
+### Data preparation
+
+Computationally demanding calculations to prepare data for presentation:
 
 
 ```r
@@ -100,11 +109,29 @@ rm(list = c("ecdf.val.w", "density.w", "density.long"))
 
 
 
+### Figure for manuscript
+
+This figure is intended to:
+
+* present a few representative genes characterized by the parental "imbalance score" $S$ statistic (two upper graphs)
+  * e.g. PEG10 and ZNF331 represent monoallelic expression and AFAP1 biallelic expression
+  1. density est.: kernel density estimates, whose interpretation is identical to that of histograms
+  1. ECDF: empirical cumulative distribution function, sometimes called cumulative fraction
+* present a compact genome-wide overview of parental imbalance (lower left graph)
+  * imbalance is expressed in terms of the ECDF of $S$ using a color scheme, introduced in the upper 2nd and 3rd graphs
+  * the thousands of genes are ranked from the most imbalanced (monoallelic, top) to the most balanced (biallelic, bottom)
+  * the ranking is based on the ECDF evaluated at $s = 0.9$, as shown in the upper 2nd graph and the bottom right plots
+* support the conclusion that $\approx 1 \%$ of all genes are appreciably imbalanced (monoallelically expressed)
+
 ![plot of chunk complex-plot](figure/complex-plot-1.png)
+
+### The top ranking genes
+
+The plot below shows the top 50 genes using the same ranking as the one above
 
 ![plot of chunk rank-by-ecdf-top](figure/rank-by-ecdf-top-1.png)
 
-The next plot is meant to serve a consistency check with Ifat's corresponding plot, that is [Fig 1 of the previous manuscript][Fig 1].
+The next plot is meant to serve a consistency check with Ifat's corresponding plot, that is [Fig 1 of the previous manuscript][Fig 1]
 
 ![plot of chunk compare-to-ifats-fig](figure/compare-to-ifats-fig-1.png)
 
