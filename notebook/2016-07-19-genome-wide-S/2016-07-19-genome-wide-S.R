@@ -185,7 +185,60 @@ plot.all <- function(plots) {
 }
 
 
-panel.foo <- function(x, y, groups, my.col, ...) {
-    panel.barchart(x, y, groups = groups, col = my.col, ...)
+# Prepare data Y to ECDF bar plot
+ecdf.bar.prep <- function(Y) {
+    E <- lapply(Y, ecdf)
+    n.tot <- nrow(Y) # sample size including NAs
+    # knots: the sets consisting of 0.5 and the jump points (discontinuities) of the ECDF
+    # the m-length vector of knots must be padded to length n.tot + 1
+    K <- data.frame(lapply(E,
+                           function(f) c(k <- c(0.5, knots(f)), rep(1, n.tot - length(k) + 1))))
+    # the lengths of continuous intervals of the ECDF of S within the interval [0.5, 1]
+    # a vector of length n.tot
+    L <- data.frame(lapply(K, diff))
+    sel.g <- names(Y)
+    # ECDF values at K except for the last value (which must be one); also of length n.tot
+    Fs <- data.frame(lapply(sel.g, function(g) E[[g]](K[[g]][seq_len(n.tot)])))
+    # color coding
+    #col <- data.frame(lapply(Fs, function(x) trellis.par.get("regions")$col[cut(x, 100, labels = FALSE)]))
+    col <- data.frame(lapply(Fs, function(x) trellis.par.get("regions")$col[cut(x, 100, labels = FALSE)]),
+                      stringsAsFactors = FALSE)
+    names(K) <- paste("K", sel.g, sep = ".")
+    names(L) <- paste("L", sel.g, sep = ".")
+    names(Fs) <- paste("Fs", sel.g, sep = ".")
+    names(col) <- paste("col", sel.g, sep = ".")
+    # rank of observation (including NAs)
+    R <- data.frame(R = factor(seq_len(n.tot)))
+    #return(cbind(K[seq_len(n.tot), ], L, Fs, col, R))
+    Z <- reshape(cbind(K[seq_len(n.tot), ], L, Fs, col, R), direction = "long", v.names = c("K", "L", "Fs", "col"),
+                 varying = list(paste0("K.", sel.g), paste0("L.", sel.g), paste0("Fs.", sel.g), paste0("col.", sel.g)),
+                 timevar = "gene", times = sel.g, idvar = "R", ids = R)
+    Z$gene <- factor(Z$gene, levels = sel.g[order(sapply(E, function(f) f(0.9)))], ordered = TRUE)
+    return(Z)
 }
-(ecdf.bar <- barchart(gene ~ ds, data = df.long, groups = obs.rank, stack = TRUE, panel = panel.foo, my.col = df.long$col))
+
+
+panel.foo <- function(x, y, subscripts, groups, my.col, ...) {
+    col.3 <- list(rep("red", 579), rep("green", 579), rep("yellow", 579))
+    #col.3 <- c(rep("red", 579), rep("green", 579), rep("yellow", 579))
+    my.panel.groups <- function(groups, col.3, group.number, ...){
+        panel.barchart(..., col = col.3[[group.number]])
+    }
+    #panel.superpose(x, y, subscripts, groups, panel.groups = my.panel.groups, origin = 0, col.3, ...)
+    panel.barchart(x, y, groups = groups, subscripts = subscripts, col = my.col[subscripts], ...)
+}
+
+panel.ecdf.barchart <- function(x, y, subscripts, my.col, ...) {
+    panel.barchart(x, y, subscripts = subscripts, col = my.col[subscripts], ...)
+    #panel.grid(h = 0, v = -1)
+}
+
+ecdf.bar <- with(ecdf.bar.prep(Y[ok.genes[gene.order[1:100]]]),
+                 barchart(~ L | gene, groups = R, panel = panel.ecdf.barchart, my.col = col,
+                           stack = TRUE, layout = c(1, 100), as.table = TRUE,
+                           strip = FALSE, box.width = 1.5,
+                           par.settings =
+                               list(axis.line = list(col = "transparent"),
+                                    superpose.polygon = list(lty = 0)
+                                    ),
+                           between = list(y = 0)))
