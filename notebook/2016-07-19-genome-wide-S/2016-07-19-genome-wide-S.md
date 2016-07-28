@@ -29,9 +29,6 @@ EOF
 ```
 
 
-```
-## Loading required package: RColorBrewer
-```
 
 ### Import read count data
 
@@ -40,16 +37,6 @@ Load data importer functions:
 ```r
 source("../../src/import-data.R")
 source("2016-07-19-genome-wide-S.R")
-source("2016-07-19-genome-wide-S-complex-fig.R")
-```
-
-```
-## Warning in file(filename, "r", encoding = encoding): cannot open file
-## '2016-07-19-genome-wide-S-complex-fig.R': No such file or directory
-```
-
-```
-## Error in file(filename, "r", encoding = encoding): cannot open the connection
 ```
 
 The following expressions import $S_{ig}$ for all 1.5584 &times; 10<sup>4</sup> genes for which the csv file is nonempty.
@@ -94,8 +81,8 @@ ED <- emp.distr.S(Y[ , ok.genes],
                   with.density = TRUE)
 # order genes according to the value of the ECDF at 0.9
 gene.order <- order(sapply(ED[[1]], function(f) f(0.9)))
-ecdf.val.w <- ED$ecdf.val#[ , gene.order[1:1000]]
-density.w <- ED$density#[ , gene.order[1:1000]]
+ecdf.val.w <- ED$ecdf.val[ , gene.order]
+density.w <- ED$density[ , gene.order]
 ED.long <- reshape(ecdf.val.w, v.names = "ECDF", varying = names(ecdf.val.w),
                    timevar = "gene", times = factor(names(ecdf.val.w)),
                    idvar = "s", ids = ED$ss, direction = "long")
@@ -106,6 +93,8 @@ ED.long$density <- density.long$density
 ED.long$gene <- factor(ED.long$gene, levels = names(ecdf.val.w), ordered = TRUE)
 rm(list = c("ecdf.val.w", "density.w", "density.long"))
 ```
+
+
 
 
 
@@ -124,6 +113,12 @@ This figure is intended to:
 * support the conclusion that $\approx 1 \%$ of all genes are appreciably imbalanced (monoallelically expressed)
 
 ![plot of chunk complex-plot](figure/complex-plot-1.png)
+
+### Fixed ranking bug
+
+An earlier version of the above figure had incorrect ranking.  The figure compares that to the present, correct, ranking:
+
+![plot of chunk fixed-ranking](figure/fixed-ranking-1.png)
 
 ### The top ranking genes
 

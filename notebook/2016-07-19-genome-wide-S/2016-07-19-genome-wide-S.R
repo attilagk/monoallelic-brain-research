@@ -53,15 +53,15 @@ my.densityplot <- function(Y.long, ...) {
         panel.densityplot(...)
         panel.grid(h = 0, v = -1)
     }
-
     densityplot(~ s, data = Y.long, groups = gene, plot.points = FALSE, type = c("p"),
                 panel = panel.my.densityplot,
                 scales = list(x = list(draw = FALSE), y = list(rot = 90, relation = "free")),
                 xlim = c(0.5, 1),
-                par.settings = list(superpose.line = standard.theme(color = FALSE)$superpose.line),
+                #par.settings = list(superpose.line = superpose.line),
                 auto.key = list(text = paste0(letters[seq_along(sel.g)], ": ", sel.g),
                                 corner = c(0.1, 0.9), lines = TRUE, points = FALSE),
-                xlab = NULL, ylab = "density est.")
+                xlab = NULL, ylab = "density est.",
+                ...)
 }
 
 # new ECDF plot
@@ -96,9 +96,8 @@ my.ecdfplot <- function(Y.long, eval.at = c(0.9), ...) {
              df = df,
              scales = list(x = list(draw = FALSE), y = list(rot = 90, relation = "free")),
              panel = panel.my.ecdfplot,
-             par.settings = list(superpose.line = standard.theme(color = FALSE)$superpose.line),
              xlim = c(0.5, 1),
-             ylab = "ECDF", xlab = NULL)
+             ylab = "ECDF", xlab = NULL, ...)
 
 }
 
@@ -107,17 +106,16 @@ panel.my.levelplot <- function(...) {
     panel.grid(h = 0, v = -1)
 }
 
-my.levelplot.sel.g <- function(ED.long, sel.g = c("PEG10", "ZNF331", "AFAP1"), ...) {
+my.levelplot.sel.g <- function(ED.long, sel.g = c("PEG10", "ZNF331", "AFAP1"), letter.labels = FALSE, ...) {
     ED.long$gene <- with(ED.long, factor(gene, levels = rev(levels(gene)), ordered = TRUE))
+    y.rot <- ifelse(letter.labels, 90, 0)
+    y.labels <- ifelse(rep(letter.labels, length(sel.g)), letters[rev(seq_along(sel.g))], rev(sel.g))
     levelplot(ECDF ~ s * gene, data = ED.long[seq_len(nrow(ED.long)), ], legend = NULL, colorkey = FALSE,
                     panel = panel.my.levelplot, subset = gene %in% rev(sel.g),
                     xlab = NULL,
                     scales =
-                        list(y =
-                             list(rot = 90, relation = "free",
-                                  labels = letters[rev(seq_along(sel.g))]
-                                                ),
-                             x = list(draw = FALSE)),
+                        list(x = list(draw = FALSE),
+                             y = list(rot = y.rot, labels = y.labels, relation = "free")),
                     ...)
 }
 
@@ -128,17 +126,18 @@ my.levelplot <- function(ED.long, pct.top.g = 2, n.all.g = length(ok.genes), ...
     ED.long$rank.segment <- factor(rep(1, nrow(ED.long)), levels = c("top", "bottom"), ordered = TRUE)
     ED.long$rank.segment[ with(ED.long, gene %in% levels(gene)[seq_len(n.top.g)]) ] <- "top"
     ED.long$rank.segment[ with(ED.long, ! gene %in% levels(gene)[seq_len(n.top.g)]) ] <- "bottom"
-
+    # create trellis object
     lp <- levelplot(ECDF ~ s * gene | rank.segment, data = ED.long, legend = NULL, colorkey = FALSE,
                     panel = panel.my.levelplot,
                     scales =
                         list(y =
-                             list(rot = 91, relation = "free",
+                             list(rot = 90, relation = "free",
                                   limits = list(c(n.top.g, 1),
                                                 c(n.all.g, n.top.g + 1)))),
                     xlab = "imbalance score, s", ylab = "gene rank",
-                    layout = c(1, 2))
-
+                    layout = c(1, 2),
+                    ...)
+    # edit dimnames
     dimnames(lp)$rank.segment <- c(paste("top", pct.top.g, "% of genes"),
                                    paste("bottom", 100 - pct.top.g, "% of genes"))
     return(lp)
@@ -209,7 +208,6 @@ ecdf.bar.prep <- function(Y) {
     names(col) <- paste("col", sel.g, sep = ".")
     # rank of observation (including NAs)
     R <- data.frame(R = factor(seq_len(n.tot)))
-    #return(cbind(K[seq_len(n.tot), ], L, Fs, col, R))
     Z <- reshape(cbind(K[seq_len(n.tot), ], L, Fs, col, R), direction = "long", v.names = c("K", "L", "Fs", "col"),
                  varying = list(paste0("K.", sel.g), paste0("L.", sel.g), paste0("Fs.", sel.g), paste0("col.", sel.g)),
                  timevar = "gene", times = sel.g, idvar = "R", ids = R)
@@ -217,28 +215,19 @@ ecdf.bar.prep <- function(Y) {
     return(Z)
 }
 
-
-panel.foo <- function(x, y, subscripts, groups, my.col, ...) {
-    col.3 <- list(rep("red", 579), rep("green", 579), rep("yellow", 579))
-    #col.3 <- c(rep("red", 579), rep("green", 579), rep("yellow", 579))
-    my.panel.groups <- function(groups, col.3, group.number, ...){
-        panel.barchart(..., col = col.3[[group.number]])
+ecdf.barchart <- function(Y.long = ecdf.bar.prep(Y[ok.genes[gene.order[1:100]]]), ...) {
+    panel.ecdf.barchart <- function(x, y, subscripts, my.col, ...) {
+        panel.barchart(x, y, subscripts = subscripts, col = my.col[subscripts], ...)
+        panel.grid(h = 0, v = -1)
     }
-    #panel.superpose(x, y, subscripts, groups, panel.groups = my.panel.groups, origin = 0, col.3, ...)
-    panel.barchart(x, y, groups = groups, subscripts = subscripts, col = my.col[subscripts], ...)
-}
 
-panel.ecdf.barchart <- function(x, y, subscripts, my.col, ...) {
-    panel.barchart(x, y, subscripts = subscripts, col = my.col[subscripts], ...)
-    #panel.grid(h = 0, v = -1)
+    with(Y.long,
+         barchart(~ L | gene, groups = R, panel = panel.ecdf.barchart, my.col = col,
+                  stack = TRUE, layout = c(1, length(levels(gene))), as.table = TRUE, box.width = 1.5,
+                  strip = FALSE,
+                  par.settings =
+                      list(axis.line = list(col = "transparent"),
+                           superpose.polygon = list(lty = 0)
+                           ),
+                  between = list(y = 0)), ...)
 }
-
-ecdf.bar <- with(ecdf.bar.prep(Y[ok.genes[gene.order[1:100]]]),
-                 barchart(~ L | gene, groups = R, panel = panel.ecdf.barchart, my.col = col,
-                           stack = TRUE, layout = c(1, 100), as.table = TRUE,
-                           strip = FALSE, box.width = 1.5,
-                           par.settings =
-                               list(axis.line = list(col = "transparent"),
-                                    superpose.polygon = list(lty = 0)
-                                    ),
-                           between = list(y = 0)))

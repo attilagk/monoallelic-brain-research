@@ -28,6 +28,7 @@ opts_chunk$set(fig.width = 10)
 opts_chunk$set(dev=c("png", "pdf"))
 lattice.options(default.args = list(as.table = TRUE))
 lattice.options(default.theme = "standard.theme")
+lattice.options(skip.boundary.labels = 0)
 ```
 
 ### Import read count data
@@ -36,7 +37,6 @@ Load data importer functions:
 ```{r}
 source("../../src/import-data.R")
 source("2016-07-19-genome-wide-S.R")
-source("2016-07-19-genome-wide-S-complex-fig.R")
 ```
 
 The following expressions import $S_{ig}$ for all `r 16026 - 442` genes for which the csv file is nonempty.
@@ -84,8 +84,8 @@ ED <- emp.distr.S(Y[ , ok.genes],
                   with.density = TRUE)
 # order genes according to the value of the ECDF at 0.9
 gene.order <- order(sapply(ED[[1]], function(f) f(0.9)))
-ecdf.val.w <- ED$ecdf.val#[ , gene.order[1:1000]]
-density.w <- ED$density#[ , gene.order[1:1000]]
+ecdf.val.w <- ED$ecdf.val[ , gene.order]
+density.w <- ED$density[ , gene.order]
 ED.long <- reshape(ecdf.val.w, v.names = "ECDF", varying = names(ecdf.val.w),
                    timevar = "gene", times = factor(names(ecdf.val.w)),
                    idvar = "s", ids = ED$ss, direction = "long")
@@ -95,6 +95,16 @@ density.long <- reshape(density.w, v.names = "density", varying = names(density.
 ED.long$density <- density.long$density
 ED.long$gene <- factor(ED.long$gene, levels = names(ecdf.val.w), ordered = TRUE)
 rm(list = c("ecdf.val.w", "density.w", "density.long"))
+```
+
+```{r genomwide-data-shaping-incorrect, cache=TRUE, warning=FALSE, echo=FALSE}
+ED.long.old <- reshape(ED$ecdf.val, v.names = "ECDF", varying = names(ED$ecdf.val),
+                   timevar = "gene", times = factor(names(ED$ecdf.val)),
+                   idvar = "s", ids = ED$ss, direction = "long")
+ED.long.old$density <- reshape(ED$density, v.names = "density", varying = names(ED$density),
+                   timevar = "gene", times = factor(names(ED$density)),
+                   idvar = "s", ids = ED$ss, direction = "long")$density
+ED.long.old$gene <- factor(ED.long.old$gene, levels = names(ED$ecdf.val), ordered = TRUE)
 ```
 
 ```{r echo=FALSE}
@@ -130,13 +140,24 @@ This figure is intended to:
 sel.g <- c("PEG10", "ZNF331", "AFAP1")
 Y.long <- reshape.Y(Y = Y, sel.g = sel.g)
 plots <- list()
-plots$density <- my.densityplot(Y.long)
-plots$ecdf <- my.ecdfplot(Y.long, eval.at = c(0.9))
+superpose.line <- standard.theme(color = FALSE)$superpose.line
+superpose.line$lty <- c(2, 1, 3:7)
+plots$density <- my.densityplot(Y.long, par.settings = list(superpose.line = superpose.line))
+plots$ecdf <- my.ecdfplot(Y.long, eval.at = c(0.9), par.settings = list(superpose.line = superpose.line))
 plots$level <- my.levelplot(ED.long, pct.top.g = 2, n.all.g = length(ok.genes))
-plots$level.sel.g <- my.levelplot.sel.g(ED.long, sel.g = sel.g)
+plots$level.sel.g <- my.levelplot.sel.g(ED.long, sel.g = sel.g, letter.labels = TRUE)
 plots$rank <- rankplot(ED, gene.order, pct.top.g = 2, sel.g = sel.g)
 # print to complex layout
 plot.all(plots)
+```
+
+### Fixed ranking bug
+
+An earlier version of the above figure had incorrect ranking.  The figure compares that to the present, correct, ranking:
+
+```{r fixed-ranking, echo=FALSE, fig.width=7}
+plot(my.levelplot(ED.long, main = "Correct ranking"), split = c(1, 1, 2, 1), more = TRUE)
+plot(my.levelplot(ED.long.old, main = "Incorrect ranking"), split = c(2, 1, 2, 1), more = FALSE)
 ```
 
 ### The top ranking genes
