@@ -98,6 +98,29 @@ rm(list = c("ecdf.val.w", "density.w", "density.long"))
 
 
 
+
+```r
+N <- data.frame(lapply(get.readcounts(gene.ids, g.subsets = list(), sel.var = c("S", "N")),
+                       getElement, "N"))
+```
+
+
+```r
+sorted.genes <- ok.genes[gene.order]
+names(sorted.genes) <- sorted.genes
+cum.freq <- data.frame(lapply(ED$ecdf[sorted.genes], function(f) f(10:6 / 10)))
+row.names(cum.freq) <- as.character(10:6 / 10)
+andys.test <-
+    data.frame(lapply(sorted.genes,
+                      function(g)
+                          sum(Y[[g]] <= 0.6 & CI.p(Y[[g]], N[[g]])$upper < 0.7, na.rm = TRUE) / sum(! is.na(Y[[g]]))))
+row.names(andys.test) <- "andys.test"
+cum.freq <- rbind(cum.freq, andys.test)
+rm(andys.test)
+freq <- data.frame(lapply(cum.freq, function(y) - diff(c(y, 0))))
+row.names(freq) <- row.names(cum.freq)
+```
+
 ### Figure for manuscript
 
 This figure is intended to:
