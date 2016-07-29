@@ -53,8 +53,10 @@ gene.ids <- with(gene.summary, as.character(Symbol)[ file.size > 0 ])
 
 
 ```r
-Y <- get.readcounts(gene.ids, g.subsets = list(), sel.var = "S")
-Y <- data.frame(lapply(Y, getElement, "S"))
+Y <- get.readcounts(gene.ids, g.subsets = list(), sel.var = c("S", "N"))
+S <- data.frame(lapply(Y, getElement, "S"), check.names = FALSE)
+N <- data.frame(lapply(Y, getElement, "N"), check.names = FALSE)
+rm(Y)
 ```
 
 ### Filtering genes based on number of observations
@@ -74,9 +76,9 @@ Computationally demanding calculations to prepare data for presentation:
 
 ```r
 # filter genes given the minimum number of allowed observations 'min.n.obs'
-ok.genes <- names(Y)[sapply(Y, function(y) sum(! is.na(y)) >= min.n.obs)]
+ok.genes <- names(S)[sapply(S, function(y) sum(! is.na(y)) >= min.n.obs)]
 # obtain the ECDF of S_ig for all given genes g
-ED <- emp.distr.S(Y[ , ok.genes],
+ED <- emp.distr.S(S[ , ok.genes],
                   ss = seq(from = 0.5, to = 1, length.out = 101),
                   with.density = TRUE)
 # order genes according to the value of the ECDF at 0.9
@@ -100,25 +102,20 @@ rm(list = c("ecdf.val.w", "density.w", "density.long"))
 
 
 ```r
-N <- data.frame(lapply(get.readcounts(gene.ids, g.subsets = list(), sel.var = c("S", "N")),
-                       getElement, "N"))
-```
-
-
-```r
 sorted.genes <- ok.genes[gene.order]
 names(sorted.genes) <- sorted.genes
-cum.freq <- data.frame(lapply(ED$ecdf[sorted.genes], function(f) f(10:6 / 10)))
-row.names(cum.freq) <- as.character(10:6 / 10)
+cum.fraction <- data.frame(lapply(ED$ecdf[sorted.genes], function(f) f(10:6 / 10)), check.names = FALSE)
+row.names(cum.fraction) <- as.character(10:6 / 10)
 andys.test <-
     data.frame(lapply(sorted.genes,
                       function(g)
-                          sum(Y[[g]] <= 0.6 & CI.p(Y[[g]], N[[g]])$upper < 0.7, na.rm = TRUE) / sum(! is.na(Y[[g]]))))
+                          sum(S[[g]] <= 0.6 & CI.p(S[[g]], N[[g]])$upper < 0.7, na.rm = TRUE) / sum(! is.na(S[[g]]))),
+               check.names = FALSE)
 row.names(andys.test) <- "andys.test"
-cum.freq <- rbind(cum.freq, andys.test)
+cum.fraction <- rbind(cum.fraction, andys.test)
 rm(andys.test)
-freq <- data.frame(lapply(cum.freq, function(y) - diff(c(y, 0))))
-row.names(freq) <- row.names(cum.freq)
+fraction <- data.frame(lapply(cum.fraction, function(y) - diff(c(y, 0))), check.names = FALSE)
+row.names(fraction) <- row.names(cum.fraction)
 ```
 
 ### Figure for manuscript
@@ -143,9 +140,11 @@ An earlier version of the above figure had incorrect ranking.  The figure compar
 
 ![plot of chunk fixed-ranking](figure/fixed-ranking-1.png)
 
-### The top ranking genes
+### All genes on one scale
 
-The plot below shows the top 50 genes using the same ranking as the one above
+![plot of chunk all-genes-on-one-scale](figure/all-genes-on-one-scale-1.png)
+
+### Another view on ranked genes
 
 ![plot of chunk rank-by-ecdf-top](figure/rank-by-ecdf-top-1.png)
 

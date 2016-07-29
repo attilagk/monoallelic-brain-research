@@ -1,3 +1,11 @@
+# Empirical distribution of S
+#
+# Arguments
+# Y: a data frame
+#
+# Value
+#
+# Details
 emp.distr.S <-
     function(Y,
              ss = seq(0.5, 1, length.out = 101),
@@ -15,6 +23,12 @@ emp.distr.S <-
         return(E)
 }
 
+#
+# Arguments
+#
+# Value
+#
+# Details
 ecdf.at.some.s <-
     function(ED, sel.g, type = "p", pch = 21, xlab = "F(s)", par.settings = list(dot.line = list(lty = 0)), ...){
         panel.my.dotplot <- function(..., sel.g) {
@@ -85,7 +99,8 @@ my.ecdfplot <- function(Y.long, eval.at = c(0.9), ...) {
         #                panel.groups = panel.xyplot, col = "blue", pch = 21, ...)
         lapply(levels(groups),
                function(g) panel.xyplot(x = eval.at, y = ecdf(x[groups == g])(eval.at),
-                                        col = "blue", ...))
+                                        #col = "blue", pch = 21, fill = "lightblue",
+                                        ...))
         lapply(seq_along(levels(groups)),
                function(i)
                    panel.xyplot(x = eval.at - 0.02, y = ecdf(x[groups == levels(groups)[i]])(eval.at),
@@ -110,7 +125,7 @@ my.levelplot.sel.g <- function(ED.long, sel.g = c("PEG10", "ZNF331", "AFAP1"), l
     ED.long$gene <- with(ED.long, factor(gene, levels = rev(levels(gene)), ordered = TRUE))
     y.rot <- ifelse(letter.labels, 90, 0)
     y.labels <- ifelse(rep(letter.labels, length(sel.g)), letters[rev(seq_along(sel.g))], rev(sel.g))
-    levelplot(ECDF ~ s * gene, data = ED.long[seq_len(nrow(ED.long)), ], legend = NULL, colorkey = FALSE,
+    levelplot(ECDF ~ s * gene, data = ED.long, legend = NULL, colorkey = FALSE,
                     panel = panel.my.levelplot, subset = gene %in% rev(sel.g),
                     xlab = NULL,
                     scales =
@@ -144,32 +159,37 @@ my.levelplot <- function(ED.long, pct.top.g = 2, n.all.g = length(ok.genes), ...
 }
 
 rankplot <-
-    function(ED, gene.order, pct.top.g = 2, sel.g, ...) {
-        n.top.g <- ceiling(length(gene.order) * pct.top.g / 100)
-        df <- data.frame(ECDF = sapply(ED$ecdf[gene.order], function(f) f(0.9)))
-        ordered.genes <- names(ED$ecdf)[gene.order]
-        df$gene <- factor(ordered.genes, levels = c(rev(ordered.genes)), ordered = TRUE)
+    function(cum.freq, sorted.genes = names(cum.freq),
+             plot.andys.test = FALSE, pct.top.g = 2, sel.g = c("PEG10", "ZNF331", "AFAP1"), ...) {
+        n.top.g <- ceiling(length(sorted.genes) * pct.top.g / 100)
+        df <- data.frame(ECDF = unlist(cum.freq["0.9", ]))
+        df$andys.test = unlist(cum.freq["andys.test", ])
+        df$gene <- factor(sorted.genes, levels = c(rev(sorted.genes)), ordered = TRUE)
         df$pch <- rep("", nrow(df))
         df$pch[with(df, gene %in% sel.g)] <- letters[seq_along(sel.g)]
         df$rank.segment <-
             factor(c(rep("top", n.top.g),
-                     rep("bottom", length(gene.order) - n.top.g)),
+                     rep("bottom", length(sorted.genes) - n.top.g)),
                    levels = c("top", "bottom"), ordered = TRUE)
-
+        df$ECDF.sel.g <- df$ECDF
+        df$ECDF.sel.g[! with(df, gene %in% sel.g)] <- NA
+        
         panel.rankplot <- function(x, y, groups, subscripts, ...) {
             panel.superpose(x, y, groups = groups, subscripts = subscripts, col = "blue", ...)
             dx <- ifelse(x < 0.5, 0.1, - 0.1)
             panel.xyplot(x + dx, y, pch = as.character(groups[subscripts]), col = "black", cex = 1.5, ...)
         }
 
+        if(plot.andys.test)
+            fm <- formula(rev(seq_along(ECDF)) ~ andys.test + ECDF + ECDF.sel.g | rank.segment)
+        else
+            fm <- formula(rev(seq_along(ECDF)) ~ ECDF + ECDF.sel.g | rank.segment)
         lp <-
-            with(df,
-                 xyplot(rev(seq_along(ECDF)) ~ ECDF | rank.segment, groups = pch, layout = c(1, 2),
-                        panel = panel.rankplot,
-                        xlim = c(0, 1),
-                        scales = list(y = list(relation = "free", draw = FALSE)),
-                        #col = "blue",
-                        ylab = NULL, xlab = "ECDF at s = 0.9"))
+            xyplot(fm, layout = c(1, 2),
+                   #panel = panel.rankplot,
+                   data = df, xlim = c(0, 1), scales = list(y = list(relation = "free", draw = FALSE)),
+                   ylab = NULL, xlab = "ECDF at s = 0.9",
+                   ...)
         dimnames(lp)$rank.segment <- c(paste("top", pct.top.g, "%"),
                                        paste("bottom", 100 - pct.top.g, "%"))
         return(lp)
@@ -240,9 +260,18 @@ CI.p <- function(p.hat, n, conf.lev = 0.95) {
     lapply(zz, function(z) p.hat + z * std)
 }
 
-palette.ifat <- function(col = "blue", detailed = FALSE) {
-    if(detailed)
-        colorRampPalette(c(col, "gray", "black"))(6)
-    else
-        c(colorRampPalette(c(col, "gray"))(3), "gray", "gray", "black")
+palette.ifat <- function(cols = c("blue", "darkgreen", "red"), detailed = FALSE) {
+    foo <- function(col, detailed) {
+        if(detailed)
+            colorRampPalette(c(col, "gray", "black"))(6)
+        else
+            c(colorRampPalette(c(col, "gray"))(3), "gray", "gray", "black")
+    }
+    c(sapply(cols, foo, detailed = detailed))
 }
+
+pad.fraction.imprint <- function(gene = "PWAR6", imp.stat = genes.fig1, fr = fraction) {
+    padding <- as.integer(imp.stat[gene, "imprinting.status"]) - 1
+    c(rep(rep(0, 6), padding), fr[[gene]], rep(rep(0, 6), 2 - padding))
+}
+

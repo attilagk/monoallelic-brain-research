@@ -51,8 +51,10 @@ gene.ids <- with(gene.summary, as.character(Symbol)[ file.size > 0 ])
 ```
 
 ```{r genomwide-data-import, cache=TRUE, warning=FALSE}
-Y <- get.readcounts(gene.ids, g.subsets = list(), sel.var = "S")
-Y <- data.frame(lapply(Y, getElement, "S"))
+Y <- get.readcounts(gene.ids, g.subsets = list(), sel.var = c("S", "N"))
+S <- data.frame(lapply(Y, getElement, "S"), check.names = FALSE)
+N <- data.frame(lapply(Y, getElement, "N"), check.names = FALSE)
+rm(Y)
 ```
 
 ### Filtering genes based on number of observations
@@ -63,12 +65,12 @@ For more than half of even the genes $g$ with nonempty files the number $I_g$ of
 min.n.obs <- 10
 ```
 ```{r ecdf-n-obs, echo=FALSE, fig.width=7, fig.asp=2/3}
-ecdfplot(sapply(Y, function(y) sum(! is.na(y))), type = c("l", "g"),
+ecdfplot(sapply(S, function(y) sum(! is.na(y))), type = c("l", "g"),
          panel = function(...) {
              panel.ecdfplot(...)
              panel.abline(v = min.n.obs, lty = 2)
          }, xlab = "number of observations on gene",
-         main = paste0("Read count availability (", as.character(ncol(Y)), " genes)"))
+         main = paste0("Read count availability (", as.character(ncol(S)), " genes)"))
 ```
 
 ### Data preparation
@@ -77,9 +79,9 @@ Computationally demanding calculations to prepare data for presentation:
 
 ```{r genomwide-data-shaping, cache=TRUE, warning=FALSE}
 # filter genes given the minimum number of allowed observations 'min.n.obs'
-ok.genes <- names(Y)[sapply(Y, function(y) sum(! is.na(y)) >= min.n.obs)]
+ok.genes <- names(S)[sapply(S, function(y) sum(! is.na(y)) >= min.n.obs)]
 # obtain the ECDF of S_ig for all given genes g
-ED <- emp.distr.S(Y[ , ok.genes],
+ED <- emp.distr.S(S[ , ok.genes],
                   ss = seq(from = 0.5, to = 1, length.out = 101),
                   with.density = TRUE)
 # order genes according to the value of the ECDF at 0.9
@@ -122,25 +124,21 @@ gene.ids.ifat <-
 # sel.g <- ok.genes[gene.order][ sort(match(gene.ids.ifat[gene.ids.ifat %in% ok.genes[gene.order]], ok.genes[gene.order])) ]
 ```
 
-```{r tot-readcount-import, cache=TRUE, warning=FALSE}
-N <- data.frame(lapply(get.readcounts(gene.ids, g.subsets = list(), sel.var = c("S", "N")),
-                       getElement, "N"))
-```
-
 ```{r frequencies-for-classes, cache=TRUE, warning=FALSE}
 sorted.genes <- ok.genes[gene.order]
 names(sorted.genes) <- sorted.genes
-cum.freq <- data.frame(lapply(ED$ecdf[sorted.genes], function(f) f(10:6 / 10)))
-row.names(cum.freq) <- as.character(10:6 / 10)
+cum.fraction <- data.frame(lapply(ED$ecdf[sorted.genes], function(f) f(10:6 / 10)), check.names = FALSE)
+row.names(cum.fraction) <- as.character(10:6 / 10)
 andys.test <-
     data.frame(lapply(sorted.genes,
                       function(g)
-                          sum(Y[[g]] <= 0.6 & CI.p(Y[[g]], N[[g]])$upper < 0.7, na.rm = TRUE) / sum(! is.na(Y[[g]]))))
+                          sum(S[[g]] <= 0.6 & CI.p(S[[g]], N[[g]])$upper < 0.7, na.rm = TRUE) / sum(! is.na(S[[g]]))),
+               check.names = FALSE)
 row.names(andys.test) <- "andys.test"
-cum.freq <- rbind(cum.freq, andys.test)
+cum.fraction <- rbind(cum.fraction, andys.test)
 rm(andys.test)
-freq <- data.frame(lapply(cum.freq, function(y) - diff(c(y, 0))))
-row.names(freq) <- row.names(cum.freq)
+fraction <- data.frame(lapply(cum.fraction, function(y) - diff(c(y, 0))), check.names = FALSE)
+row.names(fraction) <- row.names(cum.fraction)
 ```
 
 ### Figure for manuscript
@@ -157,17 +155,22 @@ This figure is intended to:
   * the ranking is based on the ECDF evaluated at $s = 0.9$, as shown in the upper 2nd graph and the bottom right plots
 * support the conclusion that $\approx 1 \%$ of all genes are appreciably imbalanced (monoallelically expressed)
 
-```{r complex-plot, echo=FALSE, fig.width=7}
+```{r complex-plot, echo=FALSE, fig.width=7, fig.aspect=1.5}
 sel.g <- c("PEG10", "ZNF331", "AFAP1")
-Y.long <- reshape.Y(Y = Y, sel.g = sel.g)
+S.long <- reshape.Y(Y = S, sel.g = sel.g)
 plots <- list()
 superpose.line <- standard.theme(color = FALSE)$superpose.line
 superpose.line$lty <- c(2, 1, 3:7)
-plots$density <- my.densityplot(Y.long, par.settings = list(superpose.line = superpose.line))
-plots$ecdf <- my.ecdfplot(Y.long, eval.at = c(0.9), par.settings = list(superpose.line = superpose.line))
+plots$density <- my.densityplot(S.long, par.settings = list(superpose.line = superpose.line))
+plots$ecdf <- my.ecdfplot(S.long, eval.at = c(0.9), par.settings =
+                          list(superpose.line = superpose.line,
+                               plot.symbol = list(pch = 21, col = "black", cex = 1, fill = "lightgray")))
 plots$level <- my.levelplot(ED.long, pct.top.g = 2, n.all.g = length(ok.genes))
 plots$level.sel.g <- my.levelplot.sel.g(ED.long, sel.g = sel.g, letter.labels = TRUE)
-plots$rank <- rankplot(ED, gene.order, pct.top.g = 2, sel.g = sel.g)
+plots$rank <- rankplot(cum.fraction, plot.andys.test = FALSE, pct.top.g = 2, sel.g = sel.g,
+                       par.settings = list(superpose.symbol =
+                                           list(pch = c(20, 21, 21)[-1], col = c("gray", "black", "black")[-1],
+                                                alpha = c(0.5, 0.5, 1)[-1], cex = c(0.1, 0.5, 1)[-1], fill = "lightgray")))
 # print to complex layout
 plot.all(plots)
 ```
@@ -181,24 +184,39 @@ plot(my.levelplot(ED.long, main = "Correct ranking"), split = c(1, 1, 2, 1), mor
 plot(my.levelplot(ED.long.old, main = "Incorrect ranking"), split = c(2, 1, 2, 1), more = FALSE)
 ```
 
-### The top ranking genes
+### All genes on one scale
 
-The plot below shows the top 50 genes using the same ranking as the one above
+```{r all-genes-on-one-scale, echo=FALSE, fig.width=7, fig.aspect=0.5}
+levelplot(ECDF ~ s * gene,  data = ED.long, legend = NULL, colorkey = FALSE, scales = list(draw = FALSE), ylim = c(length(ok.genes), 1), par.settings = list(axis.line = list(lty = 0)))
+```
 
-```{r rank-by-ecdf-top, echo=FALSE, fig.width=7}
+### Another view on ranked genes
+
+```{r rank-by-ecdf-top, echo=FALSE, fig.width=7, fig.aspect=2}
 #ecdf.at.some.s(ED = ED, sel.g = ok.genes[gene.order[seq_len(50)]], ylab = "gene rank")
-plot(barchart(t(as.matrix(freq[rev(sorted.genes[1:50])])), par.settings = list(superpose.polygon = list(col = palette.ifat(detailed = FALSE))), main = "Top 50 genes"), split = c(1, 1, 2, 1), more = TRUE)
-plot(barchart(t(as.matrix(freq[rev(sorted.genes)])), par.settings = list(superpose.polygon = list(col = palette.ifat(detailed = FALSE))), scales = list(y = list(at = y.lab <- seq(0, length(sorted.genes), by = 1000), label = as.character(rev(y.lab)))), main = "All genes"), split = c(2, 1, 2, 1), more = FALSE)
+trellis.par.set(superpose.polygon = list(lty = 0))
+xlab <- "fraction of indiv."
+plot(barchart(t(as.matrix(fraction[rev(sorted.genes[1:100])])), par.settings = list(superpose.polygon = list(col = palette.ifat(detailed = FALSE))), main = "Top 100 genes", xlab = xlab), split = c(1, 1, 2, 1), more = TRUE)
+plot(barchart(t(as.matrix(fraction[rev(sorted.genes)])), par.settings = list(superpose.polygon = list(col = palette.ifat(detailed = FALSE))), scales = list(y = list(at = y.lab <- seq(0, length(sorted.genes), by = 1000), label = as.character(rev(y.lab)))), main = "All genes", xlab = xlab), split = c(2, 1, 2, 1), more = FALSE, box.width = 1)
 ```
 
 The next plot is meant to serve a consistency check with Ifat's corresponding plot, that is [Fig 1 of the previous manuscript][Fig 1]
 
 ```{r compare-to-ifats-fig, echo=FALSE, fig.width=7}
-sel.g.ifat <- sorted.genes[ sort(match(gene.ids.ifat[gene.ids.ifat %in% sorted.genes], sorted.genes)) ]
-trellis.par.set(superpose.polygon = list(lty = 0))
-plot(barchart(t(as.matrix(freq[rev(sel.g.ifat)])), par.settings = list(superpose.polygon = list(col = palette.ifat(detailed = FALSE))), main = "Ifat's style"), split = c(1, 1, 2, 1), more = TRUE)
-plot(barchart(t(as.matrix(freq[rev(sel.g.ifat)])), par.settings = list(superpose.polygon = list(col = palette.ifat(detailed = TRUE))), main = "Detailed"), split = c(2, 1, 2, 1), more = FALSE)
-#ecdf.at.some.s(ED = ED, sel.g = sel.g.ifat, xlim = c(1, 0), type = c("h", "p"))
+#sel.g.ifat <- sorted.genes[ sort(match(gene.ids.ifat[gene.ids.ifat %in% sorted.genes], sorted.genes)) ]
+genes.fig1 <- read.csv("ifat-fig1-genelist.csv", row.names = "gene")
+genes.fig1$imprinting.status <- as.factor(genes.fig1$imprinting.status)
+levels(genes.fig1$imprinting.status) <- c("known", "candidate, <1MB", "candidate")
+genes.fig1 <- genes.fig1[row.names(genes.fig1) %in% sorted.genes, , drop = FALSE]
+
+fraction.1 <-
+    data.frame(lapply(rev(row.names(genes.fig1)),
+                      pad.fraction.imprint, imp.stat = genes.fig1, fr = fraction[rev(row.names(genes.fig1))]),
+               check.names = FALSE)
+names(fraction.1) <- rev(row.names(genes.fig1))
+
+plot(barchart( t(as.matrix(fraction.1)), par.settings = list(superpose.polygon = list(col = palette.ifat(detailed = FALSE))), main = "Ifat's style", xlab = xlab), split = c(1, 1, 2, 1), more = TRUE)
+plot(barchart( t(as.matrix(fraction.1)), par.settings = list(superpose.polygon = list(col = palette.ifat(detailed = TRUE))), main = "Detailed", xlab = xlab), split = c(2, 1, 2, 1), more = FALSE)
 ```
 
 
