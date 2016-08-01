@@ -51,8 +51,9 @@ gene.ids <- with(gene.summary, as.character(Symbol)[ file.size > 0 ])
 ```
 
 ```{r genomwide-data-import, cache=TRUE, warning=FALSE}
-Y <- get.readcounts(gene.ids, g.subsets = list(), sel.var = c("S", "N"))
-S <- data.frame(lapply(Y, getElement, "S"), check.names = FALSE)
+Y <- get.readcounts(gene.ids, g.subsets = list(), sel.var = c("H", "N"))
+S <- data.frame(lapply(gene.ids, function(g) Y[[g]]$H / Y[[g]]$N), check.names = FALSE)
+names(S) <- gene.ids
 N <- data.frame(lapply(Y, getElement, "N"), check.names = FALSE)
 rm(Y)
 ```
@@ -165,9 +166,9 @@ plots$density <- my.densityplot(S.long, par.settings = list(superpose.line = sup
 plots$ecdf <- my.ecdfplot(S.long, eval.at = c(0.9), par.settings =
                           list(superpose.line = superpose.line,
                                plot.symbol = list(pch = 21, col = "black", cex = 1, fill = "lightgray")))
-plots$level <- my.levelplot(ED.long, pct.top.g = 2, n.all.g = length(ok.genes))
+plots$level <- my.levelplot(ED.long, pct.top.g = 2, n.all.g = length(ok.genes), top.on.top = TRUE)
 plots$level.sel.g <- my.levelplot.sel.g(ED.long, sel.g = sel.g, letter.labels = TRUE)
-plots$rank <- rankplot(cum.fraction, plot.andys.test = FALSE, pct.top.g = 2, sel.g = sel.g,
+plots$rank <- rankplot(cum.fraction, plot.andys.test = FALSE, pct.top.g = 2, sel.g = sel.g, top.on.top = TRUE,
                        par.settings = list(superpose.symbol =
                                            list(pch = c(20, 21, 21)[-1], col = c("gray", "black", "black")[-1],
                                                 alpha = c(0.5, 0.5, 1)[-1], cex = c(0.1, 0.5, 1)[-1], fill = "lightgray")))
@@ -182,12 +183,6 @@ An earlier version of the above figure had incorrect ranking.  The figure compar
 ```{r fixed-ranking, echo=FALSE, fig.width=7}
 plot(my.levelplot(ED.long, main = "Correct ranking"), split = c(1, 1, 2, 1), more = TRUE)
 plot(my.levelplot(ED.long.old, main = "Incorrect ranking"), split = c(2, 1, 2, 1), more = FALSE)
-```
-
-### All genes on one scale
-
-```{r all-genes-on-one-scale, echo=FALSE, fig.width=7, fig.aspect=0.5}
-levelplot(ECDF ~ s * gene,  data = ED.long, legend = NULL, colorkey = FALSE, scales = list(draw = FALSE), ylim = c(length(ok.genes), 1), par.settings = list(axis.line = list(lty = 0)))
 ```
 
 ### Another view on ranked genes

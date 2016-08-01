@@ -53,8 +53,9 @@ gene.ids <- with(gene.summary, as.character(Symbol)[ file.size > 0 ])
 
 
 ```r
-Y <- get.readcounts(gene.ids, g.subsets = list(), sel.var = c("S", "N"))
-S <- data.frame(lapply(Y, getElement, "S"), check.names = FALSE)
+Y <- get.readcounts(gene.ids, g.subsets = list(), sel.var = c("H", "N"))
+S <- data.frame(lapply(gene.ids, function(g) Y[[g]]$H / Y[[g]]$N), check.names = FALSE)
+names(S) <- gene.ids
 N <- data.frame(lapply(Y, getElement, "N"), check.names = FALSE)
 rm(Y)
 ```
@@ -139,10 +140,6 @@ This figure is intended to:
 An earlier version of the above figure had incorrect ranking.  The figure compares that to the present, correct, ranking:
 
 ![plot of chunk fixed-ranking](figure/fixed-ranking-1.png)
-
-### All genes on one scale
-
-![plot of chunk all-genes-on-one-scale](figure/all-genes-on-one-scale-1.png)
 
 ### Another view on ranked genes
 

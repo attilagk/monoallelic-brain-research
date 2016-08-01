@@ -135,12 +135,13 @@ my.levelplot.sel.g <- function(ED.long, sel.g = c("PEG10", "ZNF331", "AFAP1"), l
 }
 
 # ECDF genome-wide
-my.levelplot <- function(ED.long, pct.top.g = 2, n.all.g = length(ok.genes), ...) {
+my.levelplot <- function(ED.long, pct.top.g = 2, n.all.g = length(ok.genes), top.on.top = TRUE, ...) {
     # data manipulation
     n.top.g <- ceiling(n.all.g * pct.top.g / 100)
     ED.long$rank.segment <- factor(rep(1, nrow(ED.long)), levels = c("top", "bottom"), ordered = TRUE)
     ED.long$rank.segment[ with(ED.long, gene %in% levels(gene)[seq_len(n.top.g)]) ] <- "top"
     ED.long$rank.segment[ with(ED.long, ! gene %in% levels(gene)[seq_len(n.top.g)]) ] <- "bottom"
+    if(top.on.top) ED.long <- top.on.top(ED.long)
     # create trellis object
     lp <- levelplot(ECDF ~ s * gene | rank.segment, data = ED.long, legend = NULL, colorkey = FALSE,
                     panel = panel.my.levelplot,
@@ -153,14 +154,19 @@ my.levelplot <- function(ED.long, pct.top.g = 2, n.all.g = length(ok.genes), ...
                     layout = c(1, 2),
                     ...)
     # edit dimnames
-    dimnames(lp)$rank.segment <- c(paste("top", pct.top.g, "% of genes"),
-                                   paste("bottom", 100 - pct.top.g, "% of genes"))
+    if(top.on.top)
+        bottom <- "all genes"
+    else
+        bottom <- paste("bottom", 100 - pct.top.g, "% of", "genes")
+    dimnames(lp)$rank.segment <- c(paste("top", pct.top.g, "% of genes"), bottom)
     return(lp)
 }
 
 rankplot <-
     function(cum.freq, sorted.genes = names(cum.freq),
-             plot.andys.test = FALSE, pct.top.g = 2, sel.g = c("PEG10", "ZNF331", "AFAP1"), ...) {
+             plot.andys.test = FALSE, pct.top.g = 2, sel.g = c("PEG10", "ZNF331", "AFAP1"),
+             top.on.top = TRUE,
+             ...) {
         n.top.g <- ceiling(length(sorted.genes) * pct.top.g / 100)
         df <- data.frame(ECDF = unlist(cum.freq["0.9", ]))
         df$andys.test = unlist(cum.freq["andys.test", ])
@@ -173,6 +179,7 @@ rankplot <-
                    levels = c("top", "bottom"), ordered = TRUE)
         df$ECDF.sel.g <- df$ECDF
         df$ECDF.sel.g[! with(df, gene %in% sel.g)] <- NA
+        if(top.on.top) df <- top.on.top(df)
         
         panel.rankplot <- function(x, y, groups, subscripts, ...) {
             panel.superpose(x, y, groups = groups, subscripts = subscripts, col = "blue", ...)
@@ -190,10 +197,23 @@ rankplot <-
                    data = df, xlim = c(0, 1), scales = list(y = list(relation = "free", draw = FALSE)),
                    ylab = NULL, xlab = "ECDF at s = 0.9",
                    ...)
-        dimnames(lp)$rank.segment <- c(paste("top", pct.top.g, "%"),
-                                       paste("bottom", 100 - pct.top.g, "%"))
+        # edit dimnames
+        if(top.on.top)
+            bottom <- "all genes"
+        else
+            bottom <- paste("bottom", 100 - pct.top.g, "%")
+        dimnames(lp)$rank.segment <- c(paste("top", pct.top.g, "%"), bottom)
         return(lp)
     }
+
+# place the top portion of a data frame on the entire data frame
+#
+top.on.top <- function(df, tb.var = "rank.segment", tb.str = c("top", "bottom", "all")) {
+    top <- df[df[[tb.var]] == tb.str[1], ]
+    levels(df[[tb.var]]) <- tb.str
+    df[[tb.var]] <- tb.str[3] # the entire original data frame becomes the new "bottom" labeled as all
+    return(rbind(top, df))
+}
 
 plot.all <- function(plots) {
     print(plots$density, position = c(0.0, 0.85, 0.8, 1.0), panel.height = list(0.9, "npc"), more = TRUE)
