@@ -36,6 +36,7 @@ lattice.options(skip.boundary.labels = 0)
 Load data importer functions:
 ```{r}
 source("../../src/import-data.R")
+source("../../src/utils.R")
 source("2016-07-19-genome-wide-S.R")
 ```
 
@@ -110,21 +111,6 @@ ED.long.old$density <- reshape(ED$density, v.names = "density", varying = names(
 ED.long.old$gene <- factor(ED.long.old$gene, levels = names(ED$ecdf.val), ordered = TRUE)
 ```
 
-```{r echo=FALSE}
-# the genes selected by Ifat
-gene.ids.ifat <-
-    # 8 genes analyzed by Ifat
-    c("PEG3", "INPP5F", "SNRPN", "PWAR6", "ZDBF2", "MEG3", "ZNF331", "GRB10",
-      # 5 more genes analyzed by AGK 3/2/16
-      "PEG10", "SNHG14", "NAP1L5", "KCNQ1OT1", "MEST",
-      # 3 more genes present in data files
-      "IGF2", "NLRP2", "UBE3A",
-      # 'green' novel 1 MB imprinted genes; note that PWAR6 is already included above
-      "TMEM261P1", "AL132709.5", "RP11-909M7.3", "SNORD116-20", "RP13-487P22.1", "hsa-mir-335", "PWRN1")
-# retain only 'ok.genes' in 'gene.ids.ifat' and order those according to ECDF at 0.9
-# sel.g <- ok.genes[gene.order][ sort(match(gene.ids.ifat[gene.ids.ifat %in% ok.genes[gene.order]], ok.genes[gene.order])) ]
-```
-
 ```{r frequencies-for-classes, cache=TRUE, warning=FALSE}
 sorted.genes <- ok.genes[gene.order]
 names(sorted.genes) <- sorted.genes
@@ -194,26 +180,6 @@ xlab <- "fraction of indiv."
 plot(barchart(t(as.matrix(fraction[rev(sorted.genes[1:100])])), par.settings = list(superpose.polygon = list(col = palette.ifat(detailed = FALSE))), main = "Top 100 genes", xlab = xlab), split = c(1, 1, 2, 1), more = TRUE)
 plot(barchart(t(as.matrix(fraction[rev(sorted.genes)])), par.settings = list(superpose.polygon = list(col = palette.ifat(detailed = FALSE))), scales = list(y = list(at = y.lab <- seq(0, length(sorted.genes), by = 1000), label = as.character(rev(y.lab)))), main = "All genes", xlab = xlab), split = c(2, 1, 2, 1), more = FALSE, box.width = 1)
 ```
-
-The next plot is meant to serve a consistency check with Ifat's corresponding plot, that is [Fig 1 of the previous manuscript][Fig 1]
-
-```{r compare-to-ifats-fig, echo=FALSE, fig.width=7}
-#sel.g.ifat <- sorted.genes[ sort(match(gene.ids.ifat[gene.ids.ifat %in% sorted.genes], sorted.genes)) ]
-genes.fig1 <- read.csv("ifat-fig1-genelist.csv", row.names = "gene")
-genes.fig1$imprinting.status <- as.factor(genes.fig1$imprinting.status)
-levels(genes.fig1$imprinting.status) <- c("known", "candidate, <1MB", "candidate")
-genes.fig1 <- genes.fig1[row.names(genes.fig1) %in% sorted.genes, , drop = FALSE]
-
-fraction.1 <-
-    data.frame(lapply(rev(row.names(genes.fig1)),
-                      pad.fraction.imprint, imp.stat = genes.fig1, fr = fraction[rev(row.names(genes.fig1))]),
-               check.names = FALSE)
-names(fraction.1) <- rev(row.names(genes.fig1))
-
-plot(barchart( t(as.matrix(fraction.1)), par.settings = list(superpose.polygon = list(col = palette.ifat(detailed = FALSE))), main = "Ifat's style", xlab = xlab), split = c(1, 1, 2, 1), more = TRUE)
-plot(barchart( t(as.matrix(fraction.1)), par.settings = list(superpose.polygon = list(col = palette.ifat(detailed = TRUE))), main = "Detailed", xlab = xlab), split = c(2, 1, 2, 1), more = FALSE)
-```
-
 
 
 [ifat]: http://katahdin.mssm.edu/ifat/web/cm/home

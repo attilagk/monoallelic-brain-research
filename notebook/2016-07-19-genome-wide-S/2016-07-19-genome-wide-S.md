@@ -29,6 +29,9 @@ EOF
 ```
 
 
+```
+## Loading required package: RColorBrewer
+```
 
 ### Import read count data
 
@@ -36,6 +39,7 @@ Load data importer functions:
 
 ```r
 source("../../src/import-data.R")
+source("../../src/utils.R")
 source("2016-07-19-genome-wide-S.R")
 ```
 
@@ -100,8 +104,6 @@ rm(list = c("ecdf.val.w", "density.w", "density.long"))
 
 
 
-
-
 ```r
 sorted.genes <- ok.genes[gene.order]
 names(sorted.genes) <- sorted.genes
@@ -144,11 +146,6 @@ An earlier version of the above figure had incorrect ranking.  The figure compar
 ### Another view on ranked genes
 
 ![plot of chunk rank-by-ecdf-top](figure/rank-by-ecdf-top-1.png)
-
-The next plot is meant to serve a consistency check with Ifat's corresponding plot, that is [Fig 1 of the previous manuscript][Fig 1]
-
-![plot of chunk compare-to-ifats-fig](figure/compare-to-ifats-fig-1.png)
-
 
 
 [ifat]: http://katahdin.mssm.edu/ifat/web/cm/home

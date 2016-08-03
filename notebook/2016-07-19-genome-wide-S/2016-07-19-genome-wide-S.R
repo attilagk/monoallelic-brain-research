@@ -271,27 +271,3 @@ ecdf.barchart <- function(Y.long = ecdf.bar.prep(Y[ok.genes[gene.order[1:100]]])
                            ),
                   between = list(y = 0)), ...)
 }
-
-
-CI.p <- function(p.hat, n, conf.lev = 0.95) {
-    alpha <- (1 - conf.lev) / 2
-    zz <- lapply(list(lower = alpha, upper = 1 - alpha), qnorm)
-    std <- sqrt(p.hat * (1 - p.hat) / n)
-    lapply(zz, function(z) p.hat + z * std)
-}
-
-palette.ifat <- function(cols = c("blue", "darkgreen", "red"), detailed = FALSE) {
-    foo <- function(col, detailed) {
-        if(detailed)
-            colorRampPalette(c(col, "gray", "black"))(6)
-        else
-            c(colorRampPalette(c(col, "gray"))(3), "gray", "gray", "black")
-    }
-    c(sapply(cols, foo, detailed = detailed))
-}
-
-pad.fraction.imprint <- function(gene = "PWAR6", imp.stat = genes.fig1, fr = fraction) {
-    padding <- as.integer(imp.stat[gene, "imprinting.status"]) - 1
-    c(rep(rep(0, 6), padding), fr[[gene]], rep(rep(0, 6), 2 - padding))
-}
-

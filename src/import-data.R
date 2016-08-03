@@ -1,7 +1,7 @@
 # Import observed values of predictors to be used as a basis of design matrix
 # for regression.
 #
-# Parameters
+# Arguments
 # f.predictors: file containing the table of predictors: RNA samples (rows) and predictors (columns)
 # f.rna.ids: file with mapping between RNAseqID (present in read count tables)
 # and DLPFC_RNA_ID (present in the table of predictors)
@@ -25,7 +25,7 @@ get.predictors <- function(f.predictors = "~/projects/monoallelic-brain/data/pre
 
 # Get observed readcounts for a set of selected genes
 #
-# Parameters
+# Arguments
 # gene.ids: a vector of IDs (symbols) of selected genes
 # data.dir: the main directory containing gene-wise subdirectories and read count files
 # count.thrs: lower filtering threshold for the total readcount (summing over alleles and SNPs)

@@ -10,7 +10,7 @@ e.vars <- c("Age",
 
 # Construct a formula from data and names of predictors and fit some glm
 #
-# Parameters
+# Arguments
 # y: observed responses: a vector (nlm) or a 2-column matrix (logistic models)
 # X: observed predictors(see 'get.predictors' in 'import-data.R')
 # e.v: names of predictors; their ordering typically affects some results (e.g. ANOVA)
@@ -35,7 +35,7 @@ do.fit <- function(response = Y[[1]]$S,
 
 # Perform all fits under selected models to read counts for each gene and each aggregate
 #
-# Parameters
+# Arguments
 # Z: read counts used as responses: a list of data frames from 'get.readcounts' (see 'import-data.R')
 # G: observed explanatory variables in a data frame from 'get.predictors' (see 'import-data.R')
 # preds: names of explanatory variables in a character vector; their ordering typically affects some results (e.g. ANOVA)
@@ -98,7 +98,7 @@ do.all.fits <- function(Z = Y,
 
 # Calculate the mean difference of 'current' Y relative to 'target' X
 #
-# Parameters
+# Arguments
 # target: the reference vector
 # current: the other vector
 #
@@ -114,7 +114,7 @@ mean.rel.diff <- function(target, current, ...){
 
 # Get estimated coefficients and confidence intervals for a list of models
 #
-# Parameters
+# Arguments
 # l.models: list of models of class lm or glm
 # coef.name: in case of multiple regression selects a coefficient
 # conf.lev: confidence level
@@ -138,7 +138,7 @@ get.CI <- function(l.models,
 
 # extract estimates and confidence intervals for regression coefficients
 #
-# Parameters
+# Arguments
 # l.M: a list of models
 # conf.lev: confidence level
 #
@@ -186,7 +186,7 @@ get.estimate.CI.old <- function(l.M, conf.lev = 0.99) {
 
 # creates a long data frame of effects from a list of models
 #
-# Parameters
+# Arguments
 # l.m: a list of models
 # coef.names: the name of all coefficients across all genes
 #
@@ -217,7 +217,7 @@ l.effects.old <- function(l.m, ref.m = 1) {
 
 # creates a long data frame of effects from a list of lists of models
 #
-# Parameters
+# Arguments
 # l.l.m: a list of lists of models (see Details)
 # coef.names: the name of all coefficients across all genes
 #
@@ -238,7 +238,7 @@ l.l.effects <- function(l.l.m, coef.names = names(coef(l.l.m[[1]][[1]]))) {
 
 # creates a data frame of ANOVA deviances
 #
-# Parameters
+# Arguments
 # l.m: a list of models
 #
 # Value
@@ -251,7 +251,7 @@ l.anova <- function(l.m) {
 
 # reshape a data frame of ANOVA/Effects info to long format for easy plotting
 #
-# Parameters
+# Arguments
 # A: a "wide" data frame of deviances/effects, whose rows are genes and columns predictors/coefficients
 # type: type of informatino either "anova" for ANOVA deviances or "effects" for effects
 #
@@ -274,7 +274,7 @@ reshape.1 <- function(A, type = "anova") {
 
 # reshape a *list* of data frames of ANOVA/Effects info to long format for easy plotting
 #
-# Parameters
+# Arguments
 # l.A: a list of data frames in "wide" format; see parameter 'A' in reshape.1
 # type: either "anova" or "effects"; see parameter 'A' in reshape.1
 #
@@ -296,7 +296,7 @@ reshape.2 <- function(l.A, type = "anova") {
 
 # Make index for a subset of observations
 #
-# Parameters
+# Arguments
 # X: a data frame of observed values of predictors
 # predictor: a component (column) in 'X' interpreted as an explanatory variable
 # lvls: the character vector of one or more levels of 'predictor' to be selected
@@ -309,7 +309,7 @@ sset.obs <- function(predictor, lvls, X = E) {
 
 # Fit a single model to the same subset for each dataset
 #
-# Parameters
+# Arguments
 # sel.pred: a selected predictor (character)
 # levs: one or more levels of 'sel.pred' to be used for subsetting
 # preds, Z, G: see the corresponding parameters of 'do.all.fits'
@@ -330,7 +330,7 @@ do.all.fits.sset <- function(sel.pred, levs,
 
 # Fit a single model to a *l*ist of subsets for each dataset given a single predictor
 #
-# Parameters
+# Arguments
 # see 'do.all.fits.sset' and 'do.all.fits'
 #
 # Value
@@ -348,7 +348,7 @@ l.do.all.fits.sset <- function(sel.pred = "Institution", Z = Y, G = E,
 
 # Fit a single model to a *l*ist of subsets for each dataset given *multiple* predictor
 #
-# Parameters
+# Arguments
 # see 'do.all.fits.sset' and 'do.all.fits'
 #
 # Value
