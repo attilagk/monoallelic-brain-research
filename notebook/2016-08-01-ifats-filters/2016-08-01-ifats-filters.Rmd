@@ -1,6 +1,6 @@
 ## Goal
 
-It is crucial for publication to ensure that the genes selected for regression analysis were chosen on objective criteria.  This requires the reproduction of the set of genes that were called monoallelic in the [manuscript][ms] drafted by Ifat.  I'll refer to that in this document as *the previous manuscript*.  If perfect reproduction fails then minimum discordance is desired, and the regression analysis will **need to be repeated** accordingly with the new set of genes called monoallelic.
+It is crucial for publication to ensure that the genes selected for regression analysis were chosen on objective criteria.  This requires the reproduction of the set of genes that were called monoallelic in the [manuscript][ms] drafted by Ifat.  I'll refer to that in this document as *the previous manuscript*.  If perfect reproduction fails then minimum discordance is desired, and the regression analysis will potentially **need to be repeated** accordingly with the new set of genes called monoallelic.
 
 ## Procedures from the previous manuscript
 
@@ -129,44 +129,48 @@ Besides $t_\mathrm{ind}=25$ the threshold $t_\mathrm{ind}=10$ was also tested (n
 
 ### Gene rankings
 
-The plots show four gene rankings and the corresponding fractions of interest.  The first three correspond to the sequence of three $t_\mathrm{rc}$ settings of the read count-based filter so these rankings will be named $R_{7}, R_{15}, R_{20}$.  The fourth plot follows the ranking seen on Ifat's [Fig 1][ifat fig 1], and this ranking will be referred to as $R_\mathrm{Ifat}$.  Since that figure shows only the top 51 genes, the same is done here for also the first three plots.  Several genes in the top 51 according to $R_{7}, R_{15}$ or $R_{20}$ are missing from Ifat's top 51 and therefore the imprinting status for those genes will need to be obtained from elsewhere.  Given this lack of information the first three graphs are colored with orange.
+The plots show four gene rankings and the corresponding fractions of interest.  The first three correspond to the sequence of three $t_\mathrm{rc}$ settings of the read count-based filter so these rankings will be named $R_{7}, R_{15}, R_{20}$.  The fourth plot follows the ranking seen on Ifat's [Fig 1][ifat fig 1], and this ranking will be referred to as $R_\mathrm{Ifat}$.  Since that figure shows only the 51 genes, the same is done here for also the first three plots.  Note that the last 13 genes of the fourth plot are in fact low ranking "known" imprinted genes so they are *not* in the top 51 according to $R_\mathr{ifat}$.  The first three plots do, however, present the 51 top ranking genes for the corresponding ranking.
 
 ```{r echo=FALSE, cache=TRUE}
+# format required for my function pad.fraction.imprint 
+gene.summary$imprinting.status <- factor(4 - as.integer(gene.summary$imprinted))
+levels(gene.summary$imprinting.status) <- c("known", "candidate, <1MB", "candidate")
 genes.ifat <- read.csv("../../data/ifat/ifat-fig1-genelist.csv", row.names = "gene")
 genes.ifat$imprinting.status <- as.factor(genes.ifat$imprinting.status)
 levels(genes.ifat$imprinting.status) <- c("known", "candidate, <1MB", "candidate")
-fraction.1 <-
-    data.frame(lapply(rev(row.names(genes.ifat)),
-                      pad.fraction.imprint, imp.stat = genes.ifat, fr = frac$min.reads.7[rev(row.names(genes.ifat))]),
-               check.names = FALSE)
-names(fraction.1) <- rev(row.names(genes.ifat))
 ```
 
 ```{r compare-to-ifats-fig, echo=FALSE, fig.width=7, fig.asp=2}
 xlab <- "fraction of indiv."
-par.set <- list(superpose.polygon = list(col = palette.ifat(cols = "darkorange", detailed = FALSE)))
+par.set <- list(superpose.polygon = list(col = palette.ifat(detailed = FALSE)))
 trellis.par.set(superpose.polygon = list(lty = 0))
 b.charts <-
     lapply(min.r.names,
            function(n)
-               barchart(t(as.matrix(frac[[n]][nrow(genes.ifat):1])), par.settings = par.set, main = n, xlab = xlab))
+               barchart(padded.frac(fr = frac[[n]][nrow(genes.ifat):1]), par.settings = par.set, main = n, xlab = xlab))
 plot.pos <- list(c(1, 1, 2, 2), c(2, 1, 2, 2), c(1, 2, 2, 2))
 names(plot.pos) <- min.r.names
 for(n in min.r.names) print(b.charts[[n]], split = plot.pos[[n]], more = TRUE)
 
-par.set <- list(superpose.polygon = list(col = palette.ifat(detailed = FALSE)))
-plot(barchart( t(as.matrix(fraction.1)), par.settings = par.set, main = "min.reads.7 + Ifat's ranking", xlab = xlab), split = c(2, 2, 2, 2), more = FALSE)
+plot(barchart(padded.frac(fr = frac$min.reads.7[rev(row.names(genes.ifat))]),
+              par.settings = par.set, main = "min.reads.7 + Ifat's ranking", xlab = xlab), split = c(2, 2, 2, 2), more = FALSE)
+#plot(barchart( t(as.matrix(fraction.1)), par.settings = par.set, main = "min.reads.7 + Ifat's ranking", xlab = xlab), split = c(2, 2, 2, 2), more = FALSE)
 ```
 
 #### Gene rankings with Ifat's ranking as reference
 
+The previous figures show that several genes in the top 51 according to $R_{7}, R_{15}$ or $R_{20}$ are missing from Ifat's figure.  But clearly, when the read count-based filter is used at $t_\mathrm{rc}=15$ there is a close match with Ifat's ranking.  
+
 ```{r echo=FALSE}
 genes.ifat.ranks <- as.data.frame(sapply(min.r.names, function(m) match(rownames(genes.ifat), names(ECDF[[m]]))))
 names(genes.ifat.ranks) <- paste0("R.", min.reads)
-(genes.ifat.ranks <- cbind(genes.ifat, data.frame(R.ifat = seq_len(nrow(genes.ifat.ranks))), genes.ifat.ranks))
+genes.ifat.ranks <- cbind(genes.ifat, data.frame(R.ifat = seq_len(nrow(genes.ifat.ranks))), genes.ifat.ranks)
+# the last 13 genes are low ranking "known" imprinted genes whose rank the manuscript does not present
+genes.ifat.ranks$R.ifat[seq(from = nrow(genes.ifat.ranks), by = -1, length.out = 13)] <- NA
+genes.ifat.ranks
 ```
 
-Clearly, when the read count-based filter is used at $t_\mathrm{rc}=15$ there is a close match with Ifat's ranking.  In fact, the two rankings agree for the top 24 genes (except that ranks 6 and 7 are swapped):
+In fact, the two rankings agree for the top 24 genes (except that ranks 6 and 7 are swapped):
 ```{r}
 all.equal(genes.ifat.ranks[ , "R.15"][c(1:5, 7:6, 8:24)], 1:24)
 ```
@@ -177,7 +181,9 @@ From this result we may conclude that Ifat's filter settings were $t_\mathrm{rc}
 
 From now on we only scrutinize the ranking obtained with $t_\mathrm{rc}=15$ i.e.$R_{15}$ and compare it to Ifat's ranking i.e. $R_\mathrm{Ifat}$.  On what genes do these two rankings disagree?  In particular, with what genes, if any, should I extend my latest (already extended) regression analysis?
 
-Notice that the lowest scoring gene in the "candidate, < 1MB" category is *PWRN1* (green on [Fig 1][ifat fig 1]).  Its score is `r 1 - ECDF$min.reads.15$PWRN1(0.9)` and it ranks at `r match("PWRN1", names(ECDF$min.reads.15))` according to $R_{15}$ and at `genes.ifat.ranks["PWRN1", "R.ifat"]`.  We may define the classification threshold such that we only call genes monoallelic if their $R_{15}$-ranking is above *PWRN1*.
+Notice that the lowest scoring gene in the "candidate, < 1MB" category is *PWRN1* (green on [Fig 1][ifat fig 1]).  Its score is `r 1 - ECDF$min.reads.15$PWRN1(0.9)` and it ranks at `r match("PWRN1", names(ECDF$min.reads.15))` according to $R_{15}$ and at `genes.ifat.ranks["PWRN1", "R.ifat"]`.  We may define the classification threshold such that we only call genes monoallelic if their $R_{15}$-ranking is above *PWRN1*. 
+
+All genes included in my extended regression analysis are then called monoallelic.  *DIRAS3* is the only gene in the "known" or "candidate, < 1MB" categories that is ranked above *PWRN1* and is among Ifat's 51 genes shown in the table above.  The remaining monoallelic genes are
 ```{r}
 d.genes <- list() # discrepant genes
 (d.genes$A <-
@@ -214,7 +220,7 @@ d.genes.imprint
 * therefore the two ranking leads to discrepant sets of monoallelically called genes
 * the level of discrepancy depends on what rule is chosen for classification
 * even with the most liberal rule (the one yielding the largest called monoallelically set), all called genes fall in the "candidate" category
-* thus the **regression** analysis **need not be further extended**
+* thus the **regression** analysis **needs to be further extended** only with *DIRAS3*
 
 
 [ifat fig 1]: https://docs.google.com/presentation/d/1YvpA1AJ-zzir1Iw0F25tO9x8gkSAzqaO4fjB7K3zBhE/edit#slide=id.p4

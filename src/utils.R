@@ -11,6 +11,16 @@ pad.fraction.imprint <- function(gene = "PWAR6", imp.stat = genes.fig1, fr = fra
     c(rep(rep(0, 6), padding), fr[[gene]], rep(rep(0, 6), 2 - padding))
 }
 
+padded.frac <- function(fr = frac$min.reads.15[51:1], imp.stat = gene.summary) {
+    genes <- names(fr)
+    names(genes) <- genes
+    df <- data.frame(lapply(genes,
+                            pad.fraction.imprint, imp.stat = imp.stat, fr = fr),
+                     check.names = FALSE)
+    t(as.matrix(df))
+}
+
+
 
 palette.ifat <- function(cols = c("blue", "darkgreen", "red"), detailed = FALSE) {
     foo <- function(col, detailed) {

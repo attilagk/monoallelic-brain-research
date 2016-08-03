@@ -1,6 +1,6 @@
 ## Goal
 
-It is crucial for publication to ensure that the genes selected for regression analysis were chosen on objective criteria.  This requires the reproduction of the set of genes that were called monoallelic in the [manuscript][ms] drafted by Ifat.  I'll refer to that in this document as *the previous manuscript*.  If perfect reproduction fails then minimum discordance is desired, and the regression analysis will **need to be repeated** accordingly with the new set of genes called monoallelic.
+It is crucial for publication to ensure that the genes selected for regression analysis were chosen on objective criteria.  This requires the reproduction of the set of genes that were called monoallelic in the [manuscript][ms] drafted by Ifat.  I'll refer to that in this document as *the previous manuscript*.  If perfect reproduction fails then minimum discordance is desired, and the regression analysis will potentially **need to be repeated** accordingly with the new set of genes called monoallelic.
 
 ## Procedures from the previous manuscript
 
@@ -116,13 +116,15 @@ Besides $t_\mathrm{ind}=25$ the threshold $t_\mathrm{ind}=10$ was also tested (n
 
 ### Gene rankings
 
-The plots show four gene rankings and the corresponding fractions of interest.  The first three correspond to the sequence of three $t_\mathrm{rc}$ settings of the read count-based filter so these rankings will be named $R_{7}, R_{15}, R_{20}$.  The fourth plot follows the ranking seen on Ifat's [Fig 1][ifat fig 1], and this ranking will be referred to as $R_\mathrm{Ifat}$.  Since that figure shows only the top 51 genes, the same is done here for also the first three plots.  Several genes in the top 51 according to $R_{7}, R_{15}$ or $R_{20}$ are missing from Ifat's top 51 and therefore the imprinting status for those genes will need to be obtained from elsewhere.  Given this lack of information the first three graphs are colored with orange.
+The plots show four gene rankings and the corresponding fractions of interest.  The first three correspond to the sequence of three $t_\mathrm{rc}$ settings of the read count-based filter so these rankings will be named $R_{7}, R_{15}, R_{20}$.  The fourth plot follows the ranking seen on Ifat's [Fig 1][ifat fig 1], and this ranking will be referred to as $R_\mathrm{Ifat}$.  Since that figure shows only the 51 genes, the same is done here for also the first three plots.  Note that the last 13 genes of the fourth plot are in fact low ranking "known" imprinted genes so they are *not* in the top 51 according to $R_\mathr{ifat}$.  The first three plots do, however, present the 51 top ranking genes for the corresponding ranking.
 
 
 
 ![plot of chunk compare-to-ifats-fig](figure/compare-to-ifats-fig-1.png)
 
 #### Gene rankings with Ifat's ranking as reference
+
+The previous figures show that several genes in the top 51 according to $R_{7}, R_{15}$ or $R_{20}$ are missing from Ifat's figure.  But clearly, when the read count-based filter is used at $t_\mathrm{rc}=15$ there is a close match with Ifat's ranking.  
 
 
 ```
@@ -165,22 +167,22 @@ The plots show four gene rankings and the corresponding fractions of interest.  
 ## SYT7                  candidate     36   81   46   34
 ## NME1-NME2             candidate     37   64   40   35
 ## RAD23A                candidate     38   95   57   NA
-## NLRP2                     known     39  122   77   66
-## IGF2                      known     40   84   83   82
-## UBE3A                     known     41  132  112   79
-## NTM                       known     42  318  177  150
-## DGCR6                     known     43 1683 1310   NA
-## OSBPL5                    known     44 2479  946  659
-## NAA60                     known     45 1192 2251 2345
-## DGCR6L                    known     46 3483 2392 1890
-## BEGAIN                    known     47 5004 2448 2397
-## AIM1                      known     48 2028 4490   NA
-## DLGAP2                    known     49 3041 2382 2104
-## GNAS                      known     50 5529 3754 2997
-## ZFAT                      known     51 4714 5016 4399
+## NLRP2                     known     NA  122   77   66
+## IGF2                      known     NA   84   83   82
+## UBE3A                     known     NA  132  112   79
+## NTM                       known     NA  318  177  150
+## DGCR6                     known     NA 1683 1310   NA
+## OSBPL5                    known     NA 2479  946  659
+## NAA60                     known     NA 1192 2251 2345
+## DGCR6L                    known     NA 3483 2392 1890
+## BEGAIN                    known     NA 5004 2448 2397
+## AIM1                      known     NA 2028 4490   NA
+## DLGAP2                    known     NA 3041 2382 2104
+## GNAS                      known     NA 5529 3754 2997
+## ZFAT                      known     NA 4714 5016 4399
 ```
 
-Clearly, when the read count-based filter is used at $t_\mathrm{rc}=15$ there is a close match with Ifat's ranking.  In fact, the two rankings agree for the top 24 genes (except that ranks 6 and 7 are swapped):
+In fact, the two rankings agree for the top 24 genes (except that ranks 6 and 7 are swapped):
 
 ```r
 all.equal(genes.ifat.ranks[ , "R.15"][c(1:5, 7:6, 8:24)], 1:24)
@@ -196,7 +198,9 @@ From this result we may conclude that Ifat's filter settings were $t_\mathrm{rc}
 
 From now on we only scrutinize the ranking obtained with $t_\mathrm{rc}=15$ i.e.$R_{15}$ and compare it to Ifat's ranking i.e. $R_\mathrm{Ifat}$.  On what genes do these two rankings disagree?  In particular, with what genes, if any, should I extend my latest (already extended) regression analysis?
 
-Notice that the lowest scoring gene in the "candidate, < 1MB" category is *PWRN1* (green on [Fig 1][ifat fig 1]).  Its score is 0.5 and it ranks at 33 according to $R_{15}$ and at `genes.ifat.ranks["PWRN1", "R.ifat"]`.  We may define the classification threshold such that we only call genes monoallelic if their $R_{15}$-ranking is above *PWRN1*.
+Notice that the lowest scoring gene in the "candidate, < 1MB" category is *PWRN1* (green on [Fig 1][ifat fig 1]).  Its score is 0.5 and it ranks at 33 according to $R_{15}$ and at `genes.ifat.ranks["PWRN1", "R.ifat"]`.  We may define the classification threshold such that we only call genes monoallelic if their $R_{15}$-ranking is above *PWRN1*. 
+
+All genes included in my extended regression analysis are then called monoallelic.  *DIRAS3* is the only gene in the "known" or "candidate, < 1MB" categories that is ranked above *PWRN1* and is among Ifat's 51 genes shown in the table above.  The remaining monoallelic genes are
 
 ```r
 d.genes <- list() # discrepant genes
@@ -269,7 +273,7 @@ d.genes.imprint
 * therefore the two ranking leads to discrepant sets of monoallelically called genes
 * the level of discrepancy depends on what rule is chosen for classification
 * even with the most liberal rule (the one yielding the largest called monoallelically set), all called genes fall in the "candidate" category
-* thus the **regression** analysis **need not be further extended**
+* thus the **regression** analysis **needs to be further extended** only with *DIRAS3*
 
 
 [ifat fig 1]: https://docs.google.com/presentation/d/1YvpA1AJ-zzir1Iw0F25tO9x8gkSAzqaO4fjB7K3zBhE/edit#slide=id.p4
