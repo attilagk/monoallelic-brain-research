@@ -194,76 +194,122 @@ all.equal(genes.ifat.ranks[ , "R.15"][c(1:5, 7:6, 8:24)], 1:24)
 
 From this result we may conclude that Ifat's filter settings were $t_\mathrm{rc}=15$ and $t_\mathrm{ind}=25$ and the discrepancies we see might partly or entirely be due to rounding errors introduced at the export of $S$ values to csv files and/or different implementation of the calculation of gene scores.
 
-### Discrepant genes
+### Monoallelically called genes
 
-From now on we only scrutinize the ranking obtained with $t_\mathrm{rc}=15$ i.e.$R_{15}$ and compare it to Ifat's ranking i.e. $R_\mathrm{Ifat}$.  On what genes do these two rankings disagree?  In particular, with what genes, if any, should I extend my latest (already extended) regression analysis?
+Given the result that $R_{15}$ resembles the most to $R_\mathrm{ifat}$, we will use $R_{15}$ to call monoallelic genes.  We will compare called gene sets under different threshold for the score $1 - \hat{F}_g(0.9)$ and further compare these to the one presented in the previous [manuscript][ms].
 
-Notice that the lowest scoring gene in the "candidate, < 1MB" category is *PWRN1* (green on [Fig 1][ifat fig 1]).  Its score is 0.5 and it ranks at 33 according to $R_{15}$ and at `genes.ifat.ranks["PWRN1", "R.ifat"]`.  We may define the classification threshold such that we only call genes monoallelic if their $R_{15}$-ranking is above *PWRN1*. 
-
-All genes included in my extended regression analysis are then called monoallelic.  *DIRAS3* is the only gene in the "known" or "candidate, < 1MB" categories that is ranked above *PWRN1* and is among Ifat's 51 genes shown in the table above.  The remaining monoallelic genes are
+Notice that the lowest scoring gene in the "candidate, < 1MB" category is *PWRN1* (green on [Fig 1][ifat fig 1]).  Its score is 0.5 and it ranks at 33 according to $R_{15}$ and at `genes.ifat.ranks["PWRN1", "R.ifat"]`.  We may define the classification threshold such that we only call genes monoallelic if their score $\ge0.5$:
 
 ```r
-d.genes <- list() # discrepant genes
-(d.genes$A <-
-    names(ECDF$min.reads.15)[ setdiff(seq_len(genes.ifat.ranks["PWRN1", "R.15"]),
-                                      genes.ifat.ranks$R.15[seq_len(genes.ifat.ranks["PWRN1", "R.ifat"])]) ])
+(called.mono.0.5 <- names(frac$min.reads.15)[unlist(frac$min.reads.15[1, ]) >= 0.5])
 ```
 
 ```
-## [1] "RPL23AP7" "MRPL28"   "MRPS34"
+##  [1] "MAGEL2"        "TMEM261P1"     "SNHG14"        "AL132709.5"   
+##  [5] "RP11-909M7.3"  "ZIM2"          "NAP1L5"        "MEG3"         
+##  [9] "PEG3"          "PWAR6"         "FAM50B"        "NDN"          
+## [13] "SNURF"         "PEG10"         "SNRPN"         "KCNQ1OT1"     
+## [17] "ZDBF2"         "GRB10"         "SNORD116-20"   "KCNK9"        
+## [21] "INPP5F"        "HLA-DRB5"      "RP13-487P22.1" "GSTM1"        
+## [25] "RPL23AP7"      "MEST"          "MRPL28"        "IL1RL1"       
+## [29] "ZNF331"        "MRPS34"        "hsa-mir-335"   "DIRAS3"       
+## [33] "PWRN1"         "GFRA2"
 ```
 
-However, adjusting the classification threshold to *PWRN1* looks quite arbitrary.  If we instead call genes with score $\gt 0.5$ monoallelic then one more gene, *GFRA2*, must also called:
-
-```r
-(d.genes$B <-
-    setdiff(names(ECDF$min.reads.15)[sapply(ECDF$min.reads.15, function(f) 1 - f(0.9) >= 0.5) ],
-            names(ECDF$min.reads.15)[ seq_len(match("PWRN1", names(ECDF$min.reads.15))) ]))
-```
-
-```
-## [1] "GFRA2"
-```
-
-If we further lower the classification threshold to $0.3$ then according to $R_{15}$ these genes must also be called monoallelic.
+If we further lower the classification threshold to $0.3$ then according to $R_{15}$ several more genes must also be called monoallelic.
 
 ```r
-(d.genes$C <-
-    setdiff(names(ECDF$min.reads.15)[sapply(ECDF$min.reads.15, function(f) 1 - f(0.9) >= 0.3) ],
-            names(ECDF$min.reads.15)[sapply(ECDF$min.reads.15, function(f) 1 - f(0.9) >= 0.5) ]))
+called.mono.0.3 <- names(frac$min.reads.15)[unlist(frac$min.reads.15[1, ]) >= 0.3]
+length(setdiff(called.mono.0.3, called.mono.0.5))
 ```
 
 ```
-##  [1] "HLA-DQB1"      "HLA-DRB1"      "PAX8-AS1"      "HNRNPU"       
-##  [5] "ZDHHC11"       "NME1-NME2"     "AHNAK"         "PPP1R37"      
-##  [9] "PRKAR1B"       "HLA-DQA1"      "ANKRD18A"      "SYT7"         
-## [13] "TMIE"          "RP11-54F2.1"   "MACF1"         "GPR75-ASB3"   
-## [17] "THOC3"         "AC008443.1"    "TRIM52"        "CTXN1"        
-## [21] "RP11-215G15.5" "UBAC1"         "RAD23A"
+## [1] 23
 ```
 
-Some of these genes like *HLA-DQB1* are present in the top 51 according to the ranking $R_\mathrm{ifat}$ and hence their imprinting status can be read off from that table. This shows that all of those belong to the "candidate" category.  Looking at the status of all discrepant genes established above, with the most liberal classification threshold 0.3, we see that all of them are "candidate" (red) and therefore need not be included in further regression analysis.
+The upper right panel of the figure above indicates that most---if not all---of the genes between score 0.3 and 0.5 fall in the "candidate" category.  More on this in the next section.
+
+### Implications for regression analysis
+
+My latest regression analysis was carried out on the following genes extending the set of 8 genes initially used in the previous manuscript:
 
 ```r
-levels(gene.summary$imprinted) <- rev(c("known", "candidate, <1MB", "candidate")) # follow new nomenclature
-d.genes.imprint <- as.character(gene.summary[unlist(d.genes), "imprinted"])
-names(d.genes.imprint) <- unlist(d.genes)
-d.genes.imprint
+genes.regression.ifat <-
+    c("PEG3", "INPP5F", "SNRPN", "PWAR6", "ZDBF2", "MEG3", "ZNF331", "GRB10", # 8 genes analyzed by Ifat
+      "PEG10", "SNHG14", "NAP1L5", "KCNQ1OT1", "MEST", # 5 more genes analyzed by AGK 3/2/16
+      "IGF2", "NLRP2", "UBE3A", # 3 more genes present in data files
+      "TMEM261P1", "AL132709.5", "RP11-909M7.3", "SNORD116-20", "RP13-487P22.1", "hsa-mir-335", "PWRN1") # 'green' novel 1 MB imprinted genes; note that PWAR6 is already included above
+```
+
+These were selected based on two rules:
+
+1. most monoallelically called genes with imprinting status either "known" or "candidate, < 1MB"
+   * exceptions include *MAGEL2* and *ZIM2*---it is not clear why those were not selected initally or later so now they will become selected ones
+1. the highest scoring but not monoallelically called "known" imprinted genes; these were *IGF2*, *NLRP2* and *UBE3A*
+
+Given these rules and the called gene sets (at score threshold 0.5 or 0.3) what genes, if any, should I extend mylatest (already extended) regression analysis?
+
+I start with the first rule.  Excluding "candidate"s from the set of monoallelically called genes confirms the earlier suspicion that all genes scoring between 0.3 and 0.5 must be then excluded so for regression analysis it is immaterial which score is used as classfication threshold.
+
+```r
+genes.not.cand.5 <- called.mono.0.5[gene.summary[called.mono.0.5, "imprinting.status"] != "candidate"]
+genes.not.cand.3 <- called.mono.0.3[gene.summary[called.mono.0.3, "imprinting.status"] != "candidate"]
+all.equal(genes.not.cand.3, genes.not.cand.5)
 ```
 
 ```
-##      RPL23AP7        MRPL28        MRPS34         GFRA2      HLA-DQB1 
-##   "candidate"   "candidate"   "candidate"   "candidate"   "candidate" 
-##      HLA-DRB1      PAX8-AS1        HNRNPU       ZDHHC11     NME1-NME2 
-##   "candidate"   "candidate"   "candidate"   "candidate"   "candidate" 
-##         AHNAK       PPP1R37       PRKAR1B      HLA-DQA1      ANKRD18A 
-##   "candidate"   "candidate"   "candidate"   "candidate"   "candidate" 
-##          SYT7          TMIE   RP11-54F2.1         MACF1    GPR75-ASB3 
-##   "candidate"   "candidate"   "candidate"   "candidate"   "candidate" 
-##         THOC3    AC008443.1        TRIM52         CTXN1 RP11-215G15.5 
-##   "candidate"   "candidate"   "candidate"   "candidate"   "candidate" 
-##         UBAC1        RAD23A 
-##   "candidate"   "candidate"
+## [1] TRUE
+```
+
+To see which genes might be selected according to the second rule:
+
+```r
+frac$min.reads.15.known <- frac$min.reads.15[gene.summary[names(frac$min.reads.15), "imprinting.status"] == "known"]
+barchart(padded.frac(fr = frac$min.reads.15.known[length(frac$min.reads.15.known):1]),
+              par.settings = par.set, main = "Known imprinted genes", xlab = xlab)
+```
+
+![plot of chunk unnamed-chunk-12](figure/unnamed-chunk-12-1.png)
+
+So, it still seems reasonable to select *IGF2*, *NLRP2* and *UBE3A* based on the second rule.
+
+Then **the set of genes to carry out regression analysis**:
+
+```r
+(genes.regression.new <- c(genes.not.cand.5, c("IGF2", "NLRP2", "UBE3A")))
+```
+
+```
+##  [1] "MAGEL2"        "TMEM261P1"     "SNHG14"        "AL132709.5"   
+##  [5] "RP11-909M7.3"  "ZIM2"          "NAP1L5"        "MEG3"         
+##  [9] "PEG3"          "PWAR6"         "FAM50B"        "NDN"          
+## [13] "SNURF"         "PEG10"         "SNRPN"         "KCNQ1OT1"     
+## [17] "ZDBF2"         "GRB10"         "SNORD116-20"   "KCNK9"        
+## [21] "INPP5F"        "RP13-487P22.1" "MEST"          "ZNF331"       
+## [25] "hsa-mir-335"   "DIRAS3"        "PWRN1"         "IGF2"         
+## [29] "NLRP2"         "UBE3A"
+```
+
+```r
+write.csv(data.frame(genes.regression.new), file = "../../data/genes.regression.new", row.names = FALSE)
+```
+
+No genes need to be removed from the previous set but several new genes need to be added:
+
+```r
+setdiff(genes.regression.ifat, genes.regression.new) # what genes to remove?
+```
+
+```
+## character(0)
+```
+
+```r
+setdiff(genes.regression.new, genes.regression.ifat) # what genes to add?
+```
+
+```
+## [1] "MAGEL2" "ZIM2"   "FAM50B" "NDN"    "SNURF"  "KCNK9"  "DIRAS3"
 ```
 
 ## Conclusion
@@ -272,8 +318,8 @@ d.genes.imprint
 * the consistency is not perfect, which might be due to implementation details
 * therefore the two ranking leads to discrepant sets of monoallelically called genes
 * the level of discrepancy depends on what rule is chosen for classification
-* even with the most liberal rule (the one yielding the largest called monoallelically set), all called genes fall in the "candidate" category
-* thus the **regression** analysis **needs to be further extended** only with *DIRAS3*
+* several considerations play role in what genes are seleceted for regression analysis; these have been discussed above
+* the **regression** analysis **needs to be further extended** with *MAGEL2*, *ZIM2*, *FAM50B*, *NDN*, *SNURF*, *KCNK9* and *DIRAS3*
 
 
 [ifat fig 1]: https://docs.google.com/presentation/d/1YvpA1AJ-zzir1Iw0F25tO9x8gkSAzqaO4fjB7K3zBhE/edit#slide=id.p4
