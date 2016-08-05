@@ -28,14 +28,18 @@ source("~/projects/monoallelic-brain/src/import-data.R")
 source("~/projects/monoallelic-brain/src/fit-glms.R")
 opts_chunk$set(dpi = 144)
 opts_chunk$set(fig.width = 10)
+opts_chunk$set(dev=c("png", "pdf"))
 lattice.options(default.args = list(as.table = TRUE))
 lattice.options(default.theme = "standard.theme")
 ```
 
-Import data
+Import data; note that the set of **selected genes have been updated** based on later analysis
 
 ```r
 E <- get.predictors() # default arguments
+# updated gene set
+gene.ids <- unlist(read.csv("../../data/genes.regression.new", as.is = TRUE))
+names(gene.ids) <- gene.ids
 Y <- get.readcounts(gene.ids = gene.ids, count.thrs = 0)
 #nobs <- as.data.frame(lapply(list(unfiltered=Y, filtered=Y.f), function(y) sapply(y, function(x) sum(! is.na(x[[1]])))))
 ```
@@ -123,12 +127,34 @@ Betas <- lapply(M, function(m) { x <- get.estimate.CI(m$forward); x <- x[ ! x$Co
 
 
 
+
+```r
+# conditioning on the Coefficient instead of Gene
+my.dotplot(fm = Gene ~ Effect | Coefficient, data = Ef.long$logi.S, main = "Effects under logi.S")
+```
+
 ![plot of chunk effects-fw-rv-logi.S-trellis-coef-cond](figure/effects-fw-rv-logi.S-trellis-coef-cond-1.png)
+
+
+```r
+my.segplot(data = Betas$logi.S)
+```
 
 ![plot of chunk reg-coef-logi.S](figure/reg-coef-logi.S-1.png)
 
 #### Under wnlm.R
 
+
+```r
+# conditioning on the Coefficient instead of Gene
+my.dotplot(fm = Gene ~ Effect | Coefficient, data = Ef.long$wnlm.R, main = "Effects under wnlm.R")
+```
+
 ![plot of chunk effects-fw-rv-wnlm.R-trellis-coef-cond](figure/effects-fw-rv-wnlm.R-trellis-coef-cond-1.png)
+
+
+```r
+my.segplot(data = Betas$wnlm.R, main = expression(paste("99 % CI for ", beta, " under wnlm.R")))
+```
 
 ![plot of chunk reg-coef-wnlm.R](figure/reg-coef-wnlm.R-1.png)

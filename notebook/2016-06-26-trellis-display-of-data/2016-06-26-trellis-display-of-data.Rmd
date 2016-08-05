@@ -12,7 +12,10 @@ opts_chunk$set(dpi = 144)
 
 ```{r cache=TRUE, echo=FALSE}
 E <- get.predictors()
-Y <- get.readcounts(gene.ids) # gene.ids is predifined
+# updated gene set
+gene.ids <- unlist(read.csv("../../data/genes.regression.new", as.is = TRUE))
+names(gene.ids) <- gene.ids
+Y <- get.readcounts(gene.ids)
 # e.vars defined in fit-glms.R
 S.long <- reshape(cbind(lapply(Y, getElement, "S"), E[ e.vars ]), # the data to be reshaped; e.vars is predifined
                   v.names = "S", varying = list(names(Y)), # the component that varies with genes ('time')
@@ -39,7 +42,7 @@ lattice.options(default.args = list(as.table = TRUE))
 lattice.options(default.theme = "standard.theme")
 #lattice.options(default.theme = "ggplot2like"); lattice.options(ggplot2like.opts())
 ```
-```{r S-age-smooth, dev=c("png", "pdf"), fig.width=10, cache=TRUE, warning=FALSE}
+```{r S-age-smooth, dev=c("png", "pdf"), fig.width=10, warning=FALSE}
 P <- list()
 # lattice implementation
 P$s.age.inst$lattice <-
@@ -49,7 +52,7 @@ P$s.age.inst$lattice <-
                panel.smoother(x, y, col = "black", lwd = 2, ...)
            },
            auto.key = list(title = "Insitution", space = "right"),
-           aspect = "fill", layout = c(6, 5))
+           aspect = "fill", layout = c(6, 6))
 # ggplot2 implementation
 g <- ggplot(data = S.long, aes(x = Age, y = S))
 g <- g + geom_point(pch = "o", aes(color = Institution))
@@ -62,11 +65,11 @@ plot(P$s.age.inst$ggplot2)
 
 ### Dependence on gene, age, and total read count $N$
 
-```{r S-age-tot-read-count, dev=c("png", "pdf"), fig.width=10, cache=TRUE, warning=FALSE, echo=FALSE}
+```{r S-age-tot-read-count, dev=c("png", "pdf"), fig.width=10, warning=FALSE, echo=FALSE}
 # easy lattice implementation
 P$s.age.n$lattice <-
     levelplot(log10(N) ~ Age + S | Gene, data = Y.long, alpha = 1.0, col = "white",
-              panel = panel.levelplot.points,
+              panel = panel.levelplot.points, layout = c(6, 6),
               par.settings = list(regions = list(col = colorRampPalette(c("blue", "red")))))
 #
 # alternative lattice implementation without color scale, see Fig 5.5 in 'Lattice: Multivariate Data Visualization with R', http://lmdvr.r-forge.r-project.org
@@ -108,7 +111,7 @@ qplot(RIN, RIN2, data = E[sort.int(E$RIN, index.return = TRUE)$ix, ],
 
 Both "scatter plot matrices" show the same set of pairwise associations (top: `lattice`, bottom: `ggplot2` and `GGally` packages).
 
-```{r evar-scatterplot-matrix, dev=c("png", "pdf"), fig.width=10, fig.asp=1, cache=TRUE, warning=FALSE, echo=FALSE, message=FALSE}
+```{r evar-scatterplot-matrix, dev=c("png", "pdf"), fig.width=10, fig.asp=1, warning=FALSE, echo=FALSE, message=FALSE}
 P$splom$lattice <-
     splom(E[ e.vars[c(1:6, 10)]], pch = "o", alpha = 0.3, xlab = "", pscales=0,
           panel = function(x, y, ...)

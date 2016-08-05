@@ -29,9 +29,6 @@ EOF
 ```
 
 
-```
-## Loading required package: RColorBrewer
-```
 
 ### Import read count data
 
@@ -64,61 +61,51 @@ N <- data.frame(lapply(Y, getElement, "N"), check.names = FALSE)
 rm(Y)
 ```
 
+Perform filtering
+
 ### Filtering genes based on number of observations
 
 For more than half of even the genes $g$ with nonempty files the number $I_g$ of observations (the number of individuals/RNA samples with read count data on $g$) is zero.  In what follows, not only these genes are filtered out but also those with less than 10 observations, indicated by the vertical dashed line on the empirical ECDF plot below.
 
 
 ```r
-min.n.obs <- 10
+min.n.obs <- 25
 ```
 ![plot of chunk ecdf-n-obs](figure/ecdf-n-obs-1.png)
 
 ### Data preparation
 
+Update: **filtering** based on a subsequent post
+
+```r
+min.obs <- 25 # reset t_ind
+# implementation detail!: filter out genes with fewer observations than 'min.obs'
+g.passed <- names(S)[sapply(S, function(y) sum(! is.na(y)) >= min.obs)]
+min.reads <- 15 # set t_rc
+S <- filter.min.read(min.reads, X = S[g.passed], N = N[g.passed], min.obs = min.obs)
+N <- filter.min.read(min.reads, X = N[g.passed], N = N[g.passed], min.obs = min.obs)
+# ECDFs for all filter levels and all genes g; individual ECDF components F_g are named according to gene g
+# the expression also sorts genes g according to F_g(0.9) where F_g is the ECDF for gene g 
+ED <- list(fun = sorted.ecdfs(S))
+# evaluate ECDF at
+ED$ss <- seq(0.5, 1, length.out = 101)
+ED$val <- data.frame(lapply(ED$fun, function(f) f(ED$ss)), check.names = FALSE)
+# fractions of interest
+frac <- do.fractions(ED$fun, S, N, frac = 10:6 / 10,
+                     ucl.fun = CI.p, max.ucl = 0.7, max.s = 0.6)
+# sort data according to gene ranking
+S <- S[names(ED$fun)]
+N <- N[names(ED$fun)]
+```
+
 Computationally demanding calculations to prepare data for presentation:
 
 
 ```r
-# filter genes given the minimum number of allowed observations 'min.n.obs'
-ok.genes <- names(S)[sapply(S, function(y) sum(! is.na(y)) >= min.n.obs)]
-# obtain the ECDF of S_ig for all given genes g
-ED <- emp.distr.S(S[ , ok.genes],
-                  ss = seq(from = 0.5, to = 1, length.out = 101),
-                  with.density = TRUE)
-# order genes according to the value of the ECDF at 0.9
-gene.order <- order(sapply(ED[[1]], function(f) f(0.9)))
-ecdf.val.w <- ED$ecdf.val[ , gene.order]
-density.w <- ED$density[ , gene.order]
-ED.long <- reshape(ecdf.val.w, v.names = "ECDF", varying = names(ecdf.val.w),
-                   timevar = "gene", times = factor(names(ecdf.val.w)),
+ED.long <- reshape(ED$val, v.names = "ECDF", varying = names(ED$val),
+                   timevar = "gene", times = factor(names(ED$val)),
                    idvar = "s", ids = ED$ss, direction = "long")
-density.long <- reshape(density.w, v.names = "density", varying = names(density.w),
-                   timevar = "gene", times = factor(names(density.w)),
-                   idvar = "s", ids = ED$ss, direction = "long")
-ED.long$density <- density.long$density
-ED.long$gene <- factor(ED.long$gene, levels = names(ecdf.val.w), ordered = TRUE)
-rm(list = c("ecdf.val.w", "density.w", "density.long"))
-```
-
-
-
-
-```r
-sorted.genes <- ok.genes[gene.order]
-names(sorted.genes) <- sorted.genes
-cum.fraction <- data.frame(lapply(ED$ecdf[sorted.genes], function(f) f(10:6 / 10)), check.names = FALSE)
-row.names(cum.fraction) <- as.character(10:6 / 10)
-andys.test <-
-    data.frame(lapply(sorted.genes,
-                      function(g)
-                          sum(S[[g]] <= 0.6 & CI.p(S[[g]], N[[g]])$upper < 0.7, na.rm = TRUE) / sum(! is.na(S[[g]]))),
-               check.names = FALSE)
-row.names(andys.test) <- "andys.test"
-cum.fraction <- rbind(cum.fraction, andys.test)
-rm(andys.test)
-fraction <- data.frame(lapply(cum.fraction, function(y) - diff(c(y, 0))), check.names = FALSE)
-row.names(fraction) <- row.names(cum.fraction)
+ED.long$gene <- factor(ED.long$gene, levels = names(ED$val), ordered = TRUE)
 ```
 
 ### Figure for manuscript
@@ -136,17 +123,6 @@ This figure is intended to:
 * support the conclusion that $\approx 1 \%$ of all genes are appreciably imbalanced (monoallelically expressed)
 
 ![plot of chunk complex-plot](figure/complex-plot-1.png)
-
-### Fixed ranking bug
-
-An earlier version of the above figure had incorrect ranking.  The figure compares that to the present, correct, ranking:
-
-![plot of chunk fixed-ranking](figure/fixed-ranking-1.png)
-
-### Another view on ranked genes
-
-![plot of chunk rank-by-ecdf-top](figure/rank-by-ecdf-top-1.png)
-
 
 [ifat]: http://katahdin.mssm.edu/ifat/web/cm/home
 [Fig 1]: https://docs.google.com/presentation/d/1YvpA1AJ-zzir1Iw0F25tO9x8gkSAzqaO4fjB7K3zBhE/edit#slide=id.p4

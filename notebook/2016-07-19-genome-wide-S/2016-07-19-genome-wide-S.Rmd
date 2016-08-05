@@ -28,6 +28,7 @@ opts_chunk$set(fig.width = 10)
 opts_chunk$set(dev=c("png", "pdf"))
 lattice.options(default.args = list(as.table = TRUE))
 lattice.options(default.theme = "standard.theme")
+#lattice.options(default.theme = "col.whitebg")
 lattice.options(skip.boundary.labels = 0)
 ```
 
@@ -59,12 +60,14 @@ N <- data.frame(lapply(Y, getElement, "N"), check.names = FALSE)
 rm(Y)
 ```
 
+Perform filtering
+
 ### Filtering genes based on number of observations
 
 For more than half of even the genes $g$ with nonempty files the number $I_g$ of observations (the number of individuals/RNA samples with read count data on $g$) is zero.  In what follows, not only these genes are filtered out but also those with less than 10 observations, indicated by the vertical dashed line on the empirical ECDF plot below.
 
 ```{r}
-min.n.obs <- 10
+min.n.obs <- 25
 ```
 ```{r ecdf-n-obs, echo=FALSE, fig.width=7, fig.asp=2/3}
 ecdfplot(sapply(S, function(y) sum(! is.na(y))), type = c("l", "g"),
@@ -77,55 +80,35 @@ ecdfplot(sapply(S, function(y) sum(! is.na(y))), type = c("l", "g"),
 
 ### Data preparation
 
+Update: **filtering** based on a subsequent post
+```{r cache=TRUE}
+min.obs <- 25 # reset t_ind
+# implementation detail!: filter out genes with fewer observations than 'min.obs'
+g.passed <- names(S)[sapply(S, function(y) sum(! is.na(y)) >= min.obs)]
+min.reads <- 15 # set t_rc
+S <- filter.min.read(min.reads, X = S[g.passed], N = N[g.passed], min.obs = min.obs)
+N <- filter.min.read(min.reads, X = N[g.passed], N = N[g.passed], min.obs = min.obs)
+# ECDFs for all filter levels and all genes g; individual ECDF components F_g are named according to gene g
+# the expression also sorts genes g according to F_g(0.9) where F_g is the ECDF for gene g 
+ED <- list(fun = sorted.ecdfs(S))
+# evaluate ECDF at
+ED$ss <- seq(0.5, 1, length.out = 101)
+ED$val <- data.frame(lapply(ED$fun, function(f) f(ED$ss)), check.names = FALSE)
+# fractions of interest
+frac <- do.fractions(ED$fun, S, N, frac = 10:6 / 10,
+                     ucl.fun = CI.p, max.ucl = 0.7, max.s = 0.6)
+# sort data according to gene ranking
+S <- S[names(ED$fun)]
+N <- N[names(ED$fun)]
+```
+
 Computationally demanding calculations to prepare data for presentation:
 
-```{r genomwide-data-shaping, cache=TRUE, warning=FALSE}
-# filter genes given the minimum number of allowed observations 'min.n.obs'
-ok.genes <- names(S)[sapply(S, function(y) sum(! is.na(y)) >= min.n.obs)]
-# obtain the ECDF of S_ig for all given genes g
-ED <- emp.distr.S(S[ , ok.genes],
-                  ss = seq(from = 0.5, to = 1, length.out = 101),
-                  with.density = TRUE)
-# order genes according to the value of the ECDF at 0.9
-gene.order <- order(sapply(ED[[1]], function(f) f(0.9)))
-ecdf.val.w <- ED$ecdf.val[ , gene.order]
-density.w <- ED$density[ , gene.order]
-ED.long <- reshape(ecdf.val.w, v.names = "ECDF", varying = names(ecdf.val.w),
-                   timevar = "gene", times = factor(names(ecdf.val.w)),
+```{r genomwide-data-shaping-1, cache=TRUE, warning=FALSE}
+ED.long <- reshape(ED$val, v.names = "ECDF", varying = names(ED$val),
+                   timevar = "gene", times = factor(names(ED$val)),
                    idvar = "s", ids = ED$ss, direction = "long")
-density.long <- reshape(density.w, v.names = "density", varying = names(density.w),
-                   timevar = "gene", times = factor(names(density.w)),
-                   idvar = "s", ids = ED$ss, direction = "long")
-ED.long$density <- density.long$density
-ED.long$gene <- factor(ED.long$gene, levels = names(ecdf.val.w), ordered = TRUE)
-rm(list = c("ecdf.val.w", "density.w", "density.long"))
-```
-
-```{r genomwide-data-shaping-incorrect, cache=TRUE, warning=FALSE, echo=FALSE}
-ED.long.old <- reshape(ED$ecdf.val, v.names = "ECDF", varying = names(ED$ecdf.val),
-                   timevar = "gene", times = factor(names(ED$ecdf.val)),
-                   idvar = "s", ids = ED$ss, direction = "long")
-ED.long.old$density <- reshape(ED$density, v.names = "density", varying = names(ED$density),
-                   timevar = "gene", times = factor(names(ED$density)),
-                   idvar = "s", ids = ED$ss, direction = "long")$density
-ED.long.old$gene <- factor(ED.long.old$gene, levels = names(ED$ecdf.val), ordered = TRUE)
-```
-
-```{r frequencies-for-classes, cache=TRUE, warning=FALSE}
-sorted.genes <- ok.genes[gene.order]
-names(sorted.genes) <- sorted.genes
-cum.fraction <- data.frame(lapply(ED$ecdf[sorted.genes], function(f) f(10:6 / 10)), check.names = FALSE)
-row.names(cum.fraction) <- as.character(10:6 / 10)
-andys.test <-
-    data.frame(lapply(sorted.genes,
-                      function(g)
-                          sum(S[[g]] <= 0.6 & CI.p(S[[g]], N[[g]])$upper < 0.7, na.rm = TRUE) / sum(! is.na(S[[g]]))),
-               check.names = FALSE)
-row.names(andys.test) <- "andys.test"
-cum.fraction <- rbind(cum.fraction, andys.test)
-rm(andys.test)
-fraction <- data.frame(lapply(cum.fraction, function(y) - diff(c(y, 0))), check.names = FALSE)
-row.names(fraction) <- row.names(cum.fraction)
+ED.long$gene <- factor(ED.long$gene, levels = names(ED$val), ordered = TRUE)
 ```
 
 ### Figure for manuscript
@@ -148,39 +131,21 @@ S.long <- reshape.Y(Y = S, sel.g = sel.g)
 plots <- list()
 superpose.line <- standard.theme(color = FALSE)$superpose.line
 superpose.line$lty <- c(2, 1, 3:7)
-plots$density <- my.densityplot(S.long, par.settings = list(superpose.line = superpose.line))
-plots$ecdf <- my.ecdfplot(S.long, eval.at = c(0.9), par.settings =
+plots$density <- my.densityplot(S.long, par.settings = list(superpose.line = superpose.line), xlab = NULL, ylab = "density")
+plots$density <- update(plots$density, scales = list(y = list(at = pretty(density(S[[sel.g[1]]], na.rm = TRUE)$y, n = 3))))
+plots$ecdf <- my.ecdfplot(S.long, eval.at = c(0.9), survival = TRUE, par.settings =
                           list(superpose.line = superpose.line,
-                               plot.symbol = list(pch = 21, col = "black", cex = 1, fill = "lightgray")))
-plots$level <- my.levelplot(ED.long, pct.top.g = 2, n.all.g = length(ok.genes), top.on.top = TRUE)
+                               plot.symbol = list(pch = 21, col = "black", cex = 2, fill = "lightgreen")))
+plots$level <- my.levelplot(ED.long, pct.top.g = 2, n.all.g = length(levels(ED.long$gene)), top.on.top = TRUE, xlab = "imbalance statistic, s", ylab = "gene rank")
 plots$level.sel.g <- my.levelplot.sel.g(ED.long, sel.g = sel.g, letter.labels = TRUE)
-plots$rank <- rankplot(cum.fraction, plot.andys.test = FALSE, pct.top.g = 2, sel.g = sel.g, top.on.top = TRUE,
-                       par.settings = list(superpose.symbol =
-                                           list(pch = c(20, 21, 21)[-1], col = c("gray", "black", "black")[-1],
-                                                alpha = c(0.5, 0.5, 1)[-1], cex = c(0.1, 0.5, 1)[-1], fill = "lightgray")))
+plots$rank <- rankplot.2(frac, pct.top.g = 2, sel.g = sel.g, top.on.top = TRUE,
+                          xlab = "gene score", ylab = NULL,
+                         par.settings = list(superpose.symbol =
+                                             list(pch = 21, col = c("black", "black"), fill = c("lightgray", "lightgreen"), cex = c(1.0, 2))))
+
 # print to complex layout
 plot.all(plots)
 ```
-
-### Fixed ranking bug
-
-An earlier version of the above figure had incorrect ranking.  The figure compares that to the present, correct, ranking:
-
-```{r fixed-ranking, echo=FALSE, fig.width=7}
-plot(my.levelplot(ED.long, main = "Correct ranking"), split = c(1, 1, 2, 1), more = TRUE)
-plot(my.levelplot(ED.long.old, main = "Incorrect ranking"), split = c(2, 1, 2, 1), more = FALSE)
-```
-
-### Another view on ranked genes
-
-```{r rank-by-ecdf-top, echo=FALSE, fig.width=7, fig.aspect=2}
-#ecdf.at.some.s(ED = ED, sel.g = ok.genes[gene.order[seq_len(50)]], ylab = "gene rank")
-trellis.par.set(superpose.polygon = list(lty = 0))
-xlab <- "fraction of indiv."
-plot(barchart(t(as.matrix(fraction[rev(sorted.genes[1:100])])), par.settings = list(superpose.polygon = list(col = palette.ifat(detailed = FALSE))), main = "Top 100 genes", xlab = xlab), split = c(1, 1, 2, 1), more = TRUE)
-plot(barchart(t(as.matrix(fraction[rev(sorted.genes)])), par.settings = list(superpose.polygon = list(col = palette.ifat(detailed = FALSE))), scales = list(y = list(at = y.lab <- seq(0, length(sorted.genes), by = 1000), label = as.character(rev(y.lab)))), main = "All genes", xlab = xlab), split = c(2, 1, 2, 1), more = FALSE, box.width = 1)
-```
-
 
 [ifat]: http://katahdin.mssm.edu/ifat/web/cm/home
 [Fig 1]: https://docs.google.com/presentation/d/1YvpA1AJ-zzir1Iw0F25tO9x8gkSAzqaO4fjB7K3zBhE/edit#slide=id.p4

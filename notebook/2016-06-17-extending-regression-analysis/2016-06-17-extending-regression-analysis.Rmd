@@ -39,8 +39,8 @@ source("~/projects/monoallelic-brain/src/import-data.R")
 source("~/projects/monoallelic-brain/src/fit-glms.R")
 ```
 
-Select the following (candidate) imprinted genes:
-```{r}
+~~Select the following (candidate) imprinted genes:~~
+```{r eval=FALSE}
              # 8 genes analyzed by Ifat
 gene.ids <- c("PEG3", "INPP5F", "SNRPN", "PWAR6", "ZDBF2", "MEG3", "ZNF331", "GRB10",
              # 5 more genes analyzed by AGK 3/2/16
@@ -49,6 +49,13 @@ gene.ids <- c("PEG3", "INPP5F", "SNRPN", "PWAR6", "ZDBF2", "MEG3", "ZNF331", "GR
              "IGF2", "NLRP2", "UBE3A",
              # 'green' novel 1 MB imprinted genes; note that PWAR6 is already included above
              "TMEM261P1", "AL132709.5", "RP11-909M7.3", "SNORD116-20", "RP13-487P22.1", "hsa-mir-335", "PWRN1")
+```
+
+
+**Update** following readjustment of calling monoallelic genes (in a later post) select these genes:
+```{r}
+gene.ids <- unlist(read.csv("../../data/genes.regression.new", as.is = TRUE))
+names(gene.ids) <- gene.ids
 ```
 
 

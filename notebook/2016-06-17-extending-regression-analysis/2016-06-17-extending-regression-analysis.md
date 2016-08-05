@@ -5,21 +5,6 @@ library(lattice)
 library(latticeExtra)
 ```
 
-```
-## Loading required package: RColorBrewer
-```
-
-```
-## 
-## Attaching package: 'latticeExtra'
-```
-
-```
-## The following object is masked from 'package:ggplot2':
-## 
-##     layer
-```
-
 ## Changes in filtering
 
 ### The original filtering setup
@@ -56,7 +41,7 @@ source("~/projects/monoallelic-brain/src/import-data.R")
 source("~/projects/monoallelic-brain/src/fit-glms.R")
 ```
 
-Select the following (candidate) imprinted genes:
+~~Select the following (candidate) imprinted genes:~~
 
 ```r
              # 8 genes analyzed by Ifat
@@ -67,6 +52,14 @@ gene.ids <- c("PEG3", "INPP5F", "SNRPN", "PWAR6", "ZDBF2", "MEG3", "ZNF331", "GR
              "IGF2", "NLRP2", "UBE3A",
              # 'green' novel 1 MB imprinted genes; note that PWAR6 is already included above
              "TMEM261P1", "AL132709.5", "RP11-909M7.3", "SNORD116-20", "RP13-487P22.1", "hsa-mir-335", "PWRN1")
+```
+
+
+**Update** following readjustment of calling monoallelic genes (in a later post) select these genes:
+
+```r
+gene.ids <- unlist(read.csv("../../data/genes.regression.new", as.is = TRUE))
+names(gene.ids) <- gene.ids
 ```
 
 
@@ -88,32 +81,39 @@ The number of available observations is closely (and inversely) related to the s
 
 ```
 ##               unfiltered filtered
-## PEG3                 500      492
-## INPP5F               397      396
-## SNRPN                385      316
-## PWAR6                388      386
-## ZDBF2                435      386
-## MEG3                 513      464
-## ZNF331               343      257
-## GRB10                403      194
-## PEG10                397      369
+## MAGEL2               184        1
+## TMEM261P1            109        0
 ## SNHG14               534      475
+## AL132709.5           389      133
+## RP11-909M7.3         271       11
+## ZIM2                 240      223
 ## NAP1L5               222      183
+## MEG3                 513      464
+## PEG3                 500      492
+## PWAR6                388      386
+## FAM50B               120       12
+## NDN                   88       65
+## SNURF                297      285
+## PEG10                397      369
+## SNRPN                385      316
 ## KCNQ1OT1             385      191
+## ZDBF2                435      386
+## GRB10                403      194
+## SNORD116-20          193      185
+## KCNK9                242        1
+## INPP5F               397      396
+## RP13-487P22.1         48        7
 ## MEST                 341      237
+## ZNF331               343      257
+## hsa-mir-335          136        4
+## DIRAS3                44        0
+## PWRN1                155       10
 ## IGF2                 183       14
 ## NLRP2                177       28
 ## UBE3A                 94       19
-## TMEM261P1            109        0
-## AL132709.5           389      133
-## RP11-909M7.3         271       11
-## SNORD116-20          193      185
-## RP13-487P22.1         48        7
-## hsa-mir-335          136        4
-## PWRN1                155       10
-## WA.8                 579      578
-## WA                   579      578
-## UA.8                 579      578
+## WA.8                 577      566
+## WA                   579      579
+## UA.8                 577      560
 ## UA                   579      578
 ```
 which shows that the largest trade-off of filtering arises for genes for which the number of observations is ab ovo small, in particular for most genes in the "novel 1 MB" category.  The same information is plotted below; *blue* denotes known imprinted genes, *green* candidate imprinted genes (<1 MB) and *magenta* two gene sets aggregated by weighted average (`WA.8` and `WA`, overlapping each other).  The horizontal dashed line shows the filtering threshold of 180 observations that was defined previously to remove genes with little data.
@@ -146,6 +146,8 @@ M <- do.all.fits(Y[to.fit.ids], preds = e.vars)
 
 ```
 ## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
 ```
 
 ```
@@ -153,6 +155,8 @@ M <- do.all.fits(Y[to.fit.ids], preds = e.vars)
 ```
 
 ```
+## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
 ## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
 ```
 
@@ -172,13 +176,14 @@ names(M[[1]])
 ```
 
 ```
-##  [1] "PEG3"          "INPP5F"        "SNRPN"         "PWAR6"        
-##  [5] "ZDBF2"         "MEG3"          "ZNF331"        "GRB10"        
-##  [9] "PEG10"         "SNHG14"        "NAP1L5"        "KCNQ1OT1"     
-## [13] "MEST"          "IGF2"          "NLRP2"         "UBE3A"        
-## [17] "TMEM261P1"     "AL132709.5"    "RP11-909M7.3"  "SNORD116-20"  
-## [21] "RP13-487P22.1" "hsa-mir-335"   "PWRN1"         "WA.8"         
-## [25] "WA"
+##  [1] "MAGEL2"        "TMEM261P1"     "SNHG14"        "AL132709.5"   
+##  [5] "RP11-909M7.3"  "ZIM2"          "NAP1L5"        "MEG3"         
+##  [9] "PEG3"          "PWAR6"         "FAM50B"        "NDN"          
+## [13] "SNURF"         "PEG10"         "SNRPN"         "KCNQ1OT1"     
+## [17] "ZDBF2"         "GRB10"         "SNORD116-20"   "KCNK9"        
+## [21] "INPP5F"        "RP13-487P22.1" "MEST"          "ZNF331"       
+## [25] "hsa-mir-335"   "DIRAS3"        "PWRN1"         "IGF2"         
+## [29] "NLRP2"         "UBE3A"         "WA.8"          "WA"
 ```
 
 The warnings arising during the fit also reflect the fact that for TMEM261P1 the fit failed to converge both under `logi.S` and `logi2.S`, so let

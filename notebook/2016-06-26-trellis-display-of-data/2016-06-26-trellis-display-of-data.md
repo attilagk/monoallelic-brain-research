@@ -30,7 +30,7 @@ P$s.age.inst$lattice <-
                panel.smoother(x, y, col = "black", lwd = 2, ...)
            },
            auto.key = list(title = "Insitution", space = "right"),
-           aspect = "fill", layout = c(6, 5))
+           aspect = "fill", layout = c(6, 6))
 # ggplot2 implementation
 g <- ggplot(data = S.long, aes(x = Age, y = S))
 g <- g + geom_point(pch = "o", aes(color = Institution))

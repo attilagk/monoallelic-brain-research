@@ -74,12 +74,11 @@ my.densityplot <- function(Y.long, ...) {
                 #par.settings = list(superpose.line = superpose.line),
                 auto.key = list(text = paste0(letters[seq_along(sel.g)], ": ", sel.g),
                                 corner = c(0.1, 0.9), lines = TRUE, points = FALSE),
-                xlab = NULL, ylab = "density est.",
                 ...)
 }
 
 # new ECDF plot
-my.ecdfplot <- function(Y.long, eval.at = c(0.9), ...) {
+my.ecdfplot <- function(Y.long, eval.at = c(0.9), survival = TRUE, ...) {
     df <- expand.grid(x = c(0.5, 0.55), y = 0:100 / 100)
     df$z <- rep(0:100 / 100, each = 2)
     df$z[seq(2, 202, by = 2)] <- NA
@@ -87,7 +86,6 @@ my.ecdfplot <- function(Y.long, eval.at = c(0.9), ...) {
         with(df, panel.levelplot(x = x, y = y, z = z, at = 0:100 / 100, subscripts = 0:202, ...))
         panel.superpose(x, groups = groups, subscripts = subscripts,
                         panel.groups = panel.ecdfplot, type = c("s"), ...)
-        #panel.abline(v = eval.at, lty = 2, col = "blue")
         panel.grid(h = 0, v = -1)
         g.lev <- levels(groups)
         ss <- rep(c(eval.at,
@@ -99,26 +97,29 @@ my.ecdfplot <- function(Y.long, eval.at = c(0.9), ...) {
         #                panel.groups = panel.xyplot, col = "blue", pch = 21, ...)
         lapply(levels(groups),
                function(g) panel.xyplot(x = eval.at, y = ecdf(x[groups == g])(eval.at),
-                                        #col = "blue", pch = 21, fill = "lightblue",
                                         ...))
         lapply(seq_along(levels(groups)),
                function(i)
-                   panel.xyplot(x = eval.at - 0.02, y = ecdf(x[groups == levels(groups)[i]])(eval.at),
+                   panel.xyplot(x = eval.at - 0.00, y = ecdf(x[groups == levels(groups)[i]])(eval.at),
                                 pch = letters[i], col = "black", cex = 1.5, ...))
     }
 
-    ecdfplot(~ s, data = Y.long, groups = gene, eval.at = c(0.9),
-             df = df,
-             scales = list(x = list(draw = FALSE), y = list(rot = 90, relation = "free")),
-             panel = panel.my.ecdfplot,
-             xlim = c(0.5, 1),
-             ylab = "ECDF", xlab = NULL, ...)
-
+    ep <- ecdfplot(~ s, data = Y.long, groups = gene, eval.at = c(0.9),
+                   df = df,
+                   scales = list(x = list(draw = FALSE),
+                                 y = list(rot = 90, relation = "free", at = yloc <- seq(0, 1, length.out = 5), label = yloc)),
+                   panel = panel.my.ecdfplot,
+                   xlim = c(0.5, 1),
+                   ylab = "ECDF", xlab = NULL, ...)
+    if(survival)
+        ep <- update(ep, ylab = "1 - ECDF",
+                     scales = list(x = list(limits = c(0.5, 1)), y = list(limits = c(1, 0), labels = rev(yloc))))
+    return(ep)
 }
 
-panel.my.levelplot <- function(...) {
+panel.my.levelplot <- function(..., grid.h, grid.v) {
     panel.levelplot(...)
-    panel.grid(h = 0, v = -1)
+    panel.grid(h = grid.h, v = grid.v)
 }
 
 my.levelplot.sel.g <- function(ED.long, sel.g = c("PEG10", "ZNF331", "AFAP1"), letter.labels = FALSE, ...) {
@@ -128,6 +129,7 @@ my.levelplot.sel.g <- function(ED.long, sel.g = c("PEG10", "ZNF331", "AFAP1"), l
     levelplot(ECDF ~ s * gene, data = ED.long, legend = NULL, colorkey = FALSE,
                     panel = panel.my.levelplot, subset = gene %in% rev(sel.g),
                     xlab = NULL,
+                    grid.h = 0, grid.v = -1,
                     scales =
                         list(x = list(draw = FALSE),
                              y = list(rot = y.rot, labels = y.labels, relation = "free")),
@@ -135,7 +137,7 @@ my.levelplot.sel.g <- function(ED.long, sel.g = c("PEG10", "ZNF331", "AFAP1"), l
 }
 
 # ECDF genome-wide
-my.levelplot <- function(ED.long, pct.top.g = 2, n.all.g = length(ok.genes), top.on.top = TRUE, ...) {
+my.levelplot <- function(ED.long, pct.top.g = 2, n.all.g = length(levels(ED.long$gene)), top.on.top = TRUE, ...) {
     # data manipulation
     n.top.g <- ceiling(n.all.g * pct.top.g / 100)
     ED.long$rank.segment <- factor(rep(1, nrow(ED.long)), levels = c("top", "bottom"), ordered = TRUE)
@@ -143,14 +145,17 @@ my.levelplot <- function(ED.long, pct.top.g = 2, n.all.g = length(ok.genes), top
     ED.long$rank.segment[ with(ED.long, ! gene %in% levels(gene)[seq_len(n.top.g)]) ] <- "bottom"
     if(top.on.top) ED.long <- top.on.top(ED.long)
     # create trellis object
+    n.grid.v <- 3
     lp <- levelplot(ECDF ~ s * gene | rank.segment, data = ED.long, legend = NULL, colorkey = FALSE,
                     panel = panel.my.levelplot,
+                    grid.h = - n.grid.v, grid.v = -1,
                     scales =
                         list(y =
                              list(rot = 90, relation = "free",
+                                  at = list(pretty(seq(n.top.g, 1), n = n.grid.v),
+                                            pretty(seq(n.all.g, 1), n = n.grid.v)),
                                   limits = list(c(n.top.g, 1),
                                                 c(n.all.g, n.top.g + 1)))),
-                    xlab = "imbalance score, s", ylab = "gene rank",
                     layout = c(1, 2),
                     ...)
     # edit dimnames
@@ -160,6 +165,45 @@ my.levelplot <- function(ED.long, pct.top.g = 2, n.all.g = length(ok.genes), top
         bottom <- paste("bottom", 100 - pct.top.g, "% of", "genes")
     dimnames(lp)$rank.segment <- c(paste("top", pct.top.g, "% of genes"), bottom)
     return(lp)
+}
+
+rankplot.2 <- function(frac, pct.top.g = 2, sel.g = c("PEG10", "ZNF331", "AFAP1"), top.on.top = TRUE, ...) {
+    n.top.g <- ceiling(length(frac) * pct.top.g / 100)
+    df <- data.frame(score = unlist(frac["1", ]))
+    df$gene <- factor(names(frac), levels = names(frac), ordered = TRUE)
+    df$pch <- rep("", nrow(df))
+    df$pch[with(df, gene %in% sel.g)] <- letters[seq_along(sel.g)]
+    df$rank.segment <-
+        factor(c(rep("top", n.top.g),
+                 rep("bottom", length(frac) - n.top.g)),
+               levels = c("top", "bottom"), ordered = TRUE)
+    df$score.sel.g <- df$score
+    df$score.sel.g[! with(df, gene %in% sel.g)] <- NA
+    if(top.on.top) df <- top.on.top(df)
+    my.prepanel <- function(x, y, ...) {
+        list(ylim = rev(range(y)))
+    }
+
+    panel.rankplot <- function(x, y, groups, subscripts, gene, ...) {
+        panel.grid(h = -3, v = 0)
+        panel.superpose(x, y, groups = groups, subscripts = subscripts, ...)
+        panel.xyplot(x, y, pch = as.character(gene[subscripts]), col = "black", cex = 1.5, ...)
+    }
+
+    rp <- xyplot(seq_along(score) ~ score + score.sel.g | rank.segment, data = df,
+                 x.sel.g = unlist(frac["1", sel.g]),
+                 y.sel.g = match(sel.g, names(frac)),
+                 gene = df$pch,
+                 layout = c(1, 2), prepanel = my.prepanel, panel = panel.rankplot,
+                 scales = list(y = list(relation = "free", draw = FALSE)),
+                 ...)
+    # edit dimnames
+    if(top.on.top)
+        bottom <- "all genes"
+    else
+        bottom <- paste("bottom", 100 - pct.top.g, "%")
+    dimnames(rp)$rank.segment <- c(paste("top", pct.top.g, "%"), bottom)
+    return(rp)
 }
 
 rankplot <-
@@ -180,7 +224,7 @@ rankplot <-
         df$ECDF.sel.g <- df$ECDF
         df$ECDF.sel.g[! with(df, gene %in% sel.g)] <- NA
         if(top.on.top) df <- top.on.top(df)
-        
+
         panel.rankplot <- function(x, y, groups, subscripts, ...) {
             panel.superpose(x, y, groups = groups, subscripts = subscripts, col = "blue", ...)
             dx <- ifelse(x < 0.5, 0.1, - 0.1)
@@ -193,7 +237,6 @@ rankplot <-
             fm <- formula(rev(seq_along(ECDF)) ~ ECDF + ECDF.sel.g | rank.segment)
         lp <-
             xyplot(fm, layout = c(1, 2),
-                   #panel = panel.rankplot,
                    data = df, xlim = c(0, 1), scales = list(y = list(relation = "free", draw = FALSE)),
                    ylab = NULL, xlab = "ECDF at s = 0.9",
                    ...)

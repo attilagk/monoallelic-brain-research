@@ -22,6 +22,9 @@ Next:
 
 ```r
 E <- get.predictors() # default arguments
+# updated gene set
+gene.ids <- unlist(read.csv("../../data/genes.regression.new", as.is = TRUE))
+names(gene.ids) <- gene.ids
 Y <- get.readcounts(gene.ids = gene.ids, count.thrs = 0)
 # predictors for conditioning
 s.p <- c("Institution", "Gender")

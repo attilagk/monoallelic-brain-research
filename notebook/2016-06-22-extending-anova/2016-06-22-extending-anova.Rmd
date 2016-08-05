@@ -20,13 +20,17 @@ source("~/projects/monoallelic-brain/src/import-data.R")
 source("~/projects/monoallelic-brain/src/fit-glms.R")
 opts_chunk$set(dpi = 144)
 opts_chunk$set(fig.width = 10)
+opts_chunk$set(dev=c("png", "pdf"))
 lattice.options(default.args = list(as.table = TRUE))
 lattice.options(default.theme = "standard.theme")
 ```
 
-Import data
+Import data; note that the set of **selected genes have been updated** based on later analysis
 ```{r cache=TRUE, warning=FALSE}
 E <- get.predictors() # default arguments
+# updated gene set
+gene.ids <- unlist(read.csv("../../data/genes.regression.new", as.is = TRUE))
+names(gene.ids) <- gene.ids
 Y <- get.readcounts(gene.ids = gene.ids, count.thrs = 0)
 #nobs <- as.data.frame(lapply(list(unfiltered=Y, filtered=Y.f), function(y) sapply(y, function(x) sum(! is.na(x[[1]])))))
 ```
@@ -89,19 +93,20 @@ my.dotplot <- function(fm = Predictor ~ Deviance | Gene, data = A.long$logi.S, .
               abline = list(v = 0, lty = 2),
               #scales = list(x = "free"),
               auto.key = list(text = levels(data$Order)[1:2], columns = 2),
-              aspect = 3, between = list(x = 0.2),
+              layout = c(8, 4),
+              between = list(x = 0.2),
               par.settings = list(superpose.symbol = list(pch = 21, alpha = 0.5)),
               ...)
 }
 ```
 
 Under `logi.S`:
-```{r anova-fw-rv-logi.S, dev=c("png","pdf"), echo=FALSE, cache=FALSE}
+```{r anova-fw-rv-logi.S, echo=FALSE, cache=TRUE}
 my.stripplot(fm = Predictor ~ Deviance | Order, data = A.long$logi.S, main = "ANOVA under logi.S")
 ```
 
 The same tendencies emerge under `wnlm.R`:
-```{r anova-fw-rv-wnlm.R, dev=c("png","pdf"), echo=FALSE}
+```{r anova-fw-rv-wnlm.R, echo=FALSE}
 my.stripplot(fm = Predictor ~ Deviance | Order, data = A.long$wnlm.R, main = "ANOVA under wnlm.R")
 ```
 
@@ -110,30 +115,30 @@ Ef.long <- lapply(M, function(m) { x <- l.l.effects(m); x <- x[ ! x$Coefficient 
 ```
 
 Under `logi.S`:
-```{r effects-fw-rv-logi.S, dev=c("png","pdf"), echo=FALSE}
+```{r effects-fw-rv-logi.S, echo=FALSE}
 my.stripplot(fm = Coefficient ~ Effect | Order, data = Ef.long$logi.S, main = "Effects under logi.S")
 ```
 
 Again, similar tendencies are observed under `wnlm.R`:
-```{r effects-fw-rv-wnlm.R, dev=c("png","pdf"), echo=FALSE}
+```{r effects-fw-rv-wnlm.R, echo=FALSE}
 my.stripplot(fm = Coefficient ~ Effect | Order, data = Ef.long$wnlm.R, main = "Effects under wnlm.R")
 ```
 
 ### Comparison with genes on relative scale
 
-```{r anova-fw-rv-logi.S-trellis, dev=c("png","pdf"), echo=FALSE}
+```{r anova-fw-rv-logi.S-trellis, echo=FALSE, fig.asp=1}
 my.dotplot(fm = Predictor ~ Deviance | Gene, data = A.long$logi.S, main = "ANOVA under logi.S", scales = list(x = "free"))
 ```
 
-```{r effects-fw-rv-logi.S-trellis, dev=c("png","pdf"), echo=FALSE}
+```{r effects-fw-rv-logi.S-trellis, echo=FALSE, fig.asp=1.4}
 my.dotplot(fm = Coefficient ~ Effect | Gene, data = Ef.long$logi.S, main = "Effects under logi.S", scales = list(x = "free"))
 ```
 
-```{r anova-fw-rv-wnlm.R-trellis, dev=c("png","pdf"), echo=FALSE}
+```{r anova-fw-rv-wnlm.R-trellis, echo=FALSE, fig.asp=1}
 my.dotplot(fm = Predictor ~ Deviance | Gene, data = A.long$wnlm.R, main = "ANOVA under wnlm.R", scales = list(x = "free"))
 ```
 
-```{r effects-fw-rv-wnlm.R-trellis, dev=c("png","pdf"), echo=FALSE}
+```{r effects-fw-rv-wnlm.R-trellis, echo=FALSE, fig.asp=1.4}
 my.dotplot(fm = Coefficient ~ Effect | Gene, data = Ef.long$wnlm.R, main = "Effects under wnlm.R", scales = list(x = "free"))
 ```
 
@@ -141,20 +146,21 @@ my.dotplot(fm = Coefficient ~ Effect | Gene, data = Ef.long$wnlm.R, main = "Effe
 
 This display is meant to be comparable to a similarly structured trellis display of estimated regression coefficients.
 
-```{r cache=TRUE, warning=FALSE, message=FALSE}
+```{r cache=TRUE, warning=FALSE, message=FALSE, fig.asp=1}
 Betas <- lapply(M, function(m) { x <- get.estimate.CI(m$forward); x <- x[ ! x$Coefficient %in% "(Intercept)", ] })
 ```
 
 #### Under logi.S
 
-```{r warning=FALSE, echo=FALSE, message=FALSE}
+```{r warning=FALSE, echo=FALSE, message=FALSE, fig.asp=1.7}
 my.segplot <- function(data = Betas$logi.S,
                        main = expression(paste("99 % CI for ", beta, " under logi.S")),
                        ...) {
     segplot(Gene ~ Lower.CL + Upper.CL | Coefficient,
             data = data,
             scales = list(x = list(relation = "free")),
-            aspect = 3, between = list(x = 0.2),
+            layout = c(6,4),
+            between = list(x = 0.2),
             panel = function(x, y, ...) {
                 panel.grid(h = -1, v = 0)
                 panel.segplot(x, y, ...)
@@ -164,22 +170,22 @@ my.segplot <- function(data = Betas$logi.S,
 }
 ```
 
-```{r effects-fw-rv-logi.S-trellis-coef-cond, dev=c("png","pdf"), fig.asp=1, echo=FALSE}
+```{r effects-fw-rv-logi.S-trellis-coef-cond, fig.asp=1.7}
 # conditioning on the Coefficient instead of Gene
 my.dotplot(fm = Gene ~ Effect | Coefficient, data = Ef.long$logi.S, main = "Effects under logi.S")
 ```
 
-```{r reg-coef-logi.S, dev=c("png", "pdf"), fig.width=10, fig.asp=1, warning=FALSE, echo=FALSE, message=FALSE}
+```{r reg-coef-logi.S, dev=c("png", "pdf"), fig.width=10, fig.asp=1.7}
 my.segplot(data = Betas$logi.S)
 ```
 
 #### Under wnlm.R
 
-```{r effects-fw-rv-wnlm.R-trellis-coef-cond, dev=c("png","pdf"), fig.asp=1, echo=FALSE}
+```{r effects-fw-rv-wnlm.R-trellis-coef-cond, fig.asp=1.7}
 # conditioning on the Coefficient instead of Gene
 my.dotplot(fm = Gene ~ Effect | Coefficient, data = Ef.long$wnlm.R, main = "Effects under wnlm.R")
 ```
 
-```{r reg-coef-wnlm.R, dev=c("png", "pdf"), fig.width=10, fig.asp=1, warning=FALSE, echo=FALSE, message=FALSE}
+```{r reg-coef-wnlm.R, dev=c("png", "pdf"), fig.width=10, fig.asp=1.7}
 my.segplot(data = Betas$wnlm.R, main = expression(paste("99 % CI for ", beta, " under wnlm.R")))
 ```
