@@ -39,7 +39,7 @@ source("~/projects/monoallelic-brain/src/import-data.R")
 source("~/projects/monoallelic-brain/src/fit-glms.R")
 ```
 
-~~Select the following (candidate) imprinted genes:~~
+**Obsolete**: Select the following (candidate) imprinted genes:
 ```{r eval=FALSE}
              # 8 genes analyzed by Ifat
 gene.ids <- c("PEG3", "INPP5F", "SNRPN", "PWAR6", "ZDBF2", "MEG3", "ZNF331", "GRB10",

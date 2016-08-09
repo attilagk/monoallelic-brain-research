@@ -61,6 +61,9 @@ such that $z_{p}$ is the $p$ quantile of the standard normal distribution and $n
 ### Genome-wide data import and preparation
 
 
+```
+## Loading required package: RColorBrewer
+```
 
 Load functions:
 

@@ -1,0 +1,127 @@
+## Motivation
+
+Imprinted gene **clusters**
+
+* delineation of clusters
+* clusters and age effect (gain, loss or no change)
+
+## Data import and preparation
+
+```{r echo=FALSE, echo=FALSE}
+library(lattice)
+library(latticeExtra)
+opts_chunk$set(dpi = 144)
+opts_chunk$set(fig.width = 10)
+opts_chunk$set(dev=c("png", "pdf"))
+opts_chunk$set(dev.args=list(bg = "transparent"))
+lattice.options(default.args = list(as.table = TRUE))
+lattice.options(default.theme = "standard.theme")
+```
+
+Load data importer functions:
+```{r}
+source("../../src/import-data.R")
+source("../../src/utils.R")
+source("~/projects/monoallelic-brain/src/fit-glms.R")
+```
+
+### Genome-wide data
+
+```{r cache=TRUE}
+gene.summary <-
+    read.csv("../../data/readcount/summary-all-genes.csv")
+rownames(gene.summary) <- gene.summary$Symbol
+gene.summary$file.size <-
+    read.csv("../../data/readcount/fsize-genes.csv", row.names = 2)[rownames(gene.summary), , drop = TRUE]
+gene.ids <- with(gene.summary, as.character(Symbol)[ file.size > 0 ])
+genes2fit <- unlist(read.csv("../../data/genes.regression.new", as.is = TRUE))
+names(genes2fit) <- genes2fit
+```
+
+```{r genomwide-data-import, cache=TRUE, warning=FALSE}
+Y <- get.readcounts(gene.ids, g.subsets = list(), sel.var = c("H", "N"))
+S <- data.frame(lapply(gene.ids, function(g) Y[[g]]$H / Y[[g]]$N), check.names = FALSE)
+names(S) <- gene.ids
+N <- data.frame(lapply(Y, getElement, "N"), check.names = FALSE)
+rm(Y)
+```
+
+#### Filtering
+
+1. read count-based filter with threshold $t_\mathrm{rc}=15$
+1. individual-based filter with threshold $t_\mathrm{ind}=25$
+
+The code was copied from an earlier post and is hidden here.
+```{r cache=TRUE, echo=FALSE}
+min.obs <- 25 # reset t_ind
+# implementation detail!: filter out genes with fewer observations than 'min.obs'
+g.passed <- names(S)[sapply(S, function(y) sum(! is.na(y)) >= min.obs)]
+min.reads <- 15 # set t_rc
+S <- filter.min.read(min.reads, X = S[g.passed], N = N[g.passed], min.obs = min.obs)
+N <- filter.min.read(min.reads, X = N[g.passed], N = N[g.passed], min.obs = min.obs)
+# ECDFs for all filter levels and all genes g; individual ECDF components F_g are named according to gene g
+# the expression also sorts genes g according to F_g(0.9) where F_g is the ECDF for gene g 
+ED <- list(fun = sorted.ecdfs(S))
+# evaluate ECDF at
+ED$ss <- seq(0.5, 1, length.out = 101)
+ED$val <- data.frame(lapply(ED$fun, function(f) f(ED$ss)), check.names = FALSE)
+# fractions of interest
+frac <- do.fractions(ED$fun, S, N, frac = 10:6 / 10,
+                     ucl.fun = CI.p, max.ucl = 0.7, max.s = 0.6)
+# sort data according to gene ranking
+S <- S[names(ED$fun)]
+N <- N[names(ED$fun)]
+```
+
+```{r}
+gene.summary$imprinting.status <- factor(gene.summary$imprinted, ordered = TRUE)
+levels(gene.summary$imprinting.status) <- c("candidate", "candidate, <1MB", "known")
+gene.summary$Symbol <- factor(gene.summary$Symbol, levels = gene.summary$Symbol, ordered = TRUE)
+gene.summary$chr <- factor(paste("chr", gene.summary$chr), levels = paste("chr", seq_along(levels(factor(gene.summary$chr)))), ordered = TRUE)
+
+# sort according to location
+gs.loc <- gene.summary[with(gene.summary, order(chr, start)), ]
+
+# remove filtered genes
+gs <- gene.summary[names(frac), ]
+gs$score <- unlist(frac["1", ])
+```
+
+### Fitting models to selected genes
+
+Import read count data but do **not** filter, to be consistent with the most recent regression analysis:
+```{r cache=TRUE, warning=FALSE}
+genes2fit <- unlist(read.csv("../../data/genes.regression.new", as.is = TRUE))
+names(genes2fit) <- genes2fit
+E <- get.predictors() # default arguments
+Y <- get.readcounts(gene.ids = genes2fit, count.thrs = 0)
+```
+
+Fitting all models to all retained gene-wise and aggregated read count data sets
+```{r cache=TRUE, warning=FALSE}
+# exclude unweighed aggregates UA.8 and UA from fitting
+ids2fit <- grep("^UA(.8)?$", names(Y), value = TRUE, invert = TRUE)
+M <- do.all.fits(Y[ids2fit], preds = e.vars)
+f.ids <- as.data.frame(lapply(M, function(m) ! sapply(m, is.null)))
+f.ids["TMEM261P1", c("logi.S", "logi2.S")] <- FALSE
+f.ids[c("WA.8", "WA"), ] <- FALSE # gene aggregates are not needed here
+```
+
+```{r segplot, warning=FALSE, message=FALSE}
+beta.age <- get.CI(M$logi.S[f.ids$logi.S], coef.name = "Age", conf.lev = 0.99)
+segplot(Gene ~ Lower.CL + Upper.CL, data = beta.age, draw.bands = FALSE, centers = beta.hat, xlab = expression(beta[age]), main = expression(paste(hat(beta)[age], " and CI")))
+```
+
+## Analysis
+
+```{r score-genomic-location, dev=c("png", "pdf"), fig.asp=1}
+t.par <- list(superpose.symbol = list(pch = c(21, 21, 21), alpha = c(0.3, 1, 1), fill = c("pink", "green", "lightblue"), col = c("red", "darkgreen", "blue")))
+trellis.par.set(t.par)
+xyplot(score ~ start | chr, data = gs, groups = imprinting.status, auto.key = list(columns = 3), layout = c(4, 6))
+```
+
+```{r beta-genomic-location, dev=c("png", "pdf"), fig.asp=1}
+gs$beta.hat <- NA
+gs[rownames(beta.age), "beta.hat"] <- beta.age$beta.hat
+xyplot(beta.hat ~ start | chr, data = gs, groups = imprinting.status, auto.key = list(columns = 3), layout = c(4, 6), panel = function(...) { panel.abline(h = 0, col = trellis.par.get("reference.line")$col); panel.xyplot(...) })
+```
