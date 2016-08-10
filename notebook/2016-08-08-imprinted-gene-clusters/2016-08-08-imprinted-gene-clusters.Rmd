@@ -78,18 +78,6 @@ S <- S[names(ED$fun)]
 N <- N[names(ED$fun)]
 ```
 
-```{r cache=TRUE}
-gene.summary$imprinting.status <- factor(gene.summary$imprinted, ordered = TRUE)
-levels(gene.summary$imprinting.status) <- c("candidate", "candidate, <1MB", "known")
-gene.summary$Symbol <- factor(gene.summary$Symbol, levels = gene.summary$Symbol, ordered = TRUE)
-gene.summary$chr <- factor(paste("chr", gene.summary$chr), levels = paste("chr", seq_along(levels(factor(gene.summary$chr)))), ordered = TRUE)
-# imprinting segments in component 'seg': clusters and segments inbetween
-gs.seg <- make.impr.segs(gene.summary)
-# remove filtered genes
-gs <- gs.seg[names(frac), ]
-gs$score <- unlist(frac["1", ])
-```
-
 ### Fitting models to selected genes
 
 Import read count data but do **not** filter, to be consistent with the most recent regression analysis:
@@ -112,6 +100,38 @@ f.ids[c("WA.8", "WA"), ] <- FALSE # gene aggregates are not needed here
 
 ## Analysis
 
+### Delineation of imprinted gene clusters
+
+Let $K$ denote the set of genes $g$ such that $g\in K$ means the gene is either "known" (to be imprinted) or near some "known", i.e. "candidate, <1MB". Let $C$ be the set of "candidate" genes (further away from "known"s). Let $g_{i-1}$ and $g_i$ be neighboring genes on the same chromosome at the $i-1$-th and $i$-th site.  Delineation of clusters was done using the following simple rule: if $g_{i-1}\in C$ and $g_{i}\in K$ then a cluster starts at the $i$-th gene.  The cluster ends at the first $j\gt i$ such that $g_{j}\in K$ but $g_{i}\in C$.  The rule is implemented in the `make.impr.segs` function in `2016-08-08-imprinted-gene-clusters.R`.
+
+```{r cache=TRUE}
+gene.summary$imprinting.status <- factor(gene.summary$imprinted, ordered = TRUE)
+levels(gene.summary$imprinting.status) <- c("candidate", "candidate, <1MB", "known")
+gene.summary$Symbol <- factor(gene.summary$Symbol, levels = gene.summary$Symbol, ordered = TRUE)
+gene.summary$chr <- factor(paste("chr", gene.summary$chr), levels = paste("chr", seq_along(levels(factor(gene.summary$chr)))), ordered = TRUE)
+# imprinting segments in component 'seg': clusters and segments inbetween
+gs.seg <- make.impr.segs(gene.summary)
+gs.seg$cluster <-
+    factor(x <- with(gs.seg,
+                     ifelse(seg > 0, paste0("clus ", seg, " (", chr, ")"), paste0("inter clus ", abs(seg)))),
+           levels = unique(x), ordered = TRUE)
+rm(x)
+# remove filtered genes
+gs <- gs.seg[names(frac), ]
+gs$score <- unlist(frac["1", ])
+```
+
+With that rule 36 clusters have been defined.  Some chromosome has multiple clusters others only one cluster and yet others no cluster at all
+```{r}
+levels(gs.seg$cluster)[seq(2, length(levels(gs.seg$cluster)), by = 2)]
+```
+
+Eeach cluster has several genes including the "candidate, <1MB" category:
+
+```{r cluster-sizes, echo=TRUE, fig.width=7, fig.asp=1}
+barchart(table(gs.seg$cluster)[seq(2, length(levels(gs.seg$cluster)), by = 2)], ylim = c(37, 0), xlab = "# genes in cluster (including <1M candidates)", ylab = "imprinted gene cluster")
+```
+
 ### Genomic location
 
 The plot below shows the genomic location of all `r nrow(gene.summary)` genes in the filtered data set and indicates their imprinting status with different colors.  Also shown is the gene score according to which genes have been ranked and called as monoallelically expressing or not.
@@ -132,34 +152,21 @@ gs[rownames(beta.age), "beta.hat"] <- beta.age$beta.hat
 xyplot(beta.hat ~ start | chr, data = gs, groups = imprinting.status, auto.key = list(columns = 3), layout = c(4, 6), panel = function(...) { panel.abline(h = 0, col = trellis.par.get("reference.line")$col); panel.xyplot(...) })
 ```
 
-### Delineation of imprinted gene clusters
-
-Let $K$ denote the set of genes $g$ such that $g\in K$ means the gene is either "known" (to be imprinted) or near some "known", i.e. "candidate, <1MB". Let $C$ be the set of "candidate" genes (further away from "known"s). Let $g_{i-1}$ and $g_i$ be neighboring genes on the same chromosome at the $i-1$-th and $i$-th site.  Delineation of clusters was done using the following simple rule: if $g_{i-1}\in C$ and $g_{i}\in K$ then a cluster starts at the $i$-th gene.  The cluster ends at the first $j\gt i$ such that $g_{j}\in K$ but $g_{i}\in C$.  The rule is implemented in the `make.impr.segs` function in `2016-08-08-imprinted-gene-clusters.R`.
-
-With that rule 36 clusters have been defined:
-
-```{r cluster-sizes, echo=FALSE, fig.width=7, fig.asp=1}
-gs.seg$segment <- factor(gs.seg$seg, levels = c(1:36, 0, - 1 * 1:36))
-barchart(table(gs.seg$segment)[1:36], ylim = c(37, 0), xlab = "# genes in cluster (including <1M candidates)", ylab = "imprinted gene cluster")
-```
+### Clusters and the age effect
 
 ```{r echo=FALSE}
 beta.age$start <- gs[rownames(beta.age), "start"]
 beta.age$chr <- gs[rownames(beta.age), "chr"]
-beta.age$seg <- gs[rownames(beta.age), "seg"]
+beta.age$cluster <- factor(x <- gs[rownames(beta.age), "cluster"], levels = unique(x), ordered = TRUE)
 beta.age <- beta.age[with(beta.age, order(chr, start)), ]
-beta.age$cluster <- as.factor(beta.age$seg)
-levels(beta.age$cluster) <- paste("clus", seq_along(levels(beta.age$cluster)))
 beta.age$Gene <- factor(beta.age$Gene, levels = beta.age$Gene, ordered = TRUE)
-x <- with(beta.age, paste0(cluster, " (", chr, ")"), levels = unique(x), ordered = TRUE)
-beta.age$clus.chr <- factor(x, levels = unique(x), ordered = TRUE)
+beta.age$imprinting.status <- gs[rownames(beta.age), "imprinting.status"]
 ```
-
-### Clusters and the age effect
 
 After some uninteresting data manipulation (code hidden) **the main result** can be presented:
 ```{r segplot, fig.width=7, fig.asp=1.5, echo=FALSE}
-(sp <- segplot(Gene ~ Lower.CL + Upper.CL | clus.chr, data = beta.age,
+(sp <- segplot(Gene ~ Lower.CL + Upper.CL | cluster, data = beta.age,
+               # groups = imprinting.status, # groups does not seem to work with segplot
                scales = list(y = list(relation = "free", rot = 0)),
                panel = function(...) {
                    panel.grid(v = -1, h = 0)
@@ -167,8 +174,9 @@ After some uninteresting data manipulation (code hidden) **the main result** can
                    panel.segplot(...)
                },
                draw.bands = FALSE, centers = beta.hat,
+               as.table = FALSE,
                layout = c(1, length(levels(beta.age$cluster))),
-               par.settings = list(layout.heights = list(panel = sapply(levels(beta.age$cluster), function(k) sum(beta.age$cluster == k)))),
+               par.settings = list(layout.heights = list(panel = (x <- table(beta.age$cluster))[x > 0])),
                xlim = c(-0.04, 0.04),
                xlab = expression(beta[age]), main = expression(paste(hat(beta)[age], " and 99% CI"))))
 ```
