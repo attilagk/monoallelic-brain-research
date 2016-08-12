@@ -157,9 +157,9 @@ xyplot(beta.hat ~ start | chr, data = gs, groups = imprinting.status, auto.key =
 ```{r echo=FALSE}
 beta.age$start <- gs[rownames(beta.age), "start"]
 beta.age$chr <- gs[rownames(beta.age), "chr"]
-beta.age$cluster <- factor(x <- gs[rownames(beta.age), "cluster"], levels = unique(x), ordered = TRUE)
 beta.age <- beta.age[with(beta.age, order(chr, start)), ]
-beta.age$Gene <- factor(beta.age$Gene, levels = beta.age$Gene, ordered = TRUE)
+beta.age$cluster <- factor(x <- as.character(gs[rownames(beta.age), "cluster"]), levels = unique(x), ordered = TRUE)
+beta.age$Gene <- factor(beta.age$Gene, levels = rev(beta.age$Gene), ordered = TRUE)
 beta.age$imprinting.status <- gs[rownames(beta.age), "imprinting.status"]
 ```
 
@@ -174,7 +174,7 @@ After some uninteresting data manipulation (code hidden) **the main result** can
                    panel.segplot(...)
                },
                draw.bands = FALSE, centers = beta.hat,
-               as.table = FALSE,
+               #as.table = FALSE,
                layout = c(1, length(levels(beta.age$cluster))),
                par.settings = list(layout.heights = list(panel = (x <- table(beta.age$cluster))[x > 0])),
                xlim = c(-0.04, 0.04),
