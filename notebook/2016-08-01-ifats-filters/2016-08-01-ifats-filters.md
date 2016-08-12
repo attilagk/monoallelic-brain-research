@@ -61,9 +61,6 @@ such that $z_{p}$ is the $p$ quantile of the standard normal distribution and $n
 ### Genome-wide data import and preparation
 
 
-```
-## Loading required package: RColorBrewer
-```
 
 Load functions:
 
@@ -119,11 +116,17 @@ Besides $t_\mathrm{ind}=25$ the threshold $t_\mathrm{ind}=10$ was also tested (n
 
 ### Gene rankings
 
-The plots show four gene rankings and the corresponding fractions of interest.  The first three correspond to the sequence of three $t_\mathrm{rc}$ settings of the read count-based filter so these rankings will be named $R_{7}, R_{15}, R_{20}$.  The fourth plot follows the ranking seen on Ifat's [Fig 1][ifat fig 1], and this ranking will be referred to as $R_\mathrm{Ifat}$.  Since that figure shows only the 51 genes, the same is done here for also the first three plots.  Note that the last 13 genes of the fourth plot are in fact low ranking "known" imprinted genes so they are *not* in the top 51 according to $R_\mathr{ifat}$.  The first three plots do, however, present the 51 top ranking genes for the corresponding ranking.
+The plots show four gene rankings and the corresponding fractions of interest.  The first three correspond to the sequence of three $t_\mathrm{rc}$ settings of the read count-based filter so these rankings will be named $R_{7}, R_{15}, R_{20}$.  The fourth plot follows the ranking seen on Ifat's [Fig 1][ifat fig 1], and this ranking will be referred to as $R_\mathrm{Ifat}$.  Since that figure shows only the 51 genes, the same is done here for also the first three plots.  Note that the last 13 genes of the fourth plot are in fact low ranking "known" imprinted genes so they are *not* in the top 51 according to $R_\mathrm{ifat}$.  The first three plots do, however, present the 51 top ranking genes for the corresponding ranking.
 
 
 
 ![plot of chunk compare-to-ifats-fig](figure/compare-to-ifats-fig-1.png)
+
+### Figure for manuscript
+
+The same as the upper-right panel in the previous plot.
+
+<img src="figure/top-ranking-genes-1.png" title="plot of chunk top-ranking-genes" alt="plot of chunk top-ranking-genes" width="300" />
 
 #### Gene rankings with Ifat's ranking as reference
 

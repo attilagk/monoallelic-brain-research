@@ -129,7 +129,7 @@ Besides $t_\mathrm{ind}=25$ the threshold $t_\mathrm{ind}=10$ was also tested (n
 
 ### Gene rankings
 
-The plots show four gene rankings and the corresponding fractions of interest.  The first three correspond to the sequence of three $t_\mathrm{rc}$ settings of the read count-based filter so these rankings will be named $R_{7}, R_{15}, R_{20}$.  The fourth plot follows the ranking seen on Ifat's [Fig 1][ifat fig 1], and this ranking will be referred to as $R_\mathrm{Ifat}$.  Since that figure shows only the 51 genes, the same is done here for also the first three plots.  Note that the last 13 genes of the fourth plot are in fact low ranking "known" imprinted genes so they are *not* in the top 51 according to $R_\mathr{ifat}$.  The first three plots do, however, present the 51 top ranking genes for the corresponding ranking.
+The plots show four gene rankings and the corresponding fractions of interest.  The first three correspond to the sequence of three $t_\mathrm{rc}$ settings of the read count-based filter so these rankings will be named $R_{7}, R_{15}, R_{20}$.  The fourth plot follows the ranking seen on Ifat's [Fig 1][ifat fig 1], and this ranking will be referred to as $R_\mathrm{Ifat}$.  Since that figure shows only the 51 genes, the same is done here for also the first three plots.  Note that the last 13 genes of the fourth plot are in fact low ranking "known" imprinted genes so they are *not* in the top 51 according to $R_\mathrm{ifat}$.  The first three plots do, however, present the 51 top ranking genes for the corresponding ranking.
 
 ```{r echo=FALSE, cache=TRUE}
 # format required for my function pad.fraction.imprint 
@@ -154,6 +154,14 @@ for(n in min.r.names) print(b.charts[[n]], split = plot.pos[[n]], more = TRUE)
 
 plot(barchart(padded.frac(fr = frac$min.reads.7[rev(row.names(genes.ifat))]),
               par.settings = par.set, main = "min.reads.7 + Ifat's ranking", xlab = xlab), split = c(2, 2, 2, 2), more = FALSE)
+```
+
+### Figure for manuscript
+
+The same as the upper-right panel in the previous plot.
+
+```{r top-ranking-genes, echo=FALSE, fig.width=3.5, out.width=300, fig.asp=2}
+print(b.charts$min.reads.15)
 ```
 
 #### Gene rankings with Ifat's ranking as reference
