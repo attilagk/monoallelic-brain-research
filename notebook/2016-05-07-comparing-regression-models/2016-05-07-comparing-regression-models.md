@@ -78,6 +78,13 @@ The rank transformation greatly improves also other properties of the data such 
 
 Thus the normal linear model seems to fit well to the rank transformed data.  In agreement with this, the estimated AIC is plausibly positive under nlm.R; it is 4688, thus not far from 5725 under logi.S, that is the logistic model fitted on untransformed $S_{ig}$.  Based on the AIC for all 16 single gene fits, the nlm.R and logi.S models show comparable performance.
 
+### Figure for manuscript
+
+Top panels: untransformed $S$ statistic; bottom panels: $S$ rank-transformed into $R$
+
+![plot of chunk s-r-stat-nlm-check-peg3](figure/s-r-stat-nlm-check-peg3-1.png)
+
+
 ## Utility-based comparison
 
 Model fit and parsimony are not the only criteria for comparing models.  In this section I examine the **utility** of model types pertaining to the following goals of the project:

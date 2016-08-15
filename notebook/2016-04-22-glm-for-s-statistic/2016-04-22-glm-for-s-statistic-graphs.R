@@ -104,11 +104,11 @@ m2m <- function(ml1, ml2, mf1, mf2, fun = function(x, y) (x - y) / abs(x)) {
 
 plot.simple.cmp.multiple <- function(g = "PEG3") {
     par(mfrow=c(1,2))
-    plot.S.x1(fit.S.x1(g), xlimits = c(0, 200), ylimits = c(0.7, 1))
+    plot.S.x1(fit.S.x1(g), xlimits = c(0, 300), ylimits = c(0.7, 1))
     title(main=expression(paste(beta[0], ", ", beta[age], " from simple regr.")))
     legend("left", c("nlm.S", "logi.S", "logi2.S"), col=c(2,4,3), lty=1)
-    plot.S.x1(m[[g]], xlimits = c(0, 200), ylimits = c(0.7, 1))
-    plot.S.x1(m[[g]], add=TRUE, fun.RIN=min, lty=2, xlimits = c(0, 200), ylimits = c(0.7, 1))
+    plot.S.x1(m[[g]], xlimits = c(0, 300), ylimits = c(0.7, 1))
+    plot.S.x1(m[[g]], add=TRUE, fun.RIN=min, lty=2, xlimits = c(0, 300), ylimits = c(0.7, 1))
     title(main=expression(paste(beta[0], ", ", beta[age], " from multiple. regr.")))
     legend("left", c("avg RIN", "nlm.S", "logi.S", "logi2.S"), col=c(NA, 2,4,3), lty=1)
     legend("bottomleft", c("min RIN", "nlm.S", "logi.S", "logi2.S"), col=c(NA, 2,4,3), lty=2)

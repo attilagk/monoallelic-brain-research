@@ -118,6 +118,19 @@ plot(m$PEG3$nlm.R, which=2, main="rank-transformed", pch=".", cex=2)
 
 Thus the normal linear model seems to fit well to the rank transformed data.  In agreement with this, the estimated AIC is plausibly positive under nlm.R; it is `r signif(- 2 * logLik(m$PEG3$nlm.R) + 2 * length(coef(m$PEG3$nlm.R)), digits=4)`, thus not far from `r signif(- 2 * logLik(m$PEG3$logi.S) + 2 * length(coef(m$PEG3$logi.S)), digits=4)` under logi.S, that is the logistic model fitted on untransformed $S_{ig}$.  Based on the AIC for all 16 single gene fits, the nlm.R and logi.S models show comparable performance.
 
+### Figure for manuscript
+
+Top panels: untransformed $S$ statistic; bottom panels: $S$ rank-transformed into $R$
+
+```{r s-r-stat-nlm-check-peg3, fig.width=8, fig.asp = 1, echo=FALSE, dev=c('png','pdf')}
+par(mfrow=c(2,2), cex=1)
+plot(m$PEG3$nlm.S, which=c(3,4), pch='.', cex=2)
+abline(h = 8 / m$PEG3$nlm.S$df.residual, lty=3)
+plot(m$PEG3$nlm.R, which=c(3,4), pch='.', cex=2)
+abline(h = 8 / m$PEG3$nlm.R$df.residual, lty=3)
+```
+
+
 ## Utility-based comparison
 
 Model fit and parsimony are not the only criteria for comparing models.  In this section I examine the **utility** of model types pertaining to the following goals of the project:

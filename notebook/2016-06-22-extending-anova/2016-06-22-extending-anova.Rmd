@@ -102,12 +102,12 @@ my.dotplot <- function(fm = Predictor ~ Deviance | Gene, data = A.long$logi.S, .
 
 Under `logi.S`:
 ```{r anova-fw-rv-logi.S, echo=FALSE, cache=TRUE}
-my.stripplot(fm = Predictor ~ Deviance | Order, data = A.long$logi.S, main = "ANOVA under logi.S")
+(plots <- list(anova.logi.S = my.stripplot(fm = Predictor ~ Deviance | Order, data = A.long$logi.S, main = "ANOVA under logi.S")))
 ```
 
 The same tendencies emerge under `wnlm.R`:
 ```{r anova-fw-rv-wnlm.R, echo=FALSE}
-my.stripplot(fm = Predictor ~ Deviance | Order, data = A.long$wnlm.R, main = "ANOVA under wnlm.R")
+(plots$anova.wnlm.R <- my.stripplot(fm = Predictor ~ Deviance | Order, data = A.long$wnlm.R, main = "ANOVA under wnlm.R"))
 ```
 
 ```{r cache=TRUE, warning=FALSE}
@@ -116,12 +116,19 @@ Ef.long <- lapply(M, function(m) { x <- l.l.effects(m); x <- x[ ! x$Coefficient 
 
 Under `logi.S`:
 ```{r effects-fw-rv-logi.S, echo=FALSE}
-my.stripplot(fm = Coefficient ~ Effect | Order, data = Ef.long$logi.S, main = "Effects under logi.S")
+(plots$effects.logi.S <- my.stripplot(fm = Coefficient ~ Effect | Order, data = Ef.long$logi.S, main = "Effects under logi.S"))
 ```
 
 Again, similar tendencies are observed under `wnlm.R`:
 ```{r effects-fw-rv-wnlm.R, echo=FALSE}
-my.stripplot(fm = Coefficient ~ Effect | Order, data = Ef.long$wnlm.R, main = "Effects under wnlm.R")
+(plots$effects.wnlm.R <- my.stripplot(fm = Coefficient ~ Effect | Order, data = Ef.long$wnlm.R, main = "Effects under wnlm.R"))
+```
+
+### Figure for manuscript
+
+```{r anova-effects-fw-rv-logi.S, echo=FALSE, fig.asp=1}
+print(plots$anova.logi.S, split = c(1, 1, 1, 2), more = TRUE)
+print(plots$effects.logi.S, split = c(1, 2, 1, 2), more = FALSE)
 ```
 
 ### Comparison with genes on relative scale

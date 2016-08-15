@@ -17,13 +17,6 @@ Relevant scripts
 ```r
 library(lattice)
 library(latticeExtra)
-```
-
-```
-## Loading required package: RColorBrewer
-```
-
-```r
 source("~/projects/monoallelic-brain/src/import-data.R")
 source("~/projects/monoallelic-brain/src/fit-glms.R")
 opts_chunk$set(dpi = 144)
@@ -88,6 +81,11 @@ A.long <- lapply(lapply(M, lapply, l.anova), reshape.2, type = "anova")
 
 
 Under `logi.S`:
+
+```
+## $anova.logi.S
+```
+
 ![plot of chunk anova-fw-rv-logi.S](figure/anova-fw-rv-logi.S-1.png)
 
 The same tendencies emerge under `wnlm.R`:
@@ -103,6 +101,10 @@ Under `logi.S`:
 
 Again, similar tendencies are observed under `wnlm.R`:
 ![plot of chunk effects-fw-rv-wnlm.R](figure/effects-fw-rv-wnlm.R-1.png)
+
+### Figure for manuscript
+
+![plot of chunk anova-effects-fw-rv-logi.S](figure/anova-effects-fw-rv-logi.S-1.png)
 
 ### Comparison with genes on relative scale
 

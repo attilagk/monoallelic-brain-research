@@ -29,6 +29,9 @@ EOF
 ```
 
 
+```
+## Loading required package: RColorBrewer
+```
 
 ### Import read count data
 
@@ -112,7 +115,7 @@ ED.long$gene <- factor(ED.long$gene, levels = names(ED$val), ordered = TRUE)
 
 This figure is intended to:
 
-* present a few representative genes characterized by the parental "imbalance score" $S$ statistic (two upper graphs)
+* present a few representative genes characterized by the "read count ratio" statistic $S$ (two upper graphs)
   * e.g. PEG10 and ZNF331 represent monoallelic expression and AFAP1 biallelic expression
   1. density est.: kernel density estimates, whose interpretation is identical to that of histograms
   1. ECDF: empirical cumulative distribution function, sometimes called cumulative fraction
