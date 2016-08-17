@@ -11,15 +11,15 @@ The current work studies this by performing two main steps
 
 ## Data import and preparation
 
-```{r echo=FALSE, echo=FALSE}
+```{r echo=FALSE}
 library(lattice)
 library(latticeExtra)
 opts_chunk$set(dpi = 144)
-opts_chunk$set(fig.width = 10)
-opts_chunk$set(dev=c("png", "pdf"))
-opts_chunk$set(dev.args=list(bg = "transparent"))
+opts_chunk$set(out.height = "700px")
+opts_chunk$set(dev = c("png", "pdf"))
 lattice.options(default.args = list(as.table = TRUE))
 lattice.options(default.theme = "standard.theme")
+lattice.options(default.args = list(as.table = TRUE))
 ```
 
 Load data importer functions:
@@ -121,15 +121,22 @@ gs <- gs.seg[names(frac), ]
 gs$score <- unlist(frac["1", ])
 ```
 
-With that rule 36 clusters have been defined.  Some chromosome has multiple clusters others only one cluster and yet others no cluster at all
-```{r}
-levels(gs.seg$cluster)[seq(2, length(levels(gs.seg$cluster)), by = 2)]
+Eeach cluster has several genes including the "candidate, <1MB" category; note the median as well.
+
+```{r cluster-sizes, echo=TRUE}
+cluster.freq <- table(gs.seg$cluster)[seq(2, length(levels(gs.seg$cluster)), by = 2)]
+median(cluster.freq)
+barchart(cluster.freq, ylim = c(37, 0), xlab = "# genes in cluster (including <1M candidates)", ylab = "imprinted gene cluster")
 ```
 
-Eeach cluster has several genes including the "candidate, <1MB" category:
+*Before* filtering these clusters contain the following number of "known" and "candidate, <1MB" genes:
+```{r}
+table(gene.summary$imprinting.status)
+```
 
-```{r cluster-sizes, echo=TRUE, fig.width=7, fig.asp=1}
-barchart(table(gs.seg$cluster)[seq(2, length(levels(gs.seg$cluster)), by = 2)], ylim = c(37, 0), xlab = "# genes in cluster (including <1M candidates)", ylab = "imprinted gene cluster")
+*After* filtering:
+```{r}
+table(gs$imprinting.status)
 ```
 
 ### Genomic location
@@ -164,7 +171,7 @@ beta.age$imprinting.status <- gs[rownames(beta.age), "imprinting.status"]
 ```
 
 After some uninteresting data manipulation (code hidden) **the main result** can be presented:
-```{r segplot, fig.width=7, fig.asp=1.5, echo=FALSE}
+```{r segplot, fig.width=4.0, fig.asp=2.0, out.width=350, echo=FALSE}
 (sp <- segplot(Gene ~ Lower.CL + Upper.CL | cluster, data = beta.age,
                # groups = imprinting.status, # groups does not seem to work with segplot
                scales = list(y = list(relation = "free", rot = 0)),

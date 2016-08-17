@@ -1,15 +1,6 @@
 ## Prepare data
 
 
-```r
-library(lattice)
-library(latticeExtra)
-library(ggplot2)
-library(GGally)
-source("../../src/import-data.R")
-source("../../src/fit-glms.R")
-opts_chunk$set(dpi = 144)
-```
 
 
 
@@ -30,7 +21,10 @@ P$s.age.inst$lattice <-
                panel.smoother(x, y, col = "black", lwd = 2, ...)
            },
            auto.key = list(title = "Insitution", space = "right"),
-           aspect = "fill", layout = c(6, 6))
+           par.settings = list(add.text = list(cex = 0.8)),
+           ylab = "read count ratio, s",
+           xlab = "age, years",
+           aspect = "fill", layout = c(5, 7))
 # ggplot2 implementation
 g <- ggplot(data = S.long, aes(x = Age, y = S))
 g <- g + geom_point(pch = "o", aes(color = Institution))
@@ -40,17 +34,17 @@ P$s.age.inst$ggplot2 <- g
 plot(P$s.age.inst$lattice)
 ```
 
-![plot of chunk S-age-smooth](figure/S-age-smooth-1.png)
+<img src="figure/S-age-smooth-1.png" title="plot of chunk S-age-smooth" alt="plot of chunk S-age-smooth" height="700px" />
 
 ```r
 plot(P$s.age.inst$ggplot2)
 ```
 
-![plot of chunk S-age-smooth](figure/S-age-smooth-2.png)
+<img src="figure/S-age-smooth-2.png" title="plot of chunk S-age-smooth" alt="plot of chunk S-age-smooth" height="700px" />
 
 ### Dependence on gene, age, and total read count $N$
 
-![plot of chunk S-age-tot-read-count](figure/S-age-tot-read-count-1.png)![plot of chunk S-age-tot-read-count](figure/S-age-tot-read-count-2.png)
+<img src="figure/S-age-tot-read-count-1.png" title="plot of chunk S-age-tot-read-count" alt="plot of chunk S-age-tot-read-count" height="700px" /><img src="figure/S-age-tot-read-count-2.png" title="plot of chunk S-age-tot-read-count" alt="plot of chunk S-age-tot-read-count" height="700px" />
 
 
 ```r
@@ -65,16 +59,18 @@ M <- do.all.fits(Y[ 0:1 - length(Y) ], # omit the last two components: "UA.8" an
 
 ```
 ## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
 ```
 
 ## Associations between explanatory variables
 
 ### Deterministic association: RIN and RIN2
 
-![plot of chunk rin-rin2](figure/rin-rin2-1.png)![plot of chunk rin-rin2](figure/rin-rin2-2.png)
+<img src="figure/rin-rin2-1.png" title="plot of chunk rin-rin2" alt="plot of chunk rin-rin2" height="700px" /><img src="figure/rin-rin2-2.png" title="plot of chunk rin-rin2" alt="plot of chunk rin-rin2" height="700px" />
 
 ### Stochastic (statistical) associations
 
 Both "scatter plot matrices" show the same set of pairwise associations (top: `lattice`, bottom: `ggplot2` and `GGally` packages).
 
-![plot of chunk evar-scatterplot-matrix](figure/evar-scatterplot-matrix-1.png)![plot of chunk evar-scatterplot-matrix](figure/evar-scatterplot-matrix-2.png)
+<img src="figure/evar-scatterplot-matrix-1.png" title="plot of chunk evar-scatterplot-matrix" alt="plot of chunk evar-scatterplot-matrix" height="700px" /><img src="figure/evar-scatterplot-matrix-2.png" title="plot of chunk evar-scatterplot-matrix" alt="plot of chunk evar-scatterplot-matrix" height="700px" />

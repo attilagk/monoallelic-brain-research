@@ -6,6 +6,13 @@ Load libraries and my custom functions.
 ```r
 library(lattice)
 library(latticeExtra)
+```
+
+```
+## Loading required package: RColorBrewer
+```
+
+```r
 source("~/projects/monoallelic-brain/src/import-data.R")
 source("~/projects/monoallelic-brain/src/fit-glms.R")
 ```
@@ -61,10 +68,13 @@ In the following plots the effect of 5 conditions (*MSSM*, ..., *Female*) is exp
 * the individual displays (each corresponding to a given gene or aggregate dataset across genes) are scaled differently to emphasize the effects of conditioning.
 * the fit for TMEM261P1 did not converge under logi.S so the results are missing; for consistency TMEM261P1 is excluded for wnlm.R as well
 
+<img src="figure/beta-age-cond-logi.S-1.png" title="plot of chunk beta-age-cond-logi.S" alt="plot of chunk beta-age-cond-logi.S" height="700px" />
 
-![plot of chunk beta-age-cond-logi.S](figure/beta-age-cond-logi.S-1.png)
+The same results plotted with different style
 
-![plot of chunk beta-age-cond-wnlm.R](figure/beta-age-cond-wnlm.R-1.png)
+<img src="figure/beta-age-cond-logi.S-2-1.png" title="plot of chunk beta-age-cond-logi.S-2" alt="plot of chunk beta-age-cond-logi.S-2" height="700px" />
+
+<img src="figure/beta-age-cond-wnlm.R-1.png" title="plot of chunk beta-age-cond-wnlm.R" alt="plot of chunk beta-age-cond-wnlm.R" height="700px" />
 
 ## Conclusion
 

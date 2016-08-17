@@ -1,6 +1,6 @@
 ## Prepare data
 
-```{r message=FALSE, warning=FALSE}
+```{r echo=FALSE, message=FALSE, warning=FALSE}
 library(lattice)
 library(latticeExtra)
 library(ggplot2)
@@ -8,6 +8,10 @@ library(GGally)
 source("../../src/import-data.R")
 source("../../src/fit-glms.R")
 opts_chunk$set(dpi = 144)
+opts_chunk$set(out.height = "700px")
+opts_chunk$set(dev = c("png", "pdf"))
+lattice.options(default.args = list(as.table = TRUE))
+lattice.options(default.theme = "standard.theme")
 ```
 
 ```{r cache=TRUE, echo=FALSE}
@@ -42,7 +46,7 @@ lattice.options(default.args = list(as.table = TRUE))
 lattice.options(default.theme = "standard.theme")
 #lattice.options(default.theme = "ggplot2like"); lattice.options(ggplot2like.opts())
 ```
-```{r S-age-smooth, dev=c("png", "pdf"), fig.width=10, warning=FALSE}
+```{r S-age-smooth, dev=c("png", "pdf"), warning=FALSE}
 P <- list()
 # lattice implementation
 P$s.age.inst$lattice <-
@@ -52,7 +56,10 @@ P$s.age.inst$lattice <-
                panel.smoother(x, y, col = "black", lwd = 2, ...)
            },
            auto.key = list(title = "Insitution", space = "right"),
-           aspect = "fill", layout = c(6, 6))
+           par.settings = list(add.text = list(cex = 0.8)),
+           ylab = "read count ratio, s",
+           xlab = "age, years",
+           aspect = "fill", layout = c(5, 7))
 # ggplot2 implementation
 g <- ggplot(data = S.long, aes(x = Age, y = S))
 g <- g + geom_point(pch = "o", aes(color = Institution))
@@ -65,12 +72,14 @@ plot(P$s.age.inst$ggplot2)
 
 ### Dependence on gene, age, and total read count $N$
 
-```{r S-age-tot-read-count, dev=c("png", "pdf"), fig.width=10, warning=FALSE, echo=FALSE}
+```{r S-age-tot-read-count, dev=c("png", "pdf"), warning=FALSE, echo=FALSE}
 # easy lattice implementation
 P$s.age.n$lattice <-
     levelplot(log10(N) ~ Age + S | Gene, data = Y.long, alpha = 1.0, col = "white",
-              panel = panel.levelplot.points, layout = c(6, 6),
-              par.settings = list(regions = list(col = colorRampPalette(c("blue", "red")))))
+              ylab = "read count ratio, s",
+              xlab = "age, years",
+              panel = panel.levelplot.points, layout = c(5, 7),
+              par.settings = list(add.text = list(cex = 0.8), regions = list(col = colorRampPalette(c("blue", "red")))))
 #
 # alternative lattice implementation without color scale, see Fig 5.5 in 'Lattice: Multivariate Data Visualization with R', http://lmdvr.r-forge.r-project.org
 #xyplot(S ~ Age | Gene, data = Y.long, alpha = 0.5, col = "white",
@@ -111,7 +120,7 @@ qplot(RIN, RIN2, data = E[sort.int(E$RIN, index.return = TRUE)$ix, ],
 
 Both "scatter plot matrices" show the same set of pairwise associations (top: `lattice`, bottom: `ggplot2` and `GGally` packages).
 
-```{r evar-scatterplot-matrix, dev=c("png", "pdf"), fig.width=10, fig.asp=1, warning=FALSE, echo=FALSE, message=FALSE}
+```{r evar-scatterplot-matrix, dev=c("png", "pdf"), fig.asp=1, warning=FALSE, echo=FALSE, message=FALSE}
 P$splom$lattice <-
     splom(E[ e.vars[c(1:6, 10)]], pch = "o", alpha = 0.3, xlab = "", pscales=0,
           panel = function(x, y, ...)

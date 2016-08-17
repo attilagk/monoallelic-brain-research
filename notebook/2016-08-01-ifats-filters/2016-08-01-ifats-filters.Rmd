@@ -64,8 +64,8 @@ such that $z_{p}$ is the $p$ quantile of the standard normal distribution and $n
 library(lattice)
 library(latticeExtra)
 opts_chunk$set(dpi = 144)
-opts_chunk$set(fig.width = 10)
-opts_chunk$set(dev=c("png", "pdf"))
+opts_chunk$set(out.height = "700px")
+opts_chunk$set(dev = c("png", "pdf"))
 lattice.options(default.args = list(as.table = TRUE))
 lattice.options(default.theme = "standard.theme")
 ```
@@ -140,7 +140,7 @@ genes.ifat$imprinting.status <- as.factor(genes.ifat$imprinting.status)
 levels(genes.ifat$imprinting.status) <- c("known", "candidate, <1MB", "candidate")
 ```
 
-```{r compare-to-ifats-fig, echo=FALSE, fig.width=7, fig.asp=2}
+```{r compare-to-ifats-fig, echo=FALSE, out.height=1400, fig.width=7, fig.asp=2}
 xlab <- "fraction of indiv."
 par.set <- list(superpose.polygon = list(col = palette.ifat(detailed = FALSE)))
 trellis.par.set(superpose.polygon = list(lty = 0))
@@ -160,8 +160,8 @@ plot(barchart(padded.frac(fr = frac$min.reads.7[rev(row.names(genes.ifat))]),
 
 The same as the upper-right panel in the previous plot.
 
-```{r top-ranking-genes, echo=FALSE, fig.width=3.5, out.width=300, fig.asp=2}
-print(b.charts$min.reads.15)
+```{r top-ranking-genes, echo=FALSE, fig.width=3.5, fig.asp=2}
+update(b.charts$min.reads.15, main = "", auto.key = list(text = c("known imprinted", "candidate, <1MB", "candidate, >1MB"), points = FALSE, col = c("blue", "darkgreen", "red"), columns = 1))
 ```
 
 #### Gene rankings with Ifat's ranking as reference

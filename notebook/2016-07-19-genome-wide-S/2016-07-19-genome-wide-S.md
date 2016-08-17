@@ -29,9 +29,6 @@ EOF
 ```
 
 
-```
-## Loading required package: RColorBrewer
-```
 
 ### Import read count data
 
@@ -74,7 +71,7 @@ For more than half of even the genes $g$ with nonempty files the number $I_g$ of
 ```r
 min.n.obs <- 25
 ```
-![plot of chunk ecdf-n-obs](figure/ecdf-n-obs-1.png)
+<img src="figure/ecdf-n-obs-1.png" title="plot of chunk ecdf-n-obs" alt="plot of chunk ecdf-n-obs" height="700px" />
 
 ### Data preparation
 
@@ -125,7 +122,7 @@ This figure is intended to:
   * the ranking is based on the ECDF evaluated at $s = 0.9$, as shown in the upper 2nd graph and the bottom right plots
 * support the conclusion that $\approx 1 \%$ of all genes are appreciably imbalanced (monoallelically expressed)
 
-![plot of chunk complex-plot](figure/complex-plot-1.png)
+<img src="figure/complex-plot-1.png" title="plot of chunk complex-plot" alt="plot of chunk complex-plot" height="1000" />
 
 [ifat]: http://katahdin.mssm.edu/ifat/web/cm/home
 [Fig 1]: https://docs.google.com/presentation/d/1YvpA1AJ-zzir1Iw0F25tO9x8gkSAzqaO4fjB7K3zBhE/edit#slide=id.p4

@@ -13,16 +13,16 @@ Take two permutations of explanatory variables:
 ## Preparation
 
 Relevant scripts
-```{r}
+```{r echo=FALSE}
 library(lattice)
 library(latticeExtra)
-source("~/projects/monoallelic-brain/src/import-data.R")
-source("~/projects/monoallelic-brain/src/fit-glms.R")
 opts_chunk$set(dpi = 144)
-opts_chunk$set(fig.width = 10)
-opts_chunk$set(dev=c("png", "pdf"))
+opts_chunk$set(out.height = "700px")
+opts_chunk$set(dev = c("png", "pdf"))
 lattice.options(default.args = list(as.table = TRUE))
 lattice.options(default.theme = "standard.theme")
+source("~/projects/monoallelic-brain/src/import-data.R")
+source("~/projects/monoallelic-brain/src/fit-glms.R")
 ```
 
 Import data; note that the set of **selected genes have been updated** based on later analysis
@@ -126,9 +126,9 @@ Again, similar tendencies are observed under `wnlm.R`:
 
 ### Figure for manuscript
 
-```{r anova-effects-fw-rv-logi.S, echo=FALSE, fig.asp=1}
-print(plots$anova.logi.S, split = c(1, 1, 1, 2), more = TRUE)
-print(plots$effects.logi.S, split = c(1, 2, 1, 2), more = FALSE)
+```{r anova-effects-fw-rv-logi.S, echo=FALSE, fig.asp=2.0, fig.width=3.5}
+print(update(plots$anova.logi.S, main = "", layout = c(2, 1)), split = c(1, 1, 1, 2), more = TRUE)
+print(update(plots$effects.logi.S, main = "", layout = c(2, 1)), split = c(1, 2, 1, 2), more = FALSE)
 ```
 
 ### Comparison with genes on relative scale

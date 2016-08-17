@@ -12,9 +12,6 @@ The current work studies this by performing two main steps
 ## Data import and preparation
 
 
-```
-## Loading required package: RColorBrewer
-```
 
 Load data importer functions:
 
@@ -102,35 +99,47 @@ gs <- gs.seg[names(frac), ]
 gs$score <- unlist(frac["1", ])
 ```
 
-With that rule 36 clusters have been defined.  Some chromosome has multiple clusters others only one cluster and yet others no cluster at all
-
-```r
-levels(gs.seg$cluster)[seq(2, length(levels(gs.seg$cluster)), by = 2)]
-```
-
-```
-##  [1] "clus 1 (chr 1)"   "clus 2 (chr 1)"   "clus 3 (chr 2)"  
-##  [4] "clus 4 (chr 2)"   "clus 5 (chr 4)"   "clus 6 (chr 5)"  
-##  [7] "clus 7 (chr 6)"   "clus 8 (chr 6)"   "clus 9 (chr 6)"  
-## [10] "clus 10 (chr 6)"  "clus 11 (chr 7)"  "clus 12 (chr 7)" 
-## [13] "clus 13 (chr 7)"  "clus 14 (chr 7)"  "clus 15 (chr 8)" 
-## [16] "clus 16 (chr 8)"  "clus 17 (chr 8)"  "clus 18 (chr 9)" 
-## [19] "clus 19 (chr 10)" "clus 20 (chr 11)" "clus 21 (chr 11)"
-## [22] "clus 22 (chr 11)" "clus 23 (chr 11)" "clus 24 (chr 11)"
-## [25] "clus 25 (chr 12)" "clus 26 (chr 13)" "clus 27 (chr 14)"
-## [28] "clus 28 (chr 15)" "clus 29 (chr 16)" "clus 30 (chr 18)"
-## [31] "clus 31 (chr 19)" "clus 32 (chr 19)" "clus 33 (chr 20)"
-## [34] "clus 34 (chr 20)" "clus 35 (chr 20)" "clus 36 (chr 22)"
-```
-
-Eeach cluster has several genes including the "candidate, <1MB" category:
+Eeach cluster has several genes including the "candidate, <1MB" category; note the median as well.
 
 
 ```r
-barchart(table(gs.seg$cluster)[seq(2, length(levels(gs.seg$cluster)), by = 2)], ylim = c(37, 0), xlab = "# genes in cluster (including <1M candidates)", ylab = "imprinted gene cluster")
+cluster.freq <- table(gs.seg$cluster)[seq(2, length(levels(gs.seg$cluster)), by = 2)]
+median(cluster.freq)
 ```
 
-![plot of chunk cluster-sizes](figure/cluster-sizes-1.png)
+```
+## [1] 15
+```
+
+```r
+barchart(cluster.freq, ylim = c(37, 0), xlab = "# genes in cluster (including <1M candidates)", ylab = "imprinted gene cluster")
+```
+
+<img src="figure/cluster-sizes-1.png" title="plot of chunk cluster-sizes" alt="plot of chunk cluster-sizes" height="700px" />
+
+*Before* filtering these clusters contain the following number of "known" and "candidate, <1MB" genes:
+
+```r
+table(gene.summary$imprinting.status)
+```
+
+```
+## 
+##       candidate candidate, <1MB           known 
+##           15265             701              60
+```
+
+*After* filtering:
+
+```r
+table(gs$imprinting.status)
+```
+
+```
+## 
+##       candidate candidate, <1MB           known 
+##            5005             266              36
+```
 
 ### Genomic location
 
@@ -144,7 +153,7 @@ xyplot(score ~ start | chr, data = gs, groups = imprinting.status, auto.key = li
        xlab = "genomic location", ylab = "score: 1 - ECDF at s = 0.9")
 ```
 
-![plot of chunk score-genomic-location](figure/score-genomic-location-1.png)
+<img src="figure/score-genomic-location-1.png" title="plot of chunk score-genomic-location" alt="plot of chunk score-genomic-location" height="700px" />
 
 The next plot presents the maximum likelihood estimate $\hat{\beta}_\mathrm{age}$ of the regression coefficient mediating age's effect in the logistic model `logi.S`.  Only those genes are shown that were fitted, of course.  Confidence intervals are not shown for clarity.
 
@@ -156,14 +165,14 @@ gs[rownames(beta.age), "beta.hat"] <- beta.age$beta.hat
 xyplot(beta.hat ~ start | chr, data = gs, groups = imprinting.status, auto.key = list(columns = 3), layout = c(4, 6), panel = function(...) { panel.abline(h = 0, col = trellis.par.get("reference.line")$col); panel.xyplot(...) })
 ```
 
-![plot of chunk beta-genomic-location](figure/beta-genomic-location-1.png)
+<img src="figure/beta-genomic-location-1.png" title="plot of chunk beta-genomic-location" alt="plot of chunk beta-genomic-location" height="700px" />
 
 ### Clusters and the age effect
 
 
 
 After some uninteresting data manipulation (code hidden) **the main result** can be presented:
-![plot of chunk segplot](figure/segplot-1.png)
+<img src="figure/segplot-1.png" title="plot of chunk segplot" alt="plot of chunk segplot" width="350" height="700px" />
 
 ## Conclusion
 

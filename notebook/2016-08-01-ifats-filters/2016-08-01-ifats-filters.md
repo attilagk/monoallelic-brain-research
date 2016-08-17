@@ -61,6 +61,9 @@ such that $z_{p}$ is the $p$ quantile of the standard normal distribution and $n
 ### Genome-wide data import and preparation
 
 
+```
+## Loading required package: RColorBrewer
+```
 
 Load functions:
 
@@ -120,13 +123,13 @@ The plots show four gene rankings and the corresponding fractions of interest.  
 
 
 
-![plot of chunk compare-to-ifats-fig](figure/compare-to-ifats-fig-1.png)
+<img src="figure/compare-to-ifats-fig-1.png" title="plot of chunk compare-to-ifats-fig" alt="plot of chunk compare-to-ifats-fig" height="1400" />
 
 ### Figure for manuscript
 
 The same as the upper-right panel in the previous plot.
 
-<img src="figure/top-ranking-genes-1.png" title="plot of chunk top-ranking-genes" alt="plot of chunk top-ranking-genes" width="300" />
+<img src="figure/top-ranking-genes-1.png" title="plot of chunk top-ranking-genes" alt="plot of chunk top-ranking-genes" height="700px" />
 
 #### Gene rankings with Ifat's ranking as reference
 
@@ -275,7 +278,7 @@ barchart(padded.frac(fr = frac$min.reads.15.known[length(frac$min.reads.15.known
               par.settings = par.set, main = "Known imprinted genes", xlab = xlab)
 ```
 
-![plot of chunk unnamed-chunk-12](figure/unnamed-chunk-12-1.png)
+<img src="figure/unnamed-chunk-12-1.png" title="plot of chunk unnamed-chunk-12" alt="plot of chunk unnamed-chunk-12" height="700px" />
 
 So, it still seems reasonable to select *IGF2*, *NLRP2* and *UBE3A* based on the second rule.
 
