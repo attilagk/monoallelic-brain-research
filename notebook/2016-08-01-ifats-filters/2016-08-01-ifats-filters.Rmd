@@ -134,10 +134,10 @@ The plots show four gene rankings and the corresponding fractions of interest.  
 ```{r echo=FALSE, cache=TRUE}
 # format required for my function pad.fraction.imprint 
 gene.summary$imprinting.status <- factor(4 - as.integer(gene.summary$imprinted))
-levels(gene.summary$imprinting.status) <- c("known", "candidate, <1MB", "candidate")
+levels(gene.summary$imprinting.status) <- c("known imprinted", "candidate, <1MB", "candidate, >1MB")
 genes.ifat <- read.csv("../../data/ifat/ifat-fig1-genelist.csv", row.names = "gene")
 genes.ifat$imprinting.status <- as.factor(genes.ifat$imprinting.status)
-levels(genes.ifat$imprinting.status) <- c("known", "candidate, <1MB", "candidate")
+levels(genes.ifat$imprinting.status) <- c("known imprinted", "candidate, <1MB", "candidate, >1MB")
 ```
 
 ```{r compare-to-ifats-fig, echo=FALSE, out.height=1400, fig.width=7, fig.asp=2}
@@ -161,7 +161,7 @@ plot(barchart(padded.frac(fr = frac$min.reads.7[rev(row.names(genes.ifat))]),
 The same as the upper-right panel in the previous plot.
 
 ```{r top-ranking-genes, echo=FALSE, fig.width=3.5, fig.asp=2}
-update(b.charts$min.reads.15, main = "", auto.key = list(text = c("known imprinted", "candidate, <1MB", "candidate, >1MB"), points = FALSE, col = c("blue", "darkgreen", "red"), columns = 1))
+update(b.charts$min.reads.15, main = "", auto.key = list(text = c("known imprinted", "candidate, <1MB", "candidate, >1MB"), points = FALSE, col = c("blue", "darkgreen", "red"), columns = 1), scales = list(cex = 0.7))
 ```
 
 #### Gene rankings with Ifat's ranking as reference

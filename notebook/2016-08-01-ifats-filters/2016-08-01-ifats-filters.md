@@ -61,9 +61,6 @@ such that $z_{p}$ is the $p$ quantile of the standard normal distribution and $n
 ### Genome-wide data import and preparation
 
 
-```
-## Loading required package: RColorBrewer
-```
 
 Load functions:
 
@@ -138,57 +135,57 @@ The previous figures show that several genes in the top 51 according to $R_{7}, 
 
 ```
 ##               imprinting.status R.ifat  R.7 R.15 R.20
-## MAGEL2                    known      1   19    1    1
+## MAGEL2          known imprinted      1   19    1    1
 ## TMEM261P1       candidate, <1MB      2    3    2   NA
-## SNHG14                    known      3    1    3    2
+## SNHG14          known imprinted      3    1    3    2
 ## AL132709.5      candidate, <1MB      4    6    4    4
 ## RP11-909M7.3    candidate, <1MB      5   13    5    3
-## NAP1L5                    known      6   10    7    6
-## ZIM2                      known      7    2    6    5
-## MEG3                      known      8    4    8    7
-## PEG3                      known      9    5    9    8
+## NAP1L5          known imprinted      6   10    7    6
+## ZIM2            known imprinted      7    2    6    5
+## MEG3            known imprinted      8    4    8    7
+## PEG3            known imprinted      9    5    9    8
 ## PWAR6           candidate, <1MB     10    7   10    9
-## FAM50B                    known     11   16   11   13
-## NDN                       known     12    8   12   10
-## SNURF                     known     13    9   13   11
-## PEG10                     known     14   11   14   14
-## SNRPN                     known     15   12   15   12
-## KCNQ1OT1                  known     16   21   16   15
-## ZDBF2                     known     17   15   17   16
-## GRB10                     known     18   24   18   17
+## FAM50B          known imprinted     11   16   11   13
+## NDN             known imprinted     12    8   12   10
+## SNURF           known imprinted     13    9   13   11
+## PEG10           known imprinted     14   11   14   14
+## SNRPN           known imprinted     15   12   15   12
+## KCNQ1OT1        known imprinted     16   21   16   15
+## ZDBF2           known imprinted     17   15   17   16
+## GRB10           known imprinted     18   24   18   17
 ## SNORD116-20     candidate, <1MB     19   22   19   18
-## KCNK9                     known     20   28   20   20
-## INPP5F                    known     21   25   21   19
-## HLA-DRB5              candidate     22   30   22   21
+## KCNK9           known imprinted     20   28   20   20
+## INPP5F          known imprinted     21   25   21   19
+## HLA-DRB5        candidate, >1MB     22   30   22   21
 ## RP13-487P22.1   candidate, <1MB     23   39   23   22
-## GSTM1                 candidate     24   32   24   24
-## MEST                      known     25   38   26   23
+## GSTM1           candidate, >1MB     24   32   24   24
+## MEST            known imprinted     25   38   26   23
 ## hsa-mir-335     candidate, <1MB     26   56   31   NA
-## IL1RL1                candidate     27   49   28   NA
-## ZNF331                    known     28   41   29   25
-## DIRAS3                    known     29   44   32   NA
+## IL1RL1          candidate, >1MB     27   49   28   NA
+## ZNF331          known imprinted     28   41   29   25
+## DIRAS3          known imprinted     29   44   32   NA
 ## PWRN1           candidate, <1MB     30   43   33   29
-## HLA-DQB1              candidate     31   50   35   31
-## PAX8-AS1              candidate     32   52   37   33
-## HNRNPU                candidate     33   53   38   32
-## HLA-DQA1              candidate     34   65   44   47
-## RP11-54F2.1           candidate     35   83   48   40
-## SYT7                  candidate     36   81   46   34
-## NME1-NME2             candidate     37   64   40   35
-## RAD23A                candidate     38   95   57   NA
-## NLRP2                     known     NA  122   77   66
-## IGF2                      known     NA   84   83   82
-## UBE3A                     known     NA  132  112   79
-## NTM                       known     NA  318  177  150
-## DGCR6                     known     NA 1683 1310   NA
-## OSBPL5                    known     NA 2479  946  659
-## NAA60                     known     NA 1192 2251 2345
-## DGCR6L                    known     NA 3483 2392 1890
-## BEGAIN                    known     NA 5004 2448 2397
-## AIM1                      known     NA 2028 4490   NA
-## DLGAP2                    known     NA 3041 2382 2104
-## GNAS                      known     NA 5529 3754 2997
-## ZFAT                      known     NA 4714 5016 4399
+## HLA-DQB1        candidate, >1MB     31   50   35   31
+## PAX8-AS1        candidate, >1MB     32   52   37   33
+## HNRNPU          candidate, >1MB     33   53   38   32
+## HLA-DQA1        candidate, >1MB     34   65   44   47
+## RP11-54F2.1     candidate, >1MB     35   83   48   40
+## SYT7            candidate, >1MB     36   81   46   34
+## NME1-NME2       candidate, >1MB     37   64   40   35
+## RAD23A          candidate, >1MB     38   95   57   NA
+## NLRP2           known imprinted     NA  122   77   66
+## IGF2            known imprinted     NA   84   83   82
+## UBE3A           known imprinted     NA  132  112   79
+## NTM             known imprinted     NA  318  177  150
+## DGCR6           known imprinted     NA 1683 1310   NA
+## OSBPL5          known imprinted     NA 2479  946  659
+## NAA60           known imprinted     NA 1192 2251 2345
+## DGCR6L          known imprinted     NA 3483 2392 1890
+## BEGAIN          known imprinted     NA 5004 2448 2397
+## AIM1            known imprinted     NA 2028 4490   NA
+## DLGAP2          known imprinted     NA 3041 2382 2104
+## GNAS            known imprinted     NA 5529 3754 2997
+## ZFAT            known imprinted     NA 4714 5016 4399
 ```
 
 In fact, the two rankings agree for the top 24 genes (except that ranks 6 and 7 are swapped):
@@ -267,7 +264,7 @@ all.equal(genes.not.cand.3, genes.not.cand.5)
 ```
 
 ```
-## [1] TRUE
+## [1] "Lengths (57, 34) differ (string compare on first 34)"
 ```
 
 To see which genes might be selected according to the second rule:
@@ -278,7 +275,9 @@ barchart(padded.frac(fr = frac$min.reads.15.known[length(frac$min.reads.15.known
               par.settings = par.set, main = "Known imprinted genes", xlab = xlab)
 ```
 
-<img src="figure/unnamed-chunk-12-1.png" title="plot of chunk unnamed-chunk-12" alt="plot of chunk unnamed-chunk-12" height="700px" />
+```
+## Error in `[.data.frame`(frac$min.reads.15.known, length(frac$min.reads.15.known):1): undefined columns selected
+```
 
 So, it still seems reasonable to select *IGF2*, *NLRP2* and *UBE3A* based on the second rule.
 
@@ -294,9 +293,11 @@ Then **the set of genes to carry out regression analysis**:
 ##  [9] "PEG3"          "PWAR6"         "FAM50B"        "NDN"          
 ## [13] "SNURF"         "PEG10"         "SNRPN"         "KCNQ1OT1"     
 ## [17] "ZDBF2"         "GRB10"         "SNORD116-20"   "KCNK9"        
-## [21] "INPP5F"        "RP13-487P22.1" "MEST"          "ZNF331"       
-## [25] "hsa-mir-335"   "DIRAS3"        "PWRN1"         "IGF2"         
-## [29] "NLRP2"         "UBE3A"
+## [21] "INPP5F"        "HLA-DRB5"      "RP13-487P22.1" "GSTM1"        
+## [25] "RPL23AP7"      "MEST"          "MRPL28"        "IL1RL1"       
+## [29] "ZNF331"        "MRPS34"        "hsa-mir-335"   "DIRAS3"       
+## [33] "PWRN1"         "GFRA2"         "IGF2"          "NLRP2"        
+## [37] "UBE3A"
 ```
 
 ```r
@@ -318,7 +319,9 @@ setdiff(genes.regression.new, genes.regression.ifat) # what genes to add?
 ```
 
 ```
-## [1] "MAGEL2" "ZIM2"   "FAM50B" "NDN"    "SNURF"  "KCNK9"  "DIRAS3"
+##  [1] "MAGEL2"   "ZIM2"     "FAM50B"   "NDN"      "SNURF"    "KCNK9"   
+##  [7] "HLA-DRB5" "GSTM1"    "RPL23AP7" "MRPL28"   "IL1RL1"   "MRPS34"  
+## [13] "DIRAS3"   "GFRA2"
 ```
 
 ## Conclusion

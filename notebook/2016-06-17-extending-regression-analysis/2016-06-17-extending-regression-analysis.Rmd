@@ -68,6 +68,14 @@ Y.f <- get.readcounts(gene.ids = gene.ids, count.thrs = 50)
 
 ### The number of available observations
 
+```{r echo=FALSE}
+opts_chunk$set(dpi = 144)
+opts_chunk$set(out.width = "500px")
+opts_chunk$set(dev = c("png", "pdf"))
+lattice.options(default.args = list(as.table = TRUE))
+lattice.options(default.theme = "standard.theme")
+```
+
 The number of available observations is closely (and inversely) related to the standard error of estimated regression coefficients such as of $\hat{\beta}_\mathrm{age}$, on which our attention is centered. The number of observations before and after filtering at total read count threshold $\le 50$)...
 ```{r}
 (nobs <- as.data.frame(lapply(list(unfiltered=Y, filtered=Y.f), function(y) sapply(y, function(x) sum(! is.na(x[[1]]))))))
@@ -91,7 +99,7 @@ The above results show that the previously used gene filter would remove 6 out o
 
 ### Apparent age dependence of $S_g$ for candidate genes $g$
 
-```{r S-vs-age-candidate-imprinted, fig.width=12, fig.height=12, echo=FALSE, dev=c('png','pdf')}
+```{r S-vs-age-candidate-imprinted, echo=FALSE, dev=c('png','pdf'), out.width=700}
 par(mfcol = c(3,3))
 invisible(sapply(names(Y)[17:23], function(y) plot(E$Age, Y[[ y ]]$S,
                                                    xlab = "age", ylab = "S",

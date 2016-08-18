@@ -41,7 +41,7 @@ source("~/projects/monoallelic-brain/src/import-data.R")
 source("~/projects/monoallelic-brain/src/fit-glms.R")
 ```
 
-~~Select the following (candidate) imprinted genes:~~
+**Obsolete**: Select the following (candidate) imprinted genes:
 
 ```r
              # 8 genes analyzed by Ifat
@@ -72,6 +72,8 @@ Y.f <- get.readcounts(gene.ids = gene.ids, count.thrs = 50)
 ```
 
 ### The number of available observations
+
+
 
 The number of available observations is closely (and inversely) related to the standard error of estimated regression coefficients such as of $\hat{\beta}_\mathrm{age}$, on which our attention is centered. The number of observations before and after filtering at total read count threshold $\le 50$)...
 
@@ -118,7 +120,7 @@ The number of available observations is closely (and inversely) related to the s
 ```
 which shows that the largest trade-off of filtering arises for genes for which the number of observations is ab ovo small, in particular for most genes in the "novel 1 MB" category.  The same information is plotted below; *blue* denotes known imprinted genes, *green* candidate imprinted genes (<1 MB) and *magenta* two gene sets aggregated by weighted average (`WA.8` and `WA`, overlapping each other).  The horizontal dashed line shows the filtering threshold of 180 observations that was defined previously to remove genes with little data.
 
-![plot of chunk filtering-on-nobs](figure/filtering-on-nobs-1.png)
+<img src="figure/filtering-on-nobs-1.png" title="plot of chunk filtering-on-nobs" alt="plot of chunk filtering-on-nobs" width="500px" />
 
 #### Conclusion
 
@@ -126,7 +128,7 @@ The above results show that the previously used gene filter would remove 6 out o
 
 ### Apparent age dependence of $S_g$ for candidate genes $g$
 
-![plot of chunk S-vs-age-candidate-imprinted](figure/S-vs-age-candidate-imprinted-1.png)
+<img src="figure/S-vs-age-candidate-imprinted-1.png" title="plot of chunk S-vs-age-candidate-imprinted" alt="plot of chunk S-vs-age-candidate-imprinted" width="700" />
 
 ## Estimation of regression coefficients
 
@@ -200,19 +202,19 @@ Note that potential `NULL` results reflect genes that have been filtered out---b
 
 Under the `logi.S` model $\beta_\mathrm{age}$ seems to vary greatly accross genes suggesting both gain or loss of imprinting with age or no effect of age.  Genes with fewer observations (as typical for candidate imprinted genes) have broad confidence intervals and so tend support the null hypothesis of $\beta_\mathrm{age}=0$ at a given significance level $\alpha$.  Aggregating read counts using weighted average is hugely beneficial as evidenced by dramatically shrunken confidence intervals (`WA.8`, `WA`) because the logistic model takes advantage of the increased total read counts.  The following pair of plots (obtained with the `lattice` and `ggplot2` package, respectively) illustrate these result:
 
-![plot of chunk beta-age-logi.S](figure/beta-age-logi.S-1.png)![plot of chunk beta-age-logi.S](figure/beta-age-logi.S-2.png)
+<img src="figure/beta-age-logi.S-1.png" title="plot of chunk beta-age-logi.S" alt="plot of chunk beta-age-logi.S" width="500px" /><img src="figure/beta-age-logi.S-2.png" title="plot of chunk beta-age-logi.S" alt="plot of chunk beta-age-logi.S" width="500px" />
 
 #### Normal linear model on rank-transformed data
 
 Under the `wnlm.R` model the above picture slightly changes.  In general, confidence intervals are broader than under `logi.S`. In particular, the normal linear model fails to benefit from data aggregation by ignoring total read counts; therefore the confidence intervals for `WA.8` or `WA` are *not* shrunken relative to single-gene data sets under this model.  The `lattice` and `ggplot2` implementation, as above:
 
-![plot of chunk beta-age-wnlm.R](figure/beta-age-wnlm.R-1.png)![plot of chunk beta-age-wnlm.R](figure/beta-age-wnlm.R-2.png)
+<img src="figure/beta-age-wnlm.R-1.png" title="plot of chunk beta-age-wnlm.R" alt="plot of chunk beta-age-wnlm.R" width="500px" /><img src="figure/beta-age-wnlm.R-2.png" title="plot of chunk beta-age-wnlm.R" alt="plot of chunk beta-age-wnlm.R" width="500px" />
 
 ### Comparing $\beta_\mathrm{age}$ from different models
 
 #### Consistency between `wnlm.R` and `logi.S`
 
-![plot of chunk beta-age-wnlm.R-vs-logi.S](figure/beta-age-wnlm.R-vs-logi.S-1.png)
+<img src="figure/beta-age-wnlm.R-vs-logi.S-1.png" title="plot of chunk beta-age-wnlm.R-vs-logi.S" alt="plot of chunk beta-age-wnlm.R-vs-logi.S" width="500px" />
 
 #### Impact of S rescaling (`logi2.S`) and of weighting observations (`nlm`)
 
@@ -227,6 +229,6 @@ The plot below shows such differences for three model comparisons and all genes 
 1. the difference tends to decrease with increasing number of observations indicating that some of the difference comes from sampling error due to limited number of observations
 1. the `logi2.S` / `logi.S` differences (both can be considered weighted averages) tend to be smaller than the differences between weighed and unweighted averaging of $\{S_{g}\}_g$ and especially that of $\{R_{g}\}_g$.
 
-![plot of chunk mean-abs-diff-coefs](figure/mean-abs-diff-coefs-1.png)
+<img src="figure/mean-abs-diff-coefs-1.png" title="plot of chunk mean-abs-diff-coefs" alt="plot of chunk mean-abs-diff-coefs" width="500px" />
 
 [manuscript]: https://docs.google.com/document/d/1cWd4UH98SJR5lihDihC0ZO-C_A1-8MQ5COcixxCLzHE/edit

@@ -17,7 +17,7 @@ Relevant scripts
 library(lattice)
 library(latticeExtra)
 opts_chunk$set(dpi = 144)
-opts_chunk$set(out.height = "700px")
+opts_chunk$set(out.width = "700px")
 opts_chunk$set(dev = c("png", "pdf"))
 lattice.options(default.args = list(as.table = TRUE))
 lattice.options(default.theme = "standard.theme")
@@ -76,11 +76,16 @@ my.stripplot <- function(fm = Predictor ~ Deviance | Order, data = A.long$logi.S
               data = data,
               subset = Order %in% c("forward", "reverse"),
               jitter.data = TRUE, fun = identity, type = "p",
-              pch = 21, abline = list(v = 0, col = "gray"),
-              grid = TRUE,
+              pch = 1,
+              #abline = list(v = 0, col = "gray"),
+              grid = FALSE,
+              box.ratio = 4,
               #auto.key = TRUE,
-              panel = function(x, y, ...) {
-                  panel.bwplot(x, y, do.out = FALSE, ...)
+              par.settings =
+                  list(box.rectangle = list(col = "black"), box.umbrella = list(col = "black"), box.dot = list(col = NULL, cex = 0.5),
+                       superpose.symbol = list(alpha = 0.5, cex = 0.5, col = rainbow(length(levels(data$Gene))))),
+              panel = function(x, y, box.ratio, ...) {
+                  panel.bwplot(x, y, do.out = FALSE, box.ratio = box.ratio, ...)
                   panel.stripplot(x, y, ...)
               }, ...)
 }
@@ -91,23 +96,23 @@ my.dotplot <- function(fm = Predictor ~ Deviance | Gene, data = A.long$logi.S, .
               data = data,
               subset = Order %in% c("forward", "reverse"),
               abline = list(v = 0, lty = 2),
-              #scales = list(x = "free"),
+              scales = list(cex = 0.5),
               auto.key = list(text = levels(data$Order)[1:2], columns = 2),
               layout = c(8, 4),
               between = list(x = 0.2),
-              par.settings = list(superpose.symbol = list(pch = 21, alpha = 0.5)),
+              par.settings = list(superpose.symbol = list(pch = 21, alpha = 0.5), add.text = list(cex = 0.7)),
               ...)
 }
 ```
 
 Under `logi.S`:
-```{r anova-fw-rv-logi.S, echo=FALSE, cache=TRUE}
-(plots <- list(anova.logi.S = my.stripplot(fm = Predictor ~ Deviance | Order, data = A.long$logi.S, main = "ANOVA under logi.S")))
+```{r anova-fw-rv-logi.S, echo=FALSE}
+(plots <- list(anova.logi.S = my.stripplot(fm = Predictor ~ Deviance | Order, data = A.long$logi.S, main = "ANOVA under logi.S", aspect = length(levels(A.long$logi.S$Predictor)) / 10)))
 ```
 
 The same tendencies emerge under `wnlm.R`:
 ```{r anova-fw-rv-wnlm.R, echo=FALSE}
-(plots$anova.wnlm.R <- my.stripplot(fm = Predictor ~ Deviance | Order, data = A.long$wnlm.R, main = "ANOVA under wnlm.R"))
+(plots$anova.wnlm.R <- my.stripplot(fm = Predictor ~ Deviance | Order, data = A.long$wnlm.R, main = "ANOVA under wnlm.R", aspect = length(levels(A.long$wnlm.R$Predictor)) / 10))
 ```
 
 ```{r cache=TRUE, warning=FALSE}
@@ -116,37 +121,37 @@ Ef.long <- lapply(M, function(m) { x <- l.l.effects(m); x <- x[ ! x$Coefficient 
 
 Under `logi.S`:
 ```{r effects-fw-rv-logi.S, echo=FALSE}
-(plots$effects.logi.S <- my.stripplot(fm = Coefficient ~ Effect | Order, data = Ef.long$logi.S, main = "Effects under logi.S"))
+(plots$effects.logi.S <- my.stripplot(fm = Coefficient ~ Effect | Order, data = Ef.long$logi.S, main = "Effects under logi.S", aspect = length(levels(Ef.long$logi.S$Coefficient)) / 10))
 ```
 
 Again, similar tendencies are observed under `wnlm.R`:
 ```{r effects-fw-rv-wnlm.R, echo=FALSE}
-(plots$effects.wnlm.R <- my.stripplot(fm = Coefficient ~ Effect | Order, data = Ef.long$wnlm.R, main = "Effects under wnlm.R"))
+(plots$effects.wnlm.R <- my.stripplot(fm = Coefficient ~ Effect | Order, data = Ef.long$wnlm.R, main = "Effects under wnlm.R", aspect = length(levels(Ef.long$wnlm.R$Coefficient)) / 10))
 ```
 
 ### Figure for manuscript
 
-```{r anova-effects-fw-rv-logi.S, echo=FALSE, fig.asp=2.0, fig.width=3.5}
-print(update(plots$anova.logi.S, main = "", layout = c(2, 1)), split = c(1, 1, 1, 2), more = TRUE)
-print(update(plots$effects.logi.S, main = "", layout = c(2, 1)), split = c(1, 2, 1, 2), more = FALSE)
+```{r anova-effects-fw-rv-logi.S, echo=FALSE, fig.asp = 2/3, out.width=700}
+print(update(plots$anova.logi.S, main = "", layout = c(2, 1), aspect = "fill", par.settings = list(superpose.symbol = list(cex = 0.5))), split = c(1, 1, 2, 1), more = TRUE)
+print(update(plots$effects.logi.S, main = "", layout = c(2, 1), aspect = "fill"), split = c(2, 1, 2, 1), more = FALSE)
 ```
 
 ### Comparison with genes on relative scale
 
 ```{r anova-fw-rv-logi.S-trellis, echo=FALSE, fig.asp=1}
-my.dotplot(fm = Predictor ~ Deviance | Gene, data = A.long$logi.S, main = "ANOVA under logi.S", scales = list(x = "free"))
+update(my.dotplot(fm = Predictor ~ Deviance | Gene, data = A.long$logi.S, main = "ANOVA under logi.S"), scales = list(x = "free"))
 ```
 
 ```{r effects-fw-rv-logi.S-trellis, echo=FALSE, fig.asp=1.4}
-my.dotplot(fm = Coefficient ~ Effect | Gene, data = Ef.long$logi.S, main = "Effects under logi.S", scales = list(x = "free"))
+update(my.dotplot(fm = Coefficient ~ Effect | Gene, data = Ef.long$logi.S, main = "Effects under logi.S"), scales = list(x = "free"))
 ```
 
 ```{r anova-fw-rv-wnlm.R-trellis, echo=FALSE, fig.asp=1}
-my.dotplot(fm = Predictor ~ Deviance | Gene, data = A.long$wnlm.R, main = "ANOVA under wnlm.R", scales = list(x = "free"))
+update(my.dotplot(fm = Predictor ~ Deviance | Gene, data = A.long$wnlm.R, main = "ANOVA under wnlm.R"), scales = list(x = "free"))
 ```
 
 ```{r effects-fw-rv-wnlm.R-trellis, echo=FALSE, fig.asp=1.4}
-my.dotplot(fm = Coefficient ~ Effect | Gene, data = Ef.long$wnlm.R, main = "Effects under wnlm.R", scales = list(x = "free"))
+update(my.dotplot(fm = Coefficient ~ Effect | Gene, data = Ef.long$wnlm.R, main = "Effects under wnlm.R"), scales = list(x = "free"))
 ```
 
 ### Another view, genes on uniform scale
@@ -165,8 +170,9 @@ my.segplot <- function(data = Betas$logi.S,
                        ...) {
     segplot(Gene ~ Lower.CL + Upper.CL | Coefficient,
             data = data,
-            scales = list(x = list(relation = "free")),
+            scales = list(cex = 0.5, x = list(relation = "free")),
             layout = c(6,4),
+            par.settings = list(add.text = list(cex = 0.7)),
             between = list(x = 0.2),
             panel = function(x, y, ...) {
                 panel.grid(h = -1, v = 0)
@@ -182,7 +188,7 @@ my.segplot <- function(data = Betas$logi.S,
 my.dotplot(fm = Gene ~ Effect | Coefficient, data = Ef.long$logi.S, main = "Effects under logi.S")
 ```
 
-```{r reg-coef-logi.S, dev=c("png", "pdf"), fig.width=10, fig.asp=1.7}
+```{r reg-coef-logi.S, dev=c("png", "pdf"), fig.asp=1.7}
 my.segplot(data = Betas$logi.S)
 ```
 
@@ -193,6 +199,6 @@ my.segplot(data = Betas$logi.S)
 my.dotplot(fm = Gene ~ Effect | Coefficient, data = Ef.long$wnlm.R, main = "Effects under wnlm.R")
 ```
 
-```{r reg-coef-wnlm.R, dev=c("png", "pdf"), fig.width=10, fig.asp=1.7}
+```{r reg-coef-wnlm.R, dev=c("png", "pdf"), fig.asp=1.7}
 my.segplot(data = Betas$wnlm.R, main = expression(paste("99 % CI for ", beta, " under wnlm.R")))
 ```

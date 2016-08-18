@@ -8,7 +8,7 @@
 # positive values of seg identify the imprinting clusters, the negative ones
 # the intercluster segments and zero the segment before the first cluster on
 # the first chromosome.
-segs.one.chr <- function(gs) {
+segs.one.chr <- function(gs, remove.str) {
     # return current segment given current index and previous segment
     #
     # Details
@@ -26,7 +26,7 @@ segs.one.chr <- function(gs) {
     # case 6: C -> C
     cur.seg <- function(i.cur, prev.seg) {
         is.known <- function(i)
-            gs[rownames(gs)[i], "imprinting.status"] != "candidate"
+            gs[rownames(gs)[i], "imprinting.status"] != remove.str
         i.prev <- i.cur - 1
         if(i.prev == 0) {
             if(is.known(i.cur)) 1 # 0 -> K
@@ -65,11 +65,11 @@ segs.one.chr <- function(gs) {
 #
 # It follows that abs(F) is a non-decreasing function which steps 1 at the
 # first gene of each cluster
-make.impr.segs <- function(gs) {
+make.impr.segs <- function(gs, remove.str = "candidate, >1MB") {
     # merge data frames for two consecutive chromosomes
     segs.two.chr <- function(df.prev, df.cur) {
-        prev <- segs.one.chr(df.prev)
-        cur <- segs.one.chr(df.cur)
+        prev <- segs.one.chr(df.prev, remove.str)
+        cur <- segs.one.chr(df.cur, remove.str)
         rbind(prev,
               segs.one.chr.adjust(cur, seg.0 = prev$seg[nrow(prev)]))
     }

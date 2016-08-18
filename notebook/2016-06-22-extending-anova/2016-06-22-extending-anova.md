@@ -75,10 +75,10 @@ Under `logi.S`:
 ## $anova.logi.S
 ```
 
-<img src="figure/anova-fw-rv-logi.S-1.png" title="plot of chunk anova-fw-rv-logi.S" alt="plot of chunk anova-fw-rv-logi.S" height="700px" />
+<img src="figure/anova-fw-rv-logi.S-1.png" title="plot of chunk anova-fw-rv-logi.S" alt="plot of chunk anova-fw-rv-logi.S" width="700px" />
 
 The same tendencies emerge under `wnlm.R`:
-<img src="figure/anova-fw-rv-wnlm.R-1.png" title="plot of chunk anova-fw-rv-wnlm.R" alt="plot of chunk anova-fw-rv-wnlm.R" height="700px" />
+<img src="figure/anova-fw-rv-wnlm.R-1.png" title="plot of chunk anova-fw-rv-wnlm.R" alt="plot of chunk anova-fw-rv-wnlm.R" width="700px" />
 
 
 ```r
@@ -86,24 +86,24 @@ Ef.long <- lapply(M, function(m) { x <- l.l.effects(m); x <- x[ ! x$Coefficient 
 ```
 
 Under `logi.S`:
-<img src="figure/effects-fw-rv-logi.S-1.png" title="plot of chunk effects-fw-rv-logi.S" alt="plot of chunk effects-fw-rv-logi.S" height="700px" />
+<img src="figure/effects-fw-rv-logi.S-1.png" title="plot of chunk effects-fw-rv-logi.S" alt="plot of chunk effects-fw-rv-logi.S" width="700px" />
 
 Again, similar tendencies are observed under `wnlm.R`:
-<img src="figure/effects-fw-rv-wnlm.R-1.png" title="plot of chunk effects-fw-rv-wnlm.R" alt="plot of chunk effects-fw-rv-wnlm.R" height="700px" />
+<img src="figure/effects-fw-rv-wnlm.R-1.png" title="plot of chunk effects-fw-rv-wnlm.R" alt="plot of chunk effects-fw-rv-wnlm.R" width="700px" />
 
 ### Figure for manuscript
 
-<img src="figure/anova-effects-fw-rv-logi.S-1.png" title="plot of chunk anova-effects-fw-rv-logi.S" alt="plot of chunk anova-effects-fw-rv-logi.S" height="700px" />
+<img src="figure/anova-effects-fw-rv-logi.S-1.png" title="plot of chunk anova-effects-fw-rv-logi.S" alt="plot of chunk anova-effects-fw-rv-logi.S" width="700" />
 
 ### Comparison with genes on relative scale
 
-<img src="figure/anova-fw-rv-logi.S-trellis-1.png" title="plot of chunk anova-fw-rv-logi.S-trellis" alt="plot of chunk anova-fw-rv-logi.S-trellis" height="700px" />
+<img src="figure/anova-fw-rv-logi.S-trellis-1.png" title="plot of chunk anova-fw-rv-logi.S-trellis" alt="plot of chunk anova-fw-rv-logi.S-trellis" width="700px" />
 
-<img src="figure/effects-fw-rv-logi.S-trellis-1.png" title="plot of chunk effects-fw-rv-logi.S-trellis" alt="plot of chunk effects-fw-rv-logi.S-trellis" height="700px" />
+<img src="figure/effects-fw-rv-logi.S-trellis-1.png" title="plot of chunk effects-fw-rv-logi.S-trellis" alt="plot of chunk effects-fw-rv-logi.S-trellis" width="700px" />
 
-<img src="figure/anova-fw-rv-wnlm.R-trellis-1.png" title="plot of chunk anova-fw-rv-wnlm.R-trellis" alt="plot of chunk anova-fw-rv-wnlm.R-trellis" height="700px" />
+<img src="figure/anova-fw-rv-wnlm.R-trellis-1.png" title="plot of chunk anova-fw-rv-wnlm.R-trellis" alt="plot of chunk anova-fw-rv-wnlm.R-trellis" width="700px" />
 
-<img src="figure/effects-fw-rv-wnlm.R-trellis-1.png" title="plot of chunk effects-fw-rv-wnlm.R-trellis" alt="plot of chunk effects-fw-rv-wnlm.R-trellis" height="700px" />
+<img src="figure/effects-fw-rv-wnlm.R-trellis-1.png" title="plot of chunk effects-fw-rv-wnlm.R-trellis" alt="plot of chunk effects-fw-rv-wnlm.R-trellis" width="700px" />
 
 ### Another view, genes on uniform scale
 
@@ -124,14 +124,14 @@ Betas <- lapply(M, function(m) { x <- get.estimate.CI(m$forward); x <- x[ ! x$Co
 my.dotplot(fm = Gene ~ Effect | Coefficient, data = Ef.long$logi.S, main = "Effects under logi.S")
 ```
 
-<img src="figure/effects-fw-rv-logi.S-trellis-coef-cond-1.png" title="plot of chunk effects-fw-rv-logi.S-trellis-coef-cond" alt="plot of chunk effects-fw-rv-logi.S-trellis-coef-cond" height="700px" />
+<img src="figure/effects-fw-rv-logi.S-trellis-coef-cond-1.png" title="plot of chunk effects-fw-rv-logi.S-trellis-coef-cond" alt="plot of chunk effects-fw-rv-logi.S-trellis-coef-cond" width="700px" />
 
 
 ```r
 my.segplot(data = Betas$logi.S)
 ```
 
-<img src="figure/reg-coef-logi.S-1.png" title="plot of chunk reg-coef-logi.S" alt="plot of chunk reg-coef-logi.S" height="700px" />
+<img src="figure/reg-coef-logi.S-1.png" title="plot of chunk reg-coef-logi.S" alt="plot of chunk reg-coef-logi.S" width="700px" />
 
 #### Under wnlm.R
 
@@ -141,11 +141,11 @@ my.segplot(data = Betas$logi.S)
 my.dotplot(fm = Gene ~ Effect | Coefficient, data = Ef.long$wnlm.R, main = "Effects under wnlm.R")
 ```
 
-<img src="figure/effects-fw-rv-wnlm.R-trellis-coef-cond-1.png" title="plot of chunk effects-fw-rv-wnlm.R-trellis-coef-cond" alt="plot of chunk effects-fw-rv-wnlm.R-trellis-coef-cond" height="700px" />
+<img src="figure/effects-fw-rv-wnlm.R-trellis-coef-cond-1.png" title="plot of chunk effects-fw-rv-wnlm.R-trellis-coef-cond" alt="plot of chunk effects-fw-rv-wnlm.R-trellis-coef-cond" width="700px" />
 
 
 ```r
 my.segplot(data = Betas$wnlm.R, main = expression(paste("99 % CI for ", beta, " under wnlm.R")))
 ```
 
-<img src="figure/reg-coef-wnlm.R-1.png" title="plot of chunk reg-coef-wnlm.R" alt="plot of chunk reg-coef-wnlm.R" height="700px" />
+<img src="figure/reg-coef-wnlm.R-1.png" title="plot of chunk reg-coef-wnlm.R" alt="plot of chunk reg-coef-wnlm.R" width="700px" />

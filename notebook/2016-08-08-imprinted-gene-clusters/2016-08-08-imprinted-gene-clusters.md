@@ -84,11 +84,11 @@ Let $K$ denote the set of genes $g$ such that $g\in K$ means the gene is either 
 
 ```r
 gene.summary$imprinting.status <- factor(gene.summary$imprinted, ordered = TRUE)
-levels(gene.summary$imprinting.status) <- c("candidate", "candidate, <1MB", "known")
+levels(gene.summary$imprinting.status) <- rev(c("known imprinted", "candidate, <1MB", "candidate, >1MB"))
 gene.summary$Symbol <- factor(gene.summary$Symbol, levels = gene.summary$Symbol, ordered = TRUE)
 gene.summary$chr <- factor(paste("chr", gene.summary$chr), levels = paste("chr", seq_along(levels(factor(gene.summary$chr)))), ordered = TRUE)
 # imprinting segments in component 'seg': clusters and segments inbetween
-gs.seg <- make.impr.segs(gene.summary)
+gs.seg <- make.impr.segs(gene.summary, remove.str = "candidate, >1MB")
 gs.seg$cluster <-
     factor(x <- with(gs.seg,
                      ifelse(seg > 0, paste0("clus ", seg, " (", chr, ")"), paste0("inter clus ", abs(seg)))),
@@ -112,7 +112,7 @@ median(cluster.freq)
 ```
 
 ```r
-barchart(cluster.freq, ylim = c(37, 0), xlab = "# genes in cluster (including <1M candidates)", ylab = "imprinted gene cluster")
+barchart(cluster.freq, xlab = "# genes in cluster (including <1M candidates)", ylab = "imprinted gene cluster")
 ```
 
 <img src="figure/cluster-sizes-1.png" title="plot of chunk cluster-sizes" alt="plot of chunk cluster-sizes" height="700px" />
@@ -125,7 +125,7 @@ table(gene.summary$imprinting.status)
 
 ```
 ## 
-##       candidate candidate, <1MB           known 
+## candidate, >1MB candidate, <1MB known imprinted 
 ##           15265             701              60
 ```
 
@@ -137,7 +137,7 @@ table(gs$imprinting.status)
 
 ```
 ## 
-##       candidate candidate, <1MB           known 
+## candidate, >1MB candidate, <1MB known imprinted 
 ##            5005             266              36
 ```
 
@@ -159,7 +159,7 @@ The next plot presents the maximum likelihood estimate $\hat{\beta}_\mathrm{age}
 
 
 ```r
-beta.age <- get.CI(M$logi.S[f.ids$logi.S], coef.name = "Age", conf.lev = 0.99)
+beta.age <- get.CI(M$logi.S[f.ids$logi.S][-33], coef.name = "Age", conf.lev = 0.99)
 gs$beta.hat <- NA
 gs[rownames(beta.age), "beta.hat"] <- beta.age$beta.hat
 xyplot(beta.hat ~ start | chr, data = gs, groups = imprinting.status, auto.key = list(columns = 3), layout = c(4, 6), panel = function(...) { panel.abline(h = 0, col = trellis.par.get("reference.line")$col); panel.xyplot(...) })
