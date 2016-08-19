@@ -34,17 +34,17 @@ P$s.age.inst$ggplot2 <- g
 plot(P$s.age.inst$lattice)
 ```
 
-<img src="figure/S-age-smooth-1.png" title="plot of chunk S-age-smooth" alt="plot of chunk S-age-smooth" height="700px" />
+<img src="figure/S-age-smooth-1.png" title="plot of chunk S-age-smooth" alt="plot of chunk S-age-smooth" width="700px" />
 
 ```r
 plot(P$s.age.inst$ggplot2)
 ```
 
-<img src="figure/S-age-smooth-2.png" title="plot of chunk S-age-smooth" alt="plot of chunk S-age-smooth" height="700px" />
+<img src="figure/S-age-smooth-2.png" title="plot of chunk S-age-smooth" alt="plot of chunk S-age-smooth" width="700px" />
 
 ### Dependence on gene, age, and total read count $N$
 
-<img src="figure/S-age-tot-read-count-1.png" title="plot of chunk S-age-tot-read-count" alt="plot of chunk S-age-tot-read-count" height="700px" /><img src="figure/S-age-tot-read-count-2.png" title="plot of chunk S-age-tot-read-count" alt="plot of chunk S-age-tot-read-count" height="700px" />
+<img src="figure/S-age-tot-read-count-1.png" title="plot of chunk S-age-tot-read-count" alt="plot of chunk S-age-tot-read-count" width="700px" /><img src="figure/S-age-tot-read-count-2.png" title="plot of chunk S-age-tot-read-count" alt="plot of chunk S-age-tot-read-count" width="700px" />
 
 
 ```r
@@ -67,10 +67,10 @@ M <- do.all.fits(Y[ 0:1 - length(Y) ], # omit the last two components: "UA.8" an
 
 ### Deterministic association: RIN and RIN2
 
-<img src="figure/rin-rin2-1.png" title="plot of chunk rin-rin2" alt="plot of chunk rin-rin2" height="700px" /><img src="figure/rin-rin2-2.png" title="plot of chunk rin-rin2" alt="plot of chunk rin-rin2" height="700px" />
+<img src="figure/rin-rin2-1.png" title="plot of chunk rin-rin2" alt="plot of chunk rin-rin2" width="300" /><img src="figure/rin-rin2-2.png" title="plot of chunk rin-rin2" alt="plot of chunk rin-rin2" width="300" />
 
 ### Stochastic (statistical) associations
 
 Both "scatter plot matrices" show the same set of pairwise associations (top: `lattice`, bottom: `ggplot2` and `GGally` packages).
 
-<img src="figure/evar-scatterplot-matrix-1.png" title="plot of chunk evar-scatterplot-matrix" alt="plot of chunk evar-scatterplot-matrix" height="700px" /><img src="figure/evar-scatterplot-matrix-2.png" title="plot of chunk evar-scatterplot-matrix" alt="plot of chunk evar-scatterplot-matrix" height="700px" />
+<img src="figure/evar-scatterplot-matrix-1.png" title="plot of chunk evar-scatterplot-matrix" alt="plot of chunk evar-scatterplot-matrix" width="700px" /><img src="figure/evar-scatterplot-matrix-2.png" title="plot of chunk evar-scatterplot-matrix" alt="plot of chunk evar-scatterplot-matrix" width="700px" />

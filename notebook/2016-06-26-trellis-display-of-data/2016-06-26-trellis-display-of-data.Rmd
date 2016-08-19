@@ -8,7 +8,7 @@ library(GGally)
 source("../../src/import-data.R")
 source("../../src/fit-glms.R")
 opts_chunk$set(dpi = 144)
-opts_chunk$set(out.height = "700px")
+opts_chunk$set(out.width = "700px")
 opts_chunk$set(dev = c("png", "pdf"))
 lattice.options(default.args = list(as.table = TRUE))
 lattice.options(default.theme = "standard.theme")
@@ -79,7 +79,10 @@ P$s.age.n$lattice <-
               ylab = "read count ratio, s",
               xlab = "age, years",
               panel = panel.levelplot.points, layout = c(5, 7),
-              par.settings = list(add.text = list(cex = 0.8), regions = list(col = colorRampPalette(c("blue", "red")))))
+              colorkey = list(space = "top"), main = expression(paste(log[10], "(total read count)")),
+              par.settings = list(add.text = list(cex = 0.8),
+                                  par.main.text = list(cex = 1),
+                                  regions = list(col = colorRampPalette(c("blue", "red")))))
 #
 # alternative lattice implementation without color scale, see Fig 5.5 in 'Lattice: Multivariate Data Visualization with R', http://lmdvr.r-forge.r-project.org
 #xyplot(S ~ Age | Gene, data = Y.long, alpha = 0.5, col = "white",
@@ -109,7 +112,7 @@ M <- do.all.fits(Y[ 0:1 - length(Y) ], # omit the last two components: "UA.8" an
 
 ### Deterministic association: RIN and RIN2
 
-```{r rin-rin2, dev=c("png", "pdf"), fig.width=3, warning=FALSE, echo=FALSE, dpi=72}
+```{r rin-rin2, dev=c("png", "pdf"), fig.width=3, out.width = 300, warning=FALSE, echo=FALSE, dpi=72}
 xyplot(RIN2 ~ RIN, data = E[sort.int(E$RIN, index.return = TRUE)$ix, ],
        type = "l", grid = TRUE, aspect = 1)
 qplot(RIN, RIN2, data = E[sort.int(E$RIN, index.return = TRUE)$ix, ],

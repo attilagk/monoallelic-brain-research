@@ -61,6 +61,9 @@ such that $z_{p}$ is the $p$ quantile of the standard normal distribution and $n
 ### Genome-wide data import and preparation
 
 
+```
+## Loading required package: RColorBrewer
+```
 
 Load functions:
 
@@ -136,15 +139,15 @@ The previous figures show that several genes in the top 51 according to $R_{7}, 
 ```
 ##               imprinting.status R.ifat  R.7 R.15 R.20
 ## MAGEL2          known imprinted      1   19    1    1
-## TMEM261P1       candidate, <1MB      2    3    2   NA
+## TMEM261P1      nearby candidate      2    3    2   NA
 ## SNHG14          known imprinted      3    1    3    2
-## AL132709.5      candidate, <1MB      4    6    4    4
-## RP11-909M7.3    candidate, <1MB      5   13    5    3
+## AL132709.5     nearby candidate      4    6    4    4
+## RP11-909M7.3   nearby candidate      5   13    5    3
 ## NAP1L5          known imprinted      6   10    7    6
 ## ZIM2            known imprinted      7    2    6    5
 ## MEG3            known imprinted      8    4    8    7
 ## PEG3            known imprinted      9    5    9    8
-## PWAR6           candidate, <1MB     10    7   10    9
+## PWAR6          nearby candidate     10    7   10    9
 ## FAM50B          known imprinted     11   16   11   13
 ## NDN             known imprinted     12    8   12   10
 ## SNURF           known imprinted     13    9   13   11
@@ -153,26 +156,26 @@ The previous figures show that several genes in the top 51 according to $R_{7}, 
 ## KCNQ1OT1        known imprinted     16   21   16   15
 ## ZDBF2           known imprinted     17   15   17   16
 ## GRB10           known imprinted     18   24   18   17
-## SNORD116-20     candidate, <1MB     19   22   19   18
+## SNORD116-20    nearby candidate     19   22   19   18
 ## KCNK9           known imprinted     20   28   20   20
 ## INPP5F          known imprinted     21   25   21   19
-## HLA-DRB5        candidate, >1MB     22   30   22   21
-## RP13-487P22.1   candidate, <1MB     23   39   23   22
-## GSTM1           candidate, >1MB     24   32   24   24
+## HLA-DRB5      distant candidate     22   30   22   21
+## RP13-487P22.1  nearby candidate     23   39   23   22
+## GSTM1         distant candidate     24   32   24   24
 ## MEST            known imprinted     25   38   26   23
-## hsa-mir-335     candidate, <1MB     26   56   31   NA
-## IL1RL1          candidate, >1MB     27   49   28   NA
+## hsa-mir-335    nearby candidate     26   56   31   NA
+## IL1RL1        distant candidate     27   49   28   NA
 ## ZNF331          known imprinted     28   41   29   25
 ## DIRAS3          known imprinted     29   44   32   NA
-## PWRN1           candidate, <1MB     30   43   33   29
-## HLA-DQB1        candidate, >1MB     31   50   35   31
-## PAX8-AS1        candidate, >1MB     32   52   37   33
-## HNRNPU          candidate, >1MB     33   53   38   32
-## HLA-DQA1        candidate, >1MB     34   65   44   47
-## RP11-54F2.1     candidate, >1MB     35   83   48   40
-## SYT7            candidate, >1MB     36   81   46   34
-## NME1-NME2       candidate, >1MB     37   64   40   35
-## RAD23A          candidate, >1MB     38   95   57   NA
+## PWRN1          nearby candidate     30   43   33   29
+## HLA-DQB1      distant candidate     31   50   35   31
+## PAX8-AS1      distant candidate     32   52   37   33
+## HNRNPU        distant candidate     33   53   38   32
+## HLA-DQA1      distant candidate     34   65   44   47
+## RP11-54F2.1   distant candidate     35   83   48   40
+## SYT7          distant candidate     36   81   46   34
+## NME1-NME2     distant candidate     37   64   40   35
+## RAD23A        distant candidate     38   95   57   NA
 ## NLRP2           known imprinted     NA  122   77   66
 ## IGF2            known imprinted     NA   84   83   82
 ## UBE3A           known imprinted     NA  132  112   79
@@ -204,7 +207,7 @@ From this result we may conclude that Ifat's filter settings were $t_\mathrm{rc}
 
 Given the result that $R_{15}$ resembles the most to $R_\mathrm{ifat}$, we will use $R_{15}$ to call monoallelic genes.  We will compare called gene sets under different threshold for the score $1 - \hat{F}_g(0.9)$ and further compare these to the one presented in the previous [manuscript][ms].
 
-Notice that the lowest scoring gene in the "candidate, < 1MB" category is *PWRN1* (green on [Fig 1][ifat fig 1]).  Its score is 0.5 and it ranks at 33 according to $R_{15}$ and at `genes.ifat.ranks["PWRN1", "R.ifat"]`.  We may define the classification threshold such that we only call genes monoallelic if their score $\ge0.5$:
+Notice that the lowest scoring gene in the "nearby candidate" category is *PWRN1* (green on [Fig 1][ifat fig 1]).  Its score is 0.5 and it ranks at 33 according to $R_{15}$ and at `genes.ifat.ranks["PWRN1", "R.ifat"]`.  We may define the classification threshold such that we only call genes monoallelic if their score $\ge0.5$:
 
 ```r
 (called.mono.0.5 <- names(frac$min.reads.15)[unlist(frac$min.reads.15[1, ]) >= 0.5])
@@ -233,7 +236,7 @@ length(setdiff(called.mono.0.3, called.mono.0.5))
 ## [1] 23
 ```
 
-The upper right panel of the figure above indicates that most---if not all---of the genes between score 0.3 and 0.5 fall in the "candidate" category.  More on this in the next section.
+The upper right panel of the figure above indicates that most---if not all---of the genes between score 0.3 and 0.5 fall in the "distant candidate" category.  More on this in the next section.
 
 ### Implications for regression analysis
 
@@ -249,22 +252,22 @@ genes.regression.ifat <-
 
 These were selected based on two rules:
 
-1. most monoallelically called genes with imprinting status either "known" or "candidate, < 1MB"
+1. most monoallelically called genes with imprinting status either "known" or "nearby candidate"
    * exceptions include *MAGEL2* and *ZIM2*---it is not clear why those were not selected initally or later so now they will become selected ones
 1. the highest scoring but not monoallelically called "known" imprinted genes; these were *IGF2*, *NLRP2* and *UBE3A*
 
 Given these rules and the called gene sets (at score threshold 0.5 or 0.3) what genes, if any, should I extend mylatest (already extended) regression analysis?
 
-I start with the first rule.  Excluding "candidate"s from the set of monoallelically called genes confirms the earlier suspicion that all genes scoring between 0.3 and 0.5 must be then excluded so for regression analysis it is immaterial which score is used as classfication threshold.
+I start with the first rule.  Excluding "distant candidate"s from the set of monoallelically called genes confirms the earlier suspicion that all genes scoring between 0.3 and 0.5 must be then excluded so for regression analysis it is immaterial which score is used as classfication threshold.
 
 ```r
-genes.not.cand.5 <- called.mono.0.5[gene.summary[called.mono.0.5, "imprinting.status"] != "candidate"]
-genes.not.cand.3 <- called.mono.0.3[gene.summary[called.mono.0.3, "imprinting.status"] != "candidate"]
+genes.not.cand.5 <- called.mono.0.5[gene.summary[called.mono.0.5, "imprinting.status"] != "distant candidate"]
+genes.not.cand.3 <- called.mono.0.3[gene.summary[called.mono.0.3, "imprinting.status"] != "distant candidate"]
 all.equal(genes.not.cand.3, genes.not.cand.5)
 ```
 
 ```
-## [1] "Lengths (57, 34) differ (string compare on first 34)"
+## [1] TRUE
 ```
 
 To see which genes might be selected according to the second rule:
@@ -293,11 +296,9 @@ Then **the set of genes to carry out regression analysis**:
 ##  [9] "PEG3"          "PWAR6"         "FAM50B"        "NDN"          
 ## [13] "SNURF"         "PEG10"         "SNRPN"         "KCNQ1OT1"     
 ## [17] "ZDBF2"         "GRB10"         "SNORD116-20"   "KCNK9"        
-## [21] "INPP5F"        "HLA-DRB5"      "RP13-487P22.1" "GSTM1"        
-## [25] "RPL23AP7"      "MEST"          "MRPL28"        "IL1RL1"       
-## [29] "ZNF331"        "MRPS34"        "hsa-mir-335"   "DIRAS3"       
-## [33] "PWRN1"         "GFRA2"         "IGF2"          "NLRP2"        
-## [37] "UBE3A"
+## [21] "INPP5F"        "RP13-487P22.1" "MEST"          "ZNF331"       
+## [25] "hsa-mir-335"   "DIRAS3"        "PWRN1"         "IGF2"         
+## [29] "NLRP2"         "UBE3A"
 ```
 
 ```r
@@ -319,9 +320,7 @@ setdiff(genes.regression.new, genes.regression.ifat) # what genes to add?
 ```
 
 ```
-##  [1] "MAGEL2"   "ZIM2"     "FAM50B"   "NDN"      "SNURF"    "KCNK9"   
-##  [7] "HLA-DRB5" "GSTM1"    "RPL23AP7" "MRPL28"   "IL1RL1"   "MRPS34"  
-## [13] "DIRAS3"   "GFRA2"
+## [1] "MAGEL2" "ZIM2"   "FAM50B" "NDN"    "SNURF"  "KCNK9"  "DIRAS3"
 ```
 
 ## Conclusion

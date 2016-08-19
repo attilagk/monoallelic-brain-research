@@ -1,8 +1,31 @@
 
 ```r
 library(ggplot2)
+```
+
+```
+## Use suppressPackageStartupMessages() to eliminate package startup
+## messages.
+```
+
+```r
 library(lattice)
 library(latticeExtra)
+```
+
+```
+## Loading required package: RColorBrewer
+```
+
+```
+## 
+## Attaching package: 'latticeExtra'
+```
+
+```
+## The following object is masked from 'package:ggplot2':
+## 
+##     layer
 ```
 
 ## Changes in filtering

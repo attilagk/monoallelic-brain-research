@@ -134,10 +134,10 @@ The plots show four gene rankings and the corresponding fractions of interest.  
 ```{r echo=FALSE, cache=TRUE}
 # format required for my function pad.fraction.imprint 
 gene.summary$imprinting.status <- factor(4 - as.integer(gene.summary$imprinted))
-levels(gene.summary$imprinting.status) <- c("known imprinted", "candidate, <1MB", "candidate, >1MB")
+levels(gene.summary$imprinting.status) <- c("known imprinted", "nearby candidate", "distant candidate")
 genes.ifat <- read.csv("../../data/ifat/ifat-fig1-genelist.csv", row.names = "gene")
 genes.ifat$imprinting.status <- as.factor(genes.ifat$imprinting.status)
-levels(genes.ifat$imprinting.status) <- c("known imprinted", "candidate, <1MB", "candidate, >1MB")
+levels(genes.ifat$imprinting.status) <- c("known imprinted", "nearby candidate", "distant candidate")
 ```
 
 ```{r compare-to-ifats-fig, echo=FALSE, out.height=1400, fig.width=7, fig.asp=2}
@@ -161,7 +161,7 @@ plot(barchart(padded.frac(fr = frac$min.reads.7[rev(row.names(genes.ifat))]),
 The same as the upper-right panel in the previous plot.
 
 ```{r top-ranking-genes, echo=FALSE, fig.width=3.5, fig.asp=2}
-update(b.charts$min.reads.15, main = "", auto.key = list(text = c("known imprinted", "candidate, <1MB", "candidate, >1MB"), points = FALSE, col = c("blue", "darkgreen", "red"), columns = 1), scales = list(cex = 0.7))
+update(b.charts$min.reads.15, main = "", auto.key = list(text = c("known imprinted", "nearby candidate", "distant candidate"), points = FALSE, col = c("blue", "darkgreen", "red"), columns = 1), scales = list(cex = 0.7))
 ```
 
 #### Gene rankings with Ifat's ranking as reference
@@ -188,7 +188,7 @@ From this result we may conclude that Ifat's filter settings were $t_\mathrm{rc}
 
 Given the result that $R_{15}$ resembles the most to $R_\mathrm{ifat}$, we will use $R_{15}$ to call monoallelic genes.  We will compare called gene sets under different threshold for the score $1 - \hat{F}_g(0.9)$ and further compare these to the one presented in the previous [manuscript][ms].
 
-Notice that the lowest scoring gene in the "candidate, < 1MB" category is *PWRN1* (green on [Fig 1][ifat fig 1]).  Its score is `r 1 - ECDF$min.reads.15$PWRN1(0.9)` and it ranks at `r match("PWRN1", names(ECDF$min.reads.15))` according to $R_{15}$ and at `genes.ifat.ranks["PWRN1", "R.ifat"]`.  We may define the classification threshold such that we only call genes monoallelic if their score $\ge0.5$:
+Notice that the lowest scoring gene in the "nearby candidate" category is *PWRN1* (green on [Fig 1][ifat fig 1]).  Its score is `r 1 - ECDF$min.reads.15$PWRN1(0.9)` and it ranks at `r match("PWRN1", names(ECDF$min.reads.15))` according to $R_{15}$ and at `genes.ifat.ranks["PWRN1", "R.ifat"]`.  We may define the classification threshold such that we only call genes monoallelic if their score $\ge0.5$:
 ```{r}
 (called.mono.0.5 <- names(frac$min.reads.15)[unlist(frac$min.reads.15[1, ]) >= 0.5])
 ```
@@ -199,7 +199,7 @@ called.mono.0.3 <- names(frac$min.reads.15)[unlist(frac$min.reads.15[1, ]) >= 0.
 length(setdiff(called.mono.0.3, called.mono.0.5))
 ```
 
-The upper right panel of the figure above indicates that most---if not all---of the genes between score 0.3 and 0.5 fall in the "candidate" category.  More on this in the next section.
+The upper right panel of the figure above indicates that most---if not all---of the genes between score 0.3 and 0.5 fall in the "distant candidate" category.  More on this in the next section.
 
 ### Implications for regression analysis
 
@@ -214,16 +214,16 @@ genes.regression.ifat <-
 
 These were selected based on two rules:
 
-1. most monoallelically called genes with imprinting status either "known" or "candidate, < 1MB"
+1. most monoallelically called genes with imprinting status either "known" or "nearby candidate"
    * exceptions include *MAGEL2* and *ZIM2*---it is not clear why those were not selected initally or later so now they will become selected ones
 1. the highest scoring but not monoallelically called "known" imprinted genes; these were *IGF2*, *NLRP2* and *UBE3A*
 
 Given these rules and the called gene sets (at score threshold 0.5 or 0.3) what genes, if any, should I extend mylatest (already extended) regression analysis?
 
-I start with the first rule.  Excluding "candidate"s from the set of monoallelically called genes confirms the earlier suspicion that all genes scoring between 0.3 and 0.5 must be then excluded so for regression analysis it is immaterial which score is used as classfication threshold.
+I start with the first rule.  Excluding "distant candidate"s from the set of monoallelically called genes confirms the earlier suspicion that all genes scoring between 0.3 and 0.5 must be then excluded so for regression analysis it is immaterial which score is used as classfication threshold.
 ```{r}
-genes.not.cand.5 <- called.mono.0.5[gene.summary[called.mono.0.5, "imprinting.status"] != "candidate"]
-genes.not.cand.3 <- called.mono.0.3[gene.summary[called.mono.0.3, "imprinting.status"] != "candidate"]
+genes.not.cand.5 <- called.mono.0.5[gene.summary[called.mono.0.5, "imprinting.status"] != "distant candidate"]
+genes.not.cand.3 <- called.mono.0.3[gene.summary[called.mono.0.3, "imprinting.status"] != "distant candidate"]
 all.equal(genes.not.cand.3, genes.not.cand.5)
 ```
 

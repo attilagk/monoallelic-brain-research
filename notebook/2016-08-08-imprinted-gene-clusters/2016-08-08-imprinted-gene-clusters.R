@@ -88,3 +88,14 @@ make.impr.segs <- function(gs, remove.str = "candidate, >1MB") {
     L <- lapply(levels(gs.loc$chr), function(k) gs.loc[gs.loc$chr == k, ])
     Reduce(segs.two.chr, L)
 }
+
+do.beta.age <- function(l.M, conf.lev = 0.99) {
+    B <- get.CI(l.M, coef.name = "Age", conf.lev = conf.lev)
+    B$start <- gs[rownames(B), "start"]
+    B$chr <- gs[rownames(B), "chr"]
+    B <- B[with(B, order(chr, start)), ]
+    B$cluster <- factor(x <- as.character(gs[rownames(B), "cluster"]), levels = unique(x), ordered = TRUE)
+    B$Gene <- factor(B$Gene, levels = rev(B$Gene), ordered = TRUE)
+    B$imprinting.status <- gs[rownames(B), "imprinting.status"]
+    return(B)
+}

@@ -1,6 +1,6 @@
 ## Motivation
 
-Imprinted genes form **clusters** of one or more genes.  Previous work by Ifat established the **imprinting status** of each gene as either known to be imprinted, *not* known to be imprinted but near an "known" gene, or else neither.  I refer to these three categories as "known", "candidate, <1MB" and "candidate", respectively.
+Imprinted genes form **clusters** of one or more genes.  Previous work by Ifat established the **imprinting status** of each gene as either known to be imprinted, *not* known to be imprinted but near an "known" gene, or else neither.  I refer to these three categories as "known", "nearby candidate" and "candidate", respectively.
 
 The main question queries the mechanism of the age effect on imprinting (loss, gain or lack of effect).  In particular: does age regulate genes within some cluster in a concerted or an independent manner?
 
@@ -102,15 +102,15 @@ f.ids[c("WA.8", "WA"), ] <- FALSE # gene aggregates are not needed here
 
 ### Delineation of imprinted gene clusters
 
-Let $K$ denote the set of genes $g$ such that $g\in K$ means the gene is either "known" (to be imprinted) or near some "known", i.e. "candidate, <1MB". Let $C$ be the set of "candidate" genes (further away from "known"s). Let $g_{i-1}$ and $g_i$ be neighboring genes on the same chromosome at the $i-1$-th and $i$-th site.  Delineation of clusters was done using the following simple rule: if $g_{i-1}\in C$ and $g_{i}\in K$ then a cluster starts at the $i$-th gene.  The cluster ends at the first $j\gt i$ such that $g_{j}\in K$ but $g_{i}\in C$.  The rule is implemented in the `make.impr.segs` function in `2016-08-08-imprinted-gene-clusters.R`.
+Let $K$ denote the set of genes $g$ such that $g\in K$ means the gene is either "known" (to be imprinted) or near some "known", i.e. "nearby candidate". Let $C$ be the set of "candidate" genes (further away from "known"s). Let $g_{i-1}$ and $g_i$ be neighboring genes on the same chromosome at the $i-1$-th and $i$-th site.  Delineation of clusters was done using the following simple rule: if $g_{i-1}\in C$ and $g_{i}\in K$ then a cluster starts at the $i$-th gene.  The cluster ends at the first $j\gt i$ such that $g_{j}\in K$ but $g_{i}\in C$.  The rule is implemented in the `make.impr.segs` function in `2016-08-08-imprinted-gene-clusters.R`.
 
 ```{r cache=TRUE}
 gene.summary$imprinting.status <- factor(gene.summary$imprinted, ordered = TRUE)
-levels(gene.summary$imprinting.status) <- rev(c("known imprinted", "candidate, <1MB", "candidate, >1MB"))
+levels(gene.summary$imprinting.status) <- rev(c("known imprinted", "nearby candidate", "distant candidate"))
 gene.summary$Symbol <- factor(gene.summary$Symbol, levels = gene.summary$Symbol, ordered = TRUE)
 gene.summary$chr <- factor(paste("chr", gene.summary$chr), levels = paste("chr", seq_along(levels(factor(gene.summary$chr)))), ordered = TRUE)
 # imprinting segments in component 'seg': clusters and segments inbetween
-gs.seg <- make.impr.segs(gene.summary, remove.str = "candidate, >1MB")
+gs.seg <- make.impr.segs(gene.summary, remove.str = "distant candidate")
 gs.seg$cluster <-
     factor(x <- with(gs.seg,
                      ifelse(seg > 0, paste0("clus ", seg, " (", chr, ")"), paste0("inter clus ", abs(seg)))),
@@ -121,15 +121,15 @@ gs <- gs.seg[names(frac), ]
 gs$score <- unlist(frac["1", ])
 ```
 
-Eeach cluster has several genes including the "candidate, <1MB" category; note the median as well.
+Eeach cluster has several genes including the "nearby candidate" category; note the median as well.
 
 ```{r cluster-sizes, echo=TRUE}
 cluster.freq <- table(gs.seg$cluster)[seq(2, length(levels(gs.seg$cluster)), by = 2)]
 median(cluster.freq)
-barchart(cluster.freq, xlab = "# genes in cluster (including <1M candidates)", ylab = "imprinted gene cluster")
+barchart(cluster.freq, xlab = "# genes in cluster (including nearby candidates)")
 ```
 
-*Before* filtering these clusters contain the following number of "known" and "candidate, <1MB" genes:
+*Before* filtering these clusters contain the following number of "known" and "nearby candidate" genes:
 ```{r}
 table(gene.summary$imprinting.status)
 ```
@@ -147,32 +147,32 @@ The plot below shows the genomic location of all `r nrow(gene.summary)` genes in
 t.par <- list(superpose.symbol = list(pch = c(21, 21, 21), alpha = c(0.3, 1, 1), fill = c("pink", "green", "lightblue"), col = c("red", "darkgreen", "blue")))
 trellis.par.set(t.par)
 xyplot(score ~ start | chr, data = gs, groups = imprinting.status, auto.key = list(columns = 3), layout = c(4, 6),
-       xlab = "genomic location", ylab = "score: 1 - ECDF at s = 0.9")
+       xlab = "genomic location", ylab = "gene score")
+```
+
+Extract $\hat{\beta}_\mathrm{age}$ and confidence intervals for $\beta_\mathrm{age}$ 
+
+```{r, warning=FALSE, message=FALSE}
+beta.age <- list()
+beta.age$logi.S <- do.beta.age(M$logi.S[f.ids$logi.S])
+beta.age$wnlm.R <- do.beta.age(M$wnlm.R[f.ids$wnlm.R])
 ```
 
 The next plot presents the maximum likelihood estimate $\hat{\beta}_\mathrm{age}$ of the regression coefficient mediating age's effect in the logistic model `logi.S`.  Only those genes are shown that were fitted, of course.  Confidence intervals are not shown for clarity.
 
-```{r beta-genomic-location, dev=c("png", "pdf"), fig.asp=1, warning=FALSE, message=FALSE}
-beta.age <- get.CI(M$logi.S[f.ids$logi.S][-33], coef.name = "Age", conf.lev = 0.99)
+```{r beta-genomic-location, dev=c("png", "pdf"), fig.asp=1}
 gs$beta.hat <- NA
-gs[rownames(beta.age), "beta.hat"] <- beta.age$beta.hat
-xyplot(beta.hat ~ start | chr, data = gs, groups = imprinting.status, auto.key = list(columns = 3), layout = c(4, 6), panel = function(...) { panel.abline(h = 0, col = trellis.par.get("reference.line")$col); panel.xyplot(...) })
+gs[rownames(beta.age$logi.S), "beta.hat"] <- beta.age$logi.S$beta.hat
+xyplot(beta.hat ~ start | chr, data = gs, groups = imprinting.status, auto.key = list(columns = 3), layout = c(4, 6), panel = function(...) { panel.abline(h = 0, col = trellis.par.get("reference.line")$col); panel.xyplot(...) }, xlab = "genomic location", ylab = expression(beta[age]))
 ```
 
 ### Clusters and the age effect
 
-```{r echo=FALSE}
-beta.age$start <- gs[rownames(beta.age), "start"]
-beta.age$chr <- gs[rownames(beta.age), "chr"]
-beta.age <- beta.age[with(beta.age, order(chr, start)), ]
-beta.age$cluster <- factor(x <- as.character(gs[rownames(beta.age), "cluster"]), levels = unique(x), ordered = TRUE)
-beta.age$Gene <- factor(beta.age$Gene, levels = rev(beta.age$Gene), ordered = TRUE)
-beta.age$imprinting.status <- gs[rownames(beta.age), "imprinting.status"]
-```
+#### 99 % confidence
 
-After some uninteresting data manipulation (code hidden) **the main result** can be presented:
-```{r segplot, fig.width=4.0, fig.asp=2.0, out.width=350, echo=FALSE}
-(sp <- segplot(Gene ~ Lower.CL + Upper.CL | cluster, data = beta.age,
+```{r echo=FALSE}
+my.segplot <- function(data, ...) {
+segplot(Gene ~ Lower.CL + Upper.CL | cluster, data = data,
                # groups = imprinting.status, # groups does not seem to work with segplot
                scales = list(y = list(relation = "free", rot = 0)),
                panel = function(...) {
@@ -182,10 +182,49 @@ After some uninteresting data manipulation (code hidden) **the main result** can
                },
                draw.bands = FALSE, centers = beta.hat,
                #as.table = FALSE,
-               layout = c(1, length(levels(beta.age$cluster))),
-               par.settings = list(layout.heights = list(panel = (x <- table(beta.age$cluster))[x > 0])),
-               xlim = c(-0.04, 0.04),
-               xlab = expression(beta[age]), main = expression(paste(hat(beta)[age], " and 99% CI"))))
+               layout = c(1, length(levels(data$cluster))),
+               par.settings = list(layout.heights = list(panel = (x <- table(data$cluster))[x > 0]),
+                                   add.text = list(cex = 0.8)),
+               xlab = expression(beta[age]),
+               ...)
+}
+```
+
+After some uninteresting data manipulation (code hidden) **the main result** can be presented at 99 % confidence:
+
+```{r segplot-logi.S-wnlm.R, fig.asp=1, echo=FALSE}
+sp <- list()
+sp$logi.S <- my.segplot(beta.age$logi.S, main = "logi.S", xlim = c(-0.04, 0.04))
+sp$wnlm.R <- my.segplot(beta.age$wnlm.R, main = "wnlm.R", xlim = c(-0.7, 0.7))
+plot(sp$logi.S, split = c(1, 1, 2, 1), more = TRUE)
+plot(sp$wnlm.R, split = c(2, 1, 2, 1), more = FALSE)
+```
+
+#### 95 % confidence
+
+```{r, warning=FALSE, message=FALSE}
+beta.age.95 <- list()
+beta.age.95$logi.S <- do.beta.age(M$logi.S[f.ids$logi.S], conf.lev = 0.95)
+beta.age.95$wnlm.R <- do.beta.age(M$wnlm.R[f.ids$wnlm.R], conf.lev = 0.95)
+```
+
+As expected, the age effect is significant for more genes at lower confidence
+
+```{r segplot-logi.S-wnlm.R.95, fig.asp=1, echo=FALSE}
+sp.95 <- list()
+sp.95$logi.S <- my.segplot(beta.age.95$logi.S, main = "logi.S", xlim = c(-0.04, 0.04))
+sp.95$wnlm.R <- my.segplot(beta.age.95$wnlm.R, main = "wnlm.R", xlim = c(-0.7, 0.7))
+plot(sp.95$logi.S, split = c(1, 1, 2, 1), more = TRUE)
+plot(sp.95$wnlm.R, split = c(2, 1, 2, 1), more = FALSE)
+```
+
+
+#### Figure for the manuscript
+
+at 99 % confidence:
+
+```{r segplot, fig.width=3.5, fig.asp=2.25, out.height=1000, echo=FALSE}
+update(sp$logi.S, main = "")
 ```
 
 ## Conclusion
