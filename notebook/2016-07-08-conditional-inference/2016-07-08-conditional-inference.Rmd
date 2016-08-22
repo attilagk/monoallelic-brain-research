@@ -117,17 +117,17 @@ In the following plots the effect of 5 conditions (*MSSM*, ..., *Female*) is exp
 * the individual displays (each corresponding to a given gene or aggregate dataset across genes) are scaled differently to emphasize the effects of conditioning.
 * the fit for TMEM261P1 did not converge under logi.S so the results are missing; for consistency TMEM261P1 is excluded for wnlm.R as well
 
-```{r beta-age-cond-logi.S, warning=FALSE, echo=FALSE, message=FALSE}
+```{r beta-age-cond-logi-S, warning=FALSE, echo=FALSE, message=FALSE}
 my.segplot(Betas$logi.S, main = expression(paste("Estimate and 99 % CI for ", beta[age] , " under logi.S")))
 ```
 
 The same results plotted with different style
 
-```{r beta-age-cond-logi.S-2, warning=FALSE, echo=FALSE, message=FALSE}
+```{r beta-age-cond-logi-S-2, warning=FALSE, echo=FALSE, message=FALSE}
 my.segplot2(Betas$logi.S, main = expression(paste("Estimate and 99 % CI for ", beta[age] , " under logi.S")))
 ```
 
-```{r beta-age-cond-wnlm.R, warning=FALSE, echo=FALSE, message=FALSE}
+```{r beta-age-cond-wnlm-R, warning=FALSE, echo=FALSE, message=FALSE}
 my.segplot(Betas$wnlm.R, main = expression(paste("Estimate and 99 % CI for ", beta[age] , " under wnlm.R")))
 ```
 

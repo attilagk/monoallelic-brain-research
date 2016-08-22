@@ -152,7 +152,7 @@ xyplot(score ~ start | chr, data = gs, groups = imprinting.status, auto.key = li
 
 Extract $\hat{\beta}_\mathrm{age}$ and confidence intervals for $\beta_\mathrm{age}$ 
 
-```{r, warning=FALSE, message=FALSE}
+```{r warning=FALSE, message=FALSE}
 beta.age <- list()
 beta.age$logi.S <- do.beta.age(M$logi.S[f.ids$logi.S])
 beta.age$wnlm.R <- do.beta.age(M$wnlm.R[f.ids$wnlm.R])
@@ -192,7 +192,7 @@ segplot(Gene ~ Lower.CL + Upper.CL | cluster, data = data,
 
 After some uninteresting data manipulation (code hidden) **the main result** can be presented at 99 % confidence:
 
-```{r segplot-logi.S-wnlm.R, fig.asp=1, echo=FALSE}
+```{r segplot-logi-S-wnlm-R, fig.asp=1, echo=FALSE}
 sp <- list()
 sp$logi.S <- my.segplot(beta.age$logi.S, main = "logi.S", xlim = c(-0.04, 0.04))
 sp$wnlm.R <- my.segplot(beta.age$wnlm.R, main = "wnlm.R", xlim = c(-0.7, 0.7))
@@ -202,7 +202,7 @@ plot(sp$wnlm.R, split = c(2, 1, 2, 1), more = FALSE)
 
 #### 95 % confidence
 
-```{r, warning=FALSE, message=FALSE}
+```{r warning=FALSE, message=FALSE}
 beta.age.95 <- list()
 beta.age.95$logi.S <- do.beta.age(M$logi.S[f.ids$logi.S], conf.lev = 0.95)
 beta.age.95$wnlm.R <- do.beta.age(M$wnlm.R[f.ids$wnlm.R], conf.lev = 0.95)
@@ -210,7 +210,7 @@ beta.age.95$wnlm.R <- do.beta.age(M$wnlm.R[f.ids$wnlm.R], conf.lev = 0.95)
 
 As expected, the age effect is significant for more genes at lower confidence
 
-```{r segplot-logi.S-wnlm.R.95, fig.asp=1, echo=FALSE}
+```{r segplot-logi-S-wnlm-R-95, fig.asp=1, echo=FALSE}
 sp.95 <- list()
 sp.95$logi.S <- my.segplot(beta.age.95$logi.S, main = "logi.S", xlim = c(-0.04, 0.04))
 sp.95$wnlm.R <- my.segplot(beta.age.95$wnlm.R, main = "wnlm.R", xlim = c(-0.7, 0.7))

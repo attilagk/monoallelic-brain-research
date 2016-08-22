@@ -1,14 +1,6 @@
 
 ```r
 library(ggplot2)
-```
-
-```
-## Use suppressPackageStartupMessages() to eliminate package startup
-## messages.
-```
-
-```r
 library(lattice)
 library(latticeExtra)
 ```
@@ -225,19 +217,19 @@ Note that potential `NULL` results reflect genes that have been filtered out---b
 
 Under the `logi.S` model $\beta_\mathrm{age}$ seems to vary greatly accross genes suggesting both gain or loss of imprinting with age or no effect of age.  Genes with fewer observations (as typical for candidate imprinted genes) have broad confidence intervals and so tend support the null hypothesis of $\beta_\mathrm{age}=0$ at a given significance level $\alpha$.  Aggregating read counts using weighted average is hugely beneficial as evidenced by dramatically shrunken confidence intervals (`WA.8`, `WA`) because the logistic model takes advantage of the increased total read counts.  The following pair of plots (obtained with the `lattice` and `ggplot2` package, respectively) illustrate these result:
 
-<img src="figure/beta-age-logi.S-1.png" title="plot of chunk beta-age-logi.S" alt="plot of chunk beta-age-logi.S" width="500px" /><img src="figure/beta-age-logi.S-2.png" title="plot of chunk beta-age-logi.S" alt="plot of chunk beta-age-logi.S" width="500px" />
+<img src="figure/beta-age-logi-S-1.png" title="plot of chunk beta-age-logi-S" alt="plot of chunk beta-age-logi-S" width="500px" /><img src="figure/beta-age-logi-S-2.png" title="plot of chunk beta-age-logi-S" alt="plot of chunk beta-age-logi-S" width="500px" />
 
 #### Normal linear model on rank-transformed data
 
 Under the `wnlm.R` model the above picture slightly changes.  In general, confidence intervals are broader than under `logi.S`. In particular, the normal linear model fails to benefit from data aggregation by ignoring total read counts; therefore the confidence intervals for `WA.8` or `WA` are *not* shrunken relative to single-gene data sets under this model.  The `lattice` and `ggplot2` implementation, as above:
 
-<img src="figure/beta-age-wnlm.R-1.png" title="plot of chunk beta-age-wnlm.R" alt="plot of chunk beta-age-wnlm.R" width="500px" /><img src="figure/beta-age-wnlm.R-2.png" title="plot of chunk beta-age-wnlm.R" alt="plot of chunk beta-age-wnlm.R" width="500px" />
+<img src="figure/beta-age-wnlm-R-1.png" title="plot of chunk beta-age-wnlm-R" alt="plot of chunk beta-age-wnlm-R" width="500px" /><img src="figure/beta-age-wnlm-R-2.png" title="plot of chunk beta-age-wnlm-R" alt="plot of chunk beta-age-wnlm-R" width="500px" />
 
 ### Comparing $\beta_\mathrm{age}$ from different models
 
 #### Consistency between `wnlm.R` and `logi.S`
 
-<img src="figure/beta-age-wnlm.R-vs-logi.S-1.png" title="plot of chunk beta-age-wnlm.R-vs-logi.S" alt="plot of chunk beta-age-wnlm.R-vs-logi.S" width="500px" />
+<img src="figure/beta-age-wnlm-R-vs-logi-S-1.png" title="plot of chunk beta-age-wnlm-R-vs-logi-S" alt="plot of chunk beta-age-wnlm-R-vs-logi-S" width="500px" />
 
 #### Impact of S rescaling (`logi2.S`) and of weighting observations (`nlm`)
 

@@ -252,7 +252,7 @@ genes.regression.ifat <-
 
 These were selected based on two rules:
 
-1. most monoallelically called genes with imprinting status either "known" or "nearby candidate"
+1. most monoallelically called genes with imprinting status either "known imprinted" or "nearby candidate"
    * exceptions include *MAGEL2* and *ZIM2*---it is not clear why those were not selected initally or later so now they will become selected ones
 1. the highest scoring but not monoallelically called "known" imprinted genes; these were *IGF2*, *NLRP2* and *UBE3A*
 
@@ -273,14 +273,12 @@ all.equal(genes.not.cand.3, genes.not.cand.5)
 To see which genes might be selected according to the second rule:
 
 ```r
-frac$min.reads.15.known <- frac$min.reads.15[gene.summary[names(frac$min.reads.15), "imprinting.status"] == "known"]
+frac$min.reads.15.known <- frac$min.reads.15[gene.summary[names(frac$min.reads.15), "imprinting.status"] == "known imprinted"]
 barchart(padded.frac(fr = frac$min.reads.15.known[length(frac$min.reads.15.known):1]),
               par.settings = par.set, main = "Known imprinted genes", xlab = xlab)
 ```
 
-```
-## Error in `[.data.frame`(frac$min.reads.15.known, length(frac$min.reads.15.known):1): undefined columns selected
-```
+<img src="figure/unnamed-chunk-12-1.png" title="plot of chunk unnamed-chunk-12" alt="plot of chunk unnamed-chunk-12" height="700px" />
 
 So, it still seems reasonable to select *IGF2*, *NLRP2* and *UBE3A* based on the second rule.
 

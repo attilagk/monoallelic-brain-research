@@ -12,6 +12,9 @@ The current work studies this by performing two main steps
 ## Data import and preparation
 
 
+```
+## Loading required package: RColorBrewer
+```
 
 Load data importer functions:
 
@@ -183,7 +186,7 @@ xyplot(beta.hat ~ start | chr, data = gs, groups = imprinting.status, auto.key =
 
 After some uninteresting data manipulation (code hidden) **the main result** can be presented at 99 % confidence:
 
-<img src="figure/segplot-logi.S-wnlm.R-1.png" title="plot of chunk segplot-logi.S-wnlm.R" alt="plot of chunk segplot-logi.S-wnlm.R" height="700px" />
+<img src="figure/segplot-logi-S-wnlm-R-1.png" title="plot of chunk segplot-logi-S-wnlm-R" alt="plot of chunk segplot-logi-S-wnlm-R" height="700px" />
 
 #### 95 % confidence
 
@@ -196,7 +199,7 @@ beta.age.95$wnlm.R <- do.beta.age(M$wnlm.R[f.ids$wnlm.R], conf.lev = 0.95)
 
 As expected, the age effect is significant for more genes at lower confidence
 
-<img src="figure/segplot-logi.S-wnlm.R.95-1.png" title="plot of chunk segplot-logi.S-wnlm.R.95" alt="plot of chunk segplot-logi.S-wnlm.R.95" height="700px" />
+<img src="figure/segplot-logi-S-wnlm-R-95-1.png" title="plot of chunk segplot-logi-S-wnlm-R-95" alt="plot of chunk segplot-logi-S-wnlm-R-95" height="700px" />
 
 
 #### Figure for the manuscript
