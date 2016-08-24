@@ -1,32 +1,21 @@
-#const.term <- function(sigma2, y)
-#    return(- length(y) / 2 * log10(2 * pi * sigma2))
+# log-likelihood of logistic model
 #
-#ll.nlm <- function(beta, sigma2, y, X, ll.const = 0) {
-#    eps <- y - X %*% beta
-#    ll.var <- - drop(t(eps) %*% eps) / (2 * sigma2)
-#    return(ll.const + ll.var)
-#}
+# Arguments
+# beta: regression coefficients
+# y: count of success (higher readcount), possibly vector
+# n: denominator (total readcount), possibly vector
+# X: design matrix (as if made by model.matrix)
+# do.neg: take the negative of logL or not
 #
-#ll.args <- function(M, yname = "Y") {
-#    w <- M$model[["(weights)"]]
-#    w <- w / sum(w)
-#    #W <- diag(w)
-#    X <- diag(w) %*% model.matrix(M$formula, data = M$data)
-#    y <- M$model[[ yname ]]
-#    eps <- y - X %*% M$coefficients
-#    sigma2 <- drop(t(eps) %*% eps) / length(eps) # MLE of residual error variance
-#    list(sigma2 = sigma2,
-#         y = y,
-#         X = X,
-#         ll.const = const.term(sigma2, y))
-#}
-
+# Value
+# The log-likelihood
 ll.logi <- function(beta, y, n, X, do.neg = FALSE) {
     eta <- X %*% beta
     sgn <- ifelse(do.neg, -1, 1)
     sgn * sum(y * eta - n * log(1 + exp(eta)) + log(choose(n, y)))
 }
 
+# prepare arguments from model 'm' to be passed to ll.logi
 args.logi <- function(m, do.neg = FALSE)
     list(beta = m$coefficients,
          y = m$model[["Y"]][ , 1],
@@ -34,7 +23,27 @@ args.logi <- function(m, do.neg = FALSE)
          X = model.matrix(m$formula, m$model),
          do.neg = do.neg)
 
-ll.grid <- function(l.M = M$logi.S, gene = "PEG3", n.pnts = 101, v.name.A = "InstitutionPenn", v.name.B = "Age", CI.lev.A = 0.99, CI.lev.B = 0.99, ll.fun = ll.logi, args.fun = args.logi, do.neg = FALSE) {
+# create logL surface
+#
+# Arguments
+# l.M: a list of model object; each component reflects a gene
+# gene: the model to be selected from 'l.M' based on this gene
+# n.pnts: the 2D parameter domain of logL is represented by an n.pnts x n.pnts grid
+# v.name.A, v.name.B: the name of the two selected coefficients
+# CI.lev.A, CI.lev.B: define the boundaries of the rectangular 2D parameter domain
+# ll.fun: the function to compute logL
+# args.fun: the function to prepare arguments to ll.fun
+# do.neg: take the negative of logL or not
+#
+# Value
+# A long, thin data frame that represents the grid's x and y coordinate with
+# its 'beta.A' and 'beta.B' components.  The data frame contains a 'log.L' and
+# a 'rel.log.L' component to be used as z coordinate.  Other components are
+# useful for annotation and conditioning in lattice plots.  See
+# 'll.surfacepolot' for such plotting function.
+ll.grid <- function(l.M = M$logi.S, gene = "PEG3", n.pnts = 101,
+                    v.name.A = "InstitutionPenn", v.name.B = "Age", CI.lev.A = 0.99, CI.lev.B = 0.99,
+                    ll.fun = ll.logi, args.fun = args.logi, do.neg = FALSE) {
     m <- l.M[[gene]]
     args <- args.fun(m, do.neg = do.neg)
     foo <- function(beta.A, beta.B) {
@@ -59,13 +68,18 @@ ll.grid <- function(l.M = M$logi.S, gene = "PEG3", n.pnts = 101, v.name.A = "Ins
     return(df)
 }
 
+# create levelplot from a logL surface produced by 'll.grid'
+#
+# Arguments
+# fm: a formula to be passed to levelplot as first argument
+# df: the logL surface to be passed to levelplot as the 'data' argument
 ll.surfaceplot <- function(fm = formula(- rel.log.L ~ beta.A * beta.B | gene), df = ll.grid(), ...) {
     levelplot(fm, data = df,
-              scales = list(relation = "free"), colorkey = list(space = "top"),
-              aspect = 1, layout = c(3, 1),
+              scales = list(x = list(relation = "free")), colorkey = list(space = "top"),
+              aspect = 1,
               b.hat.A = df$beta.hat.A, b.hat.B = df$beta.hat.B,
               panel = function(x, y, z, b.hat.A, b.hat.B, subscripts, ...) {
-                  panel.levelplot(x = x, y = y, z = z, subscripts = subscripts, contour = TRUE, ...)
+                  panel.levelplot(x = x, y = y, z = z, subscripts = subscripts, contour = TRUE, lwd = 0.5, ...)
                   panel.xyplot(x = b.hat.A[subscripts[1]], y = b.hat.B[subscripts[1]], col = "black", pch = 16)
                   panel.text(x = b.hat.A[subscripts[1]], y = b.hat.B[subscripts[1]], pos = 4, labels = expression(hat(beta)))
               },
