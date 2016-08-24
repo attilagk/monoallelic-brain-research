@@ -7,6 +7,7 @@ opts_chunk$set(dpi = 144)
 opts_chunk$set(out.width = "700px")
 opts_chunk$set(dev = c("png", "pdf"))
 lattice.options(default.args = list(as.table = TRUE))
+#lattice.options(default.theme = "col.whitebg")
 lattice.options(default.theme = "standard.theme")
 lattice.options(default.args = list(as.table = TRUE))
 ```
@@ -15,7 +16,7 @@ Load data importer functions:
 ```{r}
 source("../../src/import-data.R")
 source("../../src/fit-glms.R")
-source("2016-08-21-likelihood-surface.R")
+source("2016-08-23-glm-sampling-distributions.R")
 ```
 
 Do the import:
@@ -42,4 +43,26 @@ M$simple <- do.all.fits(Y[ids2fit], preds = "Age")
 f.ids$simple <- as.data.frame(lapply(M$simple, function(m) ! sapply(m, is.null)))
 f.ids$simple["TMEM261P1", c("logi.S", "logi2.S")] <- FALSE
 f.ids$simple[c("WA.8", "WA"), ] <- FALSE # gene aggregates are not needed here
+```
+
+## Results
+
+```{r cache=TRUE}
+plots <- list()
+plots$GRB10 <- plot.mdls.1gene(gene = "GRB10", l.l.M = M$simple) 
+plots$PEG3 <- plot.mdls.1gene(gene = "PEG3", l.l.M = M$simple) 
+```
+
+```{r GRB10, echo=FALSE}
+print(plots$GRB10$logi.S, split = c(1, 1, 2, 2), more = TRUE)
+print(plots$GRB10$logi.S.large, split = c(2, 1, 2, 2), more = TRUE)
+print(plots$GRB10$wnlm.S, split = c(1, 2, 2, 2), more = TRUE)
+print(plots$GRB10$wnlm.R, split = c(2, 2, 2, 2), more = FALSE)
+```
+
+```{r PEG3, echo=FALSE}
+print(plots$PEG3$logi.S, split = c(1, 1, 2, 2), more = TRUE)
+print(plots$PEG3$logi.S.large, split = c(2, 1, 2, 2), more = TRUE)
+print(plots$PEG3$wnlm.S, split = c(1, 2, 2, 2), more = TRUE)
+print(plots$PEG3$wnlm.R, split = c(2, 2, 2, 2), more = FALSE)
 ```
