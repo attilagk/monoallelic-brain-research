@@ -32,6 +32,85 @@ grid.density <- function(pdfun = pdf.logi, beta = c(0, -1), n = 50, sigma = 0.1,
     return(df)
 }
 
+
+grid.predictions <- function(lll.M = M, M.multi = "simple", M.family = "wnlm.R", gene = "GRB10",
+                             xlim = c(-50, 200), ylim = c(0.4, 1.1), n.pnts = 201, ...) {
+    beta <- coef(M <- lll.M[[M.multi]][[M.family]][[gene]])
+    # observed data
+    if(M.family == "logi2.S") {
+        obs <- lll.M[[M.multi]]$wnlm.S[[gene]]$model
+        weights <- lll.M[[M.multi]]$wnlm.S[[gene]]$weights
+    } else {
+        obs <- M$model
+        if(is.matrix(obs$Y)) {
+            weights <- apply(obs$Y, 1, sum)
+            obs$Y <- obs$Y[ , 1] / weights
+        } else {
+            weights <- M$weights
+        }
+    }
+    n <- as.integer(mean(weights, na.rm = TRUE))
+    # functions to calculate density
+    pdf.nlm <- function(mu) {
+        dnorm(y, mean = mu, sd = 1, log = TRUE)
+    }
+    pdf.logi <- function(mu, logi2 = FALSE) {
+        y <- y # assign y from enclosing environment to a local y
+        if(logi2)
+            y <- 2 * (y - 0.5)
+        dbinom(as.integer(y * n), size = n, prob = mu, log = TRUE)
+    }
+    # select function according to M.family
+    pdfun <- switch(M.family,
+                    wnlm.S = pdf.nlm, unlm.S = pdf.nlm,
+                    wnlm.R = pdf.nlm, unlm.R = pdf.nlm,
+                    logi.S = pdf.logi, logi2.S = function(x) pdf.logi(x, logi2 = TRUE))
+    # set resolution
+    x <- seq(xlim[1], xlim[2], length.out = n.pnts)
+    if(grepl("nlm.R", M.family))
+        ylim <- c(-100 / 6, 100 + 100 / 6) # scale to percentiles
+    y <- seq(ylim[1], ylim[2], length.out = max(n.pnts, n, na.rm = TRUE))
+    # prediction: conditinal mean mu given x
+    mu <- predict(M, newdata = data.frame(Age = x), type = "response")
+    # this data frame will be returned after several modifications
+    df <- as.data.frame(t(sapply(mu, pdfun)))
+    names(df) <- y.names <- paste("y", seq_along(y), sep = ".")
+    df$x <- x
+    if(M.family == "logi2.S")
+        mu <- mu / 2 + 0.5 # scale down vertically by a factor of 2 and shift upwards
+    df$mu <- mu
+    df$multi <- M.multi
+    df$family <- M.family
+    df$gene <- gene
+    # from wide format to long format
+    df <- reshape(df, direction = "long", varying = y.names, v.names = "density", timevar = "y", times = y)
+    df$density[abs(df$density) == Inf] <- NA
+    # crucial scaling step
+    df$density <- scale(df$density, scale = TRUE)
+    # add observations
+    df$obs.x <- NA
+    df$obs.y <- NA
+    df$obs.x[seq_along(obs$Age)] <- obs$Age
+    df$obs.y[seq_along(obs$Y)] <- obs$Y
+    return(df)
+}
+
+plot.predictions <- function(df, fm = formula(density ~ x * y | family), obs.data, ...) {
+    levelplot(fm, data = df, mycol = df$color,
+              panel = function(x, y, subscripts, mycol, ...) {
+                  panel.levelplot(x, y, subscripts = subscripts, ...)
+                  panel.xyplot(x = x[subscripts][nx <- seq_along(unique(x))], y = df$mu[subscripts][nx],
+                               col = "black", type = "l", ...)
+                  panel.xyplot(x = df$obs.x[subscripts], y = df$obs.y[subscripts],
+                               pch = 21, col = "darkgreen", fill = "green", alpha = 0.5, cex = 0.5, ...)
+              },
+              par.settings = list(regions = list(col = rev(trellis.par.get("regions")$col))),
+              scales = list(y = list(relation = "free")), colorkey = FALSE,
+              xlab = "age", ylab = "read count ratio, S (R: rank-tr.formed)",
+              ...)
+}
+
+
 plot.density <- function(mdl, type = "nlm", is.R = FALSE,
                          xlim = c(-20, 150), ylim = c(0.4, 1.1), n.pnts = 201,
                          ...) {

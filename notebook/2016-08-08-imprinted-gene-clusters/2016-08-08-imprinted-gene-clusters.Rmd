@@ -155,7 +155,9 @@ Extract $\hat{\beta}_\mathrm{age}$ and confidence intervals for $\beta_\mathrm{a
 ```{r warning=FALSE, message=FALSE}
 beta.age <- list()
 beta.age$logi.S <- do.beta.age(M$logi.S[f.ids$logi.S])
+beta.age$logi2.S <- do.beta.age(M$logi2.S[f.ids$logi2.S])
 beta.age$wnlm.R <- do.beta.age(M$wnlm.R[f.ids$wnlm.R])
+beta.age$unlm.R <- do.beta.age(M$unlm.R[f.ids$unlm.R])
 ```
 
 The next plot presents the maximum likelihood estimate $\hat{\beta}_\mathrm{age}$ of the regression coefficient mediating age's effect in the logistic model `logi.S`.  Only those genes are shown that were fitted, of course.  Confidence intervals are not shown for clarity.
@@ -192,12 +194,16 @@ segplot(Gene ~ Lower.CL + Upper.CL | cluster, data = data,
 
 After some uninteresting data manipulation (code hidden) **the main result** can be presented at 99 % confidence:
 
-```{r segplot-logi-S-wnlm-R, fig.asp=1, echo=FALSE}
+```{r segplot-4-models, fig.asp=2, echo=FALSE, out.height=1400}
 sp <- list()
 sp$logi.S <- my.segplot(beta.age$logi.S, main = "logi.S", xlim = c(-0.04, 0.04))
+sp$logi2.S <- my.segplot(beta.age$logi2.S, main = "logi2.S", xlim = c(-0.04, 0.04))
+sp$unlm.R <- my.segplot(beta.age$unlm.R, main = "unlm.R", xlim = c(-0.7, 0.7))
 sp$wnlm.R <- my.segplot(beta.age$wnlm.R, main = "wnlm.R", xlim = c(-0.7, 0.7))
-plot(sp$logi.S, split = c(1, 1, 2, 1), more = TRUE)
-plot(sp$wnlm.R, split = c(2, 1, 2, 1), more = FALSE)
+plot(sp$logi.S, split = c(1, 1, 2, 2), more = TRUE)
+plot(sp$logi2.S, split = c(2, 1, 2, 2), more = TRUE)
+plot(sp$wnlm.R, split = c(1, 2, 2, 2), more = TRUE)
+plot(sp$unlm.R, split = c(2, 2, 2, 2), more = FALSE)
 ```
 
 #### 95 % confidence
@@ -205,17 +211,23 @@ plot(sp$wnlm.R, split = c(2, 1, 2, 1), more = FALSE)
 ```{r warning=FALSE, message=FALSE}
 beta.age.95 <- list()
 beta.age.95$logi.S <- do.beta.age(M$logi.S[f.ids$logi.S], conf.lev = 0.95)
+beta.age.95$logi2.S <- do.beta.age(M$logi2.S[f.ids$logi2.S], conf.lev = 0.95)
 beta.age.95$wnlm.R <- do.beta.age(M$wnlm.R[f.ids$wnlm.R], conf.lev = 0.95)
+beta.age.95$unlm.R <- do.beta.age(M$unlm.R[f.ids$unlm.R], conf.lev = 0.95)
 ```
 
 As expected, the age effect is significant for more genes at lower confidence
 
-```{r segplot-logi-S-wnlm-R-95, fig.asp=1, echo=FALSE}
+```{r segplot-4-models-95, fig.asp=2, echo=FALSE, out.height=1400}
 sp.95 <- list()
 sp.95$logi.S <- my.segplot(beta.age.95$logi.S, main = "logi.S", xlim = c(-0.04, 0.04))
+sp.95$logi2.S <- my.segplot(beta.age.95$logi2.S, main = "logi2.S", xlim = c(-0.04, 0.04))
+sp.95$unlm.R <- my.segplot(beta.age.95$unlm.R, main = "unlm.R", xlim = c(-0.7, 0.7))
 sp.95$wnlm.R <- my.segplot(beta.age.95$wnlm.R, main = "wnlm.R", xlim = c(-0.7, 0.7))
-plot(sp.95$logi.S, split = c(1, 1, 2, 1), more = TRUE)
-plot(sp.95$wnlm.R, split = c(2, 1, 2, 1), more = FALSE)
+plot(sp.95$logi.S, split = c(1, 1, 2, 2), more = TRUE)
+plot(sp.95$logi2.S, split = c(2, 1, 2, 2), more = TRUE)
+plot(sp.95$wnlm.R, split = c(1, 2, 2, 2), more = TRUE)
+plot(sp.95$unlm.R, split = c(2, 2, 2, 2), more = FALSE)
 ```
 
 

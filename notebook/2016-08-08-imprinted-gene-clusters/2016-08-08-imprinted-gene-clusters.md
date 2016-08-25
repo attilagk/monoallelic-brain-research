@@ -12,9 +12,6 @@ The current work studies this by performing two main steps
 ## Data import and preparation
 
 
-```
-## Loading required package: RColorBrewer
-```
 
 Load data importer functions:
 
@@ -164,7 +161,9 @@ Extract $\hat{\beta}_\mathrm{age}$ and confidence intervals for $\beta_\mathrm{a
 ```r
 beta.age <- list()
 beta.age$logi.S <- do.beta.age(M$logi.S[f.ids$logi.S])
+beta.age$logi2.S <- do.beta.age(M$logi2.S[f.ids$logi2.S])
 beta.age$wnlm.R <- do.beta.age(M$wnlm.R[f.ids$wnlm.R])
+beta.age$unlm.R <- do.beta.age(M$unlm.R[f.ids$unlm.R])
 ```
 
 The next plot presents the maximum likelihood estimate $\hat{\beta}_\mathrm{age}$ of the regression coefficient mediating age's effect in the logistic model `logi.S`.  Only those genes are shown that were fitted, of course.  Confidence intervals are not shown for clarity.
@@ -186,7 +185,7 @@ xyplot(beta.hat ~ start | chr, data = gs, groups = imprinting.status, auto.key =
 
 After some uninteresting data manipulation (code hidden) **the main result** can be presented at 99 % confidence:
 
-<img src="figure/segplot-logi-S-wnlm-R-1.png" title="plot of chunk segplot-logi-S-wnlm-R" alt="plot of chunk segplot-logi-S-wnlm-R" height="700px" />
+<img src="figure/segplot-4-models-1.png" title="plot of chunk segplot-4-models" alt="plot of chunk segplot-4-models" height="1400" />
 
 #### 95 % confidence
 
@@ -194,12 +193,14 @@ After some uninteresting data manipulation (code hidden) **the main result** can
 ```r
 beta.age.95 <- list()
 beta.age.95$logi.S <- do.beta.age(M$logi.S[f.ids$logi.S], conf.lev = 0.95)
+beta.age.95$logi2.S <- do.beta.age(M$logi2.S[f.ids$logi2.S], conf.lev = 0.95)
 beta.age.95$wnlm.R <- do.beta.age(M$wnlm.R[f.ids$wnlm.R], conf.lev = 0.95)
+beta.age.95$unlm.R <- do.beta.age(M$unlm.R[f.ids$unlm.R], conf.lev = 0.95)
 ```
 
 As expected, the age effect is significant for more genes at lower confidence
 
-<img src="figure/segplot-logi-S-wnlm-R-95-1.png" title="plot of chunk segplot-logi-S-wnlm-R-95" alt="plot of chunk segplot-logi-S-wnlm-R-95" height="700px" />
+<img src="figure/segplot-4-models-95-1.png" title="plot of chunk segplot-4-models-95" alt="plot of chunk segplot-4-models-95" height="1400" />
 
 
 #### Figure for the manuscript
