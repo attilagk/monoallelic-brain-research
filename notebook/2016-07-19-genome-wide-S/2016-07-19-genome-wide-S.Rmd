@@ -143,6 +143,7 @@ plots$rank <- rankplot.2(frac, pct.top.g = 2, sel.g = sel.g, top.on.top = TRUE,
                                              list(pch = 21, col = c("black", "black"), fill = c("lightgray", "lightgreen"), cex = c(1.0, 2))))
 
 # print to complex layout
+trellis.par.set(col.whitebg())
 plot.all(plots)
 ```
 

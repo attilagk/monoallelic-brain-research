@@ -12,6 +12,9 @@ The current work studies this by performing two main steps
 ## Data import and preparation
 
 
+```
+## Loading required package: RColorBrewer
+```
 
 Load data importer functions:
 

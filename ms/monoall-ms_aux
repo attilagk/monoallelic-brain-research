@@ -1,0 +1,13 @@
+\relax 
+\@writefile{toc}{\contentsline {section}{\numberline {1}Introduction}{1}}
+\@writefile{toc}{\contentsline {section}{\numberline {2}Methods}{1}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.1}Data}{1}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.2}Read count ratio}{1}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.3}Regression models}{1}}
+\newlabel{eq:unlm.S-matrix-form}{{2}{1}}
+\newlabel{eq:unlm.S-vector-form}{{4}{1}}
+\@writefile{lot}{\contentsline {table}{\numberline {1}{\ignorespaces Specificiation of four normal linear models based on read count transformation \(\tau \) and weights \(w_{ig}\).}}{2}}
+\newlabel{tab:nlm}{{1}{2}}
+\newlabel{eq:binom-error}{{8}{2}}
+\@writefile{toc}{\contentsline {section}{\numberline {3}Results}{2}}
+\@writefile{toc}{\contentsline {section}{\numberline {4}Discussion}{2}}

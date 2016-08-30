@@ -1,0 +1,122 @@
+\documentclass[letterpaper]{article}
+\usepackage{amsmath, geometry}
+
+\title{Aging and genomic imprinting in the human brain}
+\author{Attila}
+
+\begin{document}
+\maketitle
+
+\section{Introduction}
+
+Hello, World
+
+\section{Methods}
+
+\subsection{Data}
+
+\(m\) individuals/samples, set \(\mathcal{G}\) of \(n\) genes
+
+\subsection{Read count ratio}
+
+\(\mathbf{S} = [S_{ig}]_{ig};\; i=1,...,m; \; g\in\mathcal{G}\)
+
+\begin{equation}
+S_{ig} = \frac{H_{ig}}{T_{ig}}= \frac{\sum_s H_s}{\sum_sT_s}
+\end{equation}
+
+\subsection{Regression models}
+
+Regression analysis involved a subset \(\mathcal{G}_1\subset\mathcal{G}\) of
+\(n_1\) genes.
+
+The basic model, unlm.S, is
+\begin{eqnarray}
+\mathbf{S} &=& \mathbf{X} \boldsymbol{\beta} + \boldsymbol{\varepsilon},
+\label{eq:unlm.S-matrix-form} \\
+\varepsilon_{ig} &\overset{\mathrm{iid}}{\sim}& \mathrm{Norm}(0, \sigma^2_g)
+\end{eqnarray}
+where the response \(\mathbf{S}\) is an \(m\times n_1\) matrix of read count ratios,
+\(\mathrm{X}\) is an \(m\times p\) design matrix, \(\boldsymbol{\beta}\) is a \(p\times n_1\) matrix of regression
+coefficients, the random error \(\boldsymbol{\varepsilon}\) has the same
+dimension as \(\mathbf{S}\), and gene \(g\in \mathcal{G}_1\).  Eq.~\ref{eq:unlm.S-matrix-form} may be given as
+\begin{equation}
+S_g = \mathbf{X} \beta_g + \varepsilon_g,
+\label{eq:unlm.S-vector-form}
+\end{equation}
+where the vectors \(S_g, \beta_g, \varepsilon_g\)
+are single columns taken from their respective matrix counterparts.
+
+unlm.S was extended in several ways, yielding
+\begin{enumerate}
+\item four normal linear models unlm.S, unlm.R, wnlm.S, wnlm.S
+\item two logistic models logi.S and logi2.S.
+\end{enumerate}
+
+The general form of the four normal linar models
+(cf.~\ref{eq:unlm.S-vector-form}) is
+\begin{equation}
+W_g^{1/2} \tau(S_g) = W_g^{1/2} X \beta_g + \varepsilon_g.
+\end{equation}
+The extension here consists of \(W_g\), an \(m\times m\) diagonal matrix of
+weights \(w_{ig}\) on the \(i\)-th diagonal position, and \(\tau\), a
+transformation on read counts.  These quantities specify the four normal
+linear models as laid out in Table~\ref{tab:nlm}.
+
+\begin{table}
+\begin{center}
+\begin{tabular}{c|cc}
+model & \(\tau\) & \(w_{ig}\) \\
+\hline
+unlm.S & identity & 1 \\
+unlm.R & rank transf. & 1 \\
+wnlm.S & identity & \(T_{ig}\) \\
+wnlm.R & rank transf. & \(T_{ig}\) \\
+\end{tabular}
+\end{center}
+\caption{Specificiation of four normal linear models based on read count
+transformation \(\tau\) and weights \(w_{ig}\).}
+\label{tab:nlm}
+\end{table}
+
+The logistic models, logi.S or logi2.S, share the general form
+\begin{eqnarray}
+S_g &=& \mu_g + c\, \varepsilon_g \\
+\mu_g &=& h(X \beta_g) \\
+\varepsilon_{ig} + \mu_g &\overset{\mathrm{iid}}{\sim}& \mathrm{Binom}(\mu_g, T_{ig}).
+\label{eq:binom-error}
+\end{eqnarray}
+The link function \(h\) is \(h(u) = e^u / (1 + e^u)\) for logi.S and \(h(u) =
+e^u / (2 + 2e^u)] + 1/2\) for logi2.S, and the scaling constant \(c=\) 1
+ and \(1/2\), respectively.  Thus, the response \(S_g\) under logi2.S is scaled and shifted relative to
+that under logi.S such that (with probabilty one) \(1/2\le S_{ig}\le 1\) under the former and
+\(1/2\le S_{ig}\le 1\) under the latter.
+
+Each of the six models has \(p\times n_1\) regression parameters corresponding to the
+dimension of \(\boldsymbol{\beta}\).  This allows different behavior for
+different genes since \(\beta_1\neq ...\neq\beta_{n_1}\) in general.
+Therefore, the estimated regression coefficients are reported as \(\hat{\beta}_g =
+(\hat{\beta}_{1g},...,\hat{\beta}_{jg},...,\hat{\beta}_{pg})\) for each gene \(g\), often
+replacing index \(j\) with the name of the parameter such as \emph{Age} or
+\emph{InstitutionPitt}.
+
+A second set of six models was also
+fitted, for which \(\boldsymbol{\beta}\) was constrained such that \(\beta_1 =
+... = \beta_{n_1}\).  This was achieved by aggregating over genes
+\(g\in\mathcal{G}_1\) the higher read count \(H'_i = \sum_g H_{ig}\), the
+total read count \(T'_i = \sum_g T_{ig}\), redefining the read count ratio
+as \(S'_i = H'_i / T'_i\), and replacing \(T_{ig}\) by \(T'_i\) in
+Table~\ref{tab:nlm} and Eq.~\ref{eq:binom-error}.  Because \(S'_i\) is a
+weighted average of \(\{S_{ig}\}_i\), results under these models are reported
+as \(\hat{\beta}_\mathrm{WA} =
+(\hat{\beta}_{1\mathrm{WA}},...,\hat{\beta}_{j\mathrm{WA}},...,\hat{\beta}_{p\mathrm{WA}})\).  A
+third set of models is a slight variation of this second set in that
+aggregation was done on a smaller subset of 8 genes selected at the initial
+stage of the study.  Under these models the results are reported using the
+WA.8 subscript instead of WA.
+
+\section{Results}
+
+\section{Discussion}
+
+\end{document}
