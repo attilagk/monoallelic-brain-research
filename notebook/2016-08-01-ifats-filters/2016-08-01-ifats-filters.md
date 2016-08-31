@@ -278,7 +278,7 @@ barchart(padded.frac(fr = frac$min.reads.15.known[length(frac$min.reads.15.known
               par.settings = par.set, main = "Known imprinted genes", xlab = xlab)
 ```
 
-<img src="figure/unnamed-chunk-12-1.png" title="plot of chunk unnamed-chunk-12" alt="plot of chunk unnamed-chunk-12" height="700px" />
+<img src="figure/known-genes-1.png" title="plot of chunk known-genes" alt="plot of chunk known-genes" height="700px" />
 
 So, it still seems reasonable to select *IGF2*, *NLRP2* and *UBE3A* based on the second rule.
 

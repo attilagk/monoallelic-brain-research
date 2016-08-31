@@ -228,7 +228,7 @@ all.equal(genes.not.cand.3, genes.not.cand.5)
 ```
 
 To see which genes might be selected according to the second rule:
-```{r}
+```{r known-genes}
 frac$min.reads.15.known <- frac$min.reads.15[gene.summary[names(frac$min.reads.15), "imprinting.status"] == "known imprinted"]
 barchart(padded.frac(fr = frac$min.reads.15.known[length(frac$min.reads.15.known):1]),
               par.settings = par.set, main = "Known imprinted genes", xlab = xlab)

@@ -164,7 +164,7 @@ Betas <- lapply(M, function(m) { x <- get.estimate.CI(m$forward); x <- x[ ! x$Co
 
 #### Under logi.S
 
-```{r warning=FALSE, echo=FALSE, message=FALSE, fig.asp=1.7}
+```{r warning=FALSE, echo=FALSE, message=FALSE}
 my.segplot <- function(data = Betas$logi.S,
                        main = expression(paste("99 % CI for ", beta, " under logi.S")),
                        ...) {
@@ -179,8 +179,34 @@ my.segplot <- function(data = Betas$logi.S,
                 panel.segplot(x, y, ...)
                 panel.abline(v = 0, col = "red")
             },
-            main = main, as.table = TRUE, center = Estimate, draw.bands = FALSE, ...)
+            main = main, as.table = TRUE, center = Estimate, draw.bands = FALSE,
+            #est = data$Estimate, prepanel = my.prepanel.segplot,
+            ...)
 }
+# for manual setting of xlim
+xl <- c(-1, 1)
+my.xlim <- list(Age = 0.05 * xl,
+                InstitutionPenn = 3 * xl,
+                InstitutionPitt = 3 * xl,
+                GenderMale = 1.5 * xl,
+                PMI = 0.1 * xl,
+                DxControl = 2 * xl,
+                DxSCZ = 2 * xl,
+                RIN = 10 * xl,
+                RIN2 = 1 * xl,
+                RNA_batchA = 3 * xl,
+                RNA_batchB = 3 * xl,
+                RNA_batchC = 3 * xl,
+                RNA_batchD = 3 * xl,
+                RNA_batchE = 3 * xl,
+                RNA_batchF = 3 * xl,
+                RNA_batchG = 3 * xl,
+                RNA_batchH = 3 * xl,
+                Ancestry.1 = 20 * xl,
+                Ancestry.2 = 20 * xl,
+                Ancestry.3 = 20 * xl,
+                Ancestry.4 = 20 * xl,
+                Ancestry.5 = 20 * xl)
 ```
 
 ```{r effects-fw-rv-logi-S-trellis-coef-cond, fig.asp=1.7}
@@ -189,7 +215,7 @@ update(my.dotplot(fm = Gene ~ Effect | Coefficient, data = Ef.long$logi.S, main 
 ```
 
 ```{r reg-coef-logi-S, dev=c("png", "pdf"), fig.asp=1.7}
-my.segplot(data = Betas$logi.S)
+my.segplot(data = Betas$logi.S, xlim = my.xlim)
 ```
 
 #### Under logi2.S
@@ -200,7 +226,7 @@ update(my.dotplot(fm = Gene ~ Effect | Coefficient, data = Ef.long$logi2.S, main
 ```
 
 ```{r reg-coef-logi2-S, dev=c("png", "pdf"), fig.asp=1.7}
-my.segplot(data = Betas$logi2.S, main = expression(paste("99 % CI for ", beta, " under logi2.S")))
+my.segplot(data = Betas$logi2.S, main = expression(paste("99 % CI for ", beta, " under logi2.S")), xlim = my.xlim)
 ```
 
 #### Under wnlm.R

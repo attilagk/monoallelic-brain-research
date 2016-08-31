@@ -1,0 +1,73 @@
+\begin{thebibliography}{1}
+
+\bibitem{Chess2012}
+Andrew Chess.
+\newblock {Mechanisms and consequences of widespread random monoallelic
+  expression.}
+\newblock {\em Nat. Rev. Genet.}, 13(6):421--8, jun 2012.
+
+\bibitem{DeVeale2012}
+Brian DeVeale, Derek van~der Kooy, and Tomas Babak.
+\newblock {Critical evaluation of imprinted gene expression by RNA-seq: A new
+  perspective}.
+\newblock {\em PLoS Genetics}, 8(3):e1002600, jan 2012.
+
+\bibitem{Gregg2010a}
+Christopher Gregg, Jiangwen Zhang, Brandon Weissbourd, Shujun Luo, Gary~P
+  Schroth, David Haig, and Catherine Dulac.
+\newblock {High-resolution analysis of parent-of-origin allelic expression in
+  the mouse brain.}
+\newblock {\em Science (New York, N.Y.)}, 329(5992):643--8, aug 2010.
+
+\bibitem{Law2014}
+Charity~W Law, Yunshun Chen, Wei Shi, and Gordon~K Smyth.
+\newblock {voom: Precision weights unlock linear model analysis tools for
+  RNA-seq read counts.}
+\newblock {\em Genome biology}, 15(2):R29, jan 2014.
+
+\bibitem{Perez2015}
+Julio~D Perez, Nimrod~D Rubinstein, Daniel~E Fernandez, Stephen~W Santoro,
+  Leigh~A Needleman, Olivia Ho-Shing, John~J Choi, Mariela Zirlinger,
+  Shau-Kwaun Chen, Jun~S Liu, and Catherine Dulac.
+\newblock {Quantitative and functional interrogation of parent-of-origin
+  allelic expression biases in the brain.}
+\newblock {\em eLife}, 4:e07860, jan 2015.
+
+\bibitem{Peters2014}
+Jo~Peters.
+\newblock {The role of genomic imprinting in biology and disease: an expanding
+  view}.
+\newblock {\em Nature Reviews Genetics}, 15(8):517--530, jun 2014.
+
+\bibitem{Tucci2016}
+Valter Tucci, SN~Archer, H~Oster, S~Maret, S~Dorsaz, L~Gurcel, S~Pradervand,
+  B~Petit, C~Pfister, R~Massart, M~Freyburger, M~Suderman, J~Paquet, J~El
+  Helou, E~Belanger-Nelson, A~Azzi, R~Dallmann, A~Casserly, H~Rehrauer,
+  A~Patrignani, B~Maier, E~Mignot, G~Tononi, C~Cirelli, JM~Krueger, MG~Frank,
+  JP~Wisor, S~Roy, G~Tononi, C~Cirelli, MS~Bartolomei, AC~Ferguson-Smith,
+  J~Peters, LS~Wilkinson, W~Davies, AR~Isles, WT~Powell, JM~LaSalle,
+  D~Landgraf, CE~Koch, H~Oster, V~Tucci, C~Saini, DM~Suter, A~Liani, P~Gos,
+  U~Schibler, MD~Schwartz, TS~Kilduff, M~Murphy, R~Huber, S~Esser, BA~Riedner,
+  M~Massimini, F~Ferrarelli, JM~Siegel, M~Engle-Friedman, P~McNamara,
+  A~Vela-Bueno, A~Kales, CR~Soldatos, B~Dobladez-Blanco, J~Campos-Castello,
+  P~Espino-Hurtado, AN~Vgontzas, A~Kales, J~Seip, MJ~Mascari, EO~Bixler,
+  DC~Myers, G~Hertz, M~Cataletto, SH~Feinsilver, M~Angulo, IV~Zhdanova,
+  RJ~Wurtman, J~Wagstaff, J~Clayton-Smith, L~Laan, JC~Ehlen, KA~Jones,
+  L~Pinckney, CL~Gray, S~Burette, RJ~Weinberg, SQ~Shi, TJ~Bichell, RA~Ihrie,
+  CH~Johnson, NC~Gossan, F~Zhang, B~Guo, D~Jin, H~Yoshitane, A~Yao, G~Lassi,
+  L~Priano, S~Maggi, C~Garcia-Garcia, E~Balzani, N~El-Assawy, K~Krauchi,
+  T~Deboer, SV~Kozlov, JW~Bogenpohl, MP~Howell, R~Wevrick, S~Panda,
+  JB~Hogenesch, G~Lassi, ST~Ball, S~Maggi, G~Colonna, T~Nieus, C~Cero, EJ~Van
+  Someren, MB~Renfree, S~Suzuki, T~Kaneko-Ishino, JM~Stringer, AJ~Pask, G~Shaw,
+  MB~Renfree, WF~Flanigan Jr., RH~Wilcox, A~Rechtschaffen, KM~Hartse,
+  A~Rechtschaffen, F~Ayala-Guerrero, S~Huitron Resendiz, AC~Huntley, JM~Siegel,
+  JM~Siegel, PR~Manger, R~Nienhuis, HM~Fahringer, JD~Pettigrew, T~Allison,
+  H~Van Twyver, T~Allison, H~Van Twyver, WR~Goff, JH~Brown, JF~Gillooly,
+  AP~Allen, VM~Savage, GB~West, MF~Bonetti, JJ~Wiens, A~Clarke, P~Rothery,
+  NJ~Isaac, F~Tinarelli, C~Garcia-Garcia, F~Nicassio, V~Tucci, SR~Ferron,
+  M~Charalambous, E~Radford, K~McEwen, H~Wildner, and E~Hind.
+\newblock {Genomic Imprinting: A New Epigenetic Perspective of Sleep
+  Regulation}.
+\newblock {\em PLOS Genetics}, 12(5):e1006004, may 2016.
+
+\end{thebibliography}

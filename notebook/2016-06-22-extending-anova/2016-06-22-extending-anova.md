@@ -131,7 +131,7 @@ update(my.dotplot(fm = Gene ~ Effect | Coefficient, data = Ef.long$logi.S, main 
 
 
 ```r
-my.segplot(data = Betas$logi.S)
+my.segplot(data = Betas$logi.S, xlim = my.xlim)
 ```
 
 <img src="figure/reg-coef-logi-S-1.png" title="plot of chunk reg-coef-logi-S" alt="plot of chunk reg-coef-logi-S" width="700px" />
@@ -148,7 +148,7 @@ update(my.dotplot(fm = Gene ~ Effect | Coefficient, data = Ef.long$logi2.S, main
 
 
 ```r
-my.segplot(data = Betas$logi2.S, main = expression(paste("99 % CI for ", beta, " under logi2.S")))
+my.segplot(data = Betas$logi2.S, main = expression(paste("99 % CI for ", beta, " under logi2.S")), xlim = my.xlim)
 ```
 
 <img src="figure/reg-coef-logi2-S-1.png" title="plot of chunk reg-coef-logi2-S" alt="plot of chunk reg-coef-logi2-S" width="700px" />
