@@ -29,6 +29,9 @@ EOF
 ```
 
 
+```
+## Loading required package: RColorBrewer
+```
 
 ### Import read count data
 
@@ -121,6 +124,10 @@ This figure is intended to:
   * the thousands of genes are ranked from the most imbalanced (monoallelic, top) to the most balanced (biallelic, bottom)
   * the ranking is based on the ECDF evaluated at $s = 0.9$, as shown in the upper 2nd graph and the bottom right plots
 * support the conclusion that $\approx 1 \%$ of all genes are appreciably imbalanced (monoallelically expressed)
+
+
+
+There are 5307 genes on this figure but before filtering there were 15584 genes.
 
 <img src="figure/complex-plot-1.png" title="plot of chunk complex-plot" alt="plot of chunk complex-plot" height="1000" />
 

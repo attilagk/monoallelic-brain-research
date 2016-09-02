@@ -17,13 +17,13 @@ P <- list()
 P$s.age.inst$lattice <-
     xyplot(S ~ Age | Gene, data = S.long, groups = Institution,
            panel = function(x, y, ...) {
-               panel.xyplot(x, y, pch = 21, ...)
+               panel.xyplot(x, y, pch = 21, cex = 0.5, ...)
                panel.smoother(x, y, col = "black", lwd = 2, ...)
            },
-           auto.key = list(title = "Insitution", space = "right"),
+           auto.key = list(title = "institution", space = "right"),
            par.settings = list(add.text = list(cex = 0.8)),
-           ylab = "read count ratio, s",
-           xlab = "age, years",
+           ylab = "read count ratio, S",
+           xlab = "age",
            aspect = "fill", layout = c(5, 7))
 # ggplot2 implementation
 g <- ggplot(data = S.long, aes(x = Age, y = S))
@@ -41,6 +41,43 @@ plot(P$s.age.inst$ggplot2)
 ```
 
 <img src="figure/S-age-smooth-2.png" title="plot of chunk S-age-smooth" alt="plot of chunk S-age-smooth" width="700px" />
+
+### Gene, age, and gender
+
+
+```r
+P <- list()
+# lattice implementation
+P$s.age.gender$lattice <-
+    xyplot(S ~ Age | Gene, data = S.long, groups = Gender,
+           panel = function(x, y, ...) {
+               panel.xyplot(x, y, pch = 21, ...)
+               #panel.smoother(x, y, col = "black", lwd = 2, ...)
+           },
+           par.settings = list(add.text = list(cex = 0.8),
+                               superpose.symbol = list(cex = 0.5,
+                                                       fill = trellis.par.get("superpose.symbol")$fill[c(2, 1)],
+                                                       col = trellis.par.get("superpose.symbol")$col[c(2, 1)])),
+           auto.key = list(title = "gender", space = "right"),
+           ylab = "read count ratio, S",
+           xlab = "age",
+           aspect = "fill", layout = c(5, 7))
+# ggplot2 implementation
+g <- ggplot(data = S.long, aes(x = Age, y = S))
+g <- g + geom_point(pch = "o", aes(color = Gender))
+g <- g + geom_smooth(method = "loess", color = "black")
+g <- g + facet_wrap(~ Gene)
+P$s.age.gender$ggplot2 <- g
+plot(P$s.age.gender$lattice)
+```
+
+<img src="figure/S-age-gender-1.png" title="plot of chunk S-age-gender" alt="plot of chunk S-age-gender" width="700px" />
+
+```r
+plot(P$s.age.gender$ggplot2)
+```
+
+<img src="figure/S-age-gender-2.png" title="plot of chunk S-age-gender" alt="plot of chunk S-age-gender" width="700px" />
 
 ### Dependence on gene, age, and total read count $N$
 

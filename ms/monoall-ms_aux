@@ -1,79 +1,100 @@
 \relax 
 \bibstyle{plain}
+\citation{Perez2015}
 \citation{Chess2012}
+\citation{Peters2014}
+\citation{Plasschaert2014}
+\citation{Tucci2016}
 \citation{Gregg2010a}
 \citation{Perez2015}
 \citation{DeVeale2012}
 \citation{Perez2015}
-\@writefile{toc}{\contentsline {section}{\numberline {1}Introduction}{1}}
-\@writefile{lot}{\contentsline {table}{\numberline {1}{\ignorespaces }}{2}}
-\newlabel{tab:predictors}{{1}{2}}
-\@writefile{toc}{\contentsline {section}{\numberline {2}Methods}{2}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.1}Data}{2}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.2}Read count ratio: an estimate of parental bias}{2}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.3}Regression models to explain population-wide variation}{2}}
-\newlabel{eq:unlm.S-matrix-form}{{2}{2}}
-\@writefile{lot}{\contentsline {table}{\numberline {2}{\ignorespaces Specificiation of four normal linear models based on read count transformation \(\tau \) and weights \(w_{ig}\).}}{3}}
-\newlabel{tab:nlm}{{2}{3}}
-\newlabel{eq:unlm.S-vector-form}{{4}{3}}
-\newlabel{eq:nlm-general}{{5}{3}}
-\newlabel{eq:logi-general}{{6}{3}}
-\newlabel{eq:binom-error}{{8}{3}}
+\@writefile{toc}{\contentsline {section}{\numberline {1}Introduction}{2}}
+\@writefile{toc}{\contentsline {section}{\numberline {2}Methods}{3}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.1}Brain samples}{3}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.2}RNA-seq, mapping and SNP calling}{3}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.3}Genotyping and calibration of imputed SNPs}{3}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.4}The read count ratio and related quality filtering}{4}}
+\newlabel{sec:filtering}{{2.4}{4}}
+\newlabel{eq:S-definition}{{1}{4}}
+\newlabel{eq:unbiased-test}{{2}{4}}
+\@writefile{lot}{\contentsline {table}{\numberline {1}{\ignorespaces Specificiation of four normal linear models based on read count transformation \(\tau \) and weights \(w_{ig}\).}}{5}}
+\newlabel{tab:nlm}{{1}{5}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.5}Regression models to explain population-wide variation}{5}}
+\newlabel{sec:methods-regression}{{2.5}{5}}
+\newlabel{eq:unlm.S-matrix-form}{{4}{5}}
+\newlabel{eq:unlm.S-vector-form}{{6}{5}}
+\newlabel{eq:nlm-general}{{7}{5}}
+\newlabel{eq:logi-general}{{8}{5}}
+\newlabel{eq:binom-error}{{10}{5}}
+\@writefile{toc}{\contentsline {section}{\numberline {3}Results}{6}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.1}Study design}{6}}
+\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces TODO: Study design. This figure (if deemed useful) will schematically illustrate variation of parental bias across a few genes by showing several maternal and paternal transcripts, and will also demonstrate technical sources of variation by depicting the corresponding RNA-seq read counts at heterozygous SNPs. Showing variation across individuals would be desirable but would complicate figure.}}{7}}
+\newlabel{fig:study-design}{{1}{7}}
+\@writefile{lot}{\contentsline {table}{\numberline {2}{\ignorespaces Variables used as predictors of read count ratio for the study of regulation and consequences of parental bias. The right column lists the corresponding regression parameters and, in square brackets [ ], the baseline level against which other levels are contrasted. PMI: post-mortem interval; Dx: disease status; AFF: affective spectrum disorder; SCZ: schizophrenia; RIN: RNA integrity number; RIN2: the square of RIN; Ancestry.\(k\): the \(k\)-th eigenvalue from the decomposition of genotypes indicating population structure}}{7}}
+\newlabel{tab:predictors}{{2}{7}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.2}Genome- and population-wide variation of parental bias}{8}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces }}{9}}
+\newlabel{fig:ranking-genes}{{2}{9}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces }}{10}}
+\newlabel{fig:top-genes}{{3}{10}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces }}{11}}
+\newlabel{fig:S-age-gender}{{4}{11}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.3}Sources and psychological consequences of variation}{12}}
+\newlabel{sec:models-regression}{{3.3}{12}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces }}{13}}
+\newlabel{fig:predicted-curves}{{5}{13}}
+\citation{Perez2015}
+\citation{Perez2015}
 \citation{Perez2015}
 \citation{DeVeale2012}
 \citation{Gregg2010a}
 \citation{Perez2015}
 \citation{Law2014}
-\@writefile{toc}{\contentsline {section}{\numberline {3}Results}{4}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.1}Genome-wide patterns}{4}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.2}Modulation by age}{4}}
-\@writefile{toc}{\contentsline {section}{\numberline {4}Discussion}{4}}
-\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces }}{5}}
-\newlabel{fig:ranking-genes}{{1}{5}}
-\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces }}{6}}
-\newlabel{fig:clusters}{{2}{6}}
-\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces }}{7}}
-\newlabel{fig:top-genes}{{3}{7}}
-\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces }}{8}}
-\newlabel{fig:S-age-institution}{{4}{8}}
-\@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces }}{9}}
-\newlabel{fig:predicted-curves}{{5}{9}}
-\@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces }}{10}}
-\newlabel{fig:age-effect}{{6}{10}}
-\@writefile{lof}{\contentsline {figure}{\numberline {7}{\ignorespaces }}{11}}
-\newlabel{fig:anova}{{7}{11}}
-\@writefile{lof}{\contentsline {figure}{\numberline {8}{\ignorespaces }}{11}}
-\newlabel{fig:scheme}{{8}{11}}
+\@writefile{toc}{\contentsline {section}{\numberline {4}Discussion}{14}}
+\@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces This figure will be extended with 3 additional panels: gender, ancestry and Dx (psychiatric condition)}}{15}}
+\newlabel{fig:age-effect}{{6}{15}}
+\@writefile{lof}{\contentsline {figure}{\numberline {7}{\ignorespaces }}{16}}
+\newlabel{fig:anova}{{7}{16}}
+\@writefile{lof}{\contentsline {figure}{\numberline {8}{\ignorespaces TODO: Comparison of the effects of age between the present work and a previous mouse study\nobreakspace  {}\cite  {Perez2015}. This figure would either be presented in the main or supplementary material depending on how conclusive the result is.}}{16}}
+\newlabel{fig:mouse-comparison}{{8}{16}}
 \citation{Tucci2016}
 \citation{Peters2014}
 \bibdata{monoall-ms}
 \bibcite{Chess2012}{1}
+\@writefile{lof}{\contentsline {figure}{\numberline {9}{\ignorespaces }}{17}}
+\newlabel{fig:scheme}{{9}{17}}
 \bibcite{DeVeale2012}{2}
 \bibcite{Gregg2010a}{3}
 \bibcite{Law2014}{4}
 \bibcite{Perez2015}{5}
 \bibcite{Peters2014}{6}
-\bibcite{Tucci2016}{7}
-\@writefile{toc}{\contentsline {section}{\numberline {5}Supplementary Material}{13}}
-\@writefile{lof}{\contentsline {figure}{\numberline {S1}{\ignorespaces }}{14}}
-\newlabel{fig:known-genes}{{S1}{14}}
-\@writefile{lof}{\contentsline {figure}{\numberline {S2}{\ignorespaces }}{15}}
-\newlabel{fig:predictor-associations}{{S2}{15}}
-\@writefile{lof}{\contentsline {figure}{\numberline {S3}{\ignorespaces }}{16}}
-\newlabel{fig:weight-of-evidence}{{S3}{16}}
-\@writefile{lof}{\contentsline {figure}{\numberline {S4}{\ignorespaces }}{17}}
-\newlabel{fig:likelihood-surface}{{S4}{17}}
-\@writefile{lof}{\contentsline {figure}{\numberline {S5}{\ignorespaces }}{18}}
-\newlabel{fig:non-constant-variance}{{S5}{18}}
-\@writefile{lof}{\contentsline {figure}{\numberline {S6}{\ignorespaces }}{19}}
-\newlabel{fig:all-effects-logi.S}{{S6}{19}}
-\@writefile{lof}{\contentsline {figure}{\numberline {S7}{\ignorespaces }}{20}}
-\newlabel{fig:all-effects-logi2.S}{{S7}{20}}
-\@writefile{lof}{\contentsline {figure}{\numberline {S8}{\ignorespaces }}{21}}
-\newlabel{fig:all-effects-wnlm.R}{{S8}{21}}
-\@writefile{lof}{\contentsline {figure}{\numberline {S9}{\ignorespaces }}{22}}
-\newlabel{fig:all-effects-unlm.R}{{S9}{22}}
-\@writefile{lof}{\contentsline {figure}{\numberline {S10}{\ignorespaces }}{23}}
-\newlabel{fig:age-effect-two-model}{{S10}{23}}
-\@writefile{lof}{\contentsline {figure}{\numberline {S11}{\ignorespaces }}{24}}
-\newlabel{fig:interaction}{{S11}{24}}
+\bibcite{Plasschaert2014}{7}
+\bibcite{Tucci2016}{8}
+\@writefile{toc}{\contentsline {section}{\numberline {5}Supplementary Material}{20}}
+\@writefile{lof}{\contentsline {figure}{\numberline {S1}{\ignorespaces AGK models: M1 (left) and M2 (right)}}{21}}
+\newlabel{fig:agk}{{S1}{21}}
+\@writefile{lof}{\contentsline {figure}{\numberline {S2}{\ignorespaces }}{22}}
+\newlabel{fig:clusters}{{S2}{22}}
+\@writefile{lof}{\contentsline {figure}{\numberline {S3}{\ignorespaces }}{23}}
+\newlabel{fig:known-genes}{{S3}{23}}
+\@writefile{lof}{\contentsline {figure}{\numberline {S4}{\ignorespaces }}{24}}
+\newlabel{fig:predictor-associations}{{S4}{24}}
+\@writefile{lof}{\contentsline {figure}{\numberline {S5}{\ignorespaces }}{25}}
+\newlabel{fig:weight-of-evidence}{{S5}{25}}
+\@writefile{lof}{\contentsline {figure}{\numberline {S6}{\ignorespaces }}{26}}
+\newlabel{fig:likelihood-surface}{{S6}{26}}
+\@writefile{lof}{\contentsline {figure}{\numberline {S7}{\ignorespaces }}{27}}
+\newlabel{fig:non-constant-variance}{{S7}{27}}
+\@writefile{lof}{\contentsline {figure}{\numberline {S8}{\ignorespaces }}{28}}
+\newlabel{fig:all-effects-logi.S}{{S8}{28}}
+\@writefile{lof}{\contentsline {figure}{\numberline {S9}{\ignorespaces }}{29}}
+\newlabel{fig:all-effects-logi2.S}{{S9}{29}}
+\@writefile{lof}{\contentsline {figure}{\numberline {S10}{\ignorespaces }}{30}}
+\newlabel{fig:all-effects-wnlm.R}{{S10}{30}}
+\@writefile{lof}{\contentsline {figure}{\numberline {S11}{\ignorespaces }}{31}}
+\newlabel{fig:all-effects-unlm.R}{{S11}{31}}
+\@writefile{lof}{\contentsline {figure}{\numberline {S12}{\ignorespaces }}{32}}
+\newlabel{fig:age-effect-two-model}{{S12}{32}}
+\@writefile{lof}{\contentsline {figure}{\numberline {S13}{\ignorespaces }}{33}}
+\newlabel{fig:interaction}{{S13}{33}}

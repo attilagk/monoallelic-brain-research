@@ -3,11 +3,30 @@
 \usetikzlibrary{arrows.meta}
 \bibliographystyle{plain}
 
-\title{Aging and genomic imprinting in the human brain}
+\title{Variation of Genomic Imprinting in the Human Population,
+and Analysis of its Sources and Psychiatric Consequences}
 \author{First Author 1, First Author 2, Middle Author,..., Middle Author, Andrew
 Chess}
+\date{Mount Sinai School of Medicine}
 
 \begin{document}
+\maketitle
+
+TODOs
+\begin{enumerate}
+\item extend Fig.~\ref{fig:age-effect} with 3 additional panels: gender,
+ancestry and Dx (psychiatric condition)
+\item compare the effect of age from this work to that from
+\cite{Perez2015} (Fig.~\ref{fig:mouse-comparison})
+\item for the factor Dx set Control as reference level instead of AFF
+\item diminish size of plotting character for red symbols in
+Fig.~\ref{fig:clusters} 
+\item schematic figure on study design (Fig.~\ref{fig:study-design}) 
+\item finish the rest of the Results section
+\end{enumerate}
+
+\newpage
+
 \maketitle
 
 \begin{abstract}
@@ -28,14 +47,15 @@ random otherwise \cite{Chess2012}.
 
 Genomic imprinting is the classic, non-random, case of monoallelic expression,
 which is mediated by epigenetic mechanisms that either concern single genes or
-entire imprinted gene clusters.  Having emerged late in evolution, imprinting
-of several genes have been implicated in biological functions of mainly
-neurological, psychological, behavioral and social type.  Mutations disrupting
-the expression of certain imprinted genes are deeply penetrant causes of rare
-syndromes displaying psychological, cognitive, and social dysfunction.  But it
-remains to be established to what extent more subtle perturbations of parental
-bias might contribute to common, highly polygenic psychiatric disorders such
-as schizophrenia or autism.
+entire imprinted gene clusters~\cite{Peters2014,Plasschaert2014}.  Having
+emerged late in evolution~\cite{Tucci2016}, imprinting of several genes have
+been implicated in biological functions of mainly neurological, psychological,
+behavioral and social type.  Mutations disrupting the expression of certain
+imprinted genes are deeply penetrant causes of rare syndromes displaying
+psychological, cognitive, and social dysfunction.  But it remains to be
+established to what extent more subtle perturbations of parental bias might
+contribute to common, highly polygenic psychiatric disorders such as
+schizophrenia or autism.
 
 Also of interest is how and why parental bias for a given imprinted gene
 might vary between individuals.  Age is a prime candidate for regulator
@@ -67,44 +87,136 @@ ancestry, and by performing the RNA-seq based quantification of parental bias.
 
 \section{Methods}
 
-\subsection{Data}
+\subsection{Brain samples}
 
-\(m\) individuals/samples, set \(\mathcal{G}\) of \(n\) genes
+\footnote{This and the following two subsections
+have been taken apart from a few minor modifications, literally from Ifat's
+version of the manuscript.  They require double-checking because I was not
+involved with the work described in them.}
 
-\begin{table}
-\begin{center}
-\begin{tabular}{r|l}
-predictor & parameter(s)\\
-\hline
-Age & Age\\
-Institution & [MSSM], Penn, Pitt\\
-Gender & [Female], Male\\
-PMI & PMI\\
-Dx & [AFF], Control, SCZ\\
-RIN & RIN\\
-RIN2 & RIN2\\
-RNA\_batch & [0], A, B, C, D, E, F, G, H\\
-Ancestry.1 & Ancestry.1\\
-\vdots & \vdots \\
-Ancestry.5 & Ancestry.5\\
-\end{tabular}
-\caption{}
-\label{tab:predictors}
-\end{center}
-\end{table}
+Human RNA samples were collected from the dorsolateral prefrontal cortex of
+the CommonMind consortium (CMC), from a total of \(579\) individuals after
+quality control. Subjects included 267 control individuals, as well as 258
+with schizophrenia (SCZ) and 54 with affective spectrum disorder (AFF).
+RNA-seq library preparation uses Ribo-Zero (which selects against ribosomal
+RNA) to prepare the RNA, followed by Illumina paired end library generation.
+RNAseq was performed on Illumina HiSeq 2000.
 
-\subsection{Read count ratio: an estimate of parental bias}
+\subsection{RNA-seq, mapping and SNP calling}
 
-\(\mathbf{S} = [S_{ig}]_{ig};\; i=1,...,m; \; g\in\mathcal{G}\)
+We mapped 100bp, paired-end reads (\(\approx50\) million reads per sample) using Tophat
+to Ensembl gene transcripts of the human genome (hg19; February, 2009) using
+default parameters with 6 mismatches allowed per pair (200bp total). We
+required both reads in a pair to be successfully mapped and we removed reads
+that mapped to \(>1\) genomic locus. Then, we removed PCR replicates using the
+Samtools rmdup utility; around one third of the reads mapped (which is
+expected, given the parameters we used and the known high repeat content of
+the human genome). We used Cufflinks to determine gene expression of Ensembl
+genes, using default parameters. Using the BCFtools utility of Samtools, we
+called SNPs (SNVs only, no indels). Then, we invoked a quality filter
+requiring a Phred score \(>20\) (corresponding to a probability for an
+incorrect SNP call \(<0.01\)).
 
+We annotated known SNPs using dbSNP (dbSNP 138, October 2013). Considering all
+579 samples, we find 936,193 SNPs in total, 563,427 (60\%) of which are novel.
+Further filtering of this SNP list removed the novel SNPs and removed SNPs
+that either did not match the alleles reported in dbSNP or had more than 2
+alleles in dbSNP. We also removed SNPs without at least 10 mapped reads in at
+least one sample. Read depth was measured using the Samtools Pileup utility.
+After these filters were applied, 364,509 SNPs remained in 22,254 genes. These
+filters enabled use of data with low coverage, as described below. For the 579
+samples there are 203 million data points (reads overlapping one of the
+364,509 SNPs defined above), of which 158 million (78\%) have genotype data
+available (array or imputation), which is used later in the pipeline.
+
+\subsection{Genotyping and calibration of imputed SNPs}
+
+DNA samples were genotyped using the Illumina Infinium SNP array. We used
+PLINK with default parameters to impute genotypes for SNPs not present on the
+Infinium SNP array using 1000 genomes data. To maximize the number of genes
+assessable for monoallelic expression, while minimizing false positive
+monoallelic expression calls which can arise if the underlying SNP has been
+incorrectly called as heterozygous by the imputation, we calibrated the
+imputation parameters.
+
+We first examined how many SNPs were heterozygous in DNA calls and had a
+discordant RNA call (i.e. homozygous RNA-SNP call) using different imputation
+parameters. Known imprinted genes were excluded. We examined RNA-seq reads
+overlapping array-called heterozygous SNPs which we assigned a heterozyous
+likelihood value, \(L_\mathrm{het}\) of 1, separately from RNA seq data
+overlapping imputed heterozygous SNPs, where \(L_\mathrm{het}\) values could
+range from 0 to 1. Based on iterative examination with different thresholds,
+we selected a \(L_\mathrm{het}\) cutoff of 0.95 (i.e. imputation confidence
+level of 95\%), and a minimal coverage of 7 reads per SNP. With these
+parameters, the discordance rate (monoallelic RNA genotype in the context of a
+heterozygous DNA genotype) was 0.71\% for array-called SNPs and 3.2\% for
+imputed SNPs.
+
+While undoubtedly, a portion of the excess of discordance for the imputed SNPs
+is due to imputation error, downstream parts of analytic pipeline are designed
+taking into account the possibility of imputation error, as described below.
+One key is that for most genes there are multiple imputed SNPs and we consider
+data for all of them. Another key is that if even one SNP has evidence for
+biallelic expression (whether or not there is imputation data), we exlcude
+that individual due to the conflict. At this point, the matrix includes 147
+million data points covering 213,208 SNPs, of which 114 million (77\%) have
+imputation data.
+
+\subsection{The read count ratio and related quality filtering}
+
+\label{sec:filtering}
+
+The central quantity of this work is an \(m\times n\) matrix of read count ratios
+\(\mathbf{S} = [S_{ig}]_{ig};\; i=1,...,m; \; g\in\mathcal{G}\), where
+\(m=579\) is the number of individuals and \(n\) is the number of genes
+in a set \(\mathcal{G}\) of unfiltered or filtered genes (\(n=15584\) and \(5307\),
+respectively).  The read count ratio for
+individual \(i\) and gene \(g\) is defined as
 \begin{equation}
-S_{ig} = \frac{H_{ig}}{T_{ig}}= \frac{\sum_s H_s}{\sum_sT_s}
+S_{ig} = \frac{H_{ig}}{T_{ig}}= \frac{\sum_s H_s}{\sum_sT_s},
+\label{eq:S-definition}
 \end{equation}
+where the summation runs through all heterozygous SNPs \(s\) that occur in
+\((i,g)\).  The statistic \(H_s\) and \(T_s\) in Eq.~\ref{eq:S-definition} are
+the higher and total RNA-seq read count at SNP \(s\); \(H_s\) is higher in the
+sense that if the alleles at \(s\) are \(a,b\) and the corresponding read counts
+\(X_a,X_b\), then \(H_s = X_a\) if \(X_a\ge X_b\) and \(H_s = X_b\) otherwise.
+The total read count is simply \(T_s = X_a + X_b\).
+
+Two kind of data filters were applied sequentially: (1) a \emph{read count-based}
+and (2) an \emph{individual-based}.  The read count-based filter removes any
+such pair $(i,g)$ of individual $i$ and genes $g$ for which the total read
+count $T_{ig}<t_\mathrm{rc}$, where $t_\mathrm{rc}$ is the read count
+threshold and was set to 15. The individual-based filter removes any genes $g$ (across all
+individuals) if read count data involving $g$ are available on less than
+$t_\mathrm{ind}$ number of individuals, set to 25.
+These filtering procedures were preceded by an initial read count-based
+filter, which removed each combination \((i,s)\) of individual \(i\) and SNP
+\(s\) for which fewer than 7 reads had quality score \(\ge20\).  After the
+initial filtering the number of genes was \(n=15584\), which decreased to
+\(n=5307\) after the final, individual-based, filtering step.
+
+The test for nearly unbiased expression of parental transcripts was defined by
+the criterion
+\begin{equation}
+S_{ig} \le 0.6 \text{ and } \mathrm{UCL}_{ig} \le 0.7,
+\label{eq:unbiased-test}
+\end{equation}
+where the 95\% upper confidence limit was calculated from a normal approximation to
+likelihood:
+\begin{equation}
+\mathrm{UCL}_{ig} = S_{ig} + z_{0.975} \sqrt{\frac{S_{ig} (1 - S_{ig})}{T_{ig}}},
+\end{equation}
+such that $z_{p}$ is the $p$ quantile of the standard normal distribution and
+$T_{ig}$ is, as before, the total read count.
 
 \subsection{Regression models to explain population-wide variation}
+\label{sec:methods-regression}
 
-Regression analysis involved a subset \(\mathcal{G}_1\subset\mathcal{G}\) of
-\(n_1\) genes.
+Let \(m\) denote the number of individuals/samples and \(\mathcal{G}\) the set
+of \(n=5307\) genes that passed quality filtering.  Regression analysis
+involved a subset \(\mathcal{G}_1\subset\mathcal{G}\) of \(n_1=30\) genes
+called as imprinted.
 
 The basic model, unlm.S, is
 \begin{eqnarray}
@@ -114,7 +226,7 @@ The basic model, unlm.S, is
 \end{eqnarray}
 where the response \(\mathbf{S}\) is an \(m\times n_1\) matrix of read count ratios,
 \(\mathrm{X}\) is an \(m\times p\) design matrix, \(\boldsymbol{\beta}\) is a \(p\times n_1\) matrix of regression
-coefficients, the random error \(\boldsymbol{\varepsilon}\) has the same
+coefficients~(Table~\ref{tab:predictors}), the random error \(\boldsymbol{\varepsilon}\) has the same
 dimension as \(\mathbf{S}\), and gene \(g\in \mathcal{G}_1\).  Eq.~\ref{eq:unlm.S-matrix-form} may be given as
 \begin{equation}
 S_g = \mathbf{X} \beta_g + \varepsilon_g,
@@ -132,10 +244,10 @@ unlm.S was extended in several ways, yielding
 The general form of the four normal linar models
 (cf.~\ref{eq:unlm.S-vector-form}) is
 \begin{equation}
-W_g^{1/2} \tau(S_g) = W_g^{1/2} X \beta_g + \varepsilon_g.
+\mathbf{W}_g^{1/2} \tau(S_g) = \mathbf{W}_g^{1/2} \mathbf{X} \beta_g + \varepsilon_g.
 \label{eq:nlm-general}
 \end{equation}
-The extension here consists of \(W_g\), an \(m\times m\) diagonal matrix of
+The extension here consists of \(\mathbf{W}_g\), an \(m\times m\) diagonal matrix of
 weights \(w_{ig}\) on the \(i\)-th diagonal position, and \(\tau\), a
 transformation on read counts.  These quantities specify the four normal
 linear models as laid out in Table~\ref{tab:nlm}.
@@ -161,7 +273,7 @@ The logistic models, logi.S or logi2.S, share the general form
 S_g &=& \mu_g + c\, \varepsilon_g
 \label{eq:logi-general}
 \\
-\mu_g &=& h(X \beta_g) \\
+\mu_g &=& h(\mathbf{X} \beta_g) \\
 \varepsilon_{ig} + \mu_g &\overset{\mathrm{iid}}{\sim}& \mathrm{Binom}(\mu_g, T_{ig}).
 \label{eq:binom-error}
 \end{eqnarray}
@@ -205,9 +317,103 @@ Fig.~\ref{fig:predicted-curves} but not for quantitative inference.
 
 \section{Results}
 
-\subsection{Genome-wide patterns}
+\subsection{Study design}
 
-Lorem ipsum
+The genome- and population-wide variation of parental bias was assessed using
+DLPFC tissue samples, one from each of \(m=579\) study individuals
+\(i=1,...,m\)~(Fig.~\ref{fig:study-design}).
+For each combination \((i,g)\) of individuals and \(15584\) genes
+\(g\in\{g_1,...,g_{15584}\}\) (which passed an initial quality filter, see
+Section~\ref{sec:filtering}) the set
+of all heterozygous SNPs was identified with SNP-array genotyping, and
+expression was quantified at each SNP separately for the two alleles by
+counting RNA-seq reads noting the allele associated with the \emph{higher read
+count} (as opposed to the \emph{lower read count}).  For a given \((i,g)\)
+combination higher and lower read counts were then separately aggregated
+across the heterozygous SNPs yielding the statistics \(H_{ig}\) and
+\(L_{ig}\), as well as the \emph{total read count} \(T_{ig} = H_{ig} +
+L_{ig}\).  Genes were then quality filtered based on the conditional
+distribution of total read count across the 579 individuals for any given
+gene, leaving \(n=5307\) genes in the analysis.  The \emph{read count ratio}
+statistic, defined as \(S_{ig} = H_{ig}/T_{ig}\), was used to quantify
+parental bias towards the more highly expressed parental allele (see also
+Eq.~\ref{eq:S-definition} in Section~\ref{sec:filtering}).
+
+\begin{figure}
+\begin{center}
+\includegraphics[width=0.6\textwidth]{figures/mona_1.png}
+\end{center}
+\caption{TODO: Study design.  This figure (if deemed useful) will
+schematically illustrate variation of parental bias across a few genes by
+showing several maternal and paternal transcripts, and will also demonstrate
+technical sources of variation by depicting
+the corresponding RNA-seq read counts at heterozygous SNPs.  Showing variation across
+individuals would be desirable but would complicate figure.}
+\label{fig:study-design}
+\end{figure}
+
+
+Taking a genome-wide viewpoint, it is helpful to regard the read count ratio
+as a set of random variables \(\{S_{g_1},...,S_{g_n}\}\), each of which varies
+across the human population described by its own distribution.  The difference
+(or similarity) among the corresponding set of distributions is an indicator
+of biological mechanisms that differentiate genes' parental bias.  For any
+given gene \(g\) the observed \(S_{1g},...,S_{mg}\) from the present data on
+\(m\le579\) individuals estimates the distribution of \(S_g\).  That
+distribution, in turn, informs us on further biological mechanisms that
+differentiate individuals' parental bias for that gene but at the same time
+also reflects variation of \(S_g\) that arise from technical sources.
+
+\begin{table}
+\begin{center}
+\begin{tabular}{r|l}
+predictor & parameter(s)\\
+\hline
+Age & Age\\
+Institution & [MSSM], Penn, Pitt\\
+Gender & [Female], Male\\
+PMI & PMI\\
+Dx & [AFF], Control, SCZ\\
+RIN & RIN\\
+RIN2 & RIN2\\
+RNA\_batch & [0], A, B, C, D, E, F, G, H\\
+Ancestry.1 & Ancestry.1\\
+\vdots & \vdots \\
+Ancestry.5 & Ancestry.5\\
+\end{tabular}
+\caption{Variables used as predictors of read count ratio for the study of
+regulation and consequences of parental bias.  The right column lists the
+corresponding regression parameters and, in square brackets [ ], the baseline
+level against which other levels are contrasted.  PMI: post-mortem interval; Dx:
+disease status; AFF: affective spectrum disorder; SCZ: schizophrenia; RIN: RNA
+integrity number; RIN2: the square of RIN; Ancestry.\(k\): the \(k\)-th
+eigenvalue from the decomposition of genotypes indicating population structure}
+\label{tab:predictors}
+\end{center}
+\end{table}
+
+Besides the genomic measurements leading to read count ratios our data include
+observations on variables (Table~\ref{tab:predictors}) that we found (see
+Section~\ref{sec:regression} below) to be informative for the genome-wide
+dissection of various biological mechanisms and technical effects underlying
+the observed variation of read counts.  We carried out a theoretical
+study\footnote{I wonder if we should attach my modeling article confidentially
+for the reviewers.  See that article
+at:\\http://bernie.anbg.mssm.edu/\~{}attila/assets/projects/monoallelic-brain/2016-04-14-braim-model.pdf}
+that culminated in several probabilistic models of read counts---even at
+individual SNPs---and other observed variables (Fig.~\ref{fig:agk}).  These
+models may successfully capture the observed complex pattern of correlations
+among the measured variables (Section~\ref{sec:regression}); but our
+theoretical work also showed that their computational implementation and
+evaluation of their properties and performance in relevant tasks would reach
+far beyond the present scope.  Therefore, we decided to resort to relatively
+simple conventional models, some of which were found to fit reasonably well to
+allow quantitative inferences on the small subset of genes called imprinted
+(Section~\ref{sec:regression}).  On the genome-wide scale (next section) we
+present only an exploratory statistical analysis, which none-the-less permits
+qualitative conclusions under careful interpretation.
+
+\subsection{Genome- and population-wide variation of parental bias}
 
 \begin{figure}
 \begin{center}
@@ -217,13 +423,34 @@ Lorem ipsum
 \label{fig:ranking-genes}
 \end{figure}
 
-\begin{figure}
-\begin{center}
-\includegraphics[scale=0.6]{figures/2016-08-08-imprinted-gene-clusters/score-genomic-location-1.png}
-\end{center}
-\caption{}
-\label{fig:clusters}
-\end{figure}
+The top three plots of Fig.~\ref{fig:ranking-genes} all show the empirical distribution
+of \(S_\mathrm{PEG10}, S_\mathrm{ZNF331}\) and \(S_\mathrm{AFAP1}\), where
+PEG10 and ZNF331 are \emph{known imprinted genes} based on prior evidence and
+AFAP1 is referred to as \emph{candidate gene} as it lacks such evidence.  For
+all three genes \(S_g\) varies greatly within its theoretical range
+\([\frac{1}{2}, 1]\).  This variation is attributable to both technical and biological effects
+and is consistent with substantial population-wide variation of parental bias.
+
+The probability density of \(S_g\) for the two known imprinted
+genes is shifted towards the theoretical maximum (relative to the density of
+the candidate gene), which indicates near monoallelic expression in a great
+fraction of individuals for these two genes.  This is expected if \(S_g\) is
+indeed a useful estimator of the relative level of maternal (or paternal,
+whichever is greater) transcripts.  But the shift is clearly
+stronger for PEG10 than for ZNF331, suggesting quantitative differences even
+among imprinted genes.  This motivated the ranking of all 5307 genes
+based on a gene score that quantifies the shift in distribution.  We defined the score of
+gene \(g\) as the fraction of individuals with \(S_{ig}>0.9\); as the filled green
+circles show in Fig.~\ref{fig:ranking-genes} this is equivalent to 1 less the
+empirical distribution function (ECDF), evaluated at \(0.9\) (the second and
+third plots from the top of Fig.~\ref{fig:ranking-genes}).
+
+The lower half of Fig.~\ref{fig:ranking-genes} shows the distribution of
+\(S_{g_1},...,S_{g_{n}}\) ordered by rank from the top (rank 1) to bottom
+(rank 5307).  Although the distributional shift is gradual from the top ranking
+\(g_1=\mathrm{MAGEL2}\) to the lowest ranking genes,
+Fig.~\ref{fig:ranking-genes} provides a visual argument that the fraction of
+imprinted genes is no more than \(1\%\) of all genes.
 
 \begin{figure}
 \begin{center}
@@ -233,15 +460,57 @@ Lorem ipsum
 \end{center}
 \end{figure}
 
+Consistent with previously described imprinted gene clusters the top-scoring
+genes tend to cluster according to genomic position (Fig.~\ref{fig:clusters})
+and most, but not all, of them are known imprinted genes
+(Fig.~\ref{fig:top-genes}).  The high scoring candidates were classified on
+the basis of their distance from known imprinted gene clusters as nearby and
+distant candidates; the former class was taken as novel imprinted genes and
+the latter as false positives by considering the epigenetic nature of
+imprinting mechanisms and the typical, MB-scale, length of those epigenetic
+marks.  Besides this mechanistic argument, the fraction of individuals passing
+a statistical test for the nearly unbiased expression of alleles
+(Eq.~\ref{eq:unbiased-test}) also supports this classification, as shown by
+the black bars in Fig.~\ref{fig:top-genes}. Conversely, more than a third of
+all known imprinted genes (within the 5307-sized gene set) score low.  As the
+known imprinted genes were identified in different tissue types and organisms,
+these results indicate the context-dependence of imprinting.
+
 \begin{figure}
 \begin{center}
-\includegraphics[scale=0.6]{figures/2016-06-26-trellis-display-of-data/S-age-smooth-1.png}
+\includegraphics[scale=0.6]{figures/2016-06-26-trellis-display-of-data/S-age-gender-1.png}
 \caption{}
-\label{fig:S-age-institution}
+\label{fig:S-age-gender}
 \end{center}
 \end{figure}
 
-\subsection{Modulation by age}
+\subsection{Sources and psychological consequences of variation}
+\label{sec:models-regression}
+
+We selected the 27 top-scoring genes in the ``known imprinted'' and ``nearby
+candidate'' categories shown in blue and green in Fig.~\ref{fig:top-genes} and
+added three more known imprinted genes (NLRP2, IGF2 and UBE3A) that scored
+reasonably high (Fig.~\ref{fig:known-genes}).  The sources and psychological
+consequences of the variation of parental bias in these 30 genes was analyzed
+further through the detailed characterization how the read count ratio depends
+on the biological and technical variables---i.e.~the predictors---listed in Table~\ref{tab:predictors}.
+
+Fig.~\ref{fig:S-age-gender} shows patterns of dependence (or independence) of
+the read count ratio \(S_g\) for a given gene \(g\) on age and gender.  From
+this visual inspection it seems that for several genes age is informative to
+the distribution of \(S_g\) in terms of both the location (e.g.~the mean of
+\(S_g\)) and scale (e.g.~variance); such apparent dependence on gender is not
+clear.
+
+This qualitative result, however, is greatly complicated by the association
+among predictors: taking only pairwise associations the situation is already
+complex given the observed strong association between age and gender with each
+other and with many other predictors (Fig.~\ref{fig:predictor-associations})
+but higher order associations might also exist in the data.
+The correct interpretation of plots like Fig.~\ref{fig:S-age-gender} also depends on
+the amount of data, i.e.~the total read count \(T_{ig}\), based on which the
+read count ratio \(S_{ig}\) was calculated.  Fig.~\ref{fig:weight-of-evidence}
+shows how \(T_{ig}\) varies both within a gene and across genes.
 
 \begin{figure}
 \begin{center}
@@ -251,11 +520,80 @@ Lorem ipsum
 \label{fig:predicted-curves}
 \end{figure}
 
+These considerations motivated us to fit various generalized linear regression
+models, one for each gene, by treating read count ratio as response and the
+variables in Table~\ref{tab:predictors} as predictors. The thick black curves
+and colored strips in Fig.~\ref{fig:predicted-curves} represent the predicted
+read count ratio and prediction intervals, respectively, under four of these
+models for the gene GRB10.  To allow visual evaluation of model fit to the
+observed values (green dots) the only predictor is age for the all models in
+these plots but for quantitative statistical inference all predictors were
+included.
+
+As indicated by Fig.~\ref{fig:predicted-curves}, the logistic models logi.S
+and logi2.S fitted for most genes much better to the data than various flavors
+of normal linear models such as wnlm.S.  This is because only the former could
+express the observed steep dependence of the response's variance on its
+average. Location-scale plots (for instance
+Fig.~\ref{fig:non-constant-variance}, top left) confirmed the poor fit of
+normal linear models, and calculated Cook's distances revealed also a
+non-systematic variation in error variance
+(Fig.~\ref{fig:non-constant-variance}, top right).  Both the systematic and
+non-systematic variation was remedied by rank transformation of observed read
+count ratios leading to the wnlm.R model
+(Fig.~\ref{fig:non-constant-variance}, bottom left and right) but this came at
+the price of a large increase in the overall error variance relative to the
+variation by wnlm.R (Fig.~\ref{fig:predicted-curves}).  Based on these results
+the wnlm.S models were deemed inadequate excluded from further
+analysis.
+
+Since all of these models account for each predictor separately, they are
+expected, in principle, to successfully dissect their effects although the
+observed association among the predictors might adversely affect parameter
+estimation due to collinearity.  Inspection of likelihood surfaces suggested
+that perhaps with the exception of those including the predictor RIN, the
+associations only moderately distort likelihood surfaces
+(Fig.~\ref{fig:likelihood-surface}).
+
+That logistic models fit the data relatively better was suggested non only plots
+similar to Fig.~\ref{fig:predicted-curves} but the fact that these are natural
+models of count data, which readily account for the observed variation of
+total read count, while normal linear models in general do not.  Therefore we
+used weighted normal linear models (i.e.~wnlm.R) in addition to unweighted
+ones (unlm.R), where the weight of observation on individual \(i\) was given
+by total read counts \(T_{ig}\) (Table~\ref{tab:nlm}).  In addition, we fitted
+a variant of each model (denoted as ``.WA'') which assumes that predictors
+affect read count ratio for each gene identically (see
+Section~\ref{sec:methods-regression}).
+
+Fig.~\ref{fig:all-effects-logi.S},~\ref{fig:all-effects-logi2.S},~\ref{fig:all-effects-wnlm.R},
+and~\ref{fig:all-effects-unlm.R} present the estimated regression coefficients
+along with their 99\% confidence intervals for all of the above models.  The
+more significant results under logistic models indicated that they were indeed
+more powerful than the weighted or unweighed normal linear models, in
+agreement with their better fit and favorable theoretical properties and that
+they avoid the loss of information incurred by rank transformation.  But it
+must be added to this conclusion that logistic models might also be more prone
+to bias because much of their predicted sigmoidal curve was extrapolated from
+the data (Fig.~\ref{fig:predicted-curves}).  Results were very similar under
+the two logistic models.  Moreover, the great variation of regression
+coefficients across genes suggested that the ``.WA'' models were inadequate
+because predictors likely affect genes differentially.  These findings made us
+give priority to the logi.S model and use wnlm.R mainly to check the results'
+consistency under these two models.
+
+The effects of four biological predictors---age, gender, ancestry and
+psychiatric condition---on read count ratio of individual genes are depicted
+in Fig.~\ref{fig:age-effect}.
+
+TODO: finish the rest of the Results section.
+
 \begin{figure}
 \begin{center}
 \includegraphics[scale=0.6]{figures/2016-08-08-imprinted-gene-clusters/segplot-1.pdf}
 \end{center}
-\caption{}
+\caption{This figure will be extended with 3 additional panels: gender,
+ancestry and Dx (psychiatric condition)}
 \label{fig:age-effect}
 \end{figure}
 
@@ -266,6 +604,18 @@ Lorem ipsum
 \caption{}
 \label{fig:anova}
 \end{figure}
+
+\begin{figure}
+\begin{center}
+\includegraphics[width=0.6\textwidth]{figures/raffaello-putti.jpg}
+\end{center}
+\caption{TODO: Comparison of the effects of age between the present work and a
+previous mouse study~\cite{Perez2015}.  This figure would either be presented
+in the main or supplementary material depending on how conclusive the result
+is.}
+\label{fig:mouse-comparison}
+\end{figure}
+
 
 \section{Discussion}
 
@@ -336,17 +686,17 @@ genotyping protocols---might be alleviated by improved across-institute
 standardization.  But others, such as the confounding of age by certain
 technical variables (e.g.~institution), are hopelessly entangled with the
 observational nature of post mortem human studies, which precludes orthogonal,
-that is clearly interpretable, decomposition of the variation in the observed
-measure of parental bias (the response) into various technical and biological
-components and limits statistical power.  Even if the data fulfilled
-orthogonality, the present regression models would still remain too rigid to
-account for the relative overdispersion of RNA-seq read counts, the
-uncertainty surrounding haplotype, and that genes are neither completely
-independent nor completely identical in their parental bias.  In future work
-these ought to be tackled either with recently developed hierarchical models
-built on normal linear model \cite{Perez2015,Law2014} or, if regulators indeed
-strongly interact as the present work indicates, by the adoption of Bayesian
-networks.
+that is clearly interpretable, decomposition of the variation of the observed
+measure of parental bias (the response) into separate technical and biological
+components.  In addition, non-orthogonality also limits statistical power.  But even
+if the data fulfilled orthogonality, the present regression models would still
+remain too rigid to account for the relative overdispersion of RNA-seq read
+counts, the uncertainty surrounding haplotype, and that genes are neither
+completely independent nor completely identical in their parental bias.  In
+future work these ought to be tackled either with recently developed
+hierarchical models built on normal linear model \cite{Perez2015,Law2014} or,
+if regulators indeed strongly interact as the present work indicates, by the
+adoption of Bayesian networks.
 
 The molecular mechanism mediating the age effect.  TODO: clusters and regression
 coefficients for gender and ancestry
@@ -385,12 +735,32 @@ regulators such as age, gender, and ancestry.
 
 \section{Supplementary Material}
 
+\newpage
+
 % Supplementary figures
 
 \setcounter{figure}{0}
 \makeatletter 
 \renewcommand{\thefigure}{S\@arabic\c@figure}
 \makeatother
+
+\begin{figure}
+\begin{center}
+\includegraphics{figures/by-me/monoall-M1}
+\hspace{\fill}
+\includegraphics{figures/by-me/monoall-M2}
+\end{center}
+\caption{AGK models: M1 (left) and M2 (right)}
+\label{fig:agk}
+\end{figure}
+
+\begin{figure}
+\begin{center}
+\includegraphics[scale=0.6]{figures/2016-08-08-imprinted-gene-clusters/score-genomic-location-1.png}
+\end{center}
+\caption{}
+\label{fig:clusters}
+\end{figure}
 
 \begin{figure}
 \begin{center}
