@@ -4,7 +4,8 @@ e.vars <- c("Age",
                "Gender",
                "PMI",
                "Dx",
-               "RIN", "RIN2",
+               "RIN",
+               "RIN2",
                "RNA_batch",
                "Ancestry.1", "Ancestry.2", "Ancestry.3", "Ancestry.4", "Ancestry.5" )
 

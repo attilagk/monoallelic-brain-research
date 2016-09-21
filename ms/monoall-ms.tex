@@ -5,8 +5,9 @@
 
 \title{Variation of Genomic Imprinting in the Human Population,
 and Analysis of its Sources and Psychiatric Consequences}
-\author{First Author 1, First Author 2, Middle Author,..., Middle Author, Andrew
-Chess}
+\author{Attila Guly\'{a}s-Kov\'{a}cs\(^\ast\), Ifat Keydar\(^\ast\),\\
+Eva Xia, Menachem Fromer, Doug Ruderfer,\\
+Ravi Sachinanandam, Andrew Chess}
 \date{Mount Sinai School of Medicine}
 
 \begin{document}
@@ -19,6 +20,8 @@ ancestry and Dx (psychiatric condition)
 \item compare the effect of age from this work to that from
 \cite{Perez2015} (Fig.~\ref{fig:mouse-comparison})
 \item for the factor Dx set Control as reference level instead of AFF
+\item randomly relabel individuals using the three levels of Dx and perform
+regression
 \item diminish size of plotting character for red symbols in
 Fig.~\ref{fig:clusters} 
 \item schematic figure on study design (Fig.~\ref{fig:study-design}) 
@@ -281,7 +284,7 @@ The link function \(h\) is \(h(u) = e^u / (1 + e^u)\) for logi.S and \(h(u) =
 e^u / (2 + 2e^u)] + 1/2\) for logi2.S, and the scaling constant \(c=\) 1
  and \(1/2\), respectively.  Thus, the response \(S_g\) under logi2.S is scaled and shifted relative to
 that under logi.S such that (with probabilty one) \(1/2\le S_{ig}\le 1\) under the former and
-\(1/2\le S_{ig}\le 1\) under the latter.
+\(0\le S_{ig}\le 1\) under the latter.
 
 Each of the six models has \(p\times n_1\) regression parameters corresponding to the
 dimension of \(\boldsymbol{\beta}\).  This allows different behavior for
@@ -394,7 +397,7 @@ eigenvalue from the decomposition of genotypes indicating population structure}
 
 Besides the genomic measurements leading to read count ratios our data include
 observations on variables (Table~\ref{tab:predictors}) that we found (see
-Section~\ref{sec:regression} below) to be informative for the genome-wide
+Section~\ref{sec:results-regression} below) to be informative for the genome-wide
 dissection of various biological mechanisms and technical effects underlying
 the observed variation of read counts.  We carried out a theoretical
 study\footnote{I wonder if we should attach my modeling article confidentially
@@ -403,13 +406,13 @@ at:\\http://bernie.anbg.mssm.edu/\~{}attila/assets/projects/monoallelic-brain/20
 that culminated in several probabilistic models of read counts---even at
 individual SNPs---and other observed variables (Fig.~\ref{fig:agk}).  These
 models may successfully capture the observed complex pattern of correlations
-among the measured variables (Section~\ref{sec:regression}); but our
+among the measured variables (Section~\ref{sec:results-regression}); but our
 theoretical work also showed that their computational implementation and
 evaluation of their properties and performance in relevant tasks would reach
 far beyond the present scope.  Therefore, we decided to resort to relatively
 simple conventional models, some of which were found to fit reasonably well to
 allow quantitative inferences on the small subset of genes called imprinted
-(Section~\ref{sec:regression}).  On the genome-wide scale (next section) we
+(Section~\ref{sec:results-regression}).  On the genome-wide scale (next section) we
 present only an exploratory statistical analysis, which none-the-less permits
 qualitative conclusions under careful interpretation.
 
@@ -485,7 +488,7 @@ these results indicate the context-dependence of imprinting.
 \end{figure}
 
 \subsection{Sources and psychological consequences of variation}
-\label{sec:models-regression}
+\label{sec:results-regression}
 
 We selected the 27 top-scoring genes in the ``known imprinted'' and ``nearby
 candidate'' categories shown in blue and green in Fig.~\ref{fig:top-genes} and
@@ -534,7 +537,7 @@ As indicated by Fig.~\ref{fig:predicted-curves}, the logistic models logi.S
 and logi2.S fitted for most genes much better to the data than various flavors
 of normal linear models such as wnlm.S.  This is because only the former could
 express the observed steep dependence of the response's variance on its
-average. Location-scale plots (for instance
+average.  Scale--location plots (for instance
 Fig.~\ref{fig:non-constant-variance}, top left) confirmed the poor fit of
 normal linear models, and calculated Cook's distances revealed also a
 non-systematic variation in error variance
@@ -555,8 +558,8 @@ that perhaps with the exception of those including the predictor RIN, the
 associations only moderately distort likelihood surfaces
 (Fig.~\ref{fig:likelihood-surface}).
 
-That logistic models fit the data relatively better was suggested non only plots
-similar to Fig.~\ref{fig:predicted-curves} but the fact that these are natural
+That logistic models fit the data relatively better was suggested by not only plots
+similar to Fig.~\ref{fig:predicted-curves} but also the fact that these are natural
 models of count data, which readily account for the observed variation of
 total read count, while normal linear models in general do not.  Therefore we
 used weighted normal linear models (i.e.~wnlm.R) in addition to unweighted
