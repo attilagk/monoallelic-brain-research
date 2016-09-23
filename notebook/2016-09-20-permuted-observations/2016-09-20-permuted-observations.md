@@ -9,6 +9,20 @@ The analysis herein aims to distinguish between the two basic cases.  This done 
 ### Preparations
 
 
+```
+## Loading required package: RColorBrewer
+```
+
+```
+## 
+## Attaching package: 'latticeExtra'
+```
+
+```
+## The following object is masked from 'package:ggplot2':
+## 
+##     layer
+```
 
 Load functions
 
@@ -74,11 +88,13 @@ Both the *unpermuted* and *permuted* data was fit by two models: logi.S and wnlm
 
 Under wnlm.R there are 43 significant coefficients before and 27 after permutation.  In contrast, under logi.S there are 165 and 180 (before and after).  But taking only those coefficients that are significant under *both* models yields 42 and 24 (before and after, respectively).
 
+Under logi.S the following pattern is observed.  For some genes (e.g. GRB10, ZDBF2) permutation tends to abolish significance---if observed---, whereas for other genes (e.g. SNRPN, SNURF) there are many significant coefficients after permutation.  This suggests systematic differences between genes: better fit of logi.S to the data for the former set of genes and poorer for the latter gene set.  The poor fit likely results in biased coefficient estimates, which explains the many significant coefficients after permutation.
+
 ### Conclusions
 
-1. It is beneficial to use a consensus approach by defining significance that is fulfilled both under wnlm.R and logi.S.
-1. In that case permutation indeed decreases the number of significant findings indicating that some of the true effects were removed.
 1. As discussed before, wnlm.R appears less sensitive but less biased than logi.S.
+1. The bias appears greatly vary across genes; model checking will help filter out genes with much bias due to poor fit
+1. It is beneficial to use a consensus approach by defining significance that is fulfilled both under wnlm.R and logi.S.
 
 
 ```r
