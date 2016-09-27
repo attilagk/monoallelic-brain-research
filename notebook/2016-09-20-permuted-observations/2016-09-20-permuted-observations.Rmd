@@ -49,6 +49,12 @@ EP <- lapply(e.vars, function(v) { E1 <- E; E1[[v]] <- E[[v]][perm.obs]; return(
 EP$Unpermuted <- E
 ```
 
+```{r}
+set.seed(1976)
+perms <- data.frame(cbind(seq_len(nrow(E)), replicate(20, sample.int(nrow(E)))))
+names(perms) <- c("U", paste0("P", seq_len(length(perms) - 1)))
+```
+
 ### Model fitting and CI calculation
 
 ```{r cache=TRUE, warning=FALSE, message=FALSE}
@@ -70,6 +76,11 @@ Betas.Permuted <- lapply(sel.models, get.estimate.CI.permut, M = M, e.v = e.vars
 Betas.Permuted.95 <- lapply(sel.models, get.estimate.CI.permut, M = M, e.v = e.vars, conf.lev = 0.95)
 ```
 
+```{r cache=TRUE, warning=FALSE, message=FALSE}
+Betas <- aggregate.CI.permut2(perms = perms, gene.ids = gene.ids, e.vars = e.vars,
+                              sel.models = sel.models, E = E, Y = Y[gene.ids], conf.lev=0.99)
+```
+
 ## Results
 
 Both the *unpermuted* and *permuted* data was fit by two models: logi.S and wnlm.R.  These four combinations are shown in the four plots below at confidence level of $99\%$  The following observations and conclusions may be noted:
@@ -77,12 +88,6 @@ Both the *unpermuted* and *permuted* data was fit by two models: logi.S and wnlm
 Under wnlm.R there are `r sum(is.signif(Betas.Unpermuted$wnlm.R), na.rm = TRUE)` significant coefficients before and `r sum(is.signif(Betas.Permuted$wnlm.R), na.rm = TRUE)` after permutation.  In contrast, under logi.S there are `r sum(is.signif(Betas.Unpermuted$logi.S), na.rm = TRUE)` and `r sum(is.signif(Betas.Permuted$logi.S), na.rm = TRUE)` (before and after).  But taking only those coefficients that are significant under *both* models yields `r sum(is.signif(Betas.Unpermuted$logi.S) & is.signif(Betas.Unpermuted$wnlm.R), na.rm = TRUE)` and `r sum(is.signif(Betas.Permuted$logi.S) & is.signif(Betas.Permuted$wnlm.R), na.rm = TRUE)` (before and after, respectively).
 
 Under logi.S the following pattern is observed.  For some genes (e.g. GRB10, ZDBF2) permutation tends to abolish significance---if observed---, whereas for other genes (e.g. SNRPN, SNURF) there are many significant coefficients after permutation.  This suggests systematic differences between genes: better fit of logi.S to the data for the former set of genes and poorer for the latter gene set.  The poor fit likely results in biased coefficient estimates, which explains the many significant coefficients after permutation.
-
-### Conclusions
-
-1. As discussed before, wnlm.R appears less sensitive but less biased than logi.S.
-1. The bias appears greatly vary across genes; model checking will help filter out genes with much bias due to poor fit
-1. It is beneficial to use a consensus approach by defining significance that is fulfilled both under wnlm.R and logi.S.
 
 ```{r unpermuted-logi-S, fig.asp=1.7}
 my.segplot(data = Betas.Unpermuted$logi.S, xlim = my.xlim, main = "Unpermuted under logi.S")
@@ -99,4 +104,74 @@ my.segplot(data = Betas.Unpermuted$wnlm.R, main = "Unpermuted under wnlm.R")
 ```{r permuted-wnlm-R, fig.asp=1.7, echo=FALSE}
 my.segplot(data = Betas.Permuted$wnlm.R, main = "Permuted under wnlm.R")
 ```
+
+### Repeated permutation
+
+#### Age
+
+```{r permuted-age-logi-S, echo=TRUE, warning=FALSE}
+my.segplot2("Age", "logi.S", -2) # fit has not converged for gene ranked 2 (TMEM261P1)
+```
+
+```{r permuted-age-wnlm-R, echo=FALSE}
+my.segplot2("Age", "wnlm.R", -2)
+```
+
+#### Gender
+
+```{r permuted-gender-logi-S, echo=FALSE, warning=FALSE}
+my.segplot2("GenderMale", "logi.S", -2)
+```
+
+```{r permuted-gender-wnlm-R, echo=FALSE}
+my.segplot2("GenderMale", "wnlm.R", -2)
+```
+
+#### Dx
+
+```{r permuted-dx-control-logi-S, echo=FALSE, warning=FALSE}
+my.segplot2("DxControl", "logi.S", -2)
+```
+
+```{r permuted-dx-control-wnlm-R, echo=FALSE}
+my.segplot2("DxControl", "wnlm.R", -2)
+```
+
+#### Ancestry
+
+```{r permuted-ancestry-1-logi-S, echo=FALSE, warning=FALSE}
+my.segplot2("Ancestry.1", "logi.S", -2)
+```
+
+```{r permuted-ancestry-1-wnlm-R, echo=FALSE}
+my.segplot2("Ancestry.1", "wnlm.R", -2)
+```
+
+#### Institution
+
+```{r permuted-institution-penn-logi-S, echo=FALSE, warning=FALSE}
+my.segplot2("InstitutionPenn", "logi.S", -2)
+```
+
+```{r permuted-institution-penn-wnlm-R, echo=FALSE}
+my.segplot2("InstitutionPenn", "wnlm.R", -2)
+```
+
+#### PMI
+
+```{r permuted-pmi-logi-S, echo=FALSE, warning=FALSE}
+my.segplot2("PMI", "logi.S", -2)
+```
+
+```{r permuted-pmi-wnlm-R, echo=FALSE}
+my.segplot2("PMI", "wnlm.R", -2)
+```
+
+
+
+## Conclusions
+
+1. As discussed before, wnlm.R appears less sensitive but less biased than logi.S.
+1. The bias appears greatly vary across genes; model checking will help filter out genes with much bias due to poor fit
+1. It is beneficial to use a consensus approach by defining significance that is fulfilled both under wnlm.R and logi.S.
 

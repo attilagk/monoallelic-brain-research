@@ -137,6 +137,26 @@ get.CI <- function(l.models,
           list(Coefficient = factor(coef.name, levels = all.coefs, ordered = TRUE)))
 }
 
+# low level function extracting estimate and CI for a single model object
+#
+# Arguments
+# m: the model object
+# conf.lev: confidence level
+#
+# Value
+# A data frame containing the estimate, the lower and upper CL and some other
+# info.
+get.single.estimate.CI <-
+    function(m, conf.lev) {
+        d <- cbind(data.frame(Estimate = cf <- coef(m)),
+                   data.frame(Coefficient =
+                              factor(n.cf <- names(cf), levels = n.cf, ordered = TRUE)),
+                   data.frame(tryCatch(confint(m, level = conf.lev),
+                                       error = function(e) matrix(NA, nrow = 1, ncol = 2))))
+        names(d)[3:4] <- c("Lower.CL", "Upper.CL")
+        return(d)
+    }
+
 # extract estimates and confidence intervals for regression coefficients
 #
 # Arguments
@@ -150,21 +170,102 @@ get.CI <- function(l.models,
 # Data are set to NA for models that haven't converged.
 get.estimate.CI <- function(l.M, conf.lev = 0.99) {
     df <- do.call(make.groups,
-                  lapply(l.M,
-                         function(m) {
-                             d <- cbind(data.frame(Estimate = cf <- coef(m)),
-                                        data.frame(Coefficient =
-                                                   factor(n.cf <- names(cf), levels = n.cf, ordered = TRUE)),
-                                        data.frame(tryCatch(confint(m, level = conf.lev),
-                                                            error = function(e) matrix(NA, nrow = 1, ncol = 2))))
-                             names(d)[3:4] <- c("Lower.CL", "Upper.CL")
-                             return(d)
-                         }))
+                  lapply(l.M, get.single.estimate.CI, conf.lev))
     names(df)[5] <- c("Gene")
     not.converged <- df$Gene %in% names(l.M)[ ! sapply(l.M, `[[`, "converged") ]
     df[ not.converged, c("Estimate", "Lower.CL", "Upper.CL") ] <- NA
     return(df)
 }
+
+
+# get all coefficients for a given predictor
+#
+# Arguments
+# m: a model object
+# e.v: the name of the predictor
+#
+# Value:
+# One or more coefficient names that are associated with the predictor.  For
+# covariates (i.e. continuous variables) it is simply the name of the
+# predictor without any modification.  For factors it is the name of one or
+# more levels after the reference level (in the sense of contrast) was
+# removed.
+predictor2coefs <- function(m, e.v) {
+    if(! e.v %in% names(m$xlevels)) return(e.v) # covariates (1 parameter for predictor e.v)
+    paste0(e.v, m$xlevels[[e.v]][-1])
+}
+
+
+# aggregate estimates and CI across multiple permutations, genes, permuted variables, and models
+#
+# Arguments
+# perms: a data frame of integer vectors that are random permutations of the original case/individual numbers
+# gene.ids: the id (symbol) for the selected genes
+# e.vars: names of all predictors (explanatory variables)
+# sel.models: selected model types, e.g. wnlm.R, logi.S,...
+# E: data frame of predictor data
+# Y: read count data
+# conf.lev: confidence level for CI
+#
+# Value
+# A thin long data frame whose columns are not only the estimate and the lower
+# and upper CL but also annotations such as the genes, model type, etc.
+aggregate.CI.permut2 <- function(perms, gene.ids, e.vars, sel.models = list(wnlm.R = "wnlm.R", logi.S = "logi.S"),
+                                 E, Y, conf.lev = 0.99) {
+    helper <- function(perm.name, gene, e.v, type) {
+        # permute cases for predictor e.v
+        perm <- perms[[perm.name]]
+        X <- E
+        X[[e.v]] <- E[[e.v]][perm]
+        # fit model on X and the given gene's read count data
+        m <- do.all.fits(Z = Y[gene], G = X, preds = e.vars, sel.models = type)[[type]][[gene]]
+        # a data frame for the estimate and CI
+        d <- get.single.estimate.CI(m, conf.lev = conf.lev)[predictor2coefs(m, e.v), ]
+        # annotate conditions
+        d$Permutation <- factor(perm.name, levels = names(perms), ordered = TRUE)
+        d$Gene <- factor(gene, levels = gene.ids, ordered = TRUE)
+        d$Perm.Var <- factor(e.v, levels = e.vars, ordered = TRUE)
+        d$Model <- factor(type, levels = sel.models, ordered = TRUE)
+        # replace estimate and CI with NA if fit has not converged
+        d[ ! m$converged, c("Estimate", "Lower.CL", "Upper.CL") ] <- NA
+        return(d)
+    }
+    # aggregation...
+    do.call(rbind,
+            lapply(sel.models, # ...across models
+                   function(type)
+                       do.call(rbind,
+                               lapply(e.vars, # ...across permuted variables
+                                      function(e.v)
+                                          do.call(rbind,
+                                                  lapply(gene.ids, # ...across genes
+                                                         function(gene)
+                                                             do.call(rbind,
+                                                                     lapply(names(perms), # ...across permutations
+                                                                            helper, gene, e.v, type))))))))
+}
+
+
+# an earlier, less complete aggregator function similar to aggregate.CI.permut2
+#
+# Arguments
+# type: model type
+# M: a list of list of list of models structured hierarchically by permuted predictors, model types and genes (from outer to inner lists)
+# e.v: the name for all predictors
+# conf.lev: the confidence level of the CI
+#
+# Value
+# a long thin data frame
+get.estimate.CI.permut <- function(type = "logi.S", M, e.v, conf.lev = 0.99) {
+    betas <- lapply(e.v,
+                    function(e) {
+                        x <- get.estimate.CI(M[[e]][[type]], conf.lev = conf.lev)
+                        x <- x[ grep(e, row.names(x), value = TRUE), ]
+                    })
+    betas$RIN2 <- NULL #  regex "RIN" already matched both RIN and RIN2
+    return(do.call(rbind, betas))
+}
+
 
 # Earlier implementation of 'get.estimate.CI'.  Essentially the same behavior
 # but somewhat less elegant program.
