@@ -54,8 +54,8 @@ Start by fitting all models:
 ```r
 # exclude unweighed aggregates UA.8 and UA from fitting
 to.fit.ids <- grep("^UA(.8)?$", names(Y), value = TRUE, invert = TRUE)
-#sel.models <- c("logi.S", "wnlm.R"); names(sel.models) <- sel.models
-sel.models <- NULL
+sel.models <- c("logi.S", "wnlm.Q", "wnlm.R", "wnlm.S"); names(sel.models) <- sel.models
+#sel.models <- NULL
 M <- do.all.fits(Y[to.fit.ids], G = E, preds = e.vars, sel.models = sel.models)
 ```
 
@@ -78,24 +78,25 @@ The combination is defined as in Statistical Models (A.C. Davison), p477: $r^\as
 
 
 ```r
-myqqnorm <- function(mtype)
+myqqnorm <- function(mtype, ...)
     qqmath(~ res.std.dev + res.combined | gene, data = diagnostics,
            ylim = c(-4, 4), abline = c(0, 1), pch = "+", subset = model.type %in% mtype,
-           main = mtype, xlab = "normal quantiles", ylab = "standardized residual")
-myqqnorm("unlm.S")
+           par.settings = list(add.text = list(cex = 0.8)),
+           main = mtype, xlab = "normal quantiles", ylab = "standardized residual", ...)
+#myqqnorm("unlm.S")
 ```
-
-<img src="figure/qqnorm-unlm-S-1.png" title="plot of chunk qqnorm-unlm-S" alt="plot of chunk qqnorm-unlm-S" width="700px" />
 
 <img src="figure/qqnorm-wnlm-S-1.png" title="plot of chunk qqnorm-wnlm-S" alt="plot of chunk qqnorm-wnlm-S" width="700px" />
 
-<img src="figure/qqnorm-unlm-R-1.png" title="plot of chunk qqnorm-unlm-R" alt="plot of chunk qqnorm-unlm-R" width="700px" />
+<img src="figure/qqnorm-wnlm-Q-1.png" title="plot of chunk qqnorm-wnlm-Q" alt="plot of chunk qqnorm-wnlm-Q" width="700px" />
+
+
 
 <img src="figure/qqnorm-wnlm-R-1.png" title="plot of chunk qqnorm-wnlm-R" alt="plot of chunk qqnorm-wnlm-R" width="700px" />
 
 <img src="figure/qqnorm-logi-S-1.png" title="plot of chunk qqnorm-logi-S" alt="plot of chunk qqnorm-logi-S" width="700px" />
 
-<img src="figure/qqnorm-logi2-S-1.png" title="plot of chunk qqnorm-logi2-S" alt="plot of chunk qqnorm-logi2-S" width="700px" />
+
 
 ### Homogeneity of error (homoscedasticity)
 
@@ -103,29 +104,30 @@ $\sqrt{r_{\mathrm{d}i}}$ is plotted against the fitted value $\bar{y}_i$.  The b
 
 
 ```r
-myhomoscedas <- function(mtype, xlim = c(0.65, 1.05))
-    xyplot(sqrt(abs(res.std.dev)) ~ fitted | gene, data = diagnostics, xlim = xlim,
+myhomoscedas <- function(mtype)
+    xyplot(sqrt(abs(res.std.dev)) ~ fitted | gene, data = diagnostics,
            panel = function(...) {
                panel.xyplot(...)
                panel.smoother(..., method = "loess", col = "black", se = FALSE)
            },
+           par.settings = list(add.text = list(cex = 0.8)),
            subset = model.type %in% mtype, pch = "+", main = mtype, xlab = "fitted value",
            ylab = expression(sqrt(std.deviance.resid)))
 
-myhomoscedas("unlm.S")
+#update(myhomoscedas("unlm.S"), xlim = c(0.65, 1.05))
 ```
-
-<img src="figure/homoscedas-unlm-S-1.png" title="plot of chunk homoscedas-unlm-S" alt="plot of chunk homoscedas-unlm-S" width="700px" />
 
 <img src="figure/homoscedas-wnlm-S-1.png" title="plot of chunk homoscedas-wnlm-S" alt="plot of chunk homoscedas-wnlm-S" width="700px" />
 
-<img src="figure/homoscedas-unlm-R-1.png" title="plot of chunk homoscedas-unlm-R" alt="plot of chunk homoscedas-unlm-R" width="700px" />
+
+
+<img src="figure/homoscedas-wnlm-Q-1.png" title="plot of chunk homoscedas-wnlm-Q" alt="plot of chunk homoscedas-wnlm-Q" width="700px" />
 
 <img src="figure/homoscedas-wnlm-R-1.png" title="plot of chunk homoscedas-wnlm-R" alt="plot of chunk homoscedas-wnlm-R" width="700px" />
 
 <img src="figure/homoscedas-logi-S-1.png" title="plot of chunk homoscedas-logi-S" alt="plot of chunk homoscedas-logi-S" width="700px" />
 
-<img src="figure/homoscedas-logi2-S-1.png" title="plot of chunk homoscedas-logi2-S" alt="plot of chunk homoscedas-logi2-S" width="700px" />
+
 
 ### Influence of individual cases
 
@@ -142,28 +144,29 @@ So Cook's distance combines the influence of case $i$ based on both the response
 
 
 ```r
-myinfluence <- function(mtype, xlim = c(-0.2, 4), ylim = c(-0.04, 0.8))
+myinfluence <- function(mtype, xlim = c(-0.2, 4), ylim = c(-0.04, 0.8), ...)
     xyplot(cooks.dist ~ leverage / (1 - leverage) | gene, data = diagnostics, xlim = xlim, ylim = ylim,
-           subset = model.type %in% mtype, pch = "+", main = mtype, ylab = "Cook's distance")
+           par.settings = list(add.text = list(cex = 0.8)),
+           subset = model.type %in% mtype, pch = "+", main = mtype, ylab = "Cook's distance", ...)
 
-myinfluence("unlm.S")
+#myinfluence("unlm.S")
 ```
-
-<img src="figure/influence-unlm-S-1.png" title="plot of chunk influence-unlm-S" alt="plot of chunk influence-unlm-S" width="700px" />
 
 <img src="figure/influence-wnlm-S-1.png" title="plot of chunk influence-wnlm-S" alt="plot of chunk influence-wnlm-S" width="700px" />
 
-<img src="figure/influence-unlm-R-1.png" title="plot of chunk influence-unlm-R" alt="plot of chunk influence-unlm-R" width="700px" />
+
+
+<img src="figure/influence-wnlm-Q-1.png" title="plot of chunk influence-wnlm-Q" alt="plot of chunk influence-wnlm-Q" width="700px" />
 
 <img src="figure/influence-wnlm-R-1.png" title="plot of chunk influence-wnlm-R" alt="plot of chunk influence-wnlm-R" width="700px" />
 
 <img src="figure/influence-logi-S-1.png" title="plot of chunk influence-logi-S" alt="plot of chunk influence-logi-S" width="700px" />
 
-<img src="figure/influence-logi2-S-1.png" title="plot of chunk influence-logi2-S" alt="plot of chunk influence-logi2-S" width="700px" />
+
 
 ### Identifying outliers
 
-Here the median Cook's distance $C_i$ taken across all 30 genes (with possibly missing values) for any given case/individual $i$ is used to quantify the overall impact of that case.  The focus is on logi.S, since that model seems in general the most useful in making inferences.  The top 20 cases are shown; especially the top 2 appear to be extreme outliers, whose exclusion might substantially improve model fit for some genes.
+Here the median Cook's distance $C_i$ taken across all 30 genes (with possibly missing values) for any given case/individual $i$ is used to quantify the overall impact of that case.  The top 20 cases are shown under each model. CMC_MSSM_DLPC231 tops the list both under logi.S and wnlm.Q but there are several other cases which rank within the top 20 under both models. Exclusion of some of these might substantially improve model fit for some genes.
 
 
 ```r
@@ -174,4 +177,8 @@ med.cooks.d <- lapply(cooks.d,
 dotplot(rev(med.cooks.d$logi.S[1:20]), main = "logi.S", xlab = "median Cook's distance")
 ```
 
-<img src="figure/cooks-dist-1.png" title="plot of chunk cooks-dist" alt="plot of chunk cooks-dist" width="700px" />
+<img src="figure/cooks-dist-logi-S-1.png" title="plot of chunk cooks-dist-logi-S" alt="plot of chunk cooks-dist-logi-S" width="700px" />
+
+<img src="figure/cooks-dist-logi-Q-1.png" title="plot of chunk cooks-dist-logi-Q" alt="plot of chunk cooks-dist-logi-Q" width="700px" />
+
+<img src="figure/cooks-dist-logi-R-1.png" title="plot of chunk cooks-dist-logi-R" alt="plot of chunk cooks-dist-logi-R" width="700px" />

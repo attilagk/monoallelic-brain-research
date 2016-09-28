@@ -60,7 +60,7 @@ names(perms) <- c("U", paste0("P", seq_len(length(perms) - 1)))
 ```{r cache=TRUE, warning=FALSE, message=FALSE}
 # exclude unweighed aggregates UA.8 and UA from fitting
 to.fit.ids <- grep("^UA(.8)?$", names(Y), value = TRUE, invert = TRUE)
-sel.models <- c("logi.S", "wnlm.R"); names(sel.models) <- sel.models
+sel.models <- c("logi.S", "wnlm.Q", "wnlm.R"); names(sel.models) <- sel.models
 M <- lapply(EP, function(e) do.all.fits(Y[to.fit.ids], G = e, preds = e.vars, sel.models = sel.models))
 ```
 
@@ -113,6 +113,10 @@ my.segplot(data = Betas.Permuted$wnlm.R, main = "Permuted under wnlm.R")
 my.segplot2("Age", "logi.S", -2) # fit has not converged for gene ranked 2 (TMEM261P1)
 ```
 
+```{r permuted-age-wnlm-Q, echo=FALSE}
+my.segplot2("Age", "wnlm.Q", -2)
+```
+
 ```{r permuted-age-wnlm-R, echo=FALSE}
 my.segplot2("Age", "wnlm.R", -2)
 ```
@@ -121,6 +125,10 @@ my.segplot2("Age", "wnlm.R", -2)
 
 ```{r permuted-gender-logi-S, echo=FALSE, warning=FALSE}
 my.segplot2("GenderMale", "logi.S", -2)
+```
+
+```{r permuted-gender-wnlm-Q, echo=FALSE}
+my.segplot2("GenderMale", "wnlm.Q", -2)
 ```
 
 ```{r permuted-gender-wnlm-R, echo=FALSE}
@@ -133,6 +141,10 @@ my.segplot2("GenderMale", "wnlm.R", -2)
 my.segplot2("DxControl", "logi.S", -2)
 ```
 
+```{r permuted-dx-control-wnlm-Q, echo=FALSE}
+my.segplot2("DxControl", "wnlm.Q", -2)
+```
+
 ```{r permuted-dx-control-wnlm-R, echo=FALSE}
 my.segplot2("DxControl", "wnlm.R", -2)
 ```
@@ -141,6 +153,10 @@ my.segplot2("DxControl", "wnlm.R", -2)
 
 ```{r permuted-ancestry-1-logi-S, echo=FALSE, warning=FALSE}
 my.segplot2("Ancestry.1", "logi.S", -2)
+```
+
+```{r permuted-ancestry-1-wnlm-Q, echo=FALSE}
+my.segplot2("Ancestry.1", "wnlm.Q", -2)
 ```
 
 ```{r permuted-ancestry-1-wnlm-R, echo=FALSE}
@@ -153,6 +169,10 @@ my.segplot2("Ancestry.1", "wnlm.R", -2)
 my.segplot2("InstitutionPenn", "logi.S", -2)
 ```
 
+```{r permuted-institution-penn-wnlm-Q, echo=FALSE}
+my.segplot2("InstitutionPenn", "wnlm.Q", -2)
+```
+
 ```{r permuted-institution-penn-wnlm-R, echo=FALSE}
 my.segplot2("InstitutionPenn", "wnlm.R", -2)
 ```
@@ -161,6 +181,10 @@ my.segplot2("InstitutionPenn", "wnlm.R", -2)
 
 ```{r permuted-pmi-logi-S, echo=FALSE, warning=FALSE}
 my.segplot2("PMI", "logi.S", -2)
+```
+
+```{r permuted-pmi-wnlm-Q, echo=FALSE}
+my.segplot2("PMI", "wnlm.Q", -2)
 ```
 
 ```{r permuted-pmi-wnlm-R, echo=FALSE}

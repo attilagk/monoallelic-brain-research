@@ -5,7 +5,7 @@ e.vars <- c("Age",
                "PMI",
                "Dx",
                "RIN",
-               "RIN2",
+               #"RIN2",
                "RNA_batch",
                "Ancestry.1", "Ancestry.2", "Ancestry.3", "Ancestry.4", "Ancestry.5" )
 
@@ -57,6 +57,14 @@ do.all.fits <- function(Z = Y,
                         ...) {
     # list of fitter functions, one for each combination of a model and a transformation
     l.fitters <- list(
+                      # unweighted normal linear model with Q
+    unlm.Q = function(z) {
+        do.fit(response = z$Q, X = G, e.v = preds, thrs = min.obs, family = gaussian, weights = NULL, ...)
+    },
+                      # weighted normal linear model with Q
+    wnlm.Q = function(z) {
+        do.fit(response = z$Q, X = G, e.v = preds, thrs = min.obs, family = gaussian, weights = z$N, ...)
+    },
                       # unweighted normal linear model with R
     unlm.R = function(z) {
         do.fit(response = z$R, X = G, e.v = preds, thrs = min.obs, family = gaussian, weights = NULL, ...)

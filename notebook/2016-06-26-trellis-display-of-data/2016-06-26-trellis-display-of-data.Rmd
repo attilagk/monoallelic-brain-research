@@ -96,9 +96,78 @@ g <- g + geom_smooth(method = "loess", color = "black")
 g <- g + facet_wrap(~ Gene)
 P$s.age.gender$ggplot2 <- g
 plot(P$s.age.gender$lattice)
-plot(P$s.age.gender$ggplot2)
+#plot(P$s.age.gender$ggplot2)
 ```
 
+```{r cache=TRUE, echo=FALSE, echo=FALSE}
+# updated gene set
+Y <- get.readcounts(gene.ids)
+# e.vars defined in fit-glms.R
+R.long <- reshape(cbind(lapply(Y, getElement, "R"), E[ e.vars ]), # the data to be reshaped; e.vars is predifined
+                  v.names = "R", varying = list(names(Y)), # the component that varies with genes ('time')
+                  timevar = "Gene", times = names(Y), # the 'time' variable, i.e. gene symbol
+                  ids = rownames(E), idvar = "sample.id", # observation names: RNA sample ids
+                  direction = "long")
+R.long$Gene <- factor(R.long$Gene, levels = names(Y), ordered = TRUE)
+# in what follows exclude the unweighted averages 'UA.8' and 'UA' because total read count 'N' is not available for those
+Y.long.R <- cbind(stack(lapply(Y[ c(gene.ids, "WA.8", "WA") ], getElement, "R")),
+                stack(lapply(Y[ c(gene.ids, "WA.8", "WA") ], getElement, "N")),
+                E[ rep(seq_len(nrow(E)), length(gene.ids) + 2), e.vars ])
+names(Y.long.R)[1:3] <- c("R", "Gene", "N")
+Y.long.R$Gene <- factor(Y.long.R$Gene, levels = names(Y)[ 0:1 - length(Y) ], ordered = TRUE)
+Y.long.R[[4]] <- NULL
+```
+
+```{r cache=TRUE, echo=FALSE, echo=FALSE}
+# updated gene set
+Y <- get.readcounts(gene.ids)
+# e.vars defined in fit-glms.R
+Q.long <- reshape(cbind(lapply(Y, getElement, "Q"), E[ e.vars ]), # the data to be reshaped; e.vars is predifined
+                  v.names = "Q", varying = list(names(Y)), # the component that varies with genes ('time')
+                  timevar = "Gene", times = names(Y), # the 'time' variable, i.e. gene symbol
+                  ids = rownames(E), idvar = "sample.id", # observation names: RNA sample ids
+                  direction = "long")
+Q.long$Gene <- factor(Q.long$Gene, levels = names(Y), ordered = TRUE)
+# in what follows exclude the unweighted averages 'UA.8' and 'UA' because total read count 'N' is not available for those
+Y.long.Q <- cbind(stack(lapply(Y[ c(gene.ids, "WA.8", "WA") ], getElement, "Q")),
+                stack(lapply(Y[ c(gene.ids, "WA.8", "WA") ], getElement, "N")),
+                E[ rep(seq_len(nrow(E)), length(gene.ids) + 2), e.vars ])
+names(Y.long.Q)[1:3] <- c("Q", "Gene", "N")
+Y.long.Q$Gene <- factor(Y.long.Q$Gene, levels = names(Y)[ 0:1 - length(Y) ], ordered = TRUE)
+Y.long.Q[[4]] <- NULL
+```
+
+```{r R-age-gender, dev=c("png", "pdf"), warning=FALSE, echo=FALSE}
+xyplot(R ~ Age | Gene, data = R.long, groups = Gender,
+       panel = function(x, y, ...) {
+           panel.xyplot(x, y, pch = 21, ...)
+           #panel.smoother(x, y, col = "black", lwd = 2, ...)
+       },
+       par.settings = list(add.text = list(cex = 0.8),
+                           superpose.symbol = list(cex = 0.5,
+                                                   fill = trellis.par.get("superpose.symbol")$fill[c(2, 1)],
+                                                   col = trellis.par.get("superpose.symbol")$col[c(2, 1)])),
+       auto.key = list(title = "gender", space = "right"),
+       ylab = "transformed read count ratio, R",
+       xlab = "age",
+       aspect = "fill", layout = c(5, 7))
+```
+
+```{r Q-age-gender, dev=c("png", "pdf"), warning=FALSE, echo=FALSE}
+xyplot(Q ~ Age | Gene, data = Q.long, groups = Gender,
+       panel = function(x, y, ...) {
+           panel.xyplot(x, y, pch = 21, ...)
+           #panel.smoother(x, y, col = "black", lwd = 2, ...)
+       },
+       par.settings = list(add.text = list(cex = 0.8),
+                           superpose.symbol = list(cex = 0.5,
+                                                   fill = trellis.par.get("superpose.symbol")$fill[c(2, 1)],
+                                                   col = trellis.par.get("superpose.symbol")$col[c(2, 1)])),
+       auto.key = list(title = "gender", space = "right"),
+       ylab = "transformed read count ratio, Q",
+       xlab = "age",
+       aspect = "fill", layout = c(5, 7))
+```
 ### Dependence on gene, age, and total read count $N$
 
 ```{r S-age-tot-read-count, dev=c("png", "pdf"), warning=FALSE, echo=FALSE}

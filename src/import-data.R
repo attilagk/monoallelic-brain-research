@@ -45,7 +45,7 @@ get.readcounts <- function(gene.ids,
                            count.thrs = 0,
                            sel.obs = row.names(get.predictors()),
                            g.subsets = list(A.8 = gene.ids[1:8], A = gene.ids),
-                           sel.var = c("L", "H", "N", "S", "R")) {
+                           sel.var = c("L", "H", "N", "S", "R", "Q")) {
     import.rc <- function(gene) {
         fpath <- paste0(data.dir, "/", gene, "/", gene, ".csv")
         # shell command to select 'Sample RNA ID', 'L' and 'H' columns using GNU's cut;
@@ -63,11 +63,16 @@ get.readcounts <- function(gene.ids,
             y <- rank(S, ties.method = "min", na.last = "keep")
             as.numeric(round(y / max(y, na.rm = TRUE) * 100, 0))
         }
+        shift.log.transf <- function(H, L, pseudo.cnt = 1) {
+            S <- H / (H + L + pseudo.cnt)
+            - log(1 - S)
+        }
         # total read counts
         y$N <- y$L + y$H
         # S statistic
         y$S <- y$H / y$N
         y$R <- S.rank(y$S)
+        y$Q <- shift.log.transf(y$H, y$L, pseudo.cnt = 1)
         y[sel.var]
     }
     aggregator <- function(g.subset, Z, vars = c("S", "R"), fun = mean) {
@@ -97,7 +102,7 @@ get.readcounts <- function(gene.ids,
     Y <- lapply(Y, function(y) derive.stats(filter.rc(y)))
     Y.pre <- lapply(Y.pre, function(y) derive.stats(filter.rc(y)))
     # 2nd aggregation: take 'U'nweigthed average of S and R over each gene subset
-    Y.post <- lapply(g.subsets, aggregator, Y, vars = c("S", "R"), fun = mean)
+    Y.post <- lapply(g.subsets, aggregator, Y, vars = c("S", "R", "Q"), fun = mean)
     # name columns and return gene-wise data Y together with 'WA' and 'UA' aggregates
     names(Y.pre) <- paste0(rep("W", length(Y.pre)), names(g.subsets))
     names(Y.post) <- paste0(rep("U", length(Y.pre)), names(g.subsets))

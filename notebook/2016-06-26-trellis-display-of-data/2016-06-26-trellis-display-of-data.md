@@ -74,11 +74,16 @@ plot(P$s.age.gender$lattice)
 <img src="figure/S-age-gender-1.png" title="plot of chunk S-age-gender" alt="plot of chunk S-age-gender" width="700px" />
 
 ```r
-plot(P$s.age.gender$ggplot2)
+#plot(P$s.age.gender$ggplot2)
 ```
 
-<img src="figure/S-age-gender-2.png" title="plot of chunk S-age-gender" alt="plot of chunk S-age-gender" width="700px" />
 
+
+
+
+<img src="figure/R-age-gender-1.png" title="plot of chunk R-age-gender" alt="plot of chunk R-age-gender" width="700px" />
+
+<img src="figure/Q-age-gender-1.png" title="plot of chunk Q-age-gender" alt="plot of chunk Q-age-gender" width="700px" />
 ### Dependence on gene, age, and total read count $N$
 
 <img src="figure/S-age-tot-read-count-1.png" title="plot of chunk S-age-tot-read-count" alt="plot of chunk S-age-tot-read-count" width="700px" /><img src="figure/S-age-tot-read-count-2.png" title="plot of chunk S-age-tot-read-count" alt="plot of chunk S-age-tot-read-count" width="700px" />

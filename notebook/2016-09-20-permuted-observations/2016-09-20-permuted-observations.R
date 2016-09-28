@@ -3,20 +3,6 @@ is.signif <- function(betas, sel.coef = levels(betas$Coefficient)) {
     betas$Lower.CL > 0 | betas$Upper.CL < 0 
 }
 
-my.segplot2 <- function(coef, type, gene.ix, main = type, ...) {
-    segplot(ordered(Permutation, levels = rev(levels(Permutation))) ~ Lower.CL + Upper.CL | Gene, data = Betas,
-            subset = Coefficient %in% coef & Model %in% type,
-            level = factor(! Permutation == "U"),
-            colorkey = FALSE,
-            panel = function(x, y, ...) {
-                panel.segplot(x, y, ...)
-                panel.abline(v = 0, col = "blue")
-            },
-            xlab = eval(substitute(expression(paste(beta, "[ ", coef, " ]")), list(coef = coef))),
-            ylab = "permutation", main = main,
-            scales = list(draw = FALSE, x = list(relation = "free")))[gene.ix]
-}
-
 #before.after <- function(m1 = "logi.S", m2 = "wnlm.R",
 #                         betas1 = list(U = Betas.Unpermuted, P = Betas.Permuted),
 #                         betas2 = list(U = Betas.Unpermuted, P = Betas.Permuted),

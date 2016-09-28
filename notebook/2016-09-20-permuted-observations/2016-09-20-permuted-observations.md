@@ -57,7 +57,7 @@ names(perms) <- c("U", paste0("P", seq_len(length(perms) - 1)))
 ```r
 # exclude unweighed aggregates UA.8 and UA from fitting
 to.fit.ids <- grep("^UA(.8)?$", names(Y), value = TRUE, invert = TRUE)
-sel.models <- c("logi.S", "wnlm.R"); names(sel.models) <- sel.models
+sel.models <- c("logi.S", "wnlm.Q", "wnlm.R"); names(sel.models) <- sel.models
 M <- lapply(EP, function(e) do.all.fits(Y[to.fit.ids], G = e, preds = e.vars, sel.models = sel.models))
 ```
 
@@ -113,11 +113,15 @@ my.segplot2("Age", "logi.S", -2) # fit has not converged for gene ranked 2 (TMEM
 
 <img src="figure/permuted-age-logi-S-1.png" title="plot of chunk permuted-age-logi-S" alt="plot of chunk permuted-age-logi-S" width="700px" />
 
+<img src="figure/permuted-age-wnlm-Q-1.png" title="plot of chunk permuted-age-wnlm-Q" alt="plot of chunk permuted-age-wnlm-Q" width="700px" />
+
 <img src="figure/permuted-age-wnlm-R-1.png" title="plot of chunk permuted-age-wnlm-R" alt="plot of chunk permuted-age-wnlm-R" width="700px" />
 
 #### Gender
 
 <img src="figure/permuted-gender-logi-S-1.png" title="plot of chunk permuted-gender-logi-S" alt="plot of chunk permuted-gender-logi-S" width="700px" />
+
+<img src="figure/permuted-gender-wnlm-Q-1.png" title="plot of chunk permuted-gender-wnlm-Q" alt="plot of chunk permuted-gender-wnlm-Q" width="700px" />
 
 <img src="figure/permuted-gender-wnlm-R-1.png" title="plot of chunk permuted-gender-wnlm-R" alt="plot of chunk permuted-gender-wnlm-R" width="700px" />
 
@@ -125,11 +129,15 @@ my.segplot2("Age", "logi.S", -2) # fit has not converged for gene ranked 2 (TMEM
 
 <img src="figure/permuted-dx-control-logi-S-1.png" title="plot of chunk permuted-dx-control-logi-S" alt="plot of chunk permuted-dx-control-logi-S" width="700px" />
 
+<img src="figure/permuted-dx-control-wnlm-Q-1.png" title="plot of chunk permuted-dx-control-wnlm-Q" alt="plot of chunk permuted-dx-control-wnlm-Q" width="700px" />
+
 <img src="figure/permuted-dx-control-wnlm-R-1.png" title="plot of chunk permuted-dx-control-wnlm-R" alt="plot of chunk permuted-dx-control-wnlm-R" width="700px" />
 
 #### Ancestry
 
 <img src="figure/permuted-ancestry-1-logi-S-1.png" title="plot of chunk permuted-ancestry-1-logi-S" alt="plot of chunk permuted-ancestry-1-logi-S" width="700px" />
+
+<img src="figure/permuted-ancestry-1-wnlm-Q-1.png" title="plot of chunk permuted-ancestry-1-wnlm-Q" alt="plot of chunk permuted-ancestry-1-wnlm-Q" width="700px" />
 
 <img src="figure/permuted-ancestry-1-wnlm-R-1.png" title="plot of chunk permuted-ancestry-1-wnlm-R" alt="plot of chunk permuted-ancestry-1-wnlm-R" width="700px" />
 
@@ -137,11 +145,15 @@ my.segplot2("Age", "logi.S", -2) # fit has not converged for gene ranked 2 (TMEM
 
 <img src="figure/permuted-institution-penn-logi-S-1.png" title="plot of chunk permuted-institution-penn-logi-S" alt="plot of chunk permuted-institution-penn-logi-S" width="700px" />
 
+<img src="figure/permuted-institution-penn-wnlm-Q-1.png" title="plot of chunk permuted-institution-penn-wnlm-Q" alt="plot of chunk permuted-institution-penn-wnlm-Q" width="700px" />
+
 <img src="figure/permuted-institution-penn-wnlm-R-1.png" title="plot of chunk permuted-institution-penn-wnlm-R" alt="plot of chunk permuted-institution-penn-wnlm-R" width="700px" />
 
 #### PMI
 
 <img src="figure/permuted-pmi-logi-S-1.png" title="plot of chunk permuted-pmi-logi-S" alt="plot of chunk permuted-pmi-logi-S" width="700px" />
+
+<img src="figure/permuted-pmi-wnlm-Q-1.png" title="plot of chunk permuted-pmi-wnlm-Q" alt="plot of chunk permuted-pmi-wnlm-Q" width="700px" />
 
 <img src="figure/permuted-pmi-wnlm-R-1.png" title="plot of chunk permuted-pmi-wnlm-R" alt="plot of chunk permuted-pmi-wnlm-R" width="700px" />
 

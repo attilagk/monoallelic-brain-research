@@ -53,8 +53,8 @@ Start by fitting all models:
 ```{r cache=TRUE, warning=FALSE, message=FALSE}
 # exclude unweighed aggregates UA.8 and UA from fitting
 to.fit.ids <- grep("^UA(.8)?$", names(Y), value = TRUE, invert = TRUE)
-#sel.models <- c("logi.S", "wnlm.R"); names(sel.models) <- sel.models
-sel.models <- NULL
+sel.models <- c("logi.S", "wnlm.Q", "wnlm.R", "wnlm.S"); names(sel.models) <- sel.models
+#sel.models <- NULL
 M <- do.all.fits(Y[to.fit.ids], G = E, preds = e.vars, sel.models = sel.models)
 ```
 
@@ -75,19 +75,24 @@ Two kind of standardized residual is plotted against the quantiles of the standa
 The combination is defined as in Statistical Models (A.C. Davison), p477: $r^\ast_i = r_{\mathrm{d}i} + r_{\mathrm{d}i}^{-1} \log (r_{\mathrm{p}i} / r_{\mathrm{d}i})$.  Note that $r_{\mathrm{d}i}$, $r_{\mathrm{d}i}$ and $r^\ast_i$ differ for generalized linear models such as logi.S and logi2.S but for linear models they all equal the usual definition of residual i.e. the observed minus fitted value $y_i - \bar{y}_i$.
 
 ```{r qqnorm-unlm-S}
-myqqnorm <- function(mtype)
+myqqnorm <- function(mtype, ...)
     qqmath(~ res.std.dev + res.combined | gene, data = diagnostics,
            ylim = c(-4, 4), abline = c(0, 1), pch = "+", subset = model.type %in% mtype,
-           main = mtype, xlab = "normal quantiles", ylab = "standardized residual")
-myqqnorm("unlm.S")
+           par.settings = list(add.text = list(cex = 0.8)),
+           main = mtype, xlab = "normal quantiles", ylab = "standardized residual", ...)
+#myqqnorm("unlm.S")
 ```
 
 ```{r qqnorm-wnlm-S, echo=FALSE}
 myqqnorm("wnlm.S")
 ```
 
+```{r qqnorm-wnlm-Q, echo=FALSE}
+myqqnorm("wnlm.Q")
+```
+
 ```{r qqnorm-unlm-R, echo=FALSE}
-myqqnorm("unlm.R")
+#myqqnorm("unlm.R")
 ```
 
 ```{r qqnorm-wnlm-R, echo=FALSE}
@@ -99,7 +104,7 @@ myqqnorm("logi.S")
 ```
 
 ```{r qqnorm-logi2-S, echo=FALSE}
-myqqnorm("logi2.S")
+#myqqnorm("logi2.S")
 ```
 
 ### Homogeneity of error (homoscedasticity)
@@ -107,36 +112,41 @@ myqqnorm("logi2.S")
 $\sqrt{r_{\mathrm{d}i}}$ is plotted against the fitted value $\bar{y}_i$.  The black lines correspond to the data passed through a LOESS filter.  All models assume homogeneous error that is no systematic variation with the fitted value. 
 
 ```{r homoscedas-unlm-S}
-myhomoscedas <- function(mtype, xlim = c(0.65, 1.05))
-    xyplot(sqrt(abs(res.std.dev)) ~ fitted | gene, data = diagnostics, xlim = xlim,
+myhomoscedas <- function(mtype)
+    xyplot(sqrt(abs(res.std.dev)) ~ fitted | gene, data = diagnostics,
            panel = function(...) {
                panel.xyplot(...)
                panel.smoother(..., method = "loess", col = "black", se = FALSE)
            },
+           par.settings = list(add.text = list(cex = 0.8)),
            subset = model.type %in% mtype, pch = "+", main = mtype, xlab = "fitted value",
            ylab = expression(sqrt(std.deviance.resid)))
 
-myhomoscedas("unlm.S")
+#update(myhomoscedas("unlm.S"), xlim = c(0.65, 1.05))
 ```
 
 ```{r homoscedas-wnlm-S, echo=FALSE}
-myhomoscedas("wnlm.S")
+update(myhomoscedas("wnlm.S"), xlim = c(0.65, 1.05))
 ```
 
 ```{r homoscedas-unlm-R, echo=FALSE}
-myhomoscedas("unlm.R", xlim = c(0, 100))
+#update(myhomoscedas("unlm.R"), xlim = c(0, 100))
+```
+
+```{r homoscedas-wnlm-Q, echo=FALSE}
+myhomoscedas("wnlm.Q")
 ```
 
 ```{r homoscedas-wnlm-R, echo=FALSE}
-myhomoscedas("wnlm.R", xlim = c(0, 100))
+update(myhomoscedas("wnlm.R"), xlim = c(0, 100))
 ```
 
 ```{r homoscedas-logi-S, echo=FALSE, warning=FALSE}
-myhomoscedas("logi.S", xlim = c(0.65, 1))
+update(myhomoscedas("logi.S"), xlim = c(0.65, 1))
 ```
 
 ```{r homoscedas-logi2-S, echo=FALSE, warning=FALSE}
-myhomoscedas("logi2.S", xlim = c(0.65, 1))
+#update(myhomoscedas("logi2.S"), xlim = c(0.65, 1))
 ```
 
 ### Influence of individual cases
@@ -153,11 +163,12 @@ where $p$ is the number of parameters (see Statistical Models, p477).
 So Cook's distance combines the influence of case $i$ based on both the response (i.e. the residual $r_{\mathrm{p}i}$) and  the predictors (more precisely the leverage $h_{ii}$, which for lm only depends on the predictors and for glm depends also on the response to some degree).  Good fit is indicated by equally low $C_i$ (and $h_{ii}$) for all cases implying that all cases carry equal amount of information on the regression parameters $\beta$.
 
 ```{r influence-unlm-S}
-myinfluence <- function(mtype, xlim = c(-0.2, 4), ylim = c(-0.04, 0.8))
+myinfluence <- function(mtype, xlim = c(-0.2, 4), ylim = c(-0.04, 0.8), ...)
     xyplot(cooks.dist ~ leverage / (1 - leverage) | gene, data = diagnostics, xlim = xlim, ylim = ylim,
-           subset = model.type %in% mtype, pch = "+", main = mtype, ylab = "Cook's distance")
+           par.settings = list(add.text = list(cex = 0.8)),
+           subset = model.type %in% mtype, pch = "+", main = mtype, ylab = "Cook's distance", ...)
 
-myinfluence("unlm.S")
+#myinfluence("unlm.S")
 ```
 
 ```{r influence-wnlm-S, echo=FALSE}
@@ -165,7 +176,11 @@ myinfluence("wnlm.S")
 ```
 
 ```{r influence-unlm-R, echo=FALSE}
-myinfluence("unlm.R")
+#myinfluence("unlm.R")
+```
+
+```{r influence-wnlm-Q, echo=FALSE}
+myinfluence("wnlm.Q")
 ```
 
 ```{r influence-wnlm-R, echo=FALSE}
@@ -177,17 +192,25 @@ myinfluence("logi.S")
 ```
 
 ```{r influence-logi2-S, echo=FALSE}
-myinfluence("logi2.S")
+#myinfluence("logi2.S")
 ```
 
 ### Identifying outliers
 
-Here the median Cook's distance $C_i$ taken across all 30 genes (with possibly missing values) for any given case/individual $i$ is used to quantify the overall impact of that case.  The focus is on logi.S, since that model seems in general the most useful in making inferences.  The top 20 cases are shown; especially the top 2 appear to be extreme outliers, whose exclusion might substantially improve model fit for some genes.
+Here the median Cook's distance $C_i$ taken across all 30 genes (with possibly missing values) for any given case/individual $i$ is used to quantify the overall impact of that case.  The top 20 cases are shown under each model. CMC_MSSM_DLPC231 tops the list both under logi.S and wnlm.Q but there are several other cases which rank within the top 20 under both models. Exclusion of some of these might substantially improve model fit for some genes.
 
-```{r cooks-dist}
+```{r cooks-dist-logi-S, fig.asp=2/3}
 cooks.d <- lapply(M, function(m)
                   as.matrix(data.frame(lapply(m[gene.ids], get.influence, rownames(E)))))
 med.cooks.d <- lapply(cooks.d,
                       function(d) sort(apply(d, 1, median, na.rm = TRUE), decreasing = TRUE))
 dotplot(rev(med.cooks.d$logi.S[1:20]), main = "logi.S", xlab = "median Cook's distance")
+```
+
+```{r cooks-dist-logi-Q, fig.asp=2/3, echo=FALSE}
+dotplot(rev(med.cooks.d$wnlm.Q[1:20]), main = "wnlm.Q", xlab = "median Cook's distance")
+```
+
+```{r cooks-dist-logi-R, fig.asp=2/3, echo=FALSE}
+dotplot(rev(med.cooks.d$wnlm.R[1:20]), main = "wnlm.R", xlab = "median Cook's distance")
 ```

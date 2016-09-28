@@ -1,0 +1,165 @@
+```{r echo=FALSE}
+library(ggplot2)
+library(lattice)
+library(latticeExtra)
+opts_chunk$set(dpi = 144)
+opts_chunk$set(out.width = "700px")
+opts_chunk$set(dev = c("png", "pdf"))
+lattice.options(default.args = list(as.table = TRUE))
+lattice.options(default.theme = "standard.theme")
+```
+
+```{r}
+source("~/projects/monoallelic-brain/src/import-data.R")
+source("~/projects/monoallelic-brain/src/fit-glms.R")
+source("~/projects/monoallelic-brain/src/graphics.R")
+source("../2016-08-21-likelihood-surface/2016-08-21-likelihood-surface.R")
+```
+
+## Near collinearity: RIN and RIN2
+
+```{r}
+# explanatory variables (a.k.a. predictors)
+e.vars2 <- c("Age",
+               "Institution",
+               "Gender",
+               "PMI",
+               "Dx",
+               "RIN",
+               "RIN2",
+               "RNA_batch",
+               "Ancestry.1", "Ancestry.2", "Ancestry.3", "Ancestry.4", "Ancestry.5" )
+e.vars2[7]
+e.vars <- e.vars2[-7]
+```
+
+```{r}
+gene.ids <- unlist(read.csv("../../data/genes.regression.new", as.is = TRUE))
+names(gene.ids) <- gene.ids
+```
+
+```{r cache=TRUE, warning=FALSE}
+E <- get.predictors() # default arguments
+Y <- get.readcounts(gene.ids = gene.ids, count.thrs = 0)
+```
+
+```{r cache=TRUE, warning=FALSE}
+# exclude unweighed aggregates UA.8 and UA from fitting
+to.fit.ids <- grep("^UA(.8)?$", names(Y), value = TRUE, invert = TRUE)
+sel.models <- c("logi.S", "wnlm.Q", "wnlm.R"); names(sel.models) <- sel.models
+M <- do.all.fits(Y[to.fit.ids], G = E, preds = e.vars, sel.models = sel.models)
+M2 <- do.all.fits(Y[to.fit.ids], G = E, preds = e.vars2, sel.models = sel.models)
+```
+
+### Terms
+
+#### PEG3: RIN and RIN2
+
+```{r terms-PEG3-RIN-RIN2}
+par(mfrow = c(3, 4))
+termplot(M2$wnlm.Q$PEG3, terms = c(1:5, 8:12, 6:7))
+```
+
+#### PEG3: only RIN
+
+```{r terms-PEG3-RIN, echo=FALSE}
+par(mfrow = c(3, 4))
+termplot(M$wnlm.Q$PEG3, terms = c(1:5, 7:11, 6))
+```
+
+#### KCNK9: RIN and RIN2
+
+```{r terms-KCNK9-RIN-RIN2, echo=FALSE}
+par(mfrow = c(3, 4))
+termplot(M2$wnlm.Q$KCNK9, terms = c(1:5, 8:12, 6:7))
+```
+
+#### KCNK9: only RIN
+
+```{r terms-KCNK9-RIN, echo=FALSE}
+par(mfrow = c(3, 4))
+termplot(M$wnlm.Q$KCNK9, terms = c(1:5, 7:11, 6))
+```
+
+### Estimates and CIs
+
+```{r cache=TRUE, warning=FALSE, message=FALSE}
+Betas <- lapply(M, function(m) { x <- get.estimate.CI(m); x <- x[ ! x$Coefficient %in% "(Intercept)", ] })
+Betas2 <- lapply(M2, function(m) { x <- get.estimate.CI(m); x <- x[ ! x$Coefficient %in% "(Intercept)", ] })
+```
+
+```{r betas-RIN-RIN2, echo=FALSE, fig.asp=1.7}
+my.segplot(Betas2$wnlm.Q, main = "RIN and RIN2; wnlm.Q")[c(1:7, 10:22, 8:9)]
+```
+
+```{r betas-RIN, echo=FALSE, fig.asp=1.7}
+my.segplot(Betas$wnlm.Q, main = "Only RIN; wnlm.Q")[c(1:7, 9:21, 8)]
+```
+
+### Likelihood surface
+
+```{r cache=TRUE, message=FALSE, echo=FALSE}
+# with RIN2
+lsurf2 <- list()
+gene <- "PEG3" # using gene = "PEG3" as default
+l.M <- M2$logi.S
+lsurf2$logi.S <-
+    rbind(ll.grid(l.M = l.M, v.name.A = "InstitutionPenn", CI.lev.A = c.a <- 0.999999, CI.lev.B = c.b <- 0.9),
+          ll.grid(l.M = l.M, gene = gene,v.name.A = "PMI", CI.lev.A = 0.9999, CI.lev.B = c.b),
+          ll.grid(l.M = l.M, gene = gene,v.name.A = "RIN", CI.lev.A = 0.05, CI.lev.B = c.b),
+          #ll.grid(l.M = l.M, gene = gene,v.name.A = "RNA_batchB", CI.lev.A = 0.95, CI.lev.B = c.b),
+          ll.grid(l.M = l.M, gene = gene,v.name.A = "DxControl", CI.lev.A = 0.99, CI.lev.B = c.b),
+          ll.grid(l.M = l.M, gene = gene,v.name.A = "GenderMale", CI.lev.A = c.a, CI.lev.B = c.b),
+          ll.grid(l.M = l.M, gene = gene,v.name.A = "Ancestry.2", CI.lev.A = 1 - 1e-10, CI.lev.B = c.b))
+lsurf2$logi.S$v.name.A <-
+    factor(lsurf2$logi.S$v.name.A, ordered = TRUE,
+           levels = c("InstitutionPenn", "PMI", "RIN", "DxControl", "GenderMale", "Ancestry.2"))
+l.M <- M2$wnlm.Q
+lsurf2$wnlm.Q <-
+    rbind(ll.grid(l.M = l.M, v.name.A = "InstitutionPenn", CI.lev.A = c.a <- 0.999999, CI.lev.B = c.b <- 0.9),
+          ll.grid(l.M = l.M, gene = gene,v.name.A = "PMI", CI.lev.A = 0.9999, CI.lev.B = c.b),
+          ll.grid(l.M = l.M, gene = gene,v.name.A = "RIN", CI.lev.A = 0.05, CI.lev.B = c.b),
+          #ll.grid(l.M = l.M, gene = gene,v.name.A = "RNA_batchB", CI.lev.A = 0.95, CI.lev.B = c.b),
+          ll.grid(l.M = l.M, gene = gene,v.name.A = "DxControl", CI.lev.A = 0.99, CI.lev.B = c.b),
+          ll.grid(l.M = l.M, gene = gene,v.name.A = "GenderMale", CI.lev.A = c.a, CI.lev.B = c.b),
+          ll.grid(l.M = l.M, gene = gene,v.name.A = "Ancestry.2", CI.lev.A = 1 - 1e-10, CI.lev.B = c.b))
+lsurf2$wnlm.Q$v.name.A <-
+    factor(lsurf2$wnlm.Q$v.name.A, ordered = TRUE,
+           levels = c("InstitutionPenn", "PMI", "RIN", "DxControl", "GenderMale", "Ancestry.2"))
+```
+
+```{r cache=TRUE, message=FALSE, echo=FALSE}
+# without RIN2
+lsurf <- list()
+l.M <- M$logi.S; gene <- "PEG3" # using gene = "PEG3" as default
+lsurf$logi.S <-
+    rbind(ll.grid(l.M = l.M, v.name.A = "InstitutionPenn", CI.lev.A = c.a <- 0.999999, CI.lev.B = c.b <- 0.9),
+          ll.grid(l.M = l.M, gene = gene,v.name.A = "PMI", CI.lev.A = 0.9999, CI.lev.B = c.b),
+          ll.grid(l.M = l.M, gene = gene,v.name.A = "RIN", CI.lev.A = 0.5, CI.lev.B = c.b),
+          #ll.grid(l.M = l.M, gene = gene,v.name.A = "RNA_batchB", CI.lev.A = 0.95, CI.lev.B = c.b),
+          ll.grid(l.M = l.M, gene = gene,v.name.A = "DxControl", CI.lev.A = 0.99, CI.lev.B = c.b),
+          ll.grid(l.M = l.M, gene = gene,v.name.A = "GenderMale", CI.lev.A = c.a, CI.lev.B = c.b),
+          ll.grid(l.M = l.M, gene = gene,v.name.A = "Ancestry.2", CI.lev.A = 1 - 1e-10, CI.lev.B = c.b))
+fac <- factor(lsurf$logi.S$v.name.A)
+lsurf$logi.S$v.name.A <-
+    factor(lsurf$logi.S$v.name.A, ordered = TRUE,
+           levels = c("InstitutionPenn", "PMI", "RIN", "DxControl", "GenderMale", "Ancestry.2"))
+```
+
+```{r ll-surf-PEG3-RIN-RIN2, fig.asp=0.90, out.asp=0.90, echo=FALSE}
+ll.surfaceplot(fm = formula(rel.log.L ~ beta.A * beta.B | v.name.A), df = lsurf2$logi.S,
+               layout = c(3, 2),
+               par.settings = list(regions = list(col = rev(trellis.par.get("regions")$col))),
+               main = "RIN and RIN2; PEG3; logi.S",
+               xlab = expression(paste(beta, "[ ... ]")),
+               ylab = expression(paste(beta, "[ Age ]")))
+```
+
+```{r ll-surf-PEG3-RIN, fig.asp=0.90, out.asp=0.90, echo=FALSE}
+ll.surfaceplot(fm = formula(rel.log.L ~ beta.A * beta.B | v.name.A), df = lsurf$logi.S,
+               layout = c(3, 2),
+               par.settings = list(regions = list(col = rev(trellis.par.get("regions")$col))),
+               main = "Only RIN; PEG3; logi.S",
+               xlab = expression(paste(beta, "[ ... ]")),
+               ylab = expression(paste(beta, "[ Age ]")))
+```

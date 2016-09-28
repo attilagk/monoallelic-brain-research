@@ -41,3 +41,19 @@ my.xlim <- list(Age = 0.05 * xl,
                 Ancestry.4 = 20 * xl,
                 Ancestry.5 = 20 * xl)
 
+
+my.segplot2 <- function(coef, type, gene.ix, main = type, ...) {
+    segplot(ordered(Permutation, levels = rev(levels(Permutation))) ~ Lower.CL + Upper.CL | Gene, data = Betas,
+            subset = Coefficient %in% coef & Model %in% type,
+            level = factor(! Permutation == "U"),
+            colorkey = FALSE,
+            par.settings = list(add.text = list(cex = 0.8)),
+            panel = function(x, y, ...) {
+                panel.segplot(x, y, ...)
+                panel.abline(v = 0, col = "red")
+            },
+            xlab = eval(substitute(expression(paste(beta, "[ ", coef, " ]")), list(coef = coef))),
+            ylab = "permutation", main = main,
+            scales = list(draw = FALSE, x = list(relation = "free")))[gene.ix]
+}
+
