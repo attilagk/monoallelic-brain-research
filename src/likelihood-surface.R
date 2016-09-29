@@ -23,6 +23,37 @@ args.logi <- function(m, do.neg = FALSE)
          X = model.matrix(m$formula, m$model),
          do.neg = do.neg)
 
+
+# log-likelihood of weighted or unweighted normal linear model
+#
+# Arguments
+# beta: regression coefficients
+# sigma2: error variance
+# y: count of success (higher readcount), possibly vector
+# X: design matrix (as if made by model.matrix)
+# W: a vector of weights
+# do.neg: take the negative of logL or not
+#
+# Value
+# The log-likelihood
+ll.wnlm <- function(beta, sigma2, y, W, X, do.neg = FALSE) {
+    eta <- X %*% beta
+    sgn <- ifelse(do.neg, -1, 1)
+    - sgn * sum((y - eta)^2 * W) / sigma2 / 2
+}
+
+# prepare arguments from model 'm' to be passed to ll.wnlm
+args.wnlm <- function(m, do.neg = FALSE)
+    list(beta = m$coefficients,
+         # S^2, the unbiased estimate of sigma^2; I am not sure if it is
+         # correct in the general weighted case
+         sigma2 = sum((m$residuals)^2) / m$df.residual,
+         y = m$model[["Y"]],
+         W = m$weights,
+         X = model.matrix(m$formula, m$model),
+         do.neg = do.neg)
+
+
 # create logL surface
 #
 # Arguments
@@ -59,7 +90,8 @@ ll.grid <- function(l.M = M$logi.S, gene = "PEG3", n.pnts = 101,
     df <- expand.grid(b.A, b.B)
     names(df) <- c("beta.A", "beta.B")
     df$log.L <- sapply(as.data.frame(t(as.matrix(df))), function(x) foo(x[1], x[2]))
-    df$rel.log.L <- df$log.L - logLik(m)
+    df$rel.log.L <- df$log.L - do.call(ll.fun, args)
+    #df$rel.log.L <- df$log.L - logLik(m)
     df$beta.hat.A <- args$beta[v.name.A] 
     df$beta.hat.B <- args$beta[v.name.B] 
     df$gene <- gene

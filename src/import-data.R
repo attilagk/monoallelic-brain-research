@@ -3,8 +3,8 @@
 #
 # Arguments
 # f.predictors: file containing the table of predictors: RNA samples (rows) and predictors (columns)
-# f.rna.ids: file with mapping between RNAseqID (present in read count tables)
-# and DLPFC_RNA_ID (present in the table of predictors)
+# f.rna.ids: file with mapping between RNAseqID (present in read count tables) and DLPFC_RNA_ID (present in the table of predictors)
+# adj.levels: logical; whether to adjust levels of certain factors e.g. Dx
 #
 # Value
 # a data frame whose rows are observations (RNA samples/individuals) and columns predictors
@@ -12,14 +12,29 @@
 # Details
 # The input files must be obtained using the shell script ~/projects/monoallelic-brain/src/predictors-for-R
 get.predictors <- function(f.predictors = "~/projects/monoallelic-brain/data/predictors/predictors.csv",
-                      f.rna.ids = "~/projects/monoallelic-brain/data/predictors/RNAseq_ID.DLPFC_RNA_ID.csv") {
+                      f.rna.ids = "~/projects/monoallelic-brain/data/predictors/RNAseq_ID.DLPFC_RNA_ID.csv",
+                      adj.levels = TRUE) {
     predictors <- read.csv(f.predictors, row.names = "DLPFC_RNA_ID")
     rna_id <- read.csv(f.rna.ids, row.names = "RNAseq_ID")
     # extract those RNA samples from the table of predictors whose RNAseq_ID is known
     predictors <- predictors[ as.character(rna_id$DLPFC_RNA_ID), ]
     row.names(predictors) <- row.names(rna_id)
     rm(rna_id) # no more necessary
-    predictors
+    if(! adj.levels) return(predictors)
+    adj.levels.predictors(predictors)
+}
+
+# Adjust levels of certain factors (e.g. set Control as first (baseline) level for Dx)
+#
+# Arguments
+# X: the matrix of observed predictor values
+#
+# Value
+# The adjusted X
+adj.levels.predictors <- function(X) {
+    X$Dx <- factor(X$Dx, levels = c("Control", "SCZ", "AFF"))
+    X$RNA_batch <- factor(X$RNA_batch, levels = c(LETTERS[1:8], "0"))
+    return(X)
 }
 
 
