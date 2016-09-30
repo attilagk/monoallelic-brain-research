@@ -50,8 +50,7 @@ grep("TRUE", sapply(to.fit.ids, function(g) all.equal(coef(M$logi.S$forward[[g]]
 ```
 
 ```
-##                                TMEM261P1 
-## "Mean relative difference: 1.508896e-08"
+## named character(0)
 ```
 
 ## Components of variation
@@ -141,6 +140,11 @@ update(my.dotplot(fm = Gene ~ Effect | Coefficient, data = Ef.long$logi.S, main 
 my.segplot(data = Betas$logi.S, xlim = my.xlim)
 ```
 
+```
+## Warning in limitlist[id] <- lim: number of items to replace is not a
+## multiple of replacement length
+```
+
 <img src="figure/reg-coef-logi-S-1.png" title="plot of chunk reg-coef-logi-S" alt="plot of chunk reg-coef-logi-S" width="700px" />
 
 #### Under logi2.S
@@ -156,6 +160,11 @@ update(my.dotplot(fm = Gene ~ Effect | Coefficient, data = Ef.long$logi2.S, main
 
 ```r
 my.segplot(data = Betas$logi2.S, main = expression(paste("99 % CI for ", beta, " under logi2.S")), xlim = my.xlim)
+```
+
+```
+## Warning in limitlist[id] <- lim: number of items to replace is not a
+## multiple of replacement length
 ```
 
 <img src="figure/reg-coef-logi2-S-1.png" title="plot of chunk reg-coef-logi2-S" alt="plot of chunk reg-coef-logi2-S" width="700px" />

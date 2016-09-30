@@ -57,7 +57,7 @@ names(perms) <- c("U", paste0("P", seq_len(length(perms) - 1)))
 ```r
 # exclude unweighed aggregates UA.8 and UA from fitting
 to.fit.ids <- grep("^UA(.8)?$", names(Y), value = TRUE, invert = TRUE)
-sel.models <- c("logi.S", "wnlm.Q", "wnlm.R"); names(sel.models) <- sel.models
+sel.models <- c("logi.S", "wnlm.Q", "wnlm.R", "wnlm.S"); names(sel.models) <- sel.models
 M <- lapply(EP, function(e) do.all.fits(Y[to.fit.ids], G = e, preds = e.vars, sel.models = sel.models))
 ```
 
@@ -83,11 +83,13 @@ Betas <- aggregate.CI.permut2(perms = perms, gene.ids = gene.ids, e.vars = e.var
 
 ## Results
 
-Both the *unpermuted* and *permuted* data was fit by two models: logi.S and wnlm.R.  These four combinations are shown in the four plots below at confidence level of $99\%$  The following observations and conclusions may be noted:
+### Single permutation
 
-Under wnlm.R there are 43 significant coefficients before and 27 after permutation.  In contrast, under logi.S there are 165 and 180 (before and after).  But taking only those coefficients that are significant under *both* models yields 42 and 24 (before and after, respectively).
+Both the *unpermuted* and *permuted* data was fit by the models logi.S, wnlm.Q, wnlm.R, wnlm.S.  Given the poor fit for wnlm.S and the relatively low power of wnlm.R only wnlm.Q and logi.S associated results are presented in the following four plots. These results are the estimates and CI for $\beta$ at confidence level of $99\%$.  The following observations and conclusions may be noted:
 
-Under logi.S the following pattern is observed.  For some genes (e.g. GRB10, ZDBF2) permutation tends to abolish significance---if observed---, whereas for other genes (e.g. SNRPN, SNURF) there are many significant coefficients after permutation.  This suggests systematic differences between genes: better fit of logi.S to the data for the former set of genes and poorer for the latter gene set.  The poor fit likely results in biased coefficient estimates, which explains the many significant coefficients after permutation.
+Under wnlm.Q there are 59 significant coefficients before and 37 after permutation.  In contrast, under logi.S there are 185 and 191 (before and after).  But taking only those coefficients that are significant under *both* models yields 44 and 27 (before and after, respectively).
+
+Under logi.S the following pattern is observed.  For some genes (e.g. GRB10, ZDBF2) permutation tends to abolish significance---if observed---, whereas for other genes (e.g. SNRPN, SNURF) there are many significant coefficients after permutation.  This suggests systematic differences between genes: better fit of logi.S to the data for the former set of genes and poorer for the latter gene set.  The poor fit explains the many significant coefficients after permutation.
 
 
 ```r
@@ -98,11 +100,26 @@ my.segplot(data = Betas.Unpermuted$logi.S, xlim = my.xlim, main = "Unpermuted un
 
 <img src="figure/permuted-logi-S-1.png" title="plot of chunk permuted-logi-S" alt="plot of chunk permuted-logi-S" width="700px" />
 
-<img src="figure/unpermuted-wnlm-R-1.png" title="plot of chunk unpermuted-wnlm-R" alt="plot of chunk unpermuted-wnlm-R" width="700px" />
+<img src="figure/unpermuted-wnlm-Q-1.png" title="plot of chunk unpermuted-wnlm-Q" alt="plot of chunk unpermuted-wnlm-Q" width="700px" />
 
-<img src="figure/permuted-wnlm-R-1.png" title="plot of chunk permuted-wnlm-R" alt="plot of chunk permuted-wnlm-R" width="700px" />
+<img src="figure/permuted-wnlm-Q-1.png" title="plot of chunk permuted-wnlm-Q" alt="plot of chunk permuted-wnlm-Q" width="700px" />
 
-### Repeated permutation
+### Repeated permutations
+
+The above analysis is extended now in two ways: presenting CI for several, though not all, $\beta_j$ with
+
+1. 20 random permutations
+1. under all selected models logi.S, wnlm.Q, wnlm.R, wnlm.S
+
+The following general results emerge from the following plots
+
+* in general the distribution of permuted CI tends to be wider than expected
+  * at 99 % confidence level only $20 / 100 = 1/5$ CI per gene per model is expected to fall out side the zero line but the observations show a greater number of such CIs
+* the distribution of permuted CI varies greatly both across models and genes
+* under wnlm.Q and wnlm.R the distributions of CI are somewhat closer to the expected ones than under logi.S
+* the various models tend to agree qualitatively
+    * therefore it is beneficial to use a consensus approach by defining significance that is fulfilled both under wnlm.Q and logi.S
+* poorly fit genes tend to show greater departure from the expected CI distribution (cf. model checking analyses)
 
 #### Age
 
@@ -113,6 +130,8 @@ my.segplot2("Age", "logi.S", -2) # fit has not converged for gene ranked 2 (TMEM
 
 <img src="figure/permuted-age-logi-S-1.png" title="plot of chunk permuted-age-logi-S" alt="plot of chunk permuted-age-logi-S" width="700px" />
 
+<img src="figure/permuted-age-wnlm-S-1.png" title="plot of chunk permuted-age-wnlm-S" alt="plot of chunk permuted-age-wnlm-S" width="700px" />
+
 <img src="figure/permuted-age-wnlm-Q-1.png" title="plot of chunk permuted-age-wnlm-Q" alt="plot of chunk permuted-age-wnlm-Q" width="700px" />
 
 <img src="figure/permuted-age-wnlm-R-1.png" title="plot of chunk permuted-age-wnlm-R" alt="plot of chunk permuted-age-wnlm-R" width="700px" />
@@ -120,6 +139,8 @@ my.segplot2("Age", "logi.S", -2) # fit has not converged for gene ranked 2 (TMEM
 #### Gender
 
 <img src="figure/permuted-gender-logi-S-1.png" title="plot of chunk permuted-gender-logi-S" alt="plot of chunk permuted-gender-logi-S" width="700px" />
+
+<img src="figure/permuted-gender-wnlm-S-1.png" title="plot of chunk permuted-gender-wnlm-S" alt="plot of chunk permuted-gender-wnlm-S" width="700px" />
 
 <img src="figure/permuted-gender-wnlm-Q-1.png" title="plot of chunk permuted-gender-wnlm-Q" alt="plot of chunk permuted-gender-wnlm-Q" width="700px" />
 
@@ -129,6 +150,8 @@ my.segplot2("Age", "logi.S", -2) # fit has not converged for gene ranked 2 (TMEM
 
 <img src="figure/permuted-dx-control-logi-S-1.png" title="plot of chunk permuted-dx-control-logi-S" alt="plot of chunk permuted-dx-control-logi-S" width="700px" />
 
+<img src="figure/permuted-dx-control-wnlm-S-1.png" title="plot of chunk permuted-dx-control-wnlm-S" alt="plot of chunk permuted-dx-control-wnlm-S" width="700px" />
+
 <img src="figure/permuted-dx-control-wnlm-Q-1.png" title="plot of chunk permuted-dx-control-wnlm-Q" alt="plot of chunk permuted-dx-control-wnlm-Q" width="700px" />
 
 <img src="figure/permuted-dx-control-wnlm-R-1.png" title="plot of chunk permuted-dx-control-wnlm-R" alt="plot of chunk permuted-dx-control-wnlm-R" width="700px" />
@@ -136,6 +159,8 @@ my.segplot2("Age", "logi.S", -2) # fit has not converged for gene ranked 2 (TMEM
 #### Ancestry
 
 <img src="figure/permuted-ancestry-1-logi-S-1.png" title="plot of chunk permuted-ancestry-1-logi-S" alt="plot of chunk permuted-ancestry-1-logi-S" width="700px" />
+
+<img src="figure/permuted-ancestry-1-wnlm-S-1.png" title="plot of chunk permuted-ancestry-1-wnlm-S" alt="plot of chunk permuted-ancestry-1-wnlm-S" width="700px" />
 
 <img src="figure/permuted-ancestry-1-wnlm-Q-1.png" title="plot of chunk permuted-ancestry-1-wnlm-Q" alt="plot of chunk permuted-ancestry-1-wnlm-Q" width="700px" />
 
@@ -145,6 +170,8 @@ my.segplot2("Age", "logi.S", -2) # fit has not converged for gene ranked 2 (TMEM
 
 <img src="figure/permuted-institution-penn-logi-S-1.png" title="plot of chunk permuted-institution-penn-logi-S" alt="plot of chunk permuted-institution-penn-logi-S" width="700px" />
 
+<img src="figure/permuted-institution-penn-wnlm-S-1.png" title="plot of chunk permuted-institution-penn-wnlm-S" alt="plot of chunk permuted-institution-penn-wnlm-S" width="700px" />
+
 <img src="figure/permuted-institution-penn-wnlm-Q-1.png" title="plot of chunk permuted-institution-penn-wnlm-Q" alt="plot of chunk permuted-institution-penn-wnlm-Q" width="700px" />
 
 <img src="figure/permuted-institution-penn-wnlm-R-1.png" title="plot of chunk permuted-institution-penn-wnlm-R" alt="plot of chunk permuted-institution-penn-wnlm-R" width="700px" />
@@ -153,15 +180,8 @@ my.segplot2("Age", "logi.S", -2) # fit has not converged for gene ranked 2 (TMEM
 
 <img src="figure/permuted-pmi-logi-S-1.png" title="plot of chunk permuted-pmi-logi-S" alt="plot of chunk permuted-pmi-logi-S" width="700px" />
 
+<img src="figure/permuted-pmi-wnlm-S-1.png" title="plot of chunk permuted-pmi-wnlm-S" alt="plot of chunk permuted-pmi-wnlm-S" width="700px" />
+
 <img src="figure/permuted-pmi-wnlm-Q-1.png" title="plot of chunk permuted-pmi-wnlm-Q" alt="plot of chunk permuted-pmi-wnlm-Q" width="700px" />
 
 <img src="figure/permuted-pmi-wnlm-R-1.png" title="plot of chunk permuted-pmi-wnlm-R" alt="plot of chunk permuted-pmi-wnlm-R" width="700px" />
-
-
-
-## Conclusions
-
-1. As discussed before, wnlm.R appears less sensitive but less biased than logi.S.
-1. The bias appears greatly vary across genes; model checking will help filter out genes with much bias due to poor fit
-1. It is beneficial to use a consensus approach by defining significance that is fulfilled both under wnlm.R and logi.S.
-
