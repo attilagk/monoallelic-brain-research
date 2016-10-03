@@ -150,18 +150,21 @@ get.CI <- function(l.models,
 # Arguments
 # m: the model object
 # conf.lev: confidence level
+# skip.CI: do NOT calculate CI (saves much time)
 #
 # Value
 # A data frame containing the estimate, the lower and upper CL and some other
 # info.
 get.single.estimate.CI <-
-    function(m, conf.lev) {
+    function(m, conf.lev, skip.CI = FALSE) {
         d <- cbind(data.frame(Estimate = cf <- coef(m)),
                    data.frame(Coefficient =
-                              factor(n.cf <- names(cf), levels = n.cf, ordered = TRUE)),
-                   data.frame(tryCatch(confint(m, level = conf.lev),
-                                       error = function(e) matrix(NA, nrow = 1, ncol = 2))))
-        names(d)[3:4] <- c("Lower.CL", "Upper.CL")
+                              factor(n.cf <- names(cf), levels = n.cf, ordered = TRUE)))
+        if(! skip.CI) {
+            d <- cbind(d, data.frame(tryCatch(confint(m, level = conf.lev),
+                                              error = function(e) matrix(NA, nrow = 1, ncol = 2))))
+            names(d)[3:4] <- c("Lower.CL", "Upper.CL")
+        }
         return(d)
     }
 
@@ -210,16 +213,19 @@ predictor2coefs <- function(m, e.v) {
 # perms: a data frame of integer vectors that are random permutations of the original case/individual numbers
 # gene.ids: the id (symbol) for the selected genes
 # e.vars: names of all predictors (explanatory variables)
+# sel.vars: names of selected predictors based on which permutation is done
 # sel.models: selected model types, e.g. wnlm.R, logi.S,...
 # E: data frame of predictor data
 # Y: read count data
 # conf.lev: confidence level for CI
+# skip.CI: do NOT calculate CI (saves much time)
 #
 # Value
 # A thin long data frame whose columns are not only the estimate and the lower
 # and upper CL but also annotations such as the genes, model type, etc.
-aggregate.CI.permut2 <- function(perms, gene.ids, e.vars, sel.models = list(wnlm.R = "wnlm.R", logi.S = "logi.S"),
-                                 E, Y, conf.lev = 0.99) {
+aggregate.CI.permut2 <- function(perms, gene.ids, e.vars, sel.vars = e.vars,
+                                 sel.models = list(wnlm.R = "wnlm.R", logi.S = "logi.S"),
+                                 E, Y, conf.lev = 0.99, skip.CI = FALSE) {
     helper <- function(perm.name, gene, e.v, type) {
         # permute cases for predictor e.v
         perm <- perms[[perm.name]]
@@ -228,14 +234,16 @@ aggregate.CI.permut2 <- function(perms, gene.ids, e.vars, sel.models = list(wnlm
         # fit model on X and the given gene's read count data
         m <- do.all.fits(Z = Y[gene], G = X, preds = e.vars, sel.models = type)[[type]][[gene]]
         # a data frame for the estimate and CI
-        d <- get.single.estimate.CI(m, conf.lev = conf.lev)[predictor2coefs(m, e.v), ]
+        d <- get.single.estimate.CI(m, conf.lev = conf.lev, skip.CI = skip.CI)[predictor2coefs(m, e.v), ]
         # annotate conditions
         d$Permutation <- factor(perm.name, levels = names(perms), ordered = TRUE)
         d$Gene <- factor(gene, levels = gene.ids, ordered = TRUE)
         d$Perm.Var <- factor(e.v, levels = e.vars, ordered = TRUE)
         d$Model <- factor(type, levels = sel.models, ordered = TRUE)
         # replace estimate and CI with NA if fit has not converged
-        d[ ! m$converged, c("Estimate", "Lower.CL", "Upper.CL") ] <- NA
+        d[ ! m$converged, "Estimate" ] <- NA
+        if(! skip.CI)
+            d[ ! m$converged, c("Lower.CL", "Upper.CL") ] <- NA
         return(d)
     }
     # aggregation...
@@ -243,7 +251,7 @@ aggregate.CI.permut2 <- function(perms, gene.ids, e.vars, sel.models = list(wnlm
             lapply(sel.models, # ...across models
                    function(type)
                        do.call(rbind,
-                               lapply(e.vars, # ...across permuted variables
+                               lapply(sel.vars, # ...across permuted variables
                                       function(e.v)
                                           do.call(rbind,
                                                   lapply(gene.ids, # ...across genes
@@ -252,7 +260,6 @@ aggregate.CI.permut2 <- function(perms, gene.ids, e.vars, sel.models = list(wnlm
                                                                      lapply(names(perms), # ...across permutations
                                                                             helper, gene, e.v, type))))))))
 }
-
 
 # an earlier, less complete aggregator function similar to aggregate.CI.permut2
 #

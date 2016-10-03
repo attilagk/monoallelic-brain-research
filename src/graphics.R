@@ -57,3 +57,26 @@ my.segplot2 <- function(coef, type, gene.ix, main = type, ...) {
             scales = list(draw = FALSE, x = list(relation = "free")))[gene.ix]
 }
 
+get.p.val <- function(beta.U, betas, two.tailed = TRUE, do.norm = TRUE) {
+    L.tail <- function() sum(beta.U >= betas, na.rm = TRUE)
+    R.tail <- function() sum(beta.U <= betas, na.rm = TRUE)
+    res <- if(beta.U > median(betas, na.rm = TRUE)) R.tail() else L.tail()
+    res <- if(two.tailed) 2 * res
+    if(do.norm) res / length(betas) else res
+}
+
+beta0densityplot <- function(coef = "Age", data = Betas, ...) {
+    densityplot(~ Estimate | Gene, data = data, subset = Coefficient == coef,
+                par.settings = list(add.text = list(cex = 0.8)),
+                scales = list(relation = "free", draw = FALSE),
+                U = data$Permutation == "U",
+                panel = function(x, ..., U = U, subscripts) {
+                    panel.densityplot(x, ..., plot.points = FALSE, ref = TRUE)
+                    panel.abline(v = 0, col = "red")
+                    beta.U <- x[U[subscripts]]
+                    p.val <- beta.U
+                    panel.abline(v = beta.U, col = trellis.par.get("plot.line")$col, lty = "dotted")
+                    panel.text(x = beta.U, y = 0, labels = get.p.val(beta.U, x[! U[subscripts]], do.norm = FALSE))
+                }, main = coef,
+                ...)
+}
