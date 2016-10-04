@@ -14,9 +14,6 @@ Take two permutations of explanatory variables:
 
 Relevant scripts
 
-```
-## Loading required package: RColorBrewer
-```
 
 Import data; note that the set of **selected genes have been updated** based on later analysis
 
@@ -33,9 +30,10 @@ Fit `wnlm.Q`, `wnlm.R` and `logi.S` using both the forward and the reverse order
 
 ```r
 # e.vars defined in fit-glms.R
-e.v <- list(forward = e.vars, reverse = rev(e.vars), custom = names(E)[1:13])
+e.v <- list(forward = e.vars, reverse = rev(e.vars))
 # exclude unweighed aggregates UA.8 and UA from fitting
 to.fit.ids <- grep("^UA(.8)?$", names(Y), value = TRUE, invert = TRUE)
+to.fit.ids <- grep("^WA.8$", to.fit.ids, value = TRUE, invert = TRUE)
 M <- lapply(list(unlm.Q = "unlm.Q", wnlm.Q = "wnlm.Q", unlm.R = "unlm.R", wnlm.R = "wnlm.R", logi.S = "logi.S", logi2.S = "logi2.S"),
             function(m) lapply(e.v,
                                function(v) do.all.fits(Y[to.fit.ids], preds = v, sel.models = m)[[1]]))

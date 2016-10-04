@@ -42,7 +42,7 @@ my.xlim <- list(Age = 0.05 * xl,
                 Ancestry.5 = 20 * xl)
 
 
-my.segplot2 <- function(coef, type, gene.ix, main = type, ...) {
+my.segplot2 <- function(coef, type, main = type, to.skip = c(F, T, rep(F, 27)), ...) {
     segplot(ordered(Permutation, levels = rev(levels(Permutation))) ~ Lower.CL + Upper.CL | Gene, data = Betas,
             subset = Coefficient %in% coef & Model %in% type,
             level = factor(! Permutation == "U"),
@@ -54,19 +54,13 @@ my.segplot2 <- function(coef, type, gene.ix, main = type, ...) {
             },
             xlab = eval(substitute(expression(paste(beta, "[ ", coef, " ]")), list(coef = coef))),
             ylab = "permutation", main = main,
-            scales = list(draw = FALSE, x = list(relation = "free")))[gene.ix]
+            skip = to.skip,
+            layout = c(5, 6),
+            scales = list(draw = FALSE, x = list(relation = "free")))[c(1:30)[! to.skip]]
 }
 
-get.p.val <- function(beta.U, betas, two.tailed = TRUE, do.norm = TRUE) {
-    L.tail <- function() sum(beta.U >= betas, na.rm = TRUE)
-    R.tail <- function() sum(beta.U <= betas, na.rm = TRUE)
-    res <- if(beta.U > median(betas, na.rm = TRUE)) R.tail() else L.tail()
-    res <- if(two.tailed) 2 * res
-    if(do.norm) res / length(betas) else res
-}
-
-beta0densityplot <- function(coef = "Age", data = Betas, ...) {
-    densityplot(~ Estimate | Gene, data = data, subset = Coefficient == coef,
+beta0densityplot <- function(coef = "Age", mtype = "wnlm.Q", data = Betas, ...) {
+    densityplot(~ Estimate | Gene, data = data, subset = Coefficient == coef & Model == mtype,
                 par.settings = list(add.text = list(cex = 0.8)),
                 scales = list(relation = "free", draw = FALSE),
                 U = data$Permutation == "U",
@@ -76,7 +70,9 @@ beta0densityplot <- function(coef = "Age", data = Betas, ...) {
                     beta.U <- x[U[subscripts]]
                     p.val <- beta.U
                     panel.abline(v = beta.U, col = trellis.par.get("plot.line")$col, lty = "dotted")
-                    panel.text(x = beta.U, y = 0, labels = get.p.val(beta.U, x[! U[subscripts]], do.norm = FALSE))
+                    panel.text(x = beta.U, y = 0,
+                               labels = format(get.p.val(beta.U, x[! U[subscripts]], do.norm = TRUE),
+                                               digits = 2, scientific = FALSE))
                 }, main = coef,
                 ...)
 }

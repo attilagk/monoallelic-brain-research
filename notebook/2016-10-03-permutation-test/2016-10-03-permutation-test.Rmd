@@ -1,4 +1,4 @@
-### Preparations
+## Preparations
 
 ```{r echo=FALSE, warnings=FALSE}
 library(ggplot2)
@@ -32,33 +32,99 @@ Y <- get.readcounts(gene.ids = gene.ids, count.thrs = 0)
 
 ```{r cache=TRUE, warning=FALSE, message=FALSE}
 set.seed(1976)
-perms <- data.frame(cbind(seq_len(nrow(E)), replicate(n.perm <- 1e3, sample.int(nrow(E)))))
+perms <- data.frame(cbind(seq_len(nrow(E)), replicate(n.perm <- 1e4, sample.int(nrow(E)))))
 names(perms) <- c("U", paste0("P", seq_len(n.perm)))
-sel.models <- c("wnlm.Q")
+sel.models <- c("wnlm.Q", "logi.S")
 sel.vars <- e.vars[c(1, 3, 5, 8)]
 system.time(Betas <- aggregate.CI.permut2(perms = perms, gene.ids = gene.ids, e.vars = e.vars,
                                           sel.vars = sel.vars, sel.models = sel.models,
                                           E = E, Y = Y[gene.ids], skip.CI = TRUE))
 ```
 
-The expressions above obtain the null distribution of regression coefficients for the selected predictor(s) `r sel.vars` under the selected model(s) `r sel.models` based on `r n.perm` permutations.
+## Results
+
+The expressions above obtain the null distribution of regression coefficients for the selected predictor(s) `r sel.vars` under the selected model(s) `r sel.models` based on `r n.perm` permutations.  Each panel within a plot shows a red vertical zero line of the null hypothesis $\beta_j = 0$, the null distribution as probability density (solid blue line) based on the permutations, and the corresponding p-value (dotted blue line and number on the bottom).
+
+### Under wnlm.Q
 
 ```{r beta-age-null-wnlm-Q}
-beta0densityplot("Age")
+beta0densityplot("Age", mtype = "wnlm.Q")
 ```
 
-```{r beta-gender-null-wnlm-Q}
-beta0densityplot("GenderMale")
+```{r beta-gender-null-wnlm-Q, echo=FALSE}
+beta0densityplot("GenderMale", mtype = "wnlm.Q")
 ```
 
-```{r beta-dx-scz-wnlm-Q}
-beta0densityplot("DxSCZ")
+```{r beta-dx-scz-wnlm-Q, echo=FALSE}
+beta0densityplot("DxSCZ", mtype = "wnlm.Q")
 ```
 
-```{r beta-dx-aff-wnlm-Q}
-beta0densityplot("DxAFF")
+```{r beta-dx-aff-wnlm-Q, echo=FALSE}
+beta0densityplot("DxAFF", mtype = "wnlm.Q")
 ```
 
-```{r beta-ancestry-1-null-wnlm-Q}
-beta0densityplot("Ancestry.1")
+```{r beta-ancestry-1-null-wnlm-Q, echo=FALSE}
+beta0densityplot("Ancestry.1", mtype = "wnlm.Q")
+```
+
+### Under logi.S
+
+```{r beta-age-null-logi-S, echo=FALSE}
+beta0densityplot("Age", mtype = "logi.S")
+```
+
+```{r beta-gender-null-logi-S, echo=FALSE}
+beta0densityplot("GenderMale", mtype = "logi.S")
+```
+
+```{r beta-dx-scz-logi-S, echo=FALSE}
+beta0densityplot("DxSCZ", mtype = "logi.S")
+```
+
+```{r beta-dx-aff-logi-S, echo=FALSE}
+beta0densityplot("DxAFF", mtype = "logi.S")
+```
+
+```{r beta-ancestry-1-null-logi-S, echo=FALSE}
+beta0densityplot("Ancestry.1", mtype = "logi.S")
+```
+
+## Comparison to p-values from t-distribution
+
+The calculations and the plot below compare the p-values from the permutations to those based on the theoretical t-distribution of the statistic.  Comparing these results to those from model checking reveals that the two approaches to p-value calculation agree (fall near the gray diagonal on the plots) as long as the model fits the data well.  Otherwise the t-distribution based approach tends to produce much lower p-values and therefore exaggerate the significance that $\beta_j\neq 0$.
+
+```{r}
+source("2016-10-03-permutation-test.R")
+```
+
+```{r cache=TRUE, warning=FALSE}
+M <- do.all.fits(Z = Y[gene.ids], G = E, preds = e.vars, sel.models = sel.models)
+cf <- unlist(sapply(e.vars, function(e.v) predictor2coefs(M[[c(1, 1)]], e.v)))
+both.p.val <-
+    do.call(rbind,
+            lapply(sel.models, function(mtype)
+                   do.call(rbind,
+                           lapply(cf, function(coef)
+                                  do.call(rbind,
+                                          lapply(gene.ids,
+                                                 function(g) get.both.p.vals(mtype = mtype, gene = g, coef = coef, M = M, B = Betas)))))))
+```
+
+```{r p-val-tdist-vs-perm, echo=FALSE}
+xyplot(log10(p.val.t.dist) ~ log10(p.val.perm) | Gene, data = both.p.val, groups = Model,
+       par.settings = list(add.text = list(cex = 0.8)),
+       panel = function(...) {
+           panel.abline(a = 0, b = 1, col = "gray")
+           panel.xyplot(...)
+       },
+       auto.key = list(columns = 2),
+       xlab = expression(paste(plain(log)[10], "p  (permutations)")),
+       ylab = expression(paste(plain(log)[10], "p  (t-distribution)")),
+       ylim = c(-15, 1))
+```
+
+Results are written to csv file
+
+```{r}
+write.csv(both.p.val, "../../results/regr-coefs.csv", row.names = FALSE)
 ```

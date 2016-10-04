@@ -22,7 +22,7 @@ e.vars <- c("Age",
 # an objects of class glm (or NULL if n.obs < thrs)
 do.fit <- function(response = Y[[1]]$S,
                    X = E,
-                   e.v = names(E)[1:13],
+                   e.v = names(E)[1:12],
                    thrs = 0, # setting to Inf tolerates all points
                    ...) {
     # check if number of observations is tolerable
@@ -51,7 +51,7 @@ do.fit <- function(response = Y[[1]]$S,
 # Details: this is a wrapper around 'do.fit'
 do.all.fits <- function(Z = Y,
                         G = E,
-                        preds = names(E)[1:13],
+                        preds = names(E)[1:12],
                         min.obs = 0,
                         sel.models = NULL,
                         ...) {
@@ -259,6 +259,31 @@ aggregate.CI.permut2 <- function(perms, gene.ids, e.vars, sel.vars = e.vars,
                                                              do.call(rbind,
                                                                      lapply(names(perms), # ...across permutations
                                                                             helper, gene, e.v, type))))))))
+}
+
+# calculate p-value for H_0: param beta = 0 based on permutations
+#
+# Arguments
+# beta.U: the unpermuted (i.e. observed) estimate for beta
+# betas: vector of permuted estimates
+# two.tailed: TRUE for H_0: beta = 0; FALSE for H_0: beta >(or <) 0 given that beta.U >(or <) 0
+# do.norm: whether normalize the number of permuted betas as extreme as beta.U (TRUE for p-value)
+#
+# Value
+# The estimated p-value for H_0 or, if do.norm = FALSE, the number of 
+# estimated betas from permutations as extreme the estimate based on the
+# observed data.
+#
+# Details
+# The calculation uses H_0: beta = median(betas) instead of H_0 beta = 0 to
+# avoid p-values > 1.  In the limit of the number of permutations it is
+# expected that median(betas) -> 0.
+get.p.val <- function(beta.U, betas, two.tailed = TRUE, do.norm = TRUE) {
+    L.tail <- function() sum(beta.U >= betas, na.rm = TRUE)
+    R.tail <- function() sum(beta.U <= betas, na.rm = TRUE)
+    res <- if(beta.U > median(betas, na.rm = TRUE)) R.tail() else L.tail()
+    res <- if(two.tailed) 2 * res
+    if(do.norm) res / length(betas) else res
 }
 
 # an earlier, less complete aggregator function similar to aggregate.CI.permut2
