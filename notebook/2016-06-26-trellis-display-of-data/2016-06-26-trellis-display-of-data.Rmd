@@ -50,16 +50,18 @@ lattice.options(default.theme = "standard.theme")
 P <- list()
 # lattice implementation
 P$s.age.inst$lattice <-
-    xyplot(S ~ Age | Gene, data = S.long, groups = Institution,
+    xyplot(S ~ Age | Gene, data = S.long,
+           subset = Gene %in% gene.ids,
+           groups = Institution,
            panel = function(x, y, ...) {
                panel.xyplot(x, y, pch = 21, cex = 0.5, ...)
                panel.smoother(x, y, col = "black", lwd = 2, ...)
            },
-           auto.key = list(title = "institution", space = "right"),
+           auto.key = list(title = "institution", columns = 3),
            par.settings = list(add.text = list(cex = 0.8)),
            ylab = "read count ratio, S",
            xlab = "age",
-           aspect = "fill", layout = c(5, 7))
+           aspect = "fill", layout = c(6, 5))
 # ggplot2 implementation
 g <- ggplot(data = S.long, aes(x = Age, y = S))
 g <- g + geom_point(pch = "o", aes(color = Institution))
@@ -77,6 +79,7 @@ P <- list()
 # lattice implementation
 P$s.age.gender$lattice <-
     xyplot(S ~ Age | Gene, data = S.long, groups = Gender,
+           subset = Gene %in% gene.ids,
            panel = function(x, y, ...) {
                panel.xyplot(x, y, pch = 21, ...)
                #panel.smoother(x, y, col = "black", lwd = 2, ...)
@@ -85,10 +88,10 @@ P$s.age.gender$lattice <-
                                superpose.symbol = list(cex = 0.5,
                                                        fill = trellis.par.get("superpose.symbol")$fill[c(2, 1)],
                                                        col = trellis.par.get("superpose.symbol")$col[c(2, 1)])),
-           auto.key = list(title = "gender", space = "right"),
+           auto.key = list(title = "gender", columns = 2),
            ylab = "read count ratio, S",
            xlab = "age",
-           aspect = "fill", layout = c(5, 7))
+           aspect = "fill", layout = c(6, 5))
 # ggplot2 implementation
 g <- ggplot(data = S.long, aes(x = Age, y = S))
 g <- g + geom_point(pch = "o", aes(color = Gender))
@@ -139,6 +142,7 @@ Y.long.Q[[4]] <- NULL
 
 ```{r R-age-gender, dev=c("png", "pdf"), warning=FALSE, echo=FALSE}
 xyplot(R ~ Age | Gene, data = R.long, groups = Gender,
+       subset = Gene %in% gene.ids,
        panel = function(x, y, ...) {
            panel.xyplot(x, y, pch = 21, ...)
            #panel.smoother(x, y, col = "black", lwd = 2, ...)
@@ -147,14 +151,15 @@ xyplot(R ~ Age | Gene, data = R.long, groups = Gender,
                            superpose.symbol = list(cex = 0.5,
                                                    fill = trellis.par.get("superpose.symbol")$fill[c(2, 1)],
                                                    col = trellis.par.get("superpose.symbol")$col[c(2, 1)])),
-       auto.key = list(title = "gender", space = "right"),
+       auto.key = list(title = "gender", columns = 2),
        ylab = "transformed read count ratio, R",
        xlab = "age",
-       aspect = "fill", layout = c(5, 7))
+       aspect = "fill", layout = c(6, 5))
 ```
 
 ```{r Q-age-gender, dev=c("png", "pdf"), warning=FALSE, echo=FALSE}
 xyplot(Q ~ Age | Gene, data = Q.long, groups = Gender,
+       subset = Gene %in% gene.ids,
        panel = function(x, y, ...) {
            panel.xyplot(x, y, pch = 21, ...)
            #panel.smoother(x, y, col = "black", lwd = 2, ...)
@@ -163,10 +168,10 @@ xyplot(Q ~ Age | Gene, data = Q.long, groups = Gender,
                            superpose.symbol = list(cex = 0.5,
                                                    fill = trellis.par.get("superpose.symbol")$fill[c(2, 1)],
                                                    col = trellis.par.get("superpose.symbol")$col[c(2, 1)])),
-       auto.key = list(title = "gender", space = "right"),
+       auto.key = list(title = "gender", columns = 2),
        ylab = "transformed read count ratio, Q",
        xlab = "age",
-       aspect = "fill", layout = c(5, 7))
+       aspect = "fill", layout = c(6, 5))
 ```
 ### Dependence on gene, age, and total read count $N$
 
@@ -174,9 +179,10 @@ xyplot(Q ~ Age | Gene, data = Q.long, groups = Gender,
 # easy lattice implementation
 P$s.age.n$lattice <-
     levelplot(log10(N) ~ Age + S | Gene, data = Y.long, alpha = 1.0, col = "white",
+              subset = Gene %in% gene.ids,
               ylab = "read count ratio, S",
               xlab = "age, years",
-              panel = panel.levelplot.points, layout = c(5, 7),
+              panel = panel.levelplot.points, layout = c(6, 5),
               colorkey = list(space = "top"), main = expression(paste(log[10], "(total read count)")),
               cex = 0.7,
               par.settings = list(add.text = list(cex = 0.8),

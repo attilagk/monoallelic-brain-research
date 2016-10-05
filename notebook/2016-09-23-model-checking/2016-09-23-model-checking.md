@@ -1,18 +1,4 @@
 
-```
-## Loading required package: RColorBrewer
-```
-
-```
-## 
-## Attaching package: 'latticeExtra'
-```
-
-```
-## The following object is masked from 'package:ggplot2':
-## 
-##     layer
-```
 
 ## Preliminaries
 
@@ -92,11 +78,14 @@ The combination is defined as in Statistical Models (A.C. Davison), p477: $r^\as
 
 
 ```r
-myqqnorm <- function(mtype, ...)
+skip <- ! sapply(M$logi.S, `[[`, "converged")[1:30]
+myqqnorm <- function(mtype, skip = FALSE, ...)
     qqmath(~ res.std.dev + res.combined | gene, data = diagnostics,
            ylim = c(-4, 4), abline = c(0, 1), pch = "+", subset = model.type %in% mtype,
            par.settings = list(add.text = list(cex = 0.8)),
-           main = mtype, xlab = "normal quantiles", ylab = "standardized residual", ...)
+           skip = skip, layout = c(6, 5),
+           main = mtype, xlab = "normal quantiles", ylab = "standardized residual",
+           ...)[c(1:30)[! skip]]
 #myqqnorm("unlm.S")
 ```
 
@@ -118,15 +107,16 @@ $\sqrt{r_{\mathrm{d}i}}$ is plotted against the fitted value $\bar{y}_i$.  The b
 
 
 ```r
-myhomoscedas <- function(mtype)
+myhomoscedas <- function(mtype, skip = FALSE)
     xyplot(sqrt(abs(res.std.dev)) ~ fitted | gene, data = diagnostics,
            panel = function(...) {
                panel.xyplot(...)
                panel.smoother(..., method = "loess", col = "black", se = FALSE)
            },
+           skip = skip, layout = c(6, 5),
            par.settings = list(add.text = list(cex = 0.8)),
            subset = model.type %in% mtype, pch = "+", main = mtype, xlab = "fitted value",
-           ylab = expression(sqrt(std.deviance.resid)))
+           ylab = expression(sqrt(std.deviance.resid)))[c(1:30)[! skip]]
 
 #update(myhomoscedas("unlm.S"), xlim = c(0.65, 1.05))
 ```
@@ -158,10 +148,11 @@ So Cook's distance combines the influence of case $i$ based on both the response
 
 
 ```r
-myinfluence <- function(mtype, xlim = c(-0.2, 4), ylim = c(-0.04, 0.8), ...)
+myinfluence <- function(mtype, xlim = c(-0.2, 4), ylim = c(-0.04, 0.8), skip = FALSE, ...)
     xyplot(cooks.dist ~ leverage / (1 - leverage) | gene, data = diagnostics, xlim = xlim, ylim = ylim,
            par.settings = list(add.text = list(cex = 0.8)),
-           subset = model.type %in% mtype, pch = "+", main = mtype, ylab = "Cook's distance", ...)
+           skip = skip, layout = c(6, 5),
+           subset = model.type %in% mtype, pch = "+", main = mtype, ylab = "Cook's distance", ...)[c(1:30)[! skip]]
 
 #myinfluence("unlm.S")
 ```

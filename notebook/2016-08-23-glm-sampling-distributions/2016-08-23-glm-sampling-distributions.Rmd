@@ -33,11 +33,13 @@ Y <- get.readcounts(gene.ids = genes2fit, count.thrs = 0)
 ids2fit <- grep("^UA(.8)?$", names(Y), value = TRUE, invert = TRUE)
 M <- list()
 f.ids <- list()
-M$multi <- do.all.fits(Y[ids2fit], preds = e.vars)
+#sel.models <- c("logi.S", "logi2.S", "wnlm.S", "wnlm.Q", "wnlm.R")
+sel.models <- NULL
+M$multi <- do.all.fits(Y[ids2fit], preds = e.vars, sel.models = sel.models)
 f.ids$multi <- as.data.frame(lapply(M$multi, function(m) ! sapply(m, is.null)))
 f.ids$multi["TMEM261P1", c("logi.S", "logi2.S")] <- FALSE
 f.ids$multi[c("WA.8", "WA"), ] <- FALSE # gene aggregates are not needed here
-M$simple <- do.all.fits(Y[ids2fit], preds = "Age")
+M$simple <- do.all.fits(Y[ids2fit], preds = "Age", sel.models = sel.models)
 f.ids$simple <- as.data.frame(lapply(M$simple, function(m) ! sapply(m, is.null)))
 f.ids$simple["TMEM261P1", c("logi.S", "logi2.S")] <- FALSE
 f.ids$simple[c("WA.8", "WA"), ] <- FALSE # gene aggregates are not needed here
@@ -57,7 +59,7 @@ The rank transformation achieves nearly constant variance allowing a better fit 
 
 ```{r cache=TRUE}
 gp <- 
-    lapply(c(GRB10 = "GRB10", ZNF331 = "ZNF331", KCNK9 = "KCNK9", PEG3 = "PEG3", PEG10 = "PEG10"),
+    lapply(c(GRB10 = "GRB10", ZDBF2 = "ZDBF2", ZNF331 = "ZNF331", KCNK9 = "KCNK9", PEG3 = "PEG3", PEG10 = "PEG10"),
              grid.predictions.1gene)
 ```
 
@@ -74,6 +76,10 @@ plots <- list()
 
 ```{r ZNF331, echo=FALSE}
 (plots$ZNF331 <- plot.predictions(gp$ZNF331, main = "ZNF331"))
+```
+
+```{r ZDBF2, echo=FALSE}
+(plots$ZDBF2 <- plot.predictions(gp$ZDBF2, main = "ZDBF2"))
 ```
 
 ### Examples for up-regulation

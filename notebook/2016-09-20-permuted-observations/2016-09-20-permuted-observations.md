@@ -125,6 +125,8 @@ The above analysis is extended now in two ways: presenting CI for several, thoug
 1. 20 random permutations
 1. under all selected models logi.S, wnlm.Q, wnlm.R, wnlm.S
 
+Note that genes (panels) are skipped for which the fit did not converge.  In the present analysis this applies only to logistic models, since those employ iterative least squares algorithm.  Normal linear models, on the other hand, use a one-step least square algorithm and thus are guaranteed to "converge".
+
 The following general results emerge from the following plots
 
 * in general the distribution of permuted CI tends to be wider than expected
@@ -139,7 +141,11 @@ The following general results emerge from the following plots
 
 
 ```r
-my.segplot2("Age", "logi.S", -2) # fit has not converged for gene ranked 2 (TMEM261P1)
+# skip genes for which the fit did not converge
+# applies to logistic models, since those employ iterative least squares algorithm
+# normal linear models use a one-step least square algorithm and thus are guaranteed to "converge"
+skip <- ! sapply(M$Unpermuted$logi.S, `[[`, "converged")[1:30]
+my.segplot2("Age", "logi.S", skip = skip) # fit has not converged for gene ranked 2 (TMEM261P1)
 ```
 
 <img src="figure/permuted-age-logi-S-1.png" title="plot of chunk permuted-age-logi-S" alt="plot of chunk permuted-age-logi-S" width="700px" />

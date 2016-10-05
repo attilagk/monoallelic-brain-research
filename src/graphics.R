@@ -42,7 +42,7 @@ my.xlim <- list(Age = 0.05 * xl,
                 Ancestry.5 = 20 * xl)
 
 
-my.segplot2 <- function(coef, type, main = type, to.skip = c(F, T, rep(F, 27)), ...) {
+my.segplot2 <- function(coef, type, main = type, skip = FALSE, layout = c(6, 5), ...) {
     segplot(ordered(Permutation, levels = rev(levels(Permutation))) ~ Lower.CL + Upper.CL | Gene, data = Betas,
             subset = Coefficient %in% coef & Model %in% type,
             level = factor(! Permutation == "U"),
@@ -54,9 +54,9 @@ my.segplot2 <- function(coef, type, main = type, to.skip = c(F, T, rep(F, 27)), 
             },
             xlab = eval(substitute(expression(paste(beta, "[ ", coef, " ]")), list(coef = coef))),
             ylab = "permutation", main = main,
-            skip = to.skip,
-            layout = c(5, 6),
-            scales = list(draw = FALSE, x = list(relation = "free")))[c(1:30)[! to.skip]]
+            skip = skip,
+            layout = layout,
+            scales = list(draw = FALSE, x = list(relation = "free")))[c(1:30)[! skip]]
 }
 
 beta0densityplot <- function(coef = "Age", mtype = "wnlm.Q", data = Betas, ...) {

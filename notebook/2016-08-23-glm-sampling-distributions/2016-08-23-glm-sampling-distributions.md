@@ -31,7 +31,7 @@ The rank transformation achieves nearly constant variance allowing a better fit 
 
 ```r
 gp <- 
-    lapply(c(GRB10 = "GRB10", ZNF331 = "ZNF331", KCNK9 = "KCNK9", PEG3 = "PEG3", PEG10 = "PEG10"),
+    lapply(c(GRB10 = "GRB10", ZDBF2 = "ZDBF2", ZNF331 = "ZNF331", KCNK9 = "KCNK9", PEG3 = "PEG3", PEG10 = "PEG10"),
              grid.predictions.1gene)
 ```
 
@@ -42,6 +42,8 @@ gp <-
 <img src="figure/PEG3-1.png" title="plot of chunk PEG3" alt="plot of chunk PEG3" width="700px" />
 
 <img src="figure/ZNF331-1.png" title="plot of chunk ZNF331" alt="plot of chunk ZNF331" width="700px" />
+
+<img src="figure/ZDBF2-1.png" title="plot of chunk ZDBF2" alt="plot of chunk ZDBF2" width="700px" />
 
 ### Examples for up-regulation
 

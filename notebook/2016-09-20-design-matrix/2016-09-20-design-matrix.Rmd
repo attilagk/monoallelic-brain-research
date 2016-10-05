@@ -117,14 +117,15 @@ termplot(M$wnlm.Q$KCNK9, terms = c(1:5, 7:11, 6))
 ```{r cache=TRUE, message=FALSE, echo=FALSE}
 # with RIN2
 lsurf2 <- list()
+gene <- "PEG3"
 l.M <- M2$wnlm.Q; ll.fun <- ll.wnlm; args.fun <- args.wnlm
 lsurf2$wnlm.Q <-
     rbind(ll.grid(l.M = l.M, v.name.A = "InstitutionPenn", CI.lev.A = c.a <- 1 - 1e-9, CI.lev.B = c.b <- 0.9, ll.fun = ll.fun, args.fun = args.fun),
-          ll.grid(l.M = l.M, gene = gene,v.name.A = "PMI", CI.lev.A = 0.9999, CI.lev.B = c.b, ll.fun = ll.fun, args.fun = args.fun),
-          ll.grid(l.M = l.M, gene = gene,v.name.A = "RIN", CI.lev.A = 0.05, CI.lev.B = c.b, ll.fun = ll.fun, args.fun = args.fun),
-          ll.grid(l.M = l.M, gene = gene,v.name.A = "DxSCZ", CI.lev.A = 1 - 1e-4, CI.lev.B = c.b, ll.fun = ll.fun, args.fun = args.fun),
-          ll.grid(l.M = l.M, gene = gene,v.name.A = "GenderMale", CI.lev.A = 1 - 1e-6, CI.lev.B = c.b, ll.fun = ll.fun, args.fun = args.fun),
-          ll.grid(l.M = l.M, gene = gene,v.name.A = "Ancestry.2", CI.lev.A = 1 - 1e-11, CI.lev.B = c.b, ll.fun = ll.fun, args.fun = args.fun))
+          ll.grid(l.M = l.M, gene = gene, v.name.A = "PMI", CI.lev.A = 0.9999, CI.lev.B = c.b, ll.fun = ll.fun, args.fun = args.fun),
+          ll.grid(l.M = l.M, gene = gene, v.name.A = "RIN", CI.lev.A = 0.05, CI.lev.B = c.b, ll.fun = ll.fun, args.fun = args.fun),
+          ll.grid(l.M = l.M, gene = gene, v.name.A = "DxSCZ", CI.lev.A = 1 - 1e-4, CI.lev.B = c.b, ll.fun = ll.fun, args.fun = args.fun),
+          ll.grid(l.M = l.M, gene = gene, v.name.A = "GenderMale", CI.lev.A = 1 - 1e-6, CI.lev.B = c.b, ll.fun = ll.fun, args.fun = args.fun),
+          ll.grid(l.M = l.M, gene = gene, v.name.A = "Ancestry.2", CI.lev.A = 1 - 1e-11, CI.lev.B = c.b, ll.fun = ll.fun, args.fun = args.fun))
 lsurf2$wnlm.Q$v.name.A <-
     factor(lsurf2$wnlm.Q$v.name.A, ordered = TRUE,
            levels = c("InstitutionPenn", "PMI", "RIN", "DxSCZ", "GenderMale", "Ancestry.2"))
@@ -136,11 +137,11 @@ lsurf <- list()
 l.M <- M$wnlm.Q; ll.fun <- ll.wnlm; args.fun <- args.wnlm
 lsurf$wnlm.Q <-
     rbind(ll.grid(l.M = l.M, v.name.A = "InstitutionPenn", CI.lev.A = c.a <- 1 - 1e-9, CI.lev.B = c.b <- 0.9, ll.fun = ll.fun, args.fun = args.fun),
-          ll.grid(l.M = l.M, gene = gene,v.name.A = "PMI", CI.lev.A = 0.9999, CI.lev.B = c.b, ll.fun = ll.fun, args.fun = args.fun),
-          ll.grid(l.M = l.M, gene = gene,v.name.A = "RIN", CI.lev.A = 0.5, CI.lev.B = c.b, ll.fun = ll.fun, args.fun = args.fun),
-          ll.grid(l.M = l.M, gene = gene,v.name.A = "DxSCZ", CI.lev.A = 1 - 1e-4, CI.lev.B = c.b, ll.fun = ll.fun, args.fun = args.fun),
-          ll.grid(l.M = l.M, gene = gene,v.name.A = "GenderMale", CI.lev.A = 1 - 1e-6, CI.lev.B = c.b, ll.fun = ll.fun, args.fun = args.fun),
-          ll.grid(l.M = l.M, gene = gene,v.name.A = "Ancestry.2", CI.lev.A = 1 - 1e-11, CI.lev.B = c.b, ll.fun = ll.fun, args.fun = args.fun))
+          ll.grid(l.M = l.M, gene = gene, v.name.A = "PMI", CI.lev.A = 0.9999, CI.lev.B = c.b, ll.fun = ll.fun, args.fun = args.fun),
+          ll.grid(l.M = l.M, gene = gene, v.name.A = "RIN", CI.lev.A = 0.5, CI.lev.B = c.b, ll.fun = ll.fun, args.fun = args.fun),
+          ll.grid(l.M = l.M, gene = gene, v.name.A = "DxSCZ", CI.lev.A = 1 - 1e-4, CI.lev.B = c.b, ll.fun = ll.fun, args.fun = args.fun),
+          ll.grid(l.M = l.M, gene = gene, v.name.A = "GenderMale", CI.lev.A = 1 - 1e-6, CI.lev.B = c.b, ll.fun = ll.fun, args.fun = args.fun),
+          ll.grid(l.M = l.M, gene = gene, v.name.A = "Ancestry.2", CI.lev.A = 1 - 1e-11, CI.lev.B = c.b, ll.fun = ll.fun, args.fun = args.fun))
 lsurf$wnlm.Q$v.name.A <-
     factor(lsurf$wnlm.Q$v.name.A, ordered = TRUE,
            levels = c("InstitutionPenn", "PMI", "RIN", "DxSCZ", "GenderMale", "Ancestry.2"))

@@ -75,11 +75,14 @@ Two kind of standardized residual is plotted against the quantiles of the standa
 The combination is defined as in Statistical Models (A.C. Davison), p477: $r^\ast_i = r_{\mathrm{d}i} + r_{\mathrm{d}i}^{-1} \log (r_{\mathrm{p}i} / r_{\mathrm{d}i})$.  Note that $r_{\mathrm{d}i}$, $r_{\mathrm{d}i}$ and $r^\ast_i$ differ for generalized linear models such as logi.S and logi2.S but for linear models they all equal the usual definition of residual i.e. the observed minus fitted value $y_i - \bar{y}_i$.
 
 ```{r qqnorm-unlm-S}
-myqqnorm <- function(mtype, ...)
+skip <- ! sapply(M$logi.S, `[[`, "converged")[1:30]
+myqqnorm <- function(mtype, skip = FALSE, ...)
     qqmath(~ res.std.dev + res.combined | gene, data = diagnostics,
            ylim = c(-4, 4), abline = c(0, 1), pch = "+", subset = model.type %in% mtype,
            par.settings = list(add.text = list(cex = 0.8)),
-           main = mtype, xlab = "normal quantiles", ylab = "standardized residual", ...)
+           skip = skip, layout = c(6, 5),
+           main = mtype, xlab = "normal quantiles", ylab = "standardized residual",
+           ...)[c(1:30)[! skip]]
 #myqqnorm("unlm.S")
 ```
 
@@ -100,11 +103,12 @@ myqqnorm("wnlm.R")
 ```
 
 ```{r qqnorm-logi-S, echo=FALSE}
-myqqnorm("logi.S")
+myqqnorm("logi.S", skip = skip)
 ```
 
 ```{r qqnorm-logi2-S, echo=FALSE}
-#myqqnorm("logi2.S")
+#skip2 <- ! sapply(M$logi2.S, `[[`, "converged")[1:30]
+#myqqnorm("logi2.S", skip = skip2)
 ```
 
 ### Homogeneity of error (homoscedasticity)
@@ -112,15 +116,16 @@ myqqnorm("logi.S")
 $\sqrt{r_{\mathrm{d}i}}$ is plotted against the fitted value $\bar{y}_i$.  The black lines correspond to the data passed through a LOESS filter.  All models assume homogeneous error that is no systematic variation with the fitted value. 
 
 ```{r homoscedas-unlm-S}
-myhomoscedas <- function(mtype)
+myhomoscedas <- function(mtype, skip = FALSE)
     xyplot(sqrt(abs(res.std.dev)) ~ fitted | gene, data = diagnostics,
            panel = function(...) {
                panel.xyplot(...)
                panel.smoother(..., method = "loess", col = "black", se = FALSE)
            },
+           skip = skip, layout = c(6, 5),
            par.settings = list(add.text = list(cex = 0.8)),
            subset = model.type %in% mtype, pch = "+", main = mtype, xlab = "fitted value",
-           ylab = expression(sqrt(std.deviance.resid)))
+           ylab = expression(sqrt(std.deviance.resid)))[c(1:30)[! skip]]
 
 #update(myhomoscedas("unlm.S"), xlim = c(0.65, 1.05))
 ```
@@ -142,11 +147,11 @@ update(myhomoscedas("wnlm.R"), xlim = c(0, 100))
 ```
 
 ```{r homoscedas-logi-S, echo=FALSE, warning=FALSE}
-update(myhomoscedas("logi.S"), xlim = c(0.65, 1))
+update(myhomoscedas("logi.S", skip = skip), xlim = c(0.65, 1))
 ```
 
 ```{r homoscedas-logi2-S, echo=FALSE, warning=FALSE}
-#update(myhomoscedas("logi2.S"), xlim = c(0.65, 1))
+#update(myhomoscedas("logi2.S", skip = skip2), xlim = c(0.65, 1))
 ```
 
 ### Influence of individual cases
@@ -163,10 +168,11 @@ where $p$ is the number of parameters (see Statistical Models, p477).
 So Cook's distance combines the influence of case $i$ based on both the response (i.e. the residual $r_{\mathrm{p}i}$) and  the predictors (more precisely the leverage $h_{ii}$, which for lm only depends on the predictors and for glm depends also on the response to some degree).  Good fit is indicated by equally low $C_i$ (and $h_{ii}$) for all cases implying that all cases carry equal amount of information on the regression parameters $\beta$.
 
 ```{r influence-unlm-S}
-myinfluence <- function(mtype, xlim = c(-0.2, 4), ylim = c(-0.04, 0.8), ...)
+myinfluence <- function(mtype, xlim = c(-0.2, 4), ylim = c(-0.04, 0.8), skip = FALSE, ...)
     xyplot(cooks.dist ~ leverage / (1 - leverage) | gene, data = diagnostics, xlim = xlim, ylim = ylim,
            par.settings = list(add.text = list(cex = 0.8)),
-           subset = model.type %in% mtype, pch = "+", main = mtype, ylab = "Cook's distance", ...)
+           skip = skip, layout = c(6, 5),
+           subset = model.type %in% mtype, pch = "+", main = mtype, ylab = "Cook's distance", ...)[c(1:30)[! skip]]
 
 #myinfluence("unlm.S")
 ```
@@ -188,11 +194,11 @@ myinfluence("wnlm.R")
 ```
 
 ```{r influence-logi-S, echo=FALSE}
-myinfluence("logi.S")
+myinfluence("logi.S", skip = skip)
 ```
 
 ```{r influence-logi2-S, echo=FALSE}
-#myinfluence("logi2.S")
+#myinfluence("logi2.S", skip = skip2)
 ```
 
 ### Identifying outliers

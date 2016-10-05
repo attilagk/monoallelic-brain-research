@@ -15,16 +15,18 @@ Implementation of the same plot both with the `lattice` and the `ggplot2` packag
 P <- list()
 # lattice implementation
 P$s.age.inst$lattice <-
-    xyplot(S ~ Age | Gene, data = S.long, groups = Institution,
+    xyplot(S ~ Age | Gene, data = S.long,
+           subset = Gene %in% gene.ids,
+           groups = Institution,
            panel = function(x, y, ...) {
                panel.xyplot(x, y, pch = 21, cex = 0.5, ...)
                panel.smoother(x, y, col = "black", lwd = 2, ...)
            },
-           auto.key = list(title = "institution", space = "right"),
+           auto.key = list(title = "institution", columns = 3),
            par.settings = list(add.text = list(cex = 0.8)),
            ylab = "read count ratio, S",
            xlab = "age",
-           aspect = "fill", layout = c(5, 7))
+           aspect = "fill", layout = c(6, 5))
 # ggplot2 implementation
 g <- ggplot(data = S.long, aes(x = Age, y = S))
 g <- g + geom_point(pch = "o", aes(color = Institution))
@@ -50,6 +52,7 @@ P <- list()
 # lattice implementation
 P$s.age.gender$lattice <-
     xyplot(S ~ Age | Gene, data = S.long, groups = Gender,
+           subset = Gene %in% gene.ids,
            panel = function(x, y, ...) {
                panel.xyplot(x, y, pch = 21, ...)
                #panel.smoother(x, y, col = "black", lwd = 2, ...)
@@ -58,10 +61,10 @@ P$s.age.gender$lattice <-
                                superpose.symbol = list(cex = 0.5,
                                                        fill = trellis.par.get("superpose.symbol")$fill[c(2, 1)],
                                                        col = trellis.par.get("superpose.symbol")$col[c(2, 1)])),
-           auto.key = list(title = "gender", space = "right"),
+           auto.key = list(title = "gender", columns = 2),
            ylab = "read count ratio, S",
            xlab = "age",
-           aspect = "fill", layout = c(5, 7))
+           aspect = "fill", layout = c(6, 5))
 # ggplot2 implementation
 g <- ggplot(data = S.long, aes(x = Age, y = S))
 g <- g + geom_point(pch = "o", aes(color = Gender))

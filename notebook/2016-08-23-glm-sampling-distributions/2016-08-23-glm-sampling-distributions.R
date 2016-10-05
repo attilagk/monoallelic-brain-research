@@ -40,7 +40,7 @@
 # At the moment the grid.predictions can only deal with simple regression
 # models; the processing of 'multi' models must be implemented if necessary.
 grid.predictions <- function(lll.M = M, M.multi = "simple", M.family = "wnlm.R", gene = "GRB10",
-                             l.ylim = list(nlm.R = c(-20, 120), nlm.S = c(0.4, 1.1), logi.S = c(0.4, 1), logi2.S = c(0.5, 1)),
+                             l.ylim = list(nlm.Q = c(-1, 9), nlm.R = c(-20, 120), nlm.S = c(0.4, 1.1), logi.S = c(0.4, 1), logi2.S = c(0.5, 1)),
                              xlim = c(-50, 200), n.pnts = 201, ...) {
     beta <- coef(M <- lll.M[[M.multi]][[M.family]][[gene]])
     # observed data
@@ -70,10 +70,13 @@ grid.predictions <- function(lll.M = M, M.multi = "simple", M.family = "wnlm.R",
     # select function according to M.family
     pdfun <- switch(M.family,
                     wnlm.S = pdf.nlm, unlm.S = pdf.nlm,
+                    wnlm.Q = pdf.nlm, unlm.Q = pdf.nlm,
                     wnlm.R = pdf.nlm, unlm.R = pdf.nlm,
                     logi.S = pdf.logi, logi2.S = function(x) pdf.logi(x, logi2 = TRUE))
     # set resolution
     x <- seq(xlim[1], xlim[2], length.out = n.pnts)
+    if(grepl("nlm.Q", M.family))
+        ylim <- l.ylim$nlm.Q # scale to percentiles
     if(grepl("nlm.R", M.family))
         ylim <- l.ylim$nlm.R # scale to percentiles
     if(grepl("nlm.S", M.family))
@@ -94,7 +97,7 @@ grid.predictions <- function(lll.M = M, M.multi = "simple", M.family = "wnlm.R",
         mu <- mu / 2 + 0.5 # scale down vertically by a factor of 2 and shift upwards
     df$mu <- mu
     df$multi <- factor(M.multi, levels = c("simple", "multiple"), ordered = TRUE)
-    df$family <- factor(M.family, levels = c("logi.S", "logi2.S", "wnlm.S", "wnlm.R", "unlm.S", "unlm.R"), ordered = TRUE)
+    df$family <- factor(M.family, levels = c("logi.S", "logi2.S", "wnlm.S", "wnlm.Q", "wnlm.R", "unlm.S", "unlm.Q", "unlm.R"), ordered = TRUE)
     df$gene <- factor(gene, levels = names(lll.M[[M.multi]][[M.family]]), ordered = TRUE)
     df$n <- n
     # from wide format to long format
@@ -114,7 +117,8 @@ grid.predictions <- function(lll.M = M, M.multi = "simple", M.family = "wnlm.R",
 # families for a given gene
 grid.predictions.1gene <- function(gene = "GRB10", lll.M = M, M.multi = "simple",
                                    M.families = c(logi.S = "logi.S", logi2.S = "logi2.S", wnlm.S = "wnlm.S",
-                                                  wnlm.R = "wnlm.R", unlm.S = "unlm.S", unlm.R = "unlm.R")[1:4]) {
+                                                  wnlm.Q = "wnlm.Q", wnlm.R = "wnlm.R", unlm.S = "unlm.S",
+                                                  unlm.Q = "unlm.Q", unlm.R = "unlm.R")[1:4]) {
     do.call(rbind,
             lapply(M.families,
                    function(x) grid.predictions(lll.M = M, M.multi = "simple", M.family = x, gene = gene)))
@@ -138,13 +142,13 @@ plot.predictions <- function(df, fm = formula(density ~ x * y | family), ...) {
                                col = "black", type = "l", lwd = 2, ...)
                   panel.xyplot(x = df$obs.x[subscripts], y = df$obs.y[subscripts],
                                pch = 21, col = "darkgreen", fill = "green", alpha = 0.5, cex = 0.5, ...)
-                  is.R <- grepl("nlm.R", M.family[subscripts][1])
-                  panel.rect(xleft = 0, ybottom = ifelse(is.R, 0, 0.5),
-                             xright = 1e5, ytop = ifelse(is.R, 100, 1), lty = "dotted")
+                  is.Q <- grepl("nlm.Q", M.family[subscripts][1])
+                  panel.rect(xleft = 0, ybottom = ifelse(is.Q, 0, 0.5),
+                             xright = 1e5, ytop = ifelse(is.Q, 100, 1), lty = "dotted")
               },
               par.settings = list(panel.background = list(col = "gray"), regions = list(col = rev(trellis.par.get("regions")$col))),
               scales = list(y = list(relation = "free")), colorkey = FALSE,
-              ylim = list(c(0.44, 1.06), c(0.44, 1.06), c(0.44, 1.06), c(-10, 110)),
-              xlab = "age", ylab = "S: read count ratio;  R: transformed S",
+              ylim = list(c(0.44, 1.06), c(0.44, 1.06), c(0.44, 1.06), c(0, 8)),
+              xlab = "age", ylab = "S: read count ratio;  Q: transformed S",
               ...)
 }
