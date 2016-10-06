@@ -12,9 +12,6 @@ The current work studies this by performing two main steps
 ## Data import and preparation
 
 
-```
-## Loading required package: RColorBrewer
-```
 
 Load data importer functions:
 
@@ -166,7 +163,7 @@ beta.age <- list()
 beta.age$logi.S <- do.beta.age(M$logi.S[f.ids$logi.S])
 beta.age$logi2.S <- do.beta.age(M$logi2.S[f.ids$logi2.S])
 beta.age$wnlm.R <- do.beta.age(M$wnlm.R[f.ids$wnlm.R])
-beta.age$unlm.R <- do.beta.age(M$unlm.R[f.ids$unlm.R])
+beta.age$wnlm.Q <- do.beta.age(M$wnlm.Q[f.ids$wnlm.Q])
 ```
 
 The next plot presents the maximum likelihood estimate $\hat{\beta}_\mathrm{age}$ of the regression coefficient mediating age's effect in the logistic model `logi.S`.  Only those genes are shown that were fitted, of course.  Confidence intervals are not shown for clarity.
@@ -198,7 +195,7 @@ beta.age.95 <- list()
 beta.age.95$logi.S <- do.beta.age(M$logi.S[f.ids$logi.S], conf.lev = 0.95)
 beta.age.95$logi2.S <- do.beta.age(M$logi2.S[f.ids$logi2.S], conf.lev = 0.95)
 beta.age.95$wnlm.R <- do.beta.age(M$wnlm.R[f.ids$wnlm.R], conf.lev = 0.95)
-beta.age.95$unlm.R <- do.beta.age(M$unlm.R[f.ids$unlm.R], conf.lev = 0.95)
+beta.age.95$wnlm.Q <- do.beta.age(M$wnlm.Q[f.ids$wnlm.Q], conf.lev = 0.95)
 ```
 
 As expected, the age effect is significant for more genes at lower confidence

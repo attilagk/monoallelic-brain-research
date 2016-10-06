@@ -25,7 +25,7 @@ names(gene.ids) <- gene.ids
 ```
 
 Get data
-```{r cache=TRUE, warning=FALSE}
+```{r cache=FALSE, warning=FALSE}
 E <- get.predictors() # default arguments
 Y <- get.readcounts(gene.ids = gene.ids, count.thrs = 0)
 ```
@@ -50,17 +50,17 @@ These points will be detailed in the respective sections.
 
 Start by fitting all models:
 
-```{r cache=TRUE, warning=FALSE, message=FALSE}
+```{r cache=FALSE, warning=FALSE, message=FALSE}
 # exclude unweighed aggregates UA.8 and UA from fitting
 to.fit.ids <- grep("^UA(.8)?$", names(Y), value = TRUE, invert = TRUE)
-sel.models <- c("logi.S", "wnlm.Q", "wnlm.R", "wnlm.S"); names(sel.models) <- sel.models
+sel.models <- c("logi.S", "logi2.S", "wnlm.Q", "wnlm.R", "wnlm.S"); names(sel.models) <- sel.models
 #sel.models <- NULL
 M <- do.all.fits(Y[to.fit.ids], G = E, preds = e.vars, sel.models = sel.models)
 ```
 
 Calculate diagnostics:
 
-```{r cache=TRUE, warning=FALSE}
+```{r cache=FALSE, warning=FALSE}
 diagnostics <- lapply(names(M), function(m) get.diagnostics(M[[m]][gene.ids], mtype = m))
 diagnostics <- do.call(rbind, diagnostics)
 ```
@@ -107,8 +107,8 @@ myqqnorm("logi.S", skip = skip)
 ```
 
 ```{r qqnorm-logi2-S, echo=FALSE}
-#skip2 <- ! sapply(M$logi2.S, `[[`, "converged")[1:30]
-#myqqnorm("logi2.S", skip = skip2)
+skip2 <- ! sapply(M$logi2.S, `[[`, "converged")[1:30]
+myqqnorm("logi2.S", skip = skip2)
 ```
 
 ### Homogeneity of error (homoscedasticity)
@@ -122,20 +122,21 @@ myhomoscedas <- function(mtype, skip = FALSE)
                panel.xyplot(...)
                panel.smoother(..., method = "loess", col = "black", se = FALSE)
            },
+           scales = list(x = list(relation = "free", draw = FALSE)),
            skip = skip, layout = c(6, 5),
            par.settings = list(add.text = list(cex = 0.8)),
            subset = model.type %in% mtype, pch = "+", main = mtype, xlab = "fitted value",
            ylab = expression(sqrt(std.deviance.resid)))[c(1:30)[! skip]]
 
-#update(myhomoscedas("unlm.S"), xlim = c(0.65, 1.05))
+#myhomoscedas("unlm.S")
 ```
 
 ```{r homoscedas-wnlm-S, echo=FALSE}
-update(myhomoscedas("wnlm.S"), xlim = c(0.65, 1.05))
+myhomoscedas("wnlm.S")
 ```
 
 ```{r homoscedas-unlm-R, echo=FALSE}
-#update(myhomoscedas("unlm.R"), xlim = c(0, 100))
+#myhomoscedas("unlm.R")
 ```
 
 ```{r homoscedas-wnlm-Q, echo=FALSE}
@@ -143,15 +144,15 @@ myhomoscedas("wnlm.Q")
 ```
 
 ```{r homoscedas-wnlm-R, echo=FALSE}
-update(myhomoscedas("wnlm.R"), xlim = c(0, 100))
+myhomoscedas("wnlm.R")
 ```
 
 ```{r homoscedas-logi-S, echo=FALSE, warning=FALSE}
-update(myhomoscedas("logi.S", skip = skip), xlim = c(0.65, 1))
+myhomoscedas("logi.S", skip = skip)
 ```
 
 ```{r homoscedas-logi2-S, echo=FALSE, warning=FALSE}
-#update(myhomoscedas("logi2.S", skip = skip2), xlim = c(0.65, 1))
+myhomoscedas("logi2.S", skip = skip2)
 ```
 
 ### Influence of individual cases
@@ -198,7 +199,7 @@ myinfluence("logi.S", skip = skip)
 ```
 
 ```{r influence-logi2-S, echo=FALSE}
-#myinfluence("logi2.S", skip = skip2)
+myinfluence("logi2.S", skip = skip2)
 ```
 
 ### Identifying outliers

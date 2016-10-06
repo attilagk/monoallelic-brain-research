@@ -99,3 +99,36 @@ do.beta.age <- function(l.M, conf.lev = 0.99) {
     B$imprinting.status <- gs[rownames(B), "imprinting.status"]
     return(B)
 }
+
+
+do.beta <- function(l.M, coef.name = "Age", conf.lev = 0.99) {
+    B <- get.CI(l.M, coef.name = coef.name, conf.lev = conf.lev)
+    B$Coefficient <- coef.name
+    B$start <- gs[rownames(B), "start"]
+    B$chr <- gs[rownames(B), "chr"]
+    B <- B[with(B, order(chr, start)), ]
+    B$cluster <- factor(x <- as.character(gs[rownames(B), "cluster"]), levels = unique(x), ordered = TRUE)
+    B$Gene <- factor(B$Gene, levels = rev(B$Gene), ordered = TRUE)
+    B$imprinting.status <- gs[rownames(B), "imprinting.status"]
+    return(B)
+}
+
+
+my.segplot2 <- function(data, ...) {
+segplot(Gene ~ Lower.CL + Upper.CL | Coefficient, data = data,
+                       groups = cluster,
+               # groups = imprinting.status, # groups does not seem to work with segplot
+               scales = list(x = list(draw = c(F, T)), y = list(relation = "free", rot = 0), alternating = FALSE, relation = "free"),
+               panel = function(...) {
+                   panel.grid(v = -1, h = -1)
+                   panel.abline(v = 0, col = "red")
+                   panel.segplot(...)
+               },
+               draw.bands = FALSE, centers = beta.hat,
+               #as.table = FALSE,
+               layout = c(1, length(levels(data$cluster))),
+               par.settings = list(layout.heights = list(panel = (x <- table(data$cluster))[x > 0]),
+                                   add.text = list(cex = 0.8)),
+               xlab = expression(beta[age]),
+               ...)
+}

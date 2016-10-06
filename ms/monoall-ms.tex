@@ -15,16 +15,10 @@ Ravi Sachinanandam, Andrew Chess}
 
 TODOs
 \begin{enumerate}
-\item check the fit of logi.S and filter out genes accordingly from the
-regression analysis
-\item plot terms of linear predictor using \texttt{termplot} in R
 \item extend Fig.~\ref{fig:age-effect} with 3 additional panels: gender,
 ancestry and Dx (psychiatric condition)
 \item compare the effect of age from this work to that from
 \cite{Perez2015} (Fig.~\ref{fig:mouse-comparison})
-\item for the factor Dx set Control as reference level instead of AFF
-\item randomly relabel individuals using the three levels of Dx and perform
-regression
 \item diminish size of plotting character for red symbols in
 Fig.~\ref{fig:clusters} 
 \item schematic figure on study design (Fig.~\ref{fig:study-design}) 
@@ -490,7 +484,7 @@ these results indicate the context-dependence of imprinting.
 \end{center}
 \end{figure}
 
-\subsection{Sources and psychological consequences of variation}
+\subsection{Modeling the variation of parental bias for selected genes}
 \label{sec:results-regression}
 
 We selected the 27 top-scoring genes in the ``known imprinted'' and ``nearby
@@ -520,7 +514,7 @@ shows how \(T_{ig}\) varies both within a gene and across genes.
 
 \begin{figure}
 \begin{center}
-\includegraphics[scale=0.6]{figures/2016-08-23-glm-sampling-distributions/GRB10-1.png}
+\includegraphics[scale=0.6]{figures/2016-08-23-glm-sampling-distributions/ZDBF2-1.png}
 \end{center}
 \caption{}
 \label{fig:predicted-curves}
@@ -531,27 +525,61 @@ models, one for each gene, by treating read count ratio as response and the
 variables in Table~\ref{tab:predictors} as predictors. The thick black curves
 and colored strips in Fig.~\ref{fig:predicted-curves} represent the predicted
 read count ratio and prediction intervals, respectively, under four of these
-models for the gene GRB10.  To allow visual evaluation of model fit to the
-observed values (green dots) the only predictor is age for the all models in
-these plots but for quantitative statistical inference all predictors were
-included.
+models for the gene ZDBF2.  Among our models the logistic ones, logi.S and
+logi2.S, have several desirable theoretical properties: they prohibit values
+\(S_{g}>1\), capture at least some of the obvious dependence of the variance
+of \(S_{g}\) on its mean, and take into account the amount of available data
+since they are natural extensions of simple binomial models conditioned on the
+observed total read count \(T_{ig}\).  The known robustness and easy
+interpretation of normal linear models motivated their use for the
+present data.  The flavors of normal linear models of this study are
+characterized by two features: (i.)~whether or not they are weighted by
+\(T_{ig}\) and (ii.)~the transformation, if any, that had been applied to
+\(S_{ig}\) before the fit.  While weighting had little impact (not shown) the
+transformation was critical: Fig.~\ref{fig:predicted-curves} demonstrates how
+a quasi-log-transformation \(Q\) dramatically improves fit (compare wnlm.Q to
+wnlm.S).
 
-As indicated by Fig.~\ref{fig:predicted-curves}, the logistic models logi.S
-and logi2.S fitted for most genes much better to the data than various flavors
-of normal linear models such as wnlm.S.  This is because only the former could
-express the observed steep dependence of the response's variance on its
-average.  Scale--location plots (for instance
-Fig.~\ref{fig:non-constant-variance}, top left) confirmed the poor fit of
-normal linear models, and calculated Cook's distances revealed also a
-non-systematic variation in error variance
-(Fig.~\ref{fig:non-constant-variance}, top right).  Both the systematic and
-non-systematic variation was remedied by rank transformation of observed read
-count ratios leading to the wnlm.R model
-(Fig.~\ref{fig:non-constant-variance}, bottom left and right) but this came at
-the price of a large increase in the overall error variance relative to the
-variation by wnlm.R (Fig.~\ref{fig:predicted-curves}).  Based on these results
-the wnlm.S models were deemed inadequate excluded from further
-analysis.
+An in-depth analysis of model fit was carried out involving all models,
+predictors, and selected genes (except TMEM261P1, for which the iterative
+weighted least square fitting algorithm did not converge under logistic
+models).  This analysis examined the normality of residuals
+(Fig.~\ref{fig:qqnorm-logi.S}, \ref{fig:qqnorm-logi2.S},
+\ref{fig:qqnorm-wnlm.S}, \ref{fig:qqnorm-wnlm.Q}, \ref{fig:qqnorm-wnlm.R}),
+the independence of residuals from the fitted value (i.e.~homoscedasticity,
+Fig.~\ref{fig:homoscedas-logi.S}, \ref{fig:homoscedas-logi2.S},
+\ref{fig:homoscedas-wnlm.S}, \ref{fig:homoscedas-wnlm.Q},
+\ref{fig:homoscedas-wnlm.R}), and the influence of each case/individual on the
+fit to address outliers (Fig.~\ref{fig:influence-logi.S},
+\ref{fig:influence-logi2.S}, \ref{fig:homoscedas-wnlm.S},
+\ref{fig:homoscedas-wnlm.Q}, \ref{fig:influence-wnlm.R}).  These model
+checking results suggest that for all genes the normal linear model fits at
+least reasonably well to quasi-log-transformed data (wnlm.Q) slightly less
+well to rank-transformed data (wnlm.R) and much worse to untransformed data
+(wnlm.S).  On the other hand, both logistic models exhibited greatly variable
+fit across genes but the fit of logi.S was in general better than that of
+logi2.S.  Given these results we made inferences based on wnlm.Q and---if the
+quality of the fit permits for a given gene---also on logi.S.
+
+Comparing the estimated regression coefficients \(\hat{\beta}_{jg}\) for some
+gene \(g\) and parameter under the normal linear (wnlm.Q) and logistic
+(logi.S) model revealed good qualitative agreement unless logi.S failed to fit
+the data well for that gene.  The comparison also revealed that logi.S is more
+powerful in detecting a significant effect and rejecting the null hypothesis
+\(\beta_{jg}=0\), which is in line with the mentioned theoretical advantages
+of logistic models.  The p-value for each null hypothesis was calculated not
+only the standard way based on normal distribution theory but also from a
+random permutation test (Fig.~\ref{fig:p-val-tdist-vs-perm}).  The two
+approaches to the p-value agreed closely under wnlm.Q for all genes while
+under logi.S the agreement depended on model fit and in particular on the
+normality of residuals (cf.~Fig.~\ref{fig:qqnorm-logi.S}).
+
+These findings validate our approach to modeling the variation of parental bias
+(using wnlm.Q and logi.S models) and how that variation is explained by
+the observed predictor variables.  In what follows we make inferences on
+the biological predictors.
+
+\subsection{Inferring regulators and consequences of parental bias}
 
 Since all of these models account for each predictor separately, they are
 expected, in principle, to successfully dissect their effects although the
@@ -561,20 +589,9 @@ that perhaps with the exception of those including the predictor RIN, the
 associations only moderately distort likelihood surfaces
 (Fig.~\ref{fig:likelihood-surface}).
 
-That logistic models fit the data relatively better was suggested by not only plots
-similar to Fig.~\ref{fig:predicted-curves} but also the fact that these are natural
-models of count data, which readily account for the observed variation of
-total read count, while normal linear models in general do not.  Therefore we
-used weighted normal linear models (i.e.~wnlm.R) in addition to unweighted
-ones (unlm.R), where the weight of observation on individual \(i\) was given
-by total read counts \(T_{ig}\) (Table~\ref{tab:nlm}).  In addition, we fitted
-a variant of each model (denoted as ``.WA'') which assumes that predictors
-affect read count ratio for each gene identically (see
-Section~\ref{sec:methods-regression}).
-
-Fig.~\ref{fig:all-effects-logi.S},~\ref{fig:all-effects-logi2.S},~\ref{fig:all-effects-wnlm.R},
-and~\ref{fig:all-effects-unlm.R} present the estimated regression coefficients
-along with their 99\% confidence intervals for all of the above models.  The
+Fig.~\ref{fig:all-effects-wnlm.Q}~,\ref{fig:all-effects-logi.S},
+and present the estimated regression coefficients
+along with their 99\% confidence intervals.  The
 more significant results under logistic models indicated that they were indeed
 more powerful than the weighted or unweighed normal linear models, in
 agreement with their better fit and favorable theoretical properties and that
@@ -601,14 +618,6 @@ TODO: finish the rest of the Results section.
 \caption{This figure will be extended with 3 additional panels: gender,
 ancestry and Dx (psychiatric condition)}
 \label{fig:age-effect}
-\end{figure}
-
-\begin{figure}
-\begin{center}
-\includegraphics[scale=0.6]{figures/2016-06-22-extending-anova/anova-effects-fw-rv-logi-S-1.pdf}
-\end{center}
-\caption{}
-\label{fig:anova}
 \end{figure}
 
 \begin{figure}
@@ -794,7 +803,135 @@ regulators such as age, gender, and ancestry.
 
 \begin{figure}
 \begin{center}
-\includegraphics[scale=0.6]{figures/2016-08-21-likelihood-surface/ll-surf-coefs-1.png}
+\includegraphics[scale=0.6]{figures/2016-09-23-model-checking/qqnorm-logi-S-1.pdf}
+\end{center}
+\caption{}
+\label{fig:qqnorm-logi.S}
+\end{figure}
+
+\begin{figure}
+\begin{center}
+\includegraphics[scale=0.6]{figures/2016-09-23-model-checking/qqnorm-logi2-S-1.pdf}
+\end{center}
+\caption{}
+\label{fig:qqnorm-logi2.S}
+\end{figure}
+
+\begin{figure}
+\begin{center}
+\includegraphics[scale=0.6]{figures/2016-09-23-model-checking/qqnorm-wnlm-S-1.pdf}
+\end{center}
+\caption{}
+\label{fig:qqnorm-wnlm.S}
+\end{figure}
+
+\begin{figure}
+\begin{center}
+\includegraphics[scale=0.6]{figures/2016-09-23-model-checking/qqnorm-wnlm-Q-1.pdf}
+\end{center}
+\caption{}
+\label{fig:qqnorm-wnlm.Q}
+\end{figure}
+
+\begin{figure}
+\begin{center}
+\includegraphics[scale=0.6]{figures/2016-09-23-model-checking/qqnorm-wnlm-R-1.pdf}
+\end{center}
+\caption{}
+\label{fig:qqnorm-wnlm.R}
+\end{figure}
+
+\begin{figure}
+\begin{center}
+\includegraphics[scale=0.6]{figures/2016-09-23-model-checking/homoscedas-logi-S-1.pdf}
+\end{center}
+\caption{}
+\label{fig:homoscedas-logi.S}
+\end{figure}
+
+\begin{figure}
+\begin{center}
+\includegraphics[scale=0.6]{figures/2016-09-23-model-checking/homoscedas-logi2-S-1.pdf}
+\end{center}
+\caption{}
+\label{fig:homoscedas-logi2.S}
+\end{figure}
+
+\begin{figure}
+\begin{center}
+\includegraphics[scale=0.6]{figures/2016-09-23-model-checking/homoscedas-wnlm-S-1.pdf}
+\end{center}
+\caption{}
+\label{fig:homoscedas-wnlm.S}
+\end{figure}
+
+\begin{figure}
+\begin{center}
+\includegraphics[scale=0.6]{figures/2016-09-23-model-checking/homoscedas-wnlm-Q-1.pdf}
+\end{center}
+\caption{}
+\label{fig:homoscedas-wnlm.Q}
+\end{figure}
+
+\begin{figure}
+\begin{center}
+\includegraphics[scale=0.6]{figures/2016-09-23-model-checking/homoscedas-wnlm-R-1.pdf}
+\end{center}
+\caption{}
+\label{fig:homoscedas-wnlm.R}
+\end{figure}
+
+\begin{figure}
+\begin{center}
+\includegraphics[scale=0.6]{figures/2016-09-23-model-checking/influence-logi-S-1.pdf}
+\end{center}
+\caption{}
+\label{fig:influence-logi.S}
+\end{figure}
+
+\begin{figure}
+\begin{center}
+\includegraphics[scale=0.6]{figures/2016-09-23-model-checking/influence-logi2-S-1.pdf}
+\end{center}
+\caption{}
+\label{fig:influence-logi2.S}
+\end{figure}
+
+\begin{figure}
+\begin{center}
+\includegraphics[scale=0.6]{figures/2016-09-23-model-checking/influence-wnlm-S-1.pdf}
+\end{center}
+\caption{}
+\label{fig:influence-wnlm.S}
+\end{figure}
+
+\begin{figure}
+\begin{center}
+\includegraphics[scale=0.6]{figures/2016-09-23-model-checking/influence-wnlm-Q-1.pdf}
+\end{center}
+\caption{}
+\label{fig:influence-wnlm.Q}
+\end{figure}
+
+\begin{figure}
+\begin{center}
+\includegraphics[scale=0.6]{figures/2016-09-23-model-checking/influence-wnlm-R-1.pdf}
+\end{center}
+\caption{}
+\label{fig:influence-wnlm.R}
+\end{figure}
+
+\begin{figure}
+\begin{center}
+\includegraphics[scale=0.6]{figures/2016-10-03-permutation-test/p-val-tdist-vs-perm-1.pdf}
+\end{center}
+\caption{}
+\label{fig:p-val-tdist-vs-perm}
+\end{figure}
+
+\begin{figure}
+\begin{center}
+\includegraphics[scale=0.6]{figures/2016-08-21-likelihood-surface/ll-surf-coefs-wnlm-Q-1.png}
 \end{center}
 \caption{}
 \label{fig:likelihood-surface}
@@ -802,10 +939,34 @@ regulators such as age, gender, and ancestry.
 
 \begin{figure}
 \begin{center}
-\includegraphics[scale=0.6]{figures/2016-05-07-comparing-regression-models/s-r-stat-nlm-check-peg3-1.pdf}
+\includegraphics[scale=0.6]{figures/2016-07-08-conditional-inference/beta-age-cond-wnlm-Q-2-1.pdf}
 \end{center}
 \caption{}
-\label{fig:non-constant-variance}
+\label{fig:interaction-wnlm-Q}
+\end{figure}
+
+\begin{figure}
+\begin{center}
+\includegraphics[scale=0.6]{figures/2016-07-08-conditional-inference/beta-age-cond-logi-S-2-1.pdf}
+\end{center}
+\caption{}
+\label{fig:interaction-logi-S}
+\end{figure}
+
+\begin{figure}
+\begin{center}
+\includegraphics[scale=0.6]{figures/2016-06-22-extending-anova/anova-effects-fw-rv-logi-S-1.pdf}
+\end{center}
+\caption{}
+\label{fig:anova}
+\end{figure}
+
+\begin{figure}
+\begin{center}
+\includegraphics[scale=0.6]{figures/2016-06-22-extending-anova/reg-coef-wnlm-Q-1.pdf}
+\end{center}
+\caption{}
+\label{fig:all-effects-wnlm.Q}
 \end{figure}
 
 \begin{figure}
@@ -818,42 +979,10 @@ regulators such as age, gender, and ancestry.
 
 \begin{figure}
 \begin{center}
-\includegraphics[scale=0.6]{figures/2016-06-22-extending-anova/reg-coef-logi2-S-1.pdf}
-\end{center}
-\caption{}
-\label{fig:all-effects-logi2.S}
-\end{figure}
-
-\begin{figure}
-\begin{center}
-\includegraphics[scale=0.6]{figures/2016-06-22-extending-anova/reg-coef-wnlm-R-1.pdf}
-\end{center}
-\caption{}
-\label{fig:all-effects-wnlm.R}
-\end{figure}
-
-\begin{figure}
-\begin{center}
-\includegraphics[scale=0.6]{figures/2016-06-22-extending-anova/reg-coef-unlm-R-1.pdf}
-\end{center}
-\caption{}
-\label{fig:all-effects-unlm.R}
-\end{figure}
-
-\begin{figure}
-\begin{center}
 \includegraphics[scale=0.6]{figures/2016-06-17-extending-regression-analysis/beta-age-wnlm-R-vs-logi-S-1.pdf}
 \end{center}
 \caption{}
 \label{fig:age-effect-two-model}
-\end{figure}
-
-\begin{figure}
-\begin{center}
-\includegraphics[scale=0.6]{figures/2016-07-08-conditional-inference/beta-age-cond-logi-S-1.pdf}
-\end{center}
-\caption{}
-\label{fig:interaction}
 \end{figure}
 
 % Supplementary tables

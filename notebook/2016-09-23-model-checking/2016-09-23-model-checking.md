@@ -54,7 +54,7 @@ Start by fitting all models:
 ```r
 # exclude unweighed aggregates UA.8 and UA from fitting
 to.fit.ids <- grep("^UA(.8)?$", names(Y), value = TRUE, invert = TRUE)
-sel.models <- c("logi.S", "wnlm.Q", "wnlm.R", "wnlm.S"); names(sel.models) <- sel.models
+sel.models <- c("logi.S", "logi2.S", "wnlm.Q", "wnlm.R", "wnlm.S"); names(sel.models) <- sel.models
 #sel.models <- NULL
 M <- do.all.fits(Y[to.fit.ids], G = E, preds = e.vars, sel.models = sel.models)
 ```
@@ -99,7 +99,7 @@ myqqnorm <- function(mtype, skip = FALSE, ...)
 
 <img src="figure/qqnorm-logi-S-1.png" title="plot of chunk qqnorm-logi-S" alt="plot of chunk qqnorm-logi-S" width="700px" />
 
-
+<img src="figure/qqnorm-logi2-S-1.png" title="plot of chunk qqnorm-logi2-S" alt="plot of chunk qqnorm-logi2-S" width="700px" />
 
 ### Homogeneity of error (homoscedasticity)
 
@@ -113,12 +113,13 @@ myhomoscedas <- function(mtype, skip = FALSE)
                panel.xyplot(...)
                panel.smoother(..., method = "loess", col = "black", se = FALSE)
            },
+           scales = list(x = list(relation = "free", draw = FALSE)),
            skip = skip, layout = c(6, 5),
            par.settings = list(add.text = list(cex = 0.8)),
            subset = model.type %in% mtype, pch = "+", main = mtype, xlab = "fitted value",
            ylab = expression(sqrt(std.deviance.resid)))[c(1:30)[! skip]]
 
-#update(myhomoscedas("unlm.S"), xlim = c(0.65, 1.05))
+#myhomoscedas("unlm.S")
 ```
 
 <img src="figure/homoscedas-wnlm-S-1.png" title="plot of chunk homoscedas-wnlm-S" alt="plot of chunk homoscedas-wnlm-S" width="700px" />
@@ -131,7 +132,7 @@ myhomoscedas <- function(mtype, skip = FALSE)
 
 <img src="figure/homoscedas-logi-S-1.png" title="plot of chunk homoscedas-logi-S" alt="plot of chunk homoscedas-logi-S" width="700px" />
 
-
+<img src="figure/homoscedas-logi2-S-1.png" title="plot of chunk homoscedas-logi2-S" alt="plot of chunk homoscedas-logi2-S" width="700px" />
 
 ### Influence of individual cases
 
@@ -167,7 +168,7 @@ myinfluence <- function(mtype, xlim = c(-0.2, 4), ylim = c(-0.04, 0.8), skip = F
 
 <img src="figure/influence-logi-S-1.png" title="plot of chunk influence-logi-S" alt="plot of chunk influence-logi-S" width="700px" />
 
-
+<img src="figure/influence-logi2-S-1.png" title="plot of chunk influence-logi2-S" alt="plot of chunk influence-logi2-S" width="700px" />
 
 ### Identifying outliers
 
