@@ -144,106 +144,50 @@ table(gs$imprinting.status)
 The plot below shows the genomic location of all `r nrow(gene.summary)` genes in the filtered data set and indicates their imprinting status with different colors.  Also shown is the gene score according to which genes have been ranked and called as monoallelically expressing or not.
 
 ```{r score-genomic-location, dev=c("png", "pdf"), fig.asp=1}
-t.par <- list(superpose.symbol = list(pch = c(21, 21, 21), alpha = c(0.3, 1, 1), fill = c("pink", "green", "lightblue"), col = c("red", "darkgreen", "blue")))
-trellis.par.set(t.par)
-xyplot(score ~ start | chr, data = gs, groups = imprinting.status, auto.key = list(columns = 3), layout = c(4, 6),
+xyplot(score ~ start | chr, data = gs, groups = imprinting.status,
+       auto.key = list(columns = 3, col = c("red", "darkgreen", "blue"), points = FALSE), layout = c(4, 6),
+       par.settings = list(superpose.symbol =
+                           list(pch = c(20, 21, 21), alpha = c(0.3, 1, 1),
+                                fill = c("pink", "green", "lightblue"),
+                                cex = c(0.2, 0.5, 0.5),
+                                col = c("red", "darkgreen", "blue"))),
        xlab = "genomic location", ylab = "gene score")
 ```
 
 Extract $\hat{\beta}_\mathrm{age}$ and confidence intervals for $\beta_\mathrm{age}$ 
 
-```{r warning=FALSE, message=FALSE}
-beta.age <- list()
-beta.age$logi.S <- do.beta.age(M$logi.S[f.ids$logi.S])
-beta.age$logi2.S <- do.beta.age(M$logi2.S[f.ids$logi2.S])
-beta.age$wnlm.R <- do.beta.age(M$wnlm.R[f.ids$wnlm.R])
-beta.age$wnlm.Q <- do.beta.age(M$wnlm.Q[f.ids$wnlm.Q])
+```{r warning=FALSE, message=FALSE, cache=TRUE}
+sel.genes <- unlist(read.csv("../../data/genes.regression.new", as.is = TRUE))
+beta.99 <- lapply(M, function(l.m) do.beta(l.m[sel.genes], conf.lev = 0.99))
+beta.95 <- lapply(M, function(l.m) do.beta(l.m[sel.genes], conf.lev = 0.95))
 ```
 
-The next plot presents the maximum likelihood estimate $\hat{\beta}_\mathrm{age}$ of the regression coefficient mediating age's effect in the logistic model `logi.S`.  Only those genes are shown that were fitted, of course.  Confidence intervals are not shown for clarity.
+### $\beta_g$ arranged by clusters
 
-```{r beta-genomic-location, dev=c("png", "pdf"), fig.asp=1}
-gs$beta.hat <- NA
-gs[rownames(beta.age$logi.S), "beta.hat"] <- beta.age$logi.S$beta.hat
-xyplot(beta.hat ~ start | chr, data = gs, groups = imprinting.status, auto.key = list(columns = 3), layout = c(4, 6), panel = function(...) { panel.abline(h = 0, col = trellis.par.get("reference.line")$col); panel.xyplot(...) }, xlab = "genomic location", ylab = expression(beta[age]))
+#### wnlm.Q, 99 % confidence (for the manuscript)
+
+```{r segplot-wnlm-Q-99conf}
+my.segplot2(beta.99$wnlm.Q, layout = c(4, 1), xlim = list(2e-2*c(-1,1), 0.7*c(-1,1), 0.9*c(-1,1), 9*c(-1,1)))
 ```
 
-### Clusters and the age effect
+#### wnlm.Q, 95 % confidence
 
-#### 99 % confidence
-
-```{r echo=FALSE}
-my.segplot <- function(data, ...) {
-segplot(Gene ~ Lower.CL + Upper.CL | cluster, data = data,
-               # groups = imprinting.status, # groups does not seem to work with segplot
-               scales = list(y = list(relation = "free", rot = 0)),
-               panel = function(...) {
-                   panel.grid(v = -1, h = 0)
-                   panel.abline(v = 0, col = "red")
-                   panel.segplot(...)
-               },
-               draw.bands = FALSE, centers = beta.hat,
-               #as.table = FALSE,
-               layout = c(1, length(levels(data$cluster))),
-               par.settings = list(layout.heights = list(panel = (x <- table(data$cluster))[x > 0]),
-                                   add.text = list(cex = 0.8)),
-               xlab = expression(beta[age]),
-               ...)
-}
+```{r segplot-wnlm-Q-95conf, echo=FALSE}
+my.segplot2(beta.95$wnlm.Q, layout = c(4, 1), xlim = list(2e-2*c(-1,1), 0.7*c(-1,1), 0.9*c(-1,1), 9*c(-1,1)))
 ```
 
-After some uninteresting data manipulation (code hidden) **the main result** can be presented at 99 % confidence:
+#### logi.S, 99 % confidence
 
-```{r segplot-4-models, fig.asp=2, echo=FALSE, out.height=1400}
-sp <- list()
-sp$logi.S <- my.segplot(beta.age$logi.S, main = "logi.S", xlim = c(-0.04, 0.04))
-sp$logi2.S <- my.segplot(beta.age$logi2.S, main = "logi2.S", xlim = c(-0.04, 0.04))
-sp$wnlm.Q <- my.segplot(beta.age$wnlm.Q, main = "wnlm.Q", xlim = c(-0.7, 0.7))
-sp$wnlm.R <- my.segplot(beta.age$wnlm.R, main = "wnlm.R", xlim = c(-0.7, 0.7))
-plot(sp$logi.S, split = c(1, 1, 2, 2), more = TRUE)
-plot(sp$logi2.S, split = c(2, 1, 2, 2), more = TRUE)
-plot(sp$wnlm.R, split = c(1, 2, 2, 2), more = TRUE)
-plot(sp$wnlm.Q, split = c(2, 2, 2, 2), more = FALSE)
+```{r segplot-logi-S-99conf, echo=FALSE}
+my.segplot2(beta.99$logi.S, layout = c(4, 1), xlim = list(4e-2*c(-1,1), 0.9*c(-1,1), 1.1*c(-1,1), 13*c(-1,1)))
 ```
 
-#### 95 % confidence
+#### logi.S, 95 % confidence
 
-```{r warning=FALSE, message=FALSE}
-beta.age.95 <- list()
-beta.age.95$logi.S <- do.beta.age(M$logi.S[f.ids$logi.S], conf.lev = 0.95)
-beta.age.95$logi2.S <- do.beta.age(M$logi2.S[f.ids$logi2.S], conf.lev = 0.95)
-beta.age.95$wnlm.R <- do.beta.age(M$wnlm.R[f.ids$wnlm.R], conf.lev = 0.95)
-beta.age.95$wnlm.Q <- do.beta.age(M$wnlm.Q[f.ids$wnlm.Q], conf.lev = 0.95)
+```{r segplot-logi-S-95conf, echo=FALSE}
+my.segplot2(beta.95$logi.S, layout = c(4, 1), xlim = list(4e-2*c(-1,1), 0.9*c(-1,1), 1.1*c(-1,1), 13*c(-1,1)))
 ```
 
-As expected, the age effect is significant for more genes at lower confidence
-
-```{r segplot-4-models-95, fig.asp=2, echo=FALSE, out.height=1400}
-sp.95 <- list()
-sp.95$logi.S <- my.segplot(beta.age.95$logi.S, main = "logi.S", xlim = c(-0.04, 0.04))
-sp.95$logi2.S <- my.segplot(beta.age.95$logi2.S, main = "logi2.S", xlim = c(-0.04, 0.04))
-sp.95$wnlm.Q <- my.segplot(beta.age.95$wnlm.Q, main = "wnlm.Q", xlim = c(-0.02, 0.02))
-sp.95$wnlm.R <- my.segplot(beta.age.95$wnlm.R, main = "wnlm.R", xlim = c(-0.7, 0.7))
-plot(sp.95$logi.S, split = c(1, 1, 2, 2), more = TRUE)
-plot(sp.95$logi2.S, split = c(2, 1, 2, 2), more = TRUE)
-plot(sp.95$wnlm.R, split = c(1, 2, 2, 2), more = TRUE)
-plot(sp.95$wnlm.Q, split = c(2, 2, 2, 2), more = FALSE)
+```{r segplot-wnlm-Q-99conf-allcoef, fig.asp=1.7}
+my.segplot2(beta.99$wnlm.Q, layout = c(7, 3), sel.coefs = unlist(lapply(e.vars, function(v) predictor2coefs(M$wnlm.Q[[1]], v))))
 ```
-
-
-#### Figure for the manuscript
-
-at 99 % confidence:
-
-```{r segplot, fig.width=3.5, fig.asp=2.25, out.height=1000, echo=FALSE}
-update(sp$logi.S, main = "")
-```
-
-## Conclusion
-
-The last, main, result suggests that
-
-1. age operates on genes within the same cluster independently rather than in concert
-1. however, many results are "weak":
-   * relatively low power indicated by several extremely wide confidence intervals
-   * the fit of the logistic model is not very satisfactory (discussed earlier, see conditional analysis)

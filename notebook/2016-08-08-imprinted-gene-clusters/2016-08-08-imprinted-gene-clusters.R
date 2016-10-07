@@ -101,34 +101,58 @@ do.beta.age <- function(l.M, conf.lev = 0.99) {
 }
 
 
-do.beta <- function(l.M, coef.name = "Age", conf.lev = 0.99) {
-    B <- get.CI(l.M, coef.name = coef.name, conf.lev = conf.lev)
-    B$Coefficient <- coef.name
-    B$start <- gs[rownames(B), "start"]
-    B$chr <- gs[rownames(B), "chr"]
+do.beta <- function(l.M, conf.lev = 0.99) {
+    B <- get.estimate.CI(l.M, conf.lev = conf.lev)
+    B$cluster <- gs[as.character(B$Gene), "cluster"]
+    B$start <- gs[as.character(B$Gene), "start"]
+    B$chr <- gs[as.character(B$Gene), "chr"]
     B <- B[with(B, order(chr, start)), ]
-    B$cluster <- factor(x <- as.character(gs[rownames(B), "cluster"]), levels = unique(x), ordered = TRUE)
-    B$Gene <- factor(B$Gene, levels = rev(B$Gene), ordered = TRUE)
-    B$imprinting.status <- gs[rownames(B), "imprinting.status"]
+    B$cluster <- ordered(B$cluster)
+    B$Gene <- factor(B$Gene, levels = rev(unique(B$Gene)), ordered = TRUE)
+    B$imprinting.status <- gs[B$Gene, "imprinting.status"]
     return(B)
 }
 
 
-my.segplot2 <- function(data, ...) {
-segplot(Gene ~ Lower.CL + Upper.CL | Coefficient, data = data,
-                       groups = cluster,
-               # groups = imprinting.status, # groups does not seem to work with segplot
-               scales = list(x = list(draw = c(F, T)), y = list(relation = "free", rot = 0), alternating = FALSE, relation = "free"),
-               panel = function(...) {
-                   panel.grid(v = -1, h = -1)
-                   panel.abline(v = 0, col = "red")
-                   panel.segplot(...)
-               },
-               draw.bands = FALSE, centers = beta.hat,
-               #as.table = FALSE,
-               layout = c(1, length(levels(data$cluster))),
-               par.settings = list(layout.heights = list(panel = (x <- table(data$cluster))[x > 0]),
-                                   add.text = list(cex = 0.8)),
-               xlab = expression(beta[age]),
-               ...)
+my.segplot2 <- function(dt, sel.coefs = c("Age", "GenderMale", "Ancestry.1", "DxSCZ"), ...) {
+    with(dt, dotplot(Gene ~ Estimate | Coefficient,
+            groups = cluster,
+            subset = Coefficient %in% sel.coefs,
+            par.settings = list(superpose.symbol =
+                                list(col = col <- rep(col.whitebg()$superpose.symbol$col, 5),
+                                     fill = col, pch = rep(21:25, length(col) / 5))),
+            prepanel = function(x, y, subscripts, ...)
+                list(xlim = range(c(Lower.CL[subscripts], Upper.CL[subscripts]), na.rm = TRUE)),
+            panel = function(x, y, groups, subscripts, ...) {
+                panel.grid(h = -1, v = 0, col = "gray", lty = 3)
+                panel.abline(v = 0, col = "black", lty = 2)
+                fill <- trellis.par.get("superpose.symbol")$fill[ groups[subscripts] ]
+                col <- trellis.par.get("superpose.symbol")$col[ groups[subscripts] ]
+                pch <- trellis.par.get("superpose.symbol")$pch[ groups[subscripts] ]
+                lsegments(x0 = Lower.CL[subscripts], y0 = y, x1 = Upper.CL[subscripts], y1 = y, col = col, ...)
+                panel.xyplot(x, y, col = col, fill = fill, pch = pch, ...)
+            },
+            scales = list(x = list(relation = "free")),
+            auto.key = list(columns = 3),
+            between = list(x = 0.5),
+            xlab = expression(beta),
+            ...))
 }
+
+#my.segplot <- function(data, ...) {
+#segplot(Gene ~ Lower.CL + Upper.CL | cluster, data = data,
+#               # groups = imprinting.status, # groups does not seem to work with segplot
+#               scales = list(y = list(relation = "free", rot = 0)),
+#               panel = function(...) {
+#                   panel.grid(v = -1, h = 0)
+#                   panel.abline(v = 0, col = "red")
+#                   panel.segplot(...)
+#               },
+#               draw.bands = FALSE, centers = beta.hat,
+#               #as.table = FALSE,
+#               layout = c(1, length(levels(data$cluster))),
+#               par.settings = list(layout.heights = list(panel = (x <- table(data$cluster))[x > 0]),
+#                                   add.text = list(cex = 0.8)),
+#               xlab = expression(beta[age]),
+#               ...)
+#}
