@@ -15,11 +15,10 @@ The current work studies this by performing two main steps
 library(lattice)
 library(latticeExtra)
 opts_chunk$set(dpi = 144)
-opts_chunk$set(out.height = "700px")
+opts_chunk$set(out.width = "700px")
 opts_chunk$set(dev = c("png", "pdf"))
 lattice.options(default.args = list(as.table = TRUE))
 lattice.options(default.theme = "standard.theme")
-lattice.options(default.args = list(as.table = TRUE))
 ```
 
 Load data importer functions:

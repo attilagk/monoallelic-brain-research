@@ -178,74 +178,148 @@ update(my.dotplot(fm = Coefficient ~ Effect | Gene, data = Ef.long$wnlm.R, main 
 
 This display is meant to be comparable to a similarly structured trellis display of estimated regression coefficients.
 
-```{r cache=TRUE, warning=FALSE, message=FALSE, fig.asp=1}
-Betas <- lapply(M, function(m) { x <- get.estimate.CI(m$forward); x <- x[ ! x$Coefficient %in% "(Intercept)", ] })
-```
-
 #### Under logi.S
 
-```{r warning=FALSE, echo=FALSE, message=FALSE}
-```
-
-```{r effects-fw-rv-logi-S-trellis-coef-cond, fig.asp=1.7}
+```{r effects-fw-rv-logi-S-trellis-coef-cond, fig.asp=1.7, echo=FALSE}
 # conditioning on the Coefficient instead of Gene
 update(my.dotplot(fm = Gene ~ Effect | Coefficient, data = Ef.long$logi.S, main = "Effects under logi.S"), layout = c(6, 4))
+```
+
+#### Under logi2.S
+
+```{r effects-fw-rv-logi2-S-trellis-coef-cond, fig.asp=1.7, echo=FALSE}
+# conditioning on the Coefficient instead of Gene
+update(my.dotplot(fm = Gene ~ Effect | Coefficient, data = Ef.long$logi2.S, main = "Effects under logi2.S"), layout = c(6, 4))
+```
+
+#### Under wnlm.Q
+
+```{r effects-fw-rv-wnlm-Q-trellis-coef-cond, fig.asp=1.7, echo=FALSE}
+# conditioning on the Coefficient instead of Gene
+update(my.dotplot(fm = Gene ~ Effect | Coefficient, data = Ef.long$wnlm.Q, main = "Effects under wnlm.Q"), layout = c(6, 4))
+```
+
+#### Under unlm.Q
+
+```{r effects-fw-rv-unlm-Q-trellis-coef-cond, fig.asp=1.7, echo=FALSE}
+# conditioning on the Coefficient instead of Gene
+update(my.dotplot(fm = Gene ~ Effect | Coefficient, data = Ef.long$unlm.Q, main = "Effects under unlm.Q"), layout = c(6, 4))
+```
+
+#### Under wnlm.R
+
+```{r effects-fw-rv-wnlm-R-trellis-coef-cond, fig.asp=1.7, echo=FALSE}
+# conditioning on the Coefficient instead of Gene
+update(my.dotplot(fm = Gene ~ Effect | Coefficient, data = Ef.long$wnlm.R, main = "Effects under wnlm.R"), layout = c(6, 4))
+```
+
+#### Under unlm.R
+
+```{r effects-fw-rv-unlm-R-trellis-coef-cond, fig.asp=1.7, echo=FALSE}
+# conditioning on the Coefficient instead of Gene
+update(my.dotplot(fm = Gene ~ Effect | Coefficient, data = Ef.long$unlm.R, main = "Effects under unlm.R"), layout = c(6, 4))
+```
+
+## Estimate and CI for regression coefficients
+
+This and the next section do not deal with analysis of variance specifically but rather with the estimated regression coefficient $\beta_{jg}$ for each column $X_j$ of the design matrix and for each gene $g$.  But because of computational convenience these are presented here.
+
+```{r cache=TRUE, warning=FALSE, message=FALSE, fig.asp=1}
+Betas <- lapply(M, function(m) { x <- get.estimate.CI(m$forward); x <- x[ ! x$Coefficient %in% "(Intercept)", ] })
 ```
 
 ```{r reg-coef-logi-S, dev=c("png", "pdf"), fig.asp=1.7}
 my.segplot(data = Betas$logi.S, xlim = my.xlim)
 ```
 
-#### Under logi2.S
-
-```{r effects-fw-rv-logi2-S-trellis-coef-cond, fig.asp=1.7}
-# conditioning on the Coefficient instead of Gene
-update(my.dotplot(fm = Gene ~ Effect | Coefficient, data = Ef.long$logi2.S, main = "Effects under logi2.S"), layout = c(6, 4))
-```
-
-```{r reg-coef-logi2-S, dev=c("png", "pdf"), fig.asp=1.7}
+```{r reg-coef-logi2-S, dev=c("png", "pdf"), fig.asp=1.7, echo=FALSE}
 my.segplot(data = Betas$logi2.S, main = expression(paste("99 % CI for ", beta, " under logi2.S")), xlim = my.xlim)
 ```
 
-#### Under wnlm.Q
-
-```{r effects-fw-rv-wnlm-Q-trellis-coef-cond, fig.asp=1.7}
-# conditioning on the Coefficient instead of Gene
-update(my.dotplot(fm = Gene ~ Effect | Coefficient, data = Ef.long$wnlm.Q, main = "Effects under wnlm.Q"), layout = c(6, 4))
-```
-
-```{r reg-coef-wnlm-Q, dev=c("png", "pdf"), fig.asp=1.7}
+```{r reg-coef-wnlm-Q, dev=c("png", "pdf"), fig.asp=1.7, echo=FALSE}
 my.segplot(data = Betas$wnlm.Q, main = expression(paste("99 % CI for ", beta, " under wnlm.Q")))
 ```
 
-#### Under unlm.Q
-
-```{r effects-fw-rv-unlm-Q-trellis-coef-cond, fig.asp=1.7}
-# conditioning on the Coefficient instead of Gene
-update(my.dotplot(fm = Gene ~ Effect | Coefficient, data = Ef.long$unlm.Q, main = "Effects under unlm.Q"), layout = c(6, 4))
-```
-
-```{r reg-coef-unlm-Q, dev=c("png", "pdf"), fig.asp=1.7}
+```{r reg-coef-unlm-Q, dev=c("png", "pdf"), fig.asp=1.7, echo=FALSE}
 my.segplot(data = Betas$unlm.Q, main = expression(paste("99 % CI for ", beta, " under unlm.Q")))
 ```
-#### Under wnlm.R
 
-```{r effects-fw-rv-wnlm-R-trellis-coef-cond, fig.asp=1.7}
-# conditioning on the Coefficient instead of Gene
-update(my.dotplot(fm = Gene ~ Effect | Coefficient, data = Ef.long$wnlm.R, main = "Effects under wnlm.R"), layout = c(6, 4))
-```
-
-```{r reg-coef-wnlm-R, dev=c("png", "pdf"), fig.asp=1.7}
+```{r reg-coef-wnlm-R, dev=c("png", "pdf"), fig.asp=1.7, echo=FALSE}
 my.segplot(data = Betas$wnlm.R, main = expression(paste("99 % CI for ", beta, " under wnlm.R")))
 ```
 
-#### Under unlm.R
-
-```{r effects-fw-rv-unlm-R-trellis-coef-cond, fig.asp=1.7}
-# conditioning on the Coefficient instead of Gene
-update(my.dotplot(fm = Gene ~ Effect | Coefficient, data = Ef.long$unlm.R, main = "Effects under unlm.R"), layout = c(6, 4))
+```{r reg-coef-unlm-R, dev=c("png", "pdf"), fig.asp=1.7, echo=FALSE}
+my.segplot(data = Betas$unlm.R, main = expression(paste("99 % CI for ", beta, " under unlm.R")))
 ```
 
-```{r reg-coef-unlm-R, dev=c("png", "pdf"), fig.asp=1.7}
-my.segplot(data = Betas$unlm.R, main = expression(paste("99 % CI for ", beta, " under unlm.R")))
+## Comparison of models
+
+The pairwise model comparisons in terms of $\hat{\beta}$ under either of two selected models are meant to assess sensitivity of the results to various aspects of modeling:
+
+* logistic vs normal linear model
+* scaling of the logit link function
+* data transformations for the normal linear model: $Q$ vs $R$ statistic
+* weighting for the normal linear model
+
+Each panel in the plot shows the theoretical zero line $\beta_{jg}=0$ under each of the two models (horizontal and vertical dashed lines).  The plotting symbols are color coded according to gene rank (rainbow, red to violet); the last "rank" #`r length(levels(Betas[[1]]$Gene))` (violet) corresponds to the weighted average `WA` of read count ratio over genes.  The plotting symbols also display the rank with numbers; these are `r paste0("(", seq_along(levels(Betas[[1]]$Gene)), ") ", levels(Betas[[1]]$Gene), collapse = ";  ")`.
+
+```{r echo=FALSE}
+mtype.compare.plot <- function(mtypeA = "logi.S", mtypeB = "wnlm.Q", dt = do.call(cbind, Betas), do.key = TRUE, ...) {
+    mycol <- rainbow(n = length(levels(dt$wnlm.Q.Gene)), start = 0, end = 5 / 6)
+    auto.key <-
+        if(do.key)
+            list(columns = 5, col = "black", points = FALSE, cex = 0.7,
+                 text = paste0("(", seq_along(levels(Betas[[1]]$Gene)), ") ", levels(Betas[[1]]$Gene)))
+        else
+            FALSE
+    fm <- formula(paste0(mtypeA, ".Estimate ~ ", mtypeB, ".Estimate | wnlm.Q.Coefficient"))
+    xyplot(fm, data = dt,
+           groups = dt$wnlm.Q.Gene,
+           gene = as.character(as.integer(dt$wnlm.Q.Gene)),
+           par.settings = list(superpose.symbol = list(fill = mycol), add.text = list(cex = 1.0)),
+           scales = list(relation = "free", draw = FALSE),
+           panel = function(x, y, subscripts, gene, ...){
+               panel.abline(h = 0, lty = 2)
+               panel.abline(v = 0, lty = 2)
+               col <- trellis.par.get("superpose.symbol")$fill
+               panel.xyplot(x, y, pch = 21, fill = col, col = col, cex = 1.5, alpha = 0.5)
+               panel.text(x, y, labels = gene[subscripts], cex = 0.7, ...)
+           },
+           main = expression(paste("Estimate ", hat(beta), "[...] under two models")),
+           xlab = paste("under", mtypeB), ylab = paste("under", mtypeA),
+           auto.key = auto.key,
+           ...)[1:20]
+}
+```
+
+### Logistic vs normal linear model
+
+The plot shows overall agreement between logi.S and wnlm.Q.  Genes of disagreement tend to be those for which logi.S fits poorly to the data.
+
+```{r logi-S-wnlm-Q-compare}
+mtype.compare.plot(mtypeA = "logi.S", mtypeB = "wnlm.Q", do.key = TRUE)
+```
+
+### Scaling of the logit link function
+
+There is very little impact on the $2\times$ difference in scaling of the logit link function because most of the observed cases are near the upper bound of the link function (which is 1), where the scaling has the smallest effect on the predictions.
+
+```{r logi-S-logi2-S-compare, echo=FALSE}
+mtype.compare.plot(mtypeA = "logi.S", mtypeB = "logi2.S") 
+```
+
+### Data transformations for the normal linear model: $Q$ vs $R$
+
+Overall good agreement.
+
+```{r wnlm-R-wnlm-Q-compare, echo=FALSE}
+mtype.compare.plot(mtypeA = "wnlm.R", mtypeB = "wnlm.Q") 
+```
+
+### Weighting for the normal linear model
+
+Overall good agreement, suggesting relatively small impact of weighting.
+
+```{r unlm-Q-wnlm-Q-compare, echo=FALSE}
+mtype.compare.plot(mtypeA = "unlm.Q", mtypeB = "wnlm.Q") 
 ```

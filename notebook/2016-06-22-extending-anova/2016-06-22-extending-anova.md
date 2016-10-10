@@ -119,22 +119,38 @@ Similarly under `wnlm.R`:
 
 This display is meant to be comparable to a similarly structured trellis display of estimated regression coefficients.
 
+#### Under logi.S
+
+<img src="figure/effects-fw-rv-logi-S-trellis-coef-cond-1.png" title="plot of chunk effects-fw-rv-logi-S-trellis-coef-cond" alt="plot of chunk effects-fw-rv-logi-S-trellis-coef-cond" width="700px" />
+
+#### Under logi2.S
+
+<img src="figure/effects-fw-rv-logi2-S-trellis-coef-cond-1.png" title="plot of chunk effects-fw-rv-logi2-S-trellis-coef-cond" alt="plot of chunk effects-fw-rv-logi2-S-trellis-coef-cond" width="700px" />
+
+#### Under wnlm.Q
+
+<img src="figure/effects-fw-rv-wnlm-Q-trellis-coef-cond-1.png" title="plot of chunk effects-fw-rv-wnlm-Q-trellis-coef-cond" alt="plot of chunk effects-fw-rv-wnlm-Q-trellis-coef-cond" width="700px" />
+
+#### Under unlm.Q
+
+<img src="figure/effects-fw-rv-unlm-Q-trellis-coef-cond-1.png" title="plot of chunk effects-fw-rv-unlm-Q-trellis-coef-cond" alt="plot of chunk effects-fw-rv-unlm-Q-trellis-coef-cond" width="700px" />
+
+#### Under wnlm.R
+
+<img src="figure/effects-fw-rv-wnlm-R-trellis-coef-cond-1.png" title="plot of chunk effects-fw-rv-wnlm-R-trellis-coef-cond" alt="plot of chunk effects-fw-rv-wnlm-R-trellis-coef-cond" width="700px" />
+
+#### Under unlm.R
+
+<img src="figure/effects-fw-rv-unlm-R-trellis-coef-cond-1.png" title="plot of chunk effects-fw-rv-unlm-R-trellis-coef-cond" alt="plot of chunk effects-fw-rv-unlm-R-trellis-coef-cond" width="700px" />
+
+## Estimate and CI for regression coefficients
+
+This and the next section do not deal with analysis of variance specifically but rather with the estimated regression coefficient $\beta_{jg}$ for each column $X_j$ of the design matrix and for each gene $g$.  But because of computational convenience these are presented here.
+
 
 ```r
 Betas <- lapply(M, function(m) { x <- get.estimate.CI(m$forward); x <- x[ ! x$Coefficient %in% "(Intercept)", ] })
 ```
-
-#### Under logi.S
-
-
-
-
-```r
-# conditioning on the Coefficient instead of Gene
-update(my.dotplot(fm = Gene ~ Effect | Coefficient, data = Ef.long$logi.S, main = "Effects under logi.S"), layout = c(6, 4))
-```
-
-<img src="figure/effects-fw-rv-logi-S-trellis-coef-cond-1.png" title="plot of chunk effects-fw-rv-logi-S-trellis-coef-cond" alt="plot of chunk effects-fw-rv-logi-S-trellis-coef-cond" width="700px" />
 
 
 ```r
@@ -143,86 +159,54 @@ my.segplot(data = Betas$logi.S, xlim = my.xlim)
 
 <img src="figure/reg-coef-logi-S-1.png" title="plot of chunk reg-coef-logi-S" alt="plot of chunk reg-coef-logi-S" width="700px" />
 
-#### Under logi2.S
-
-
-```r
-# conditioning on the Coefficient instead of Gene
-update(my.dotplot(fm = Gene ~ Effect | Coefficient, data = Ef.long$logi2.S, main = "Effects under logi2.S"), layout = c(6, 4))
-```
-
-<img src="figure/effects-fw-rv-logi2-S-trellis-coef-cond-1.png" title="plot of chunk effects-fw-rv-logi2-S-trellis-coef-cond" alt="plot of chunk effects-fw-rv-logi2-S-trellis-coef-cond" width="700px" />
-
-
-```r
-my.segplot(data = Betas$logi2.S, main = expression(paste("99 % CI for ", beta, " under logi2.S")), xlim = my.xlim)
-```
-
 <img src="figure/reg-coef-logi2-S-1.png" title="plot of chunk reg-coef-logi2-S" alt="plot of chunk reg-coef-logi2-S" width="700px" />
-
-#### Under wnlm.Q
-
-
-```r
-# conditioning on the Coefficient instead of Gene
-update(my.dotplot(fm = Gene ~ Effect | Coefficient, data = Ef.long$wnlm.Q, main = "Effects under wnlm.Q"), layout = c(6, 4))
-```
-
-<img src="figure/effects-fw-rv-wnlm-Q-trellis-coef-cond-1.png" title="plot of chunk effects-fw-rv-wnlm-Q-trellis-coef-cond" alt="plot of chunk effects-fw-rv-wnlm-Q-trellis-coef-cond" width="700px" />
-
-
-```r
-my.segplot(data = Betas$wnlm.Q, main = expression(paste("99 % CI for ", beta, " under wnlm.Q")))
-```
 
 <img src="figure/reg-coef-wnlm-Q-1.png" title="plot of chunk reg-coef-wnlm-Q" alt="plot of chunk reg-coef-wnlm-Q" width="700px" />
 
-#### Under unlm.Q
-
-
-```r
-# conditioning on the Coefficient instead of Gene
-update(my.dotplot(fm = Gene ~ Effect | Coefficient, data = Ef.long$unlm.Q, main = "Effects under unlm.Q"), layout = c(6, 4))
-```
-
-<img src="figure/effects-fw-rv-unlm-Q-trellis-coef-cond-1.png" title="plot of chunk effects-fw-rv-unlm-Q-trellis-coef-cond" alt="plot of chunk effects-fw-rv-unlm-Q-trellis-coef-cond" width="700px" />
-
-
-```r
-my.segplot(data = Betas$unlm.Q, main = expression(paste("99 % CI for ", beta, " under unlm.Q")))
-```
-
 <img src="figure/reg-coef-unlm-Q-1.png" title="plot of chunk reg-coef-unlm-Q" alt="plot of chunk reg-coef-unlm-Q" width="700px" />
-#### Under wnlm.R
-
-
-```r
-# conditioning on the Coefficient instead of Gene
-update(my.dotplot(fm = Gene ~ Effect | Coefficient, data = Ef.long$wnlm.R, main = "Effects under wnlm.R"), layout = c(6, 4))
-```
-
-<img src="figure/effects-fw-rv-wnlm-R-trellis-coef-cond-1.png" title="plot of chunk effects-fw-rv-wnlm-R-trellis-coef-cond" alt="plot of chunk effects-fw-rv-wnlm-R-trellis-coef-cond" width="700px" />
-
-
-```r
-my.segplot(data = Betas$wnlm.R, main = expression(paste("99 % CI for ", beta, " under wnlm.R")))
-```
 
 <img src="figure/reg-coef-wnlm-R-1.png" title="plot of chunk reg-coef-wnlm-R" alt="plot of chunk reg-coef-wnlm-R" width="700px" />
 
-#### Under unlm.R
-
-
-```r
-# conditioning on the Coefficient instead of Gene
-update(my.dotplot(fm = Gene ~ Effect | Coefficient, data = Ef.long$unlm.R, main = "Effects under unlm.R"), layout = c(6, 4))
-```
-
-<img src="figure/effects-fw-rv-unlm-R-trellis-coef-cond-1.png" title="plot of chunk effects-fw-rv-unlm-R-trellis-coef-cond" alt="plot of chunk effects-fw-rv-unlm-R-trellis-coef-cond" width="700px" />
-
-
-```r
-my.segplot(data = Betas$unlm.R, main = expression(paste("99 % CI for ", beta, " under unlm.R")))
-```
-
 <img src="figure/reg-coef-unlm-R-1.png" title="plot of chunk reg-coef-unlm-R" alt="plot of chunk reg-coef-unlm-R" width="700px" />
+
+## Comparison of models
+
+The pairwise model comparisons in terms of $\hat{\beta}$ under either of two selected models are meant to assess sensitivity of the results to various aspects of modeling:
+
+* logistic vs normal linear model
+* scaling of the logit link function
+* data transformations for the normal linear model: $Q$ vs $R$ statistic
+* weighting for the normal linear model
+
+Each panel in the plot shows the theoretical zero line $\beta_{jg}=0$ under each of the two models (horizontal and vertical dashed lines).  The plotting symbols are color coded according to gene rank (rainbow, red to violet); the last "rank" #31 (violet) corresponds to the weighted average `WA` of read count ratio over genes.  The plotting symbols also display the rank with numbers; these are (1) MAGEL2;  (2) TMEM261P1;  (3) SNHG14;  (4) AL132709.5;  (5) RP11-909M7.3;  (6) ZIM2;  (7) NAP1L5;  (8) MEG3;  (9) PEG3;  (10) PWAR6;  (11) FAM50B;  (12) NDN;  (13) SNURF;  (14) PEG10;  (15) SNRPN;  (16) KCNQ1OT1;  (17) ZDBF2;  (18) GRB10;  (19) SNORD116-20;  (20) KCNK9;  (21) INPP5F;  (22) RP13-487P22.1;  (23) MEST;  (24) ZNF331;  (25) hsa-mir-335;  (26) DIRAS3;  (27) PWRN1;  (28) IGF2;  (29) NLRP2;  (30) UBE3A;  (31) WA.
+
+
+
+### Logistic vs normal linear model
+
+The plot shows overall agreement between logi.S and wnlm.Q.  Genes of disagreement tend to be those for which logi.S fits poorly to the data.
+
+
+```r
+mtype.compare.plot(mtypeA = "logi.S", mtypeB = "wnlm.Q", do.key = TRUE)
+```
+
+<img src="figure/logi-S-wnlm-Q-compare-1.png" title="plot of chunk logi-S-wnlm-Q-compare" alt="plot of chunk logi-S-wnlm-Q-compare" width="700px" />
+
+### Scaling of the logit link function
+
+There is very little impact on the $2\times$ difference in scaling of the logit link function because most of the observed cases are near the upper bound of the link function (which is 1), where the scaling has the smallest effect on the predictions.
+
+<img src="figure/logi-S-logi2-S-compare-1.png" title="plot of chunk logi-S-logi2-S-compare" alt="plot of chunk logi-S-logi2-S-compare" width="700px" />
+
+### Data transformations for the normal linear model: $Q$ vs $R$
+
+Overall good agreement.
+
+<img src="figure/wnlm-R-wnlm-Q-compare-1.png" title="plot of chunk wnlm-R-wnlm-Q-compare" alt="plot of chunk wnlm-R-wnlm-Q-compare" width="700px" />
+
+### Weighting for the normal linear model
+
+Overall good agreement, suggesting relatively small impact of weighting.
+
+<img src="figure/unlm-Q-wnlm-Q-compare-1.png" title="plot of chunk unlm-Q-wnlm-Q-compare" alt="plot of chunk unlm-Q-wnlm-Q-compare" width="700px" />

@@ -118,7 +118,7 @@ median(cluster.freq)
 barchart(cluster.freq, xlab = "# genes in cluster (including nearby candidates)")
 ```
 
-<img src="figure/cluster-sizes-1.png" title="plot of chunk cluster-sizes" alt="plot of chunk cluster-sizes" height="700px" />
+<img src="figure/cluster-sizes-1.png" title="plot of chunk cluster-sizes" alt="plot of chunk cluster-sizes" width="700px" />
 
 *Before* filtering these clusters contain the following number of "known" and "nearby candidate" genes:
 
@@ -160,7 +160,7 @@ xyplot(score ~ start | chr, data = gs, groups = imprinting.status,
        xlab = "genomic location", ylab = "gene score")
 ```
 
-<img src="figure/score-genomic-location-1.png" title="plot of chunk score-genomic-location" alt="plot of chunk score-genomic-location" height="700px" />
+<img src="figure/score-genomic-location-1.png" title="plot of chunk score-genomic-location" alt="plot of chunk score-genomic-location" width="700px" />
 
 Extract $\hat{\beta}_\mathrm{age}$ and confidence intervals for $\beta_\mathrm{age}$ 
 
@@ -180,23 +180,23 @@ beta.95 <- lapply(M, function(l.m) do.beta(l.m[sel.genes], conf.lev = 0.95))
 my.segplot2(beta.99$wnlm.Q, layout = c(4, 1), xlim = list(2e-2*c(-1,1), 0.7*c(-1,1), 0.9*c(-1,1), 9*c(-1,1)))
 ```
 
-<img src="figure/segplot-wnlm-Q-99conf-1.png" title="plot of chunk segplot-wnlm-Q-99conf" alt="plot of chunk segplot-wnlm-Q-99conf" height="700px" />
+<img src="figure/segplot-wnlm-Q-99conf-1.png" title="plot of chunk segplot-wnlm-Q-99conf" alt="plot of chunk segplot-wnlm-Q-99conf" width="700px" />
 
 #### wnlm.Q, 95 % confidence
 
-<img src="figure/segplot-wnlm-Q-95conf-1.png" title="plot of chunk segplot-wnlm-Q-95conf" alt="plot of chunk segplot-wnlm-Q-95conf" height="700px" />
+<img src="figure/segplot-wnlm-Q-95conf-1.png" title="plot of chunk segplot-wnlm-Q-95conf" alt="plot of chunk segplot-wnlm-Q-95conf" width="700px" />
 
 #### logi.S, 99 % confidence
 
-<img src="figure/segplot-logi-S-99conf-1.png" title="plot of chunk segplot-logi-S-99conf" alt="plot of chunk segplot-logi-S-99conf" height="700px" />
+<img src="figure/segplot-logi-S-99conf-1.png" title="plot of chunk segplot-logi-S-99conf" alt="plot of chunk segplot-logi-S-99conf" width="700px" />
 
 #### logi.S, 95 % confidence
 
-<img src="figure/segplot-logi-S-95conf-1.png" title="plot of chunk segplot-logi-S-95conf" alt="plot of chunk segplot-logi-S-95conf" height="700px" />
+<img src="figure/segplot-logi-S-95conf-1.png" title="plot of chunk segplot-logi-S-95conf" alt="plot of chunk segplot-logi-S-95conf" width="700px" />
 
 
 ```r
 my.segplot2(beta.99$wnlm.Q, layout = c(7, 3), sel.coefs = unlist(lapply(e.vars, function(v) predictor2coefs(M$wnlm.Q[[1]], v))))
 ```
 
-<img src="figure/segplot-wnlm-Q-99conf-allcoef-1.png" title="plot of chunk segplot-wnlm-Q-99conf-allcoef" alt="plot of chunk segplot-wnlm-Q-99conf-allcoef" height="700px" />
+<img src="figure/segplot-wnlm-Q-99conf-allcoef-1.png" title="plot of chunk segplot-wnlm-Q-99conf-allcoef" alt="plot of chunk segplot-wnlm-Q-99conf-allcoef" width="700px" />

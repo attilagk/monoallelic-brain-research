@@ -536,7 +536,7 @@ transformation was critical: Fig.~\ref{fig:predicted-curves} demonstrates how
 a quasi-log-transformation \(Q\) dramatically improves fit (compare wnlm.Q to
 wnlm.S).
 
-An in-depth analysis of model fit was carried out involving all models,
+An in-depth checking of model fit was carried out involving all models,
 predictors, and selected genes (except TMEM261P1, for which the iterative
 weighted least square fitting algorithm did not converge under logistic
 models).  This analysis examined the normality of residuals
@@ -549,24 +549,39 @@ Fig.~\ref{fig:homoscedas-logi.S}, \ref{fig:homoscedas-logi2.S},
 fit to address outliers (Fig.~\ref{fig:influence-logi.S},
 \ref{fig:influence-logi2.S}, \ref{fig:homoscedas-wnlm.S},
 \ref{fig:homoscedas-wnlm.Q}, \ref{fig:influence-wnlm.R}).  These model
-checking results suggest that for all genes the normal linear model fits at
+checking results revealed the following patterns.  First, for all genes the
+normal linear model seems to fit at
 least reasonably well to quasi-log-transformed data (wnlm.Q) slightly less
 well to rank-transformed data (wnlm.R) and much worse to untransformed data
-(wnlm.S).  On the other hand, both logistic models exhibited greatly variable
-fit across genes but the fit of logi.S was in general better than that of
+(wnlm.S).  Second, both logistic models appear to exhibit greatly variable
+fit across genes but the fit of logi.S is in general better than that of
 logi2.S.  Given these results we made inferences based on wnlm.Q and---if the
 quality of the fit permits for a given gene---also on logi.S.
 
 Comparing the estimated regression coefficients \(\hat{\beta}_{jg}\) for some
-gene \(g\) and parameter under the normal linear (wnlm.Q) and logistic
-(logi.S) model revealed good qualitative agreement unless logi.S failed to fit
-the data well for that gene.  The comparison also revealed that logi.S is more
-powerful in detecting a significant effect and rejecting the null hypothesis
-\(\beta_{jg}=0\), which is in line with the mentioned theoretical advantages
-of logistic models.  The p-value for each null hypothesis was calculated not
-only the standard way based on normal distribution theory but also from a
-random permutation test (Fig.~\ref{fig:p-val-tdist-vs-perm}).  The two
-approaches to the p-value agreed closely under wnlm.Q for all genes while
+gene \(g\) and parameter under the two logistic models logi.S and logi2.S
+revealed close agreement between these two models
+(Fig.~\ref{fig:logi-S-logi2-S-compare}) suggesting that making inferences
+under the better fitting logi.S and without logi2.S does not incur information
+loss.  Comparing similarly the best-fitting normal linear model, wnlm.Q, to
+the less powerful and slightly less well fitting wnlm.R showed also good
+agreement (Fig.~\ref{fig:wnlm-R-wnlm-Q-compare}) suggesting the use of wnlm.Q
+without wnlm.R.  Comparing logi.S to wnlm.Q showed less close but still good
+qualitative agreement (Fig.~\ref{fig:logi-S-wnlm-Q-compare}) depending on how
+well logi.S fitted the data for a given gene (cf.~\ref{fig:qqnorm-logi.S}).  A
+comparison based on 99\% confidence intervals (CIs)
+(Fig.~\ref{fig:all-effects-wnlm.Q},~\ref{fig:all-effects-logi.S}) also
+revealed that logi.S is more powerful in detecting a significant effect and
+rejecting the null hypothesis \(\beta_{jg}=0\), which is in line with the
+mentioned theoretical advantages of logistic models.  But since the more
+conservative wnlm.Q provides in general better fit when all selected genes are
+considered, it was chosen as the preferred model of inference while logi.S is used mainly
+to confirm findings under wnlm.Q.
+
+The p-value for each null hypothesis was
+calculated not only the standard way based on normal distribution theory but
+also from a random permutation test (Fig.~\ref{fig:p-val-tdist-vs-perm}).  The
+two approaches to the p-value agreed closely under wnlm.Q for all genes while
 under logi.S the agreement depended on model fit and in particular on the
 normality of residuals (cf.~Fig.~\ref{fig:qqnorm-logi.S}).
 
@@ -918,6 +933,46 @@ regulators such as age, gender, and ancestry.
 
 \begin{figure}
 \begin{center}
+\includegraphics[scale=0.6]{figures/2016-06-22-extending-anova/logi-S-logi2-S-compare-1.pdf}
+\end{center}
+\caption{}
+\label{fig:logi-S-logi2-S-compare}
+\end{figure}
+
+\begin{figure}
+\begin{center}
+\includegraphics[scale=0.6]{figures/2016-06-22-extending-anova/wnlm-R-wnlm-Q-compare-1.pdf}
+\end{center}
+\caption{}
+\label{fig:wnlm-R-wnlm-Q-compare}
+\end{figure}
+
+\begin{figure}
+\begin{center}
+\includegraphics[scale=0.6]{figures/2016-06-22-extending-anova/logi-S-wnlm-Q-compare-1.pdf}
+\end{center}
+\caption{}
+\label{fig:logi-S-wnlm-Q-compare}
+\end{figure}
+
+\begin{figure}
+\begin{center}
+\includegraphics[scale=0.6]{figures/2016-06-22-extending-anova/reg-coef-wnlm-Q-1.pdf}
+\end{center}
+\caption{}
+\label{fig:all-effects-wnlm.Q}
+\end{figure}
+
+\begin{figure}
+\begin{center}
+\includegraphics[scale=0.6]{figures/2016-06-22-extending-anova/reg-coef-logi-S-1.pdf}
+\end{center}
+\caption{}
+\label{fig:all-effects-logi.S}
+\end{figure}
+
+\begin{figure}
+\begin{center}
 \includegraphics[scale=0.6]{figures/2016-10-03-permutation-test/p-val-tdist-vs-perm-1.pdf}
 \end{center}
 \caption{}
@@ -954,30 +1009,6 @@ regulators such as age, gender, and ancestry.
 \end{center}
 \caption{}
 \label{fig:anova}
-\end{figure}
-
-\begin{figure}
-\begin{center}
-\includegraphics[scale=0.6]{figures/2016-06-22-extending-anova/reg-coef-wnlm-Q-1.pdf}
-\end{center}
-\caption{}
-\label{fig:all-effects-wnlm.Q}
-\end{figure}
-
-\begin{figure}
-\begin{center}
-\includegraphics[scale=0.6]{figures/2016-06-22-extending-anova/reg-coef-logi-S-1.pdf}
-\end{center}
-\caption{}
-\label{fig:all-effects-logi.S}
-\end{figure}
-
-\begin{figure}
-\begin{center}
-\includegraphics[scale=0.6]{figures/2016-06-17-extending-regression-analysis/beta-age-wnlm-R-vs-logi-S-1.pdf}
-\end{center}
-\caption{}
-\label{fig:age-effect-two-model}
 \end{figure}
 
 % Supplementary tables
