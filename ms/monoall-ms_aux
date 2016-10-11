@@ -51,7 +51,7 @@
 \citation{Gregg2010a}
 \@writefile{toc}{\contentsline {subsection}{\numberline {3.4}Inferring regulators and consequences of parental bias}{14}}
 \@writefile{toc}{\contentsline {section}{\numberline {4}Discussion}{14}}
-\@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces }}{15}}
+\@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces Biological effects: estimate and $99\%$ confidence interval for each regression coefficient \(\beta _{jg}\) under the wnlm.Q model, where \(g\) corresponds to a gene and \(j\) to a biological covariate (Age, Ancestry.1) or a level of some biological factor (DxSCZ, GenderMale).}}{15}}
 \newlabel{fig:biol-effects}{{6}{15}}
 \@writefile{lof}{\contentsline {figure}{\numberline {7}{\ignorespaces TODO: Comparison of the effects of age between the present work and a previous mouse study\nobreakspace  {}\cite  {Perez2015}. This figure would either be presented in the main or supplementary material depending on how conclusive the result is.}}{16}}
 \newlabel{fig:mouse-comparison}{{7}{16}}
@@ -123,11 +123,15 @@
 \newlabel{fig:all-effects-logi.S}{{S25}{45}}
 \@writefile{lof}{\contentsline {figure}{\numberline {S26}{\ignorespaces }}{46}}
 \newlabel{fig:p-val-tdist-vs-perm}{{S26}{46}}
-\@writefile{lof}{\contentsline {figure}{\numberline {S27}{\ignorespaces }}{47}}
-\newlabel{fig:likelihood-surface}{{S27}{47}}
-\@writefile{lof}{\contentsline {figure}{\numberline {S28}{\ignorespaces }}{48}}
-\newlabel{fig:interaction-wnlm-Q}{{S28}{48}}
+\@writefile{lof}{\contentsline {figure}{\numberline {S27}{\ignorespaces Biological effects: estimates and $95\%$ confidence intervals under the wnlm.Q model}}{47}}
+\newlabel{fig:biol-effects-wnlm-Q-95}{{S27}{47}}
+\@writefile{lof}{\contentsline {figure}{\numberline {S28}{\ignorespaces Biological effects: estimates and $99\%$ confidence intervals under the logi.S model}}{48}}
+\newlabel{fig:biol-effects-logi-S-99}{{S28}{48}}
 \@writefile{lof}{\contentsline {figure}{\numberline {S29}{\ignorespaces }}{49}}
-\newlabel{fig:interaction-logi-S}{{S29}{49}}
+\newlabel{fig:likelihood-surface}{{S29}{49}}
 \@writefile{lof}{\contentsline {figure}{\numberline {S30}{\ignorespaces }}{50}}
-\newlabel{fig:anova}{{S30}{50}}
+\newlabel{fig:interaction-wnlm-Q}{{S30}{50}}
+\@writefile{lof}{\contentsline {figure}{\numberline {S31}{\ignorespaces }}{51}}
+\newlabel{fig:interaction-logi-S}{{S31}{51}}
+\@writefile{lof}{\contentsline {figure}{\numberline {S32}{\ignorespaces }}{52}}
+\newlabel{fig:anova}{{S32}{52}}
