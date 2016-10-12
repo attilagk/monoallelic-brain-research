@@ -19,38 +19,138 @@ source("~/projects/monoallelic-brain/src/fit-glms.R")
 source("~/projects/monoallelic-brain/src/graphics.R")
 ```
 
+### Orthology: matching human and mouse genes
+
+Import "associated names" (symbols) for the selected human genes:
+
 ```{r cache=TRUE, warning=FALSE}
-human.g.symbols <- unlist(read.csv("../../data/genes.regression.new", as.is = TRUE))
-names(human.g.symbols) <- human.g.symbols
-E <- get.predictors() # default arguments
-Y <- get.readcounts(human.g.symbols = human.g.symbols, count.thrs = 0)
-# exclude unweighed aggregates UA.8 and UA from fitting
-to.fit.ids <- grep("^UA(.8)?$", names(Y), value = TRUE, invert = TRUE)
-to.fit.ids <- grep("^WA.8$", to.fit.ids, value = TRUE, invert = TRUE)
-M <- do.all.fits(Y[to.fit.ids], preds = e.vars, sel.models = c(wnlm.Q = "wnlm.Q", logi.S = "logi.S"))
+h.g.names <- unlist(read.csv("../../data/genes.regression.new", as.is = TRUE))
+names(h.g.names) <- h.g.names
+perez <- read.csv("../../data/elife-07860/elife-07860-supp1-v2.csv", as.is = TRUE)
 ```
 
-```{r message=FALSE, warnings=FALSE}
+
+#### Using AnnotationDbi
+
+```{r message=FALSE, warnings=FALSE, eval=TRUE}
 library(AnnotationDbi)
 library("org.Hs.eg.db")
 library("org.Mm.eg.db")
 library("hom.Hs.inp.db")
 ```
 
-```{r}
-human.eg.ids <- unlist(as.list(org.Hs.egSYMBOL2EG[mappedkeys(org.Hs.egSYMBOL2EG)])[human.g.symbols])
-human.g.symbols[! human.g.symbols %in% names(human.eg.ids)]
+An initial attempt with the `AnnotationDbi::inpIDMapper` function retrieved the id of only 3 mouse orthologs for the 30 selected genes.  As a result of this frustrating result the following conversion hack was done.  Mouse gene names were "humanified" by all-capitalization, i.e. using the rule: Mest (mouse) -> MEST (human).  The detailed operations follow:
+
+Convert for the 30 selected human genes the gene names (stored in `h.g.names`) into Ensemble gene ids.  Then print the name of those genes for which the conversion failed.
+
+```{r, eval=TRUE}
+human.eg.ids <- unlist(as.list(org.Hs.egSYMBOL2EG[mappedkeys(org.Hs.egSYMBOL2EG)])[h.g.names])
+# the conversion failed for these genes:
+names(h.g.names[! h.g.names %in% names(human.eg.ids)])
+```
+
+Import all mouse gene ids and symbols, do the conversion hack and check which human genes could not be converted:
+
+```{r, eval=TRUE}
+# get all mouse genes
 mouse.all <- as.list(org.Mm.egSYMBOL2EG[mappedkeys(org.Mm.egSYMBOL2EG)])
+# "humanify" mouse gene names by all-capitalization, i.e. using the rule Mest (mouse) -> MEST (human)
 names(mouse.all) <- toupper(names(mouse.all))
-human.g.symbols[! human.g.symbols %in% names(human.eg.ids)]
+# convert mouse gene names (i.e. symbols) to upper case and check for non-matching human gene symbols
+names(h.g.names[! h.g.names %in% toupper(as.character(perez$gene_name))])
 ```
 
-```{r cache=TRUE}
-perez <- read.csv("../../data/elife-07860/elife-07860-supp1-v2.csv")
-```
+This result shows that `r length(h.g.names[! h.g.names %in% toupper(as.character(perez$gene_name))])` human genes could not be matched to any mouse ortholog.  Below is a more principled and therefore more trusted approach using BioMart.
+
+#### Using BioMart
+
+This has been done with the web-based BioMart tool of Ensemble, which produced the following file
 
 ```{r}
-# convert mouse gene names (i.e. symbols) to upper case...
-# ...and check for non-matching human gene symbols
-names(human.g.symbols[! human.g.symbols %in% toupper(as.character(perez$gene_name))])
+h2m <- read.csv("../../data/human-mouse-orthology.csv", as.is = TRUE)
+str(h2m)
+# remove rows without mouse ortholog; also remove the column "Mouse.orthology.confidence..0.low..1.high."
+h2m <- h2m[h2m$Mouse.Ensembl.Gene.ID != "", -3]
+nrow(h2m) == length(unique(h2m$Mouse.associated.gene.name))
+rownames(h2m) <- h2m$Mouse.associated.gene.name
+h2m[-1 * 1:2]
+```
+
+### Import results and prepare data
+
+The following expressions focus only two predictors of parental bias: **age** and **gender** because only these two are clearly shared by our human study and the mouse study by Perez et al.
+
+```{r}
+perez.s <- perez[perez$gene_name %in% h2m$Mouse.associated.gene.name, # rows: orthologs of selected human genes
+                 c("gene_name", # informative columns
+                   "posterior_mean.age_effect", "posterior_mean.pp_age_effect",
+                   "posterior_mean.sex_effect", "posterior_mean.pp_sex_effect")]
+perez.s <-
+    do.call(rbind,
+            lapply(unique(perez.s$gene_name),
+                   function(n) {
+                       df <- perez.s[ perez.s$gene_name == n, ]
+                       cbind(data.frame(mouse.gene_name = n),
+                             data.frame(t(as.matrix(apply(df[ , -1], 2, mean, na.rm = TRUE)))))
+                   }))
+perez.s$mouse.gene_name <- as.character(perez.s$mouse.gene_name)
+rownames(perez.s) <- h2m[perez.s$mouse.gene_name, "Associated.Gene.Name"]
+```
+
+```{r echo=FALSE}
+ours <- read.csv("../../results/regr-coefs.csv")
+extractor <- function(mtype, coef = "Age") {
+    df <- ours[with(ours, Coefficient == coef & Model == mtype), ]
+    df$Model <- NULL
+    df$Gene <- with(df, factor(Gene, levels = as.character(Gene), ordered = TRUE))
+    rownames(df) <- as.character(df$Gene)
+    names(df) <- c(colnames(df)[1:2], paste(colnames(df)[3:5], mtype, sep = "."))
+    return(df)
+}
+#
+expander <- function(vname, out.vname, df.long = combined, df.short = perez.s) {
+    df <- data.frame(rep(NA, nrow(df.long)))
+    names(df) <- out.vname
+    rownames(df) <- rownames(df.long)
+    df[intersect(rownames(df.long), rownames(df.short)), ] <- df.short[[vname]]
+    return(df)
+}
+```
+
+Combine evidence for the effect of age and gender from both our human study and the mouse study by Perez et al.  The two types of evidence are: 
+
+1. p-value for rejecting $\beta_{jg}=0$ under the wnlm.Q or logi.S model, calculated either from normal distribution theory or a random permutation test
+1. the posterior mean $E[P_{jg} | \mathrm{data}]$ of the probability $P_{jg}$ that explanatory variable $j$ has large effect on parental bias of $g$ (i.e. induces a $c\times$ larger variance of $\beta_{jg}$ under the BRAIM model); this is called `posterior_mean.pp_age_effect`, `posterior_mean.pp_sex_effect`,..., in the first sheet of [Supplementary file 1](https://elifesciences.org/content/4/e07860/supp-material1) provided by Perez et al.
+
+```{r}
+# Age
+combined.a <- cbind(extractor("wnlm.Q", coef = "Age"),
+                  extractor("logi.S")[-1 * c(1:2)])
+combined.a <- cbind(combined.a,
+                  expander("posterior_mean.age_effect", "beta.post.mean", df.long = combined.a),
+                  expander("posterior_mean.pp_age_effect", "pp.post.mean", df.long = combined.a))
+# Gender
+combined.g <- cbind(extractor("wnlm.Q", coef = "GenderMale"),
+                  extractor("logi.S")[-1 * c(1:2)])
+combined.g <- cbind(combined.g,
+                  expander("posterior_mean.sex_effect", "beta.post.mean", df.long = combined.g),
+                  expander("posterior_mean.pp_sex_effect", "pp.post.mean", df.long = combined.g))
+combined <- rbind(combined.a, combined.g)
+```
+
+## Results
+
+Clearly, the evidence from the mouse and human study for any gene $g$ do not match each other.  While there is evidence for some genes from both studies that age has an effect, only our human study detected significant effect of gender.  These results suggests large methodological and/or biological differences between the studies.
+
+```{r posterior-pp-vs-pval-wnlm.Q}
+xyplot(pp.post.mean ~ - log10(p.val.t.dist.wnlm.Q) | Coefficient, data = combined, groups = Gene,
+       panel = function(x, y, ..., groups) {
+           panel.text(x, y, labels = groups, cex = 0.7, ...)
+       },
+       strip = strip.custom(factor.levels = c("Age", "Gender")),
+       xlim = c(-0.2, 2.5),
+       #aspect = 1,
+       xlab = expression(paste("evidence in human: -", log[10], p)),
+       ylab = "evidence in mouse: E[ P | data]"
+       )
 ```
