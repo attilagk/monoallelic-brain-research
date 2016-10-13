@@ -11,4 +11,4 @@ The article evaluates the current state of the "monoallelic expression project" 
 * examining those in light of some plausible statistical models of genome- and population-wise allelic exclusion
 * suggesting modified conclusions or reanalysis.
 
-[pdf]: /assets/projects/monoallelic-brain/2016-02-10-statistical-overview.pdf
+[pdf]: {{ site.baseurl }}/assets/projects/monoallelic-brain/2016-02-10-statistical-overview.pdf

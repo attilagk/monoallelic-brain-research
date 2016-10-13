@@ -1,6 +1,20 @@
 ## Preparations
 
 
+```
+## Loading required package: RColorBrewer
+```
+
+```
+## 
+## Attaching package: 'latticeExtra'
+```
+
+```
+## The following object is masked from 'package:ggplot2':
+## 
+##     layer
+```
 
 Load functions
 
@@ -99,9 +113,27 @@ both.p.val <-
 
 <img src="figure/p-val-tdist-vs-perm-1.png" title="plot of chunk p-val-tdist-vs-perm" alt="plot of chunk p-val-tdist-vs-perm" width="700px" />
 
-Results are written to csv file
+## Saving results
+
+Writing long format results:
 
 
 ```r
 write.csv(both.p.val, "../../results/regr-coefs.csv", row.names = FALSE)
+```
+
+
+```r
+v.names <- c("Estimate", "p.val.t.dist", "p.val.perm")
+mtypes <- c("wnlm.Q", "logi.S")
+varying <- lapply(c(v.names), function(v) sapply(mtypes, function(m) paste0(v, ".", m)))
+both.p.val.w <-
+    reshape(both.p.val, direction = "wide", varying = varying, v.names = v.names,
+            timevar = "Model", times = mtypes, idvar = c("Gene", "Coefficient"))
+stars <- data.frame(sapply(varying.p <- unlist(varying[-1])[c(1, 3, 2, 4)],
+                           function(v) annotate.signif(both.p.val.w[[v]])))
+names(stars) <- paste0(varying.p, ".*")
+both.p.val.w <- cbind(both.p.val.w[2:1], stars, both.p.val.w[-1 * 2:1])
+write.csv(both.p.val.w, "../../results/regr-coefs-w.csv", row.names = FALSE)
+```
 ```

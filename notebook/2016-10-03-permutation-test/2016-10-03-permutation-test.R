@@ -10,3 +10,14 @@ get.both.p.vals <- function(mtype = "wnlm.Q", gene = "MEST", coef = "Age", M, B)
                                                P[P$Permutation != "U", "Estimate"]),
                                      error = errfun))
 }
+
+
+annotate.signif <- function(v) {
+    sapply(v, function(x) {
+               if(is.na(x)) return(NA)
+               else {
+                   if(x < 1e-3) return("***")
+                   if(x < 1e-2) return("**")
+                   if(x < 5e-2) return("*")
+                   else return("")
+               }})}

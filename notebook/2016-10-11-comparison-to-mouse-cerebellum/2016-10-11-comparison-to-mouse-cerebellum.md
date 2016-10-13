@@ -1,20 +1,6 @@
 ## Preparation
 
 
-```
-## Loading required package: RColorBrewer
-```
-
-```
-## 
-## Attaching package: 'latticeExtra'
-```
-
-```
-## The following object is masked from 'package:ggplot2':
-## 
-##     layer
-```
 
 Load functions
 
@@ -33,6 +19,12 @@ Import "associated names" (symbols) for the selected human genes:
 ```r
 h.g.names <- unlist(read.csv("../../data/genes.regression.new", as.is = TRUE))
 names(h.g.names) <- h.g.names
+```
+
+Import results by Perez et al provided in the first sheet of [Supplementary file 1](https://elifesciences.org/content/4/e07860/supp-material1).
+
+
+```r
 perez <- read.csv("../../data/elife-07860/elife-07860-supp1-v2.csv", as.is = TRUE)
 ```
 
@@ -138,9 +130,44 @@ h2m[-1 * 1:2]
 ## Zdbf2                        Zdbf2                ZDBF2
 ```
 
-### Import results and prepare data
+## Results
+
+### The results of Perez et al
+
+Bringing the data table into a long format for plotting:
+
+
+```r
+vname.pp <- paste0("posterior_mean.pp_", fc <- c("parent", "sex", "cross", "age"), "_effect")
+vname.beta <- paste0("posterior_mean.", fc,  "_effect")
+perez.l <- # long format
+    reshape(perez[c("gene_name", vname.pp, vname.beta)], # extract variables of interest
+            v.names = c("P", "beta"),
+            direction = "long", varying = list(vname.pp, vname.beta), timevar = "predictor", times = fc, idvar = "id1")
+```
+
+Plotted are posterior means of two parameters of the BRAIM model:
+
+1. $\beta_{jg}$, the regression coefficient mediating the effect of predictor $j$ for the parental bias of gene $g$; this is called `posterior_mean.age_effect`, `posterior_mean.sex_effect`,..., in the first sheet of [Supplementary file 1](https://elifesciences.org/content/4/e07860/supp-material1) provided by Perez et al.
+1. $P_{jg}$, the probability that explanatory variable $j$ has large effect on parental bias of $g$ (i.e. induces a $c\times$ larger variance of $\beta_{jg}$); this is called `posterior_mean.pp_age_effect`, `posterior_mean.pp_sex_effect`,...,
+
+
+```r
+xyplot(P ~ beta | predictor, data = perez.l, scales = list(x = list(relation = "free")), pch = ".",
+       xlab = expression(paste("E[ ", beta, " | data]")), ylab = "E[ P | data]",
+       sub = "Perez et al, using BRAIM model",
+       main = "Estimates from mouse cerebellum")
+```
+
+<img src="figure/perez-p-vs-beta-1.png" title="plot of chunk perez-p-vs-beta" alt="plot of chunk perez-p-vs-beta" width="700px" />
+
+This plot shows that the posterior mean of a regression coefficient $\beta_{jg}$ need not differ greatly from zero even if $P_{jg}\approx 1$ provides a strong evidence that predictor $j$ significantly influences gene $g$.  This follows from the property of the BRAIM model that $P_{jg}$ controls only the variance of $\beta_{jg}$ but not its mean.
+
+### Comparison between the two studies
 
 The following expressions focus only two predictors of parental bias: **age** and **gender** because only these two are clearly shared by our human study and the mouse study by Perez et al.
+
+#### Data manuiplations
 
 
 ```r
@@ -165,7 +192,7 @@ rownames(perez.s) <- h2m[perez.s$mouse.gene_name, "Associated.Gene.Name"]
 Combine evidence for the effect of age and gender from both our human study and the mouse study by Perez et al.  The two types of evidence are: 
 
 1. p-value for rejecting $\beta_{jg}=0$ under the wnlm.Q or logi.S model, calculated either from normal distribution theory or a random permutation test
-1. the posterior mean $E[P_{jg} | \mathrm{data}]$ of the probability $P_{jg}$ that explanatory variable $j$ has large effect on parental bias of $g$ (i.e. induces a $c\times$ larger variance of $\beta_{jg}$ under the BRAIM model); this is called `posterior_mean.pp_age_effect`, `posterior_mean.pp_sex_effect`,..., in the first sheet of [Supplementary file 1](https://elifesciences.org/content/4/e07860/supp-material1) provided by Perez et al.
+1. the posterior mean $E[P_{jg} | \mathrm{data}]$ 
 
 
 ```r
@@ -184,9 +211,9 @@ combined.g <- cbind(combined.g,
 combined <- rbind(combined.a, combined.g)
 ```
 
-## Results
+#### The main result
 
-Clearly, the evidence from the mouse and human study for any gene $g$ do not match each other.  While there is evidence for some genes from both studies that age has an effect, only our human study detected significant effect of gender.  These results suggests large methodological and/or biological differences between the studies.
+Plotted below is $E[P_{jg} | \mathrm{data}]$ from Perez et al against $\log_{10} p_{jg}$, the p-value, from our study.
 
 
 ```r
@@ -197,9 +224,16 @@ xyplot(pp.post.mean ~ - log10(p.val.t.dist.wnlm.Q) | Coefficient, data = combine
        strip = strip.custom(factor.levels = c("Age", "Gender")),
        xlim = c(-0.2, 2.5),
        #aspect = 1,
-       xlab = expression(paste("evidence in human: -", log[10], p)),
-       ylab = "evidence in mouse: E[ P | data]"
+       main = "Evidence for significant effect",
+       xlab = expression(paste(log[10], p, ",  present work")),
+       ylab = "E[ P | data],  Perez et al"
        )
 ```
 
-<img src="figure/posterior-pp-vs-pval-wnlm.Q-1.png" title="plot of chunk posterior-pp-vs-pval-wnlm.Q" alt="plot of chunk posterior-pp-vs-pval-wnlm.Q" width="700px" />
+<img src="figure/posterior-pp-vs-pval-wnlm-Q-1.png" title="plot of chunk posterior-pp-vs-pval-wnlm-Q" alt="plot of chunk posterior-pp-vs-pval-wnlm-Q" width="700px" />
+
+Clearly, the evidence from the mouse and human study for any gene $g$ do not match each other.  While there is evidence for some genes from both studies that age has an effect, only our human study detected significant effect of gender.  These results suggests large differences between the studies, which are methodological and/or biological in nature.  In particular:
+
+* the RNA-seq data is modeled differently so the interpretation of the $E[P_{jg} | \mathrm{data}]$ (BRAIM) is not identical to $p_{jg}$ (wnlm.Q)
+* differences in species, age window (relatively young mice vs relatively older people), and brain region
+* differing measurement protocols
