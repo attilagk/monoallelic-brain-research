@@ -221,3 +221,16 @@ dotplot(rev(med.cooks.d$wnlm.Q[1:20]), main = "wnlm.Q", xlab = "median Cook's di
 ```{r cooks-dist-logi-R, fig.asp=2/3, echo=FALSE}
 dotplot(rev(med.cooks.d$wnlm.R[1:20]), main = "wnlm.R", xlab = "median Cook's distance")
 ```
+
+## Decision on model fit
+
+Considering the two preferred models, wnlm.Q and logi.S, the following decision has been made in light of the results above:
+
+1. wnlm.Q fit is accepted for all genes
+1. logi.S fit is accepted for only some genes, printed below:
+
+```{r}
+read.csv("../../results/model-checking.csv", row.names = "gene")[-4]
+```
+
+As can be seen, all three criteria (normality of residuals, homoscedasticity, balanced influence of cases) had to be met for acceptable fit.

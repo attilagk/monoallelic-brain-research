@@ -161,6 +161,20 @@ beta.99 <- lapply(M, function(l.m) do.beta(l.m[sel.genes], conf.lev = 0.99))
 beta.95 <- lapply(M, function(l.m) do.beta(l.m[sel.genes], conf.lev = 0.95))
 ```
 
+### Filtering for poor fit
+
+Filter based on earlier decisions on the goodness of fit of logi.S, which is stored in `results/model-checking.csv`.
+
+```{r}
+logi.S.OK <- read.csv("../../results/model-checking.csv", row.names = "gene")["logi.S.fit.OK"]
+# set results to NA where logi.S fitted poorly
+beta.99$logi.S[beta.99$logi.S$Gene %in% rownames(logi.S.OK)[! logi.S.OK$logi.S.fit.OK],
+               c("Estimate", "Lower.CL", "Upper.CL")] <- NA
+beta.95$logi.S[beta.95$logi.S$Gene %in% rownames(logi.S.OK)[! logi.S.OK$logi.S.fit.OK],
+               c("Estimate", "Lower.CL", "Upper.CL")] <- NA
+```
+
+
 ### $\beta_g$ arranged by clusters
 
 #### wnlm.Q, 99 % confidence (for the manuscript)

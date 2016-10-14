@@ -1,20 +1,6 @@
 ## Preparations
 
 
-```
-## Loading required package: RColorBrewer
-```
-
-```
-## 
-## Attaching package: 'latticeExtra'
-```
-
-```
-## The following object is masked from 'package:ggplot2':
-## 
-##     layer
-```
 
 Load functions
 
@@ -113,6 +99,21 @@ both.p.val <-
 
 <img src="figure/p-val-tdist-vs-perm-1.png" title="plot of chunk p-val-tdist-vs-perm" alt="plot of chunk p-val-tdist-vs-perm" width="700px" />
 
+### Filtering for poor fit
+
+This filtering is based on earlier decisions on the goodness of fit of logi.S, which is stored in `results/model-checking.csv`.
+
+
+```r
+both.p.val <- cbind(both.p.val, read.csv("../../results/model-checking.csv", row.names = "gene")["logi.S.fit.OK"])
+# set results to NA where logi.S fitted poorly
+both.p.val[with(both.p.val, Model == "logi.S" & logi.S.fit.OK == FALSE), c("Estimate", "p.val.t.dist", "p.val.perm")] <- NA
+```
+
+Figure for manuscript showing p-values calculated from both approaches (theory: t-distribution, and permutation test) and under both models (wnlm.Q and, when the fit was OK, also logi.S)
+
+<img src="figure/p-values-1.png" title="plot of chunk p-values" alt="plot of chunk p-values" width="700px" />
+
 ## Saving results
 
 Writing long format results:
@@ -135,5 +136,4 @@ stars <- data.frame(sapply(varying.p <- unlist(varying[-1])[c(1, 3, 2, 4)],
 names(stars) <- paste0(varying.p, ".*")
 both.p.val.w <- cbind(both.p.val.w[2:1], stars, both.p.val.w[-1 * 2:1])
 write.csv(both.p.val.w, "../../results/regr-coefs-w.csv", row.names = FALSE)
-```
 ```

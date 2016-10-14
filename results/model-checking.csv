@@ -1,4 +1,4 @@
-gene,normality of residuals,homoscedasticity,influence,consensus score,is OK
+gene,residuals.normal,homoscedasticity,influence,consensus score,logi.S fit OK
 MAGEL2,0,0,1,0,FALSE
 TMEM261P1,0,0,0,0,FALSE
 SNHG14,0,0.5,0,0,FALSE

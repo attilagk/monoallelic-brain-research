@@ -188,3 +188,51 @@ dotplot(rev(med.cooks.d$logi.S[1:20]), main = "logi.S", xlab = "median Cook's di
 <img src="figure/cooks-dist-logi-Q-1.png" title="plot of chunk cooks-dist-logi-Q" alt="plot of chunk cooks-dist-logi-Q" width="700px" />
 
 <img src="figure/cooks-dist-logi-R-1.png" title="plot of chunk cooks-dist-logi-R" alt="plot of chunk cooks-dist-logi-R" width="700px" />
+
+## Decision on model fit
+
+Considering the two preferred models, wnlm.Q and logi.S, the following decision has been made in light of the results above:
+
+1. wnlm.Q fit is accepted for all genes
+1. logi.S fit is accepted for only some genes, printed below:
+
+
+```r
+read.csv("../../results/model-checking.csv", row.names = "gene")[-4]
+```
+
+```
+##               residuals.normal homoscedasticity influence logi.S.fit.OK
+## MAGEL2                     0.0              0.0         1         FALSE
+## TMEM261P1                  0.0              0.0         0         FALSE
+## SNHG14                     0.0              0.5         0         FALSE
+## AL132709.5                 0.5              0.5         1         FALSE
+## RP11-909M7.3               0.0              0.0         1         FALSE
+## ZIM2                       0.0              0.5         1         FALSE
+## NAP1L5                     0.5              1.0         0         FALSE
+## MEG3                       0.0              0.5         0         FALSE
+## PEG3                       0.0              1.0         0         FALSE
+## PWAR6                      0.0              0.5         0         FALSE
+## FAM50B                     0.5              0.5         1         FALSE
+## NDN                        0.5              0.5         1         FALSE
+## SNURF                      0.0              0.5         0         FALSE
+## PEG10                      0.0              0.5         1         FALSE
+## SNRPN                      0.0              0.5         0         FALSE
+## KCNQ1OT1                   1.0              1.0         1          TRUE
+## ZDBF2                      0.0              0.5         0         FALSE
+## GRB10                      1.0              1.0         1          TRUE
+## SNORD116-20                0.0              1.0         0         FALSE
+## KCNK9                      1.0              1.0         1          TRUE
+## INPP5F                     0.0              0.5         0         FALSE
+## RP13-487P22.1              1.0              1.0         0         FALSE
+## MEST                       1.0              1.0         1          TRUE
+## ZNF331                     0.5              1.0         1         FALSE
+## hsa-mir-335                1.0              1.0         1          TRUE
+## DIRAS3                     1.0              1.0         0         FALSE
+## PWRN1                      1.0              1.0         1          TRUE
+## IGF2                       1.0              1.0         1          TRUE
+## NLRP2                      0.5              1.0         1         FALSE
+## UBE3A                      1.0              1.0         1          TRUE
+```
+
+As can be seen, all three criteria (normality of residuals, homoscedasticity, balanced influence of cases) had to be met for acceptable fit.

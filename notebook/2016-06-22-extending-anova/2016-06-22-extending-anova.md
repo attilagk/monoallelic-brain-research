@@ -14,6 +14,9 @@ Take two permutations of explanatory variables:
 
 Relevant scripts
 
+```
+## Loading required package: RColorBrewer
+```
 
 Import data; note that the set of **selected genes have been updated** based on later analysis
 
