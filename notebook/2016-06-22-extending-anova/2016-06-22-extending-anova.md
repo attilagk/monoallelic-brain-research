@@ -14,9 +14,6 @@ Take two permutations of explanatory variables:
 
 Relevant scripts
 
-```
-## Loading required package: RColorBrewer
-```
 
 Import data; note that the set of **selected genes have been updated** based on later analysis
 
@@ -181,26 +178,54 @@ The pairwise model comparisons in terms of $\hat{\beta}$ under either of two sel
 * data transformations for the normal linear model: $Q$ vs $R$ statistic
 * weighting for the normal linear model
 
-Each panel in the plot shows the theoretical zero line $\beta_{jg}=0$ under each of the two models (horizontal and vertical dashed lines).  The plotting symbols are color coded according to gene rank (rainbow, red to violet); the last "rank" #31 (violet) corresponds to the weighted average `WA` of read count ratio over genes.  The plotting symbols also display the rank with numbers; these are (1) MAGEL2;  (2) TMEM261P1;  (3) SNHG14;  (4) AL132709.5;  (5) RP11-909M7.3;  (6) ZIM2;  (7) NAP1L5;  (8) MEG3;  (9) PEG3;  (10) PWAR6;  (11) FAM50B;  (12) NDN;  (13) SNURF;  (14) PEG10;  (15) SNRPN;  (16) KCNQ1OT1;  (17) ZDBF2;  (18) GRB10;  (19) SNORD116-20;  (20) KCNK9;  (21) INPP5F;  (22) RP13-487P22.1;  (23) MEST;  (24) ZNF331;  (25) hsa-mir-335;  (26) DIRAS3;  (27) PWRN1;  (28) IGF2;  (29) NLRP2;  (30) UBE3A;  (31) WA.
+Each panel in the plot shows the theoretical zero line $\beta_{jg}=0$ under each of the two models (horizontal and vertical dashed lines).  The plotting symbols are color coded according to gene rank (rainbow, red to violet); the last "rank" #31 (violet) corresponds to the weighted average `WA` of read count ratio over genes.  The plotting symbols also display the rank with numbers, see the key on the top.  Genes acceptably fitted by both models are distinguished with a diamond symbol and **bold font** from those that could be fitted only by wnlm.Q.
 
 
+
+Filtering out results for logi.S if the fit is bad for a given gene, using decisions based on model checking analysis
+
+
+```r
+logi.S.OK <- read.csv("../../results/model-checking.csv", row.names = "gene")["logi.S.fit.OK"]
+# filtered and unfiltered long format Betas
+Betas.l.f <- Betas.l <- do.call(cbind, Betas)
+# perform filtering by replacing data with NAs
+Betas.l.f[Betas.l.f$logi.S.Gene %in% c(rownames(logi.S.OK)[! logi.S.OK$logi.S.fit.OK], "WA"), grep("logi\\.S\\.[ELU]", names(Betas.l.f))] <- NA
+```
 
 ### Logistic vs normal linear model
 
 The plot shows overall agreement between logi.S and wnlm.Q.  Genes of disagreement tend to be those for which logi.S fits poorly to the data.
 
+Without filtering genes with poor fit by logi.S
+
 
 ```r
-mtype.compare.plot(mtypeA = "logi.S", mtypeB = "wnlm.Q", do.key = TRUE)
+mtype.compare.plot(mtypeA = "logi.S", mtypeB = "wnlm.Q", dt = Betas.l, do.key = TRUE)
 ```
 
 <img src="figure/logi-S-wnlm-Q-compare-1.png" title="plot of chunk logi-S-wnlm-Q-compare" alt="plot of chunk logi-S-wnlm-Q-compare" width="700px" />
+
+With filtering
+
+
+```r
+mtype.compare.plot(mtypeA = "logi.S", mtypeB = "wnlm.Q", dt = Betas.l.f, do.key = TRUE)
+```
+
+<img src="figure/logi-S-filtered-wnlm-Q-compare-1.png" title="plot of chunk logi-S-filtered-wnlm-Q-compare" alt="plot of chunk logi-S-filtered-wnlm-Q-compare" width="700px" />
 
 ### Scaling of the logit link function
 
 There is very little impact on the $2\times$ difference in scaling of the logit link function because most of the observed cases are near the upper bound of the link function (which is 1), where the scaling has the smallest effect on the predictions.
 
+Without filtering genes with poor fit by logi.S
+
 <img src="figure/logi-S-logi2-S-compare-1.png" title="plot of chunk logi-S-logi2-S-compare" alt="plot of chunk logi-S-logi2-S-compare" width="700px" />
+
+With filtering
+
+<img src="figure/logi-S-filtered-logi2-S-compare-1.png" title="plot of chunk logi-S-filtered-logi2-S-compare" alt="plot of chunk logi-S-filtered-logi2-S-compare" width="700px" />
 
 ### Data transformations for the normal linear model: $Q$ vs $R$
 

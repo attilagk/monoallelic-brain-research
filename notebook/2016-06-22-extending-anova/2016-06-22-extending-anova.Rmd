@@ -261,51 +261,52 @@ The pairwise model comparisons in terms of $\hat{\beta}$ under either of two sel
 * data transformations for the normal linear model: $Q$ vs $R$ statistic
 * weighting for the normal linear model
 
-Each panel in the plot shows the theoretical zero line $\beta_{jg}=0$ under each of the two models (horizontal and vertical dashed lines).  The plotting symbols are color coded according to gene rank (rainbow, red to violet); the last "rank" #`r length(levels(Betas[[1]]$Gene))` (violet) corresponds to the weighted average `WA` of read count ratio over genes.  The plotting symbols also display the rank with numbers; these are `r paste0("(", seq_along(levels(Betas[[1]]$Gene)), ") ", levels(Betas[[1]]$Gene), collapse = ";  ")`.
+Each panel in the plot shows the theoretical zero line $\beta_{jg}=0$ under each of the two models (horizontal and vertical dashed lines).  The plotting symbols are color coded according to gene rank (rainbow, red to violet); the last "rank" #`r length(levels(Betas[[1]]$Gene))` (violet) corresponds to the weighted average `WA` of read count ratio over genes.  The plotting symbols also display the rank with numbers, see the key on the top.  Genes acceptably fitted by both models are distinguished with a diamond symbol and **bold font** from those that could be fitted only by wnlm.Q.
 
 ```{r echo=FALSE}
-mtype.compare.plot <- function(mtypeA = "logi.S", mtypeB = "wnlm.Q", dt = do.call(cbind, Betas), do.key = TRUE, ...) {
-    mycol <- rainbow(n = length(levels(dt$wnlm.Q.Gene)), start = 0, end = 5 / 6)
-    auto.key <-
-        if(do.key)
-            list(columns = 5, col = "black", points = FALSE, cex = 0.7,
-                 text = paste0("(", seq_along(levels(Betas[[1]]$Gene)), ") ", levels(Betas[[1]]$Gene)))
-        else
-            FALSE
-    fm <- formula(paste0(mtypeA, ".Estimate ~ ", mtypeB, ".Estimate | wnlm.Q.Coefficient"))
-    xyplot(fm, data = dt,
-           groups = dt$wnlm.Q.Gene,
-           gene = as.character(as.integer(dt$wnlm.Q.Gene)),
-           par.settings = list(superpose.symbol = list(fill = mycol), add.text = list(cex = 1.0)),
-           scales = list(relation = "free", draw = FALSE),
-           panel = function(x, y, subscripts, gene, ...){
-               panel.abline(h = 0, lty = 2)
-               panel.abline(v = 0, lty = 2)
-               col <- trellis.par.get("superpose.symbol")$fill
-               panel.xyplot(x, y, pch = 21, fill = col, col = col, cex = 1.5, alpha = 0.5)
-               panel.text(x, y, labels = gene[subscripts], cex = 0.7, ...)
-           },
-           main = expression(paste("Estimate ", hat(beta), "[...] under two models")),
-           xlab = paste("under", mtypeB), ylab = paste("under", mtypeA),
-           auto.key = auto.key,
-           ...)[1:20]
-}
+source("2016-06-22-extending-anova.R")
+```
+
+Filtering out results for logi.S if the fit is bad for a given gene, using decisions based on model checking analysis
+
+```{r}
+logi.S.OK <- read.csv("../../results/model-checking.csv", row.names = "gene")["logi.S.fit.OK"]
+# filtered and unfiltered long format Betas
+Betas.l.f <- Betas.l <- do.call(cbind, Betas)
+# perform filtering by replacing data with NAs
+Betas.l.f[Betas.l.f$logi.S.Gene %in% c(rownames(logi.S.OK)[! logi.S.OK$logi.S.fit.OK], "WA"), grep("logi\\.S\\.[ELU]", names(Betas.l.f))] <- NA
 ```
 
 ### Logistic vs normal linear model
 
 The plot shows overall agreement between logi.S and wnlm.Q.  Genes of disagreement tend to be those for which logi.S fits poorly to the data.
 
+Without filtering genes with poor fit by logi.S
+
 ```{r logi-S-wnlm-Q-compare}
-mtype.compare.plot(mtypeA = "logi.S", mtypeB = "wnlm.Q", do.key = TRUE)
+mtype.compare.plot(mtypeA = "logi.S", mtypeB = "wnlm.Q", dt = Betas.l, do.key = TRUE)
+```
+
+With filtering
+
+```{r logi-S-filtered-wnlm-Q-compare}
+mtype.compare.plot(mtypeA = "logi.S", mtypeB = "wnlm.Q", dt = Betas.l.f, do.key = TRUE)
 ```
 
 ### Scaling of the logit link function
 
 There is very little impact on the $2\times$ difference in scaling of the logit link function because most of the observed cases are near the upper bound of the link function (which is 1), where the scaling has the smallest effect on the predictions.
 
+Without filtering genes with poor fit by logi.S
+
 ```{r logi-S-logi2-S-compare, echo=FALSE}
-mtype.compare.plot(mtypeA = "logi.S", mtypeB = "logi2.S") 
+mtype.compare.plot(mtypeA = "logi.S", mtypeB = "logi2.S", dt = Betas.l) 
+```
+
+With filtering
+
+```{r logi-S-filtered-logi2-S-compare, echo=FALSE}
+mtype.compare.plot(mtypeA = "logi.S", mtypeB = "logi2.S", dt = Betas.l.f) 
 ```
 
 ### Data transformations for the normal linear model: $Q$ vs $R$

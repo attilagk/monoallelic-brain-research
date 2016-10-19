@@ -1,0 +1,16 @@
+Gene,Description,Gene type,Chromosome Name,Gene Start (bp),rank (our study),Associated coefficient (our study),Phenotype
+MAGEL2,MAGE family member L2,protein_coding,15,23643544,1,Age,Prader-Willi syndrome; Schaaf-Yang syndrome; Arthrogryposis multiplex congenita; positive regulation of ubiquitin-protein transferase activity
+AL132709.5 (MIR668),microRNA 668,miRNA,14,101055258,4,Ancestry.1,
+RP11-909M7.3 (MEG8),maternally expressed 8,lincRNA,14,100836269,5,DxSCZ,
+NAP1L5,nucleosome assembly protein 1 like 5,protein_coding,4,88695915,7,GenderMale,
+MEG3,maternally expressed 3,lincRNA,14,100779410,8,GenderMale,Maternal/paternal 14q32.2 hypermethylation/microdeletion syndrome
+PEG3,paternally expressed 3,protein_coding,19,56810083,9,GenderMale,
+NDN,"necdin, MAGE family member",protein_coding,15,23685400,12,GenderMale,Prader-Willi syndrome
+PEG10,paternally expressed 10,protein_coding,7,94656325,14,DxSCZ,
+KCNQ1OT1,KCNQ1 opposite strand/antisense transcript 1,antisense,11,2608328,16,GenderMale,Beckwith-Wiedemann syndrome; Isolated hemihyperplasia
+ZDBF2,zinc finger DBF-type containing 2,protein_coding,2,206274663,17,"Age, Ancestry.1",
+KCNK9,potassium two pore domain channel subfamily K member 9,protein_coding,8,139600838,20,Age,Birk-Barel mental retardation dysmorphism syndrome
+INPP5F,inositol polyphosphate-5-phosphatase F,protein_coding,10,119726097,21,Age,negative regulation of cell motility; positive regulation of endocytic recycling
+MEST,mesoderm specific transcript,protein_coding,7,130486171,23,"GenderMale, DxSCZ",
+PWRN1,Prader-Willi region non-protein coding RNA 1,lincRNA,15,24493137,27,Ancestry.1,Prader-Willi syndrome
+UBE3A,ubiquitin protein ligase E3A,protein_coding,15,25333728,30,"Age, GenderMale, DxSCZ, Ancestry.1",Angelman syndrome; 15q11q13 microduplication syndrome; positive regulation of circadian rhythm; negative regulation of protein ubiquitination involved in ubiquitin-dependent protein catabolic process; ubiquitin protein ligase activity

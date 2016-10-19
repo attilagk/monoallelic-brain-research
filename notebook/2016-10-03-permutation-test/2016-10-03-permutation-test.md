@@ -97,6 +97,13 @@ both.p.val <-
                                                  function(g) get.both.p.vals(mtype = mtype, gene = g, coef = coef, M = M, B = Betas)))))))
 ```
 
+Adjust p-values of 0 to 10<sup>-4</sup>, which is the reciprocal of the number of permutations.  Without this adjustment these p-values couldn't be plotted on a logarithmic scale.
+
+
+```r
+both.p.val[with(both.p.val, ! is.na(p.val.perm) & p.val.perm == 0), "p.val.perm"] <- 1 / n.perm
+```
+
 <img src="figure/p-val-tdist-vs-perm-1.png" title="plot of chunk p-val-tdist-vs-perm" alt="plot of chunk p-val-tdist-vs-perm" width="700px" />
 
 ### Filtering for poor fit
@@ -105,23 +112,20 @@ This filtering is based on earlier decisions on the goodness of fit of logi.S, w
 
 
 ```r
-both.p.val <- cbind(both.p.val, read.csv("../../results/model-checking.csv", row.names = "gene")["logi.S.fit.OK"])
+both.p.val <- cbind(both.p.val, logi.S.OK <- read.csv("../../results/model-checking.csv", row.names = "gene")["logi.S.fit.OK"])
 # set results to NA where logi.S fitted poorly
 both.p.val[with(both.p.val, Model == "logi.S" & logi.S.fit.OK == FALSE), c("Estimate", "p.val.t.dist", "p.val.perm")] <- NA
 ```
 
-Figure for manuscript showing p-values calculated from both approaches (theory: t-distribution, and permutation test) and under both models (wnlm.Q and, when the fit was OK, also logi.S)
+Figure for manuscript showing p-values calculated from both approaches (theory: t-distribution, and permutation test) and under both models (wnlm.Q and, when the fit was OK, also logi.S).
+The plotting symbols are color coded according to gene rank (rainbow, red to violet).  The plotting symbols also display the rank with numbers, see the key on the top.  Genes acceptably fitted by both models are distinguished with a diamond symbol and **bold font** from those that could be fitted only by wnlm.Q.
+
 
 <img src="figure/p-values-1.png" title="plot of chunk p-values" alt="plot of chunk p-values" width="700px" />
 
-## Saving results
+## Summarizing results
 
-Writing long format results:
-
-
-```r
-write.csv(both.p.val, "../../results/regr-coefs.csv", row.names = FALSE)
-```
+Bringing results to long format and annotating significance with stars
 
 
 ```r
@@ -135,5 +139,134 @@ stars <- data.frame(sapply(varying.p <- unlist(varying[-1])[c(1, 3, 2, 4)],
                            function(v) annotate.signif(both.p.val.w[[v]])))
 names(stars) <- paste0(varying.p, ".*")
 both.p.val.w <- cbind(both.p.val.w[2:1], stars, both.p.val.w[-1 * 2:1])
+```
+
+### Aggregation
+
+Aggregating significant findings over all four combinations of p-value calculation methods $v \in \{\mathrm{t.dist}, \mathrm{perm}\}$ and model types $y \in \{\mathrm{wnlm.Q}, \mathrm{logi.S}\}$ using the following rules
+
+1. under a given model type $y$ take parameter--gene pairs $(j,g) \, | \, y$ for which $p_{jg}^{\mathrm{t.dist}, y} < 0.05 \; \mathrm{AND} \;p_{gj}^{\mathrm{perm}, y} < 0.05$
+1. take $(j,g)$ if in the previous step
+   * either $(j,g) \, | \, \mathrm{wnlm.Q}$ or $(j,g) \, | \, \mathrm{logi.S}$ was taken
+   * both $(j,g) \, | \, \mathrm{wnlm.Q}$ and $(j,g) \, | \, \mathrm{logi.S}$ were taken
+
+This means that we have the rules *either* and *both*, which correspond to a less and more stringent condition, respectively.  These result in two corresponding sets of pairs, $\{(j,g)_\mathrm{either}\} \supseteq \{(j,g)_\mathrm{both}\}$.  (We also have the rules *wnlm.Q* and *logi.S*, which do not use aggregation over model types, and cannot be ordered in terms of stringency.  Also, $\{(j,g)_\mathrm{wnlm.Q}\} \nsupseteq \{(j,g)_\mathrm{logi.S}\}$ and $\{(j,g)_\mathrm{wnlm.Q}\} \nsubseteq \{(j,g)_\mathrm{logi.S}\}$ in general).
+
+The following code implements these rules.
+
+
+```r
+is.signif <-
+    list(wnlm.Q =
+             with(both.p.val.w, p.val.t.dist.wnlm.Q < 5e-2 & p.val.perm.wnlm.Q < 5e-2 &
+                  Coefficient %in% c("Age", "GenderMale", "Ancestry.1", "DxSCZ")),
+         logi.S =
+             with(both.p.val.w, logi.S.fit.OK & p.val.t.dist.logi.S < 5e-2 & p.val.perm.logi.S < 5e-2 &
+                  Coefficient %in% c("Age", "GenderMale", "Ancestry.1", "DxSCZ")))
+is.signif$either <- with(is.signif, wnlm.Q | logi.S)
+is.signif$both <- with(is.signif, wnlm.Q & logi.S)
+```
+
+The pairs $\{(j,g)_x\}$ (where $x \in \{\mathrm{wnlm.Q}, \mathrm{logi.S}, \mathrm{either}, \mathrm{both}\}$) can be presented in two sensible ways: a gene-centric and a coefficient-centric way.
+
+The gene-centric way lists, for each gene, all the significantly associated coefficients:
+
+
+```r
+signif.gene.effects <-
+    lapply(is.signif,
+           function(s)
+               sapply(split(x <- both.p.val.w[s, c("Gene", "Coefficient")][ with(both.p.val.w[is.signif$either, ], order(Gene, Coefficient)), ], x$Gene, drop = TRUE),
+                      function(g) toString(g$Coefficient)))
+signif.gene.effects
+```
+
+```
+## $wnlm.Q
+##            MAGEL2        AL132709.5      RP11-909M7.3            NAP1L5 
+##             "Age"      "Ancestry.1"           "DxSCZ"      "GenderMale" 
+##              MEG3              PEG3               NDN             PEG10 
+##      "GenderMale"      "GenderMale"      "GenderMale"           "DxSCZ" 
+##          KCNQ1OT1             ZDBF2             KCNK9            INPP5F 
+##      "GenderMale" "Age, Ancestry.1"             "Age"             "Age" 
+##              MEST             PWRN1             UBE3A 
+##           "DxSCZ"      "Ancestry.1"           "DxSCZ" 
+## 
+## $logi.S
+##                         KCNK9                          MEST 
+##                         "Age"           "GenderMale, DxSCZ" 
+##                         PWRN1                         UBE3A 
+##                  "Ancestry.1" "Ancestry.1, Age, GenderMale" 
+## 
+## $either
+##                               MAGEL2                           AL132709.5 
+##                                "Age"                         "Ancestry.1" 
+##                         RP11-909M7.3                               NAP1L5 
+##                              "DxSCZ"                         "GenderMale" 
+##                                 MEG3                                 PEG3 
+##                         "GenderMale"                         "GenderMale" 
+##                                  NDN                                PEG10 
+##                         "GenderMale"                              "DxSCZ" 
+##                             KCNQ1OT1                                ZDBF2 
+##                         "GenderMale"                    "Age, Ancestry.1" 
+##                                KCNK9                               INPP5F 
+##                                "Age"                                "Age" 
+##                                 MEST                                PWRN1 
+##                  "GenderMale, DxSCZ"                         "Ancestry.1" 
+##                                UBE3A 
+## "Age, GenderMale, DxSCZ, Ancestry.1" 
+## 
+## $both
+##        KCNK9         MEST        PWRN1 
+##        "Age"      "DxSCZ" "Ancestry.1"
+```
+
+The coefficient-centric way lists, for each coefficient, all the significantly associated genes:
+
+
+```r
+signif.effect.genes <-
+    lapply(is.signif,
+           function(s)
+               sapply(split(x <- both.p.val.w[s, c("Gene", "Coefficient")][ with(both.p.val.w[is.signif$either, ], order(Coefficient, Gene)), ], x$Coefficient, drop = TRUE),
+                      function(g) toString(g$Gene)))
+signif.effect.genes
+```
+
+```
+## $wnlm.Q
+##                                 Age                          GenderMale 
+##      "MAGEL2, ZDBF2, KCNK9, INPP5F" "NAP1L5, MEG3, PEG3, NDN, KCNQ1OT1" 
+##                               DxSCZ                          Ancestry.1 
+##  "RP11-909M7.3, PEG10, MEST, UBE3A"          "AL132709.5, ZDBF2, PWRN1" 
+## 
+## $logi.S
+##            Age     GenderMale          DxSCZ     Ancestry.1 
+## "KCNK9, UBE3A"  "MEST, UBE3A"         "MEST" "PWRN1, UBE3A" 
+## 
+## $either
+##                                              Age 
+##            "MAGEL2, ZDBF2, KCNK9, INPP5F, UBE3A" 
+##                                       GenderMale 
+## "NAP1L5, MEG3, PEG3, NDN, KCNQ1OT1, MEST, UBE3A" 
+##                                            DxSCZ 
+##               "RP11-909M7.3, PEG10, MEST, UBE3A" 
+##                                       Ancestry.1 
+##                "AL132709.5, ZDBF2, PWRN1, UBE3A" 
+## 
+## $both
+##        Age      DxSCZ Ancestry.1 
+##    "KCNK9"     "MEST"    "PWRN1"
+```
+
+### Writing results to files
+
+
+```r
+write.csv(both.p.val, "../../results/regr-coefs.csv", row.names = FALSE)
 write.csv(both.p.val.w, "../../results/regr-coefs-w.csv", row.names = FALSE)
+invisible(lapply(names(signif.gene.effects),
+                 function(x) write.csv(data.frame(Gene = names(y <- signif.gene.effects[[x]]), Coefficient = y), file = paste0("../../results/signif-gene-effects-", x, ".csv"), row.names = FALSE)))
+invisible(lapply(names(signif.effect.genes),
+                 function(x) write.csv(data.frame(Gene = names(y <- signif.gene.effects[[x]]), Coefficient = y), file = paste0("../../results/signif-effect-genes-", x, ".csv"), row.names = FALSE)))
 ```
