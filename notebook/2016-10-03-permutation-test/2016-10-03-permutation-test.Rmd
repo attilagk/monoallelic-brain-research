@@ -198,7 +198,7 @@ Aggregating significant findings over all four combinations of p-value calculati
    * either $(j,g) \, | \, \mathrm{wnlm.Q}$ or $(j,g) \, | \, \mathrm{logi.S}$ was taken
    * both $(j,g) \, | \, \mathrm{wnlm.Q}$ and $(j,g) \, | \, \mathrm{logi.S}$ were taken
 
-This means that we have the rules *either* and *both*, which correspond to a less and more stringent condition, respectively.  These result in two corresponding sets of pairs, $\{(j,g)_\mathrm{either}\} \supseteq \{(j,g)_\mathrm{both}\}$.  (We also have the rules *wnlm.Q* and *logi.S*, which do not use aggregation over model types, and cannot be ordered in terms of stringency.  Also, $\{(j,g)_\mathrm{wnlm.Q}\} \nsupseteq \{(j,g)_\mathrm{logi.S}\}$ and $\{(j,g)_\mathrm{wnlm.Q}\} \nsubseteq \{(j,g)_\mathrm{logi.S}\}$ in general).
+This means that we have the rules *either* and *both*, which correspond to a less and more stringent condition, respectively.  These result in two corresponding sets of pairs, $\{(j,g) \, | \, \mathrm{either}\} \supseteq \{(j,g) \, | \, \mathrm{both}\}$.  (We also have the rules *wnlm.Q* and *logi.S*, which do not use aggregation over model types, and cannot be ordered in terms of stringency.  Also, $\{(j,g) \, | \, \mathrm{wnlm.Q}\} \nsupseteq \{(j,g) \, | \, \mathrm{logi.S}\}$ and $\{(j,g) \, | \, \mathrm{wnlm.Q}\} \nsubseteq \{(j,g) \, | \, \mathrm{logi.S}\}$ in general).
 
 The following code implements these rules.
 
@@ -214,7 +214,7 @@ is.signif$either <- with(is.signif, wnlm.Q | logi.S)
 is.signif$both <- with(is.signif, wnlm.Q & logi.S)
 ```
 
-The pairs $\{(j,g)_x\}$ (where $x \in \{\mathrm{wnlm.Q}, \mathrm{logi.S}, \mathrm{either}, \mathrm{both}\}$) can be presented in two sensible ways: a gene-centric and a coefficient-centric way.
+The pairs $\{(j,g) \, | \, x\}$ (where $x \in \{\mathrm{wnlm.Q}, \mathrm{logi.S}, \mathrm{either}, \mathrm{both}\}$) can be presented in two sensible ways: a **gene-centric** and a **coefficient-centric** way.
 
 The gene-centric way lists, for each gene, all the significantly associated coefficients:
 
@@ -246,5 +246,5 @@ write.csv(both.p.val.w, "../../results/regr-coefs-w.csv", row.names = FALSE)
 invisible(lapply(names(signif.gene.effects),
                  function(x) write.csv(data.frame(Gene = names(y <- signif.gene.effects[[x]]), Coefficient = y), file = paste0("../../results/signif-gene-effects-", x, ".csv"), row.names = FALSE)))
 invisible(lapply(names(signif.effect.genes),
-                 function(x) write.csv(data.frame(Gene = names(y <- signif.gene.effects[[x]]), Coefficient = y), file = paste0("../../results/signif-effect-genes-", x, ".csv"), row.names = FALSE)))
+                 function(x) write.csv(data.frame(Gene = names(y <- signif.effect.genes[[x]]), Coefficient = y), file = paste0("../../results/signif-effect-genes-", x, ".csv"), row.names = FALSE)))
 ```
