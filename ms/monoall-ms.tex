@@ -15,7 +15,6 @@ Ravi Sachinanandam, Andrew Chess}
 
 TODOs
 \begin{enumerate}
-\item schematic figure on study design (Fig.~\ref{fig:study-design}) 
 \item finish the rest of the Results section
 \end{enumerate}
 
@@ -335,14 +334,19 @@ Eq.~\ref{eq:S-definition} in Section~\ref{sec:filtering}).
 
 \begin{figure}
 \begin{center}
-\includegraphics[width=0.6\textwidth]{figures/mona_1.png}
+\includegraphics[width=1.0\textwidth]{figures/by-me/commonmind-rna-seq/commonmind-rna-seq.pdf}
 \end{center}
-\caption{TODO: Study design.  This figure (if deemed useful) will
-schematically illustrate variation of parental bias across a few genes by
-showing several maternal and paternal transcripts, and will also demonstrate
-technical sources of variation by depicting
-the corresponding RNA-seq read counts at heterozygous SNPs.  Showing variation across
-individuals would be desirable but would complicate figure.}
+\caption{
+Quantifying parental expression bias in human individuals using the read count
+ratio statistic \(S\).  The bias towards the expression of the maternal (red)
+or paternal (blue) copy of some gene in individual is measured based on the
+count of RNA-seq reads carrying the reference allele (small closed circles)
+and the count of reads carrying an alternative allele (open squares) at all
+SNPs in that gene for which the individual is heterozygous.  The differences
+in the unobserved parental expression bias between individual \(i_1\) and
+\(i_2\) arise only from biological differences such as their disease status
+(black and gray silhouettes), age, or gender.  In addition to these, the differences in the observed read count ratio also reflect variation from technical sources like tissue preparation, or RNA sequencing.
+}
 \label{fig:study-design}
 \end{figure}
 
@@ -508,7 +512,7 @@ shows how \(T_{ig}\) varies both within a gene and across genes.
 
 \begin{figure}
 \begin{center}
-\includegraphics[scale=0.6]{figures/2016-08-23-glm-sampling-distributions/ZDBF2-1.png}
+\includegraphics[scale=0.6]{figures/2016-08-23-glm-sampling-distributions/KCNK9-1.png}
 \end{center}
 \caption{}
 \label{fig:predicted-curves}
@@ -519,7 +523,7 @@ models, one for each gene, by treating read count ratio as response and the
 variables in Table~\ref{tab:predictors} as predictors. The thick black curves
 and colored strips in Fig.~\ref{fig:predicted-curves} represent the predicted
 read count ratio and prediction intervals, respectively, under four of these
-models for the gene ZDBF2.  Among our models the logistic ones, logi.S and
+models for the gene KCNK9.  Among our models the logistic ones, logi.S and
 logi2.S, have several desirable theoretical properties: they prohibit values
 \(S_{g}>1\), capture at least some of the obvious dependence of the variance
 of \(S_{g}\) on its mean, and take into account the amount of available data

@@ -28,10 +28,10 @@
 \newlabel{eq:binom-error}{{10}{5}}
 \@writefile{toc}{\contentsline {section}{\numberline {3}Results}{6}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {3.1}Study design}{6}}
-\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces TODO: Study design. This figure (if deemed useful) will schematically illustrate variation of parental bias across a few genes by showing several maternal and paternal transcripts, and will also demonstrate technical sources of variation by depicting the corresponding RNA-seq read counts at heterozygous SNPs. Showing variation across individuals would be desirable but would complicate figure.}}{7}}
+\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces  Quantifying parental expression bias in human individuals using the read count ratio statistic \(S\). The bias towards the expression of the maternal (red) or paternal (blue) copy of some gene in individual is measured based on the count of RNA-seq reads carrying the reference allele (small closed circles) and the count of reads carrying an alternative allele (open squares) at all SNPs in that gene for which the individual is heterozygous. The differences in the unobserved parental expression bias between individual \(i_1\) and \(i_2\) arise only from biological differences such as their disease status (black and gray silhouettes), age, or gender. In addition to these, the differences in the observed read count ratio also reflect variation from technical sources like tissue preparation, or RNA sequencing. }}{7}}
 \newlabel{fig:study-design}{{1}{7}}
-\@writefile{lot}{\contentsline {table}{\numberline {2}{\ignorespaces Variables used as predictors of read count ratio for the study of regulation and consequences of parental bias. The right column lists the corresponding regression parameters and, in square brackets [ ], the baseline level against which other levels are contrasted. PMI: post-mortem interval; Dx: disease status; AFF: affective spectrum disorder; SCZ: schizophrenia; RIN: RNA integrity number; RIN2: the square of RIN; Ancestry.\(k\): the \(k\)-th eigenvalue from the decomposition of genotypes indicating population structure}}{7}}
-\newlabel{tab:predictors}{{2}{7}}
+\@writefile{lot}{\contentsline {table}{\numberline {2}{\ignorespaces Variables used as predictors of read count ratio for the study of regulation and consequences of parental bias. The right column lists the corresponding regression parameters and, in square brackets [ ], the baseline level against which other levels are contrasted. PMI: post-mortem interval; Dx: disease status; AFF: affective spectrum disorder; SCZ: schizophrenia; RIN: RNA integrity number; RIN2: the square of RIN; Ancestry.\(k\): the \(k\)-th eigenvalue from the decomposition of genotypes indicating population structure}}{8}}
+\newlabel{tab:predictors}{{2}{8}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {3.2}Genome- and population-wide variation of parental bias}{8}}
 \@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces }}{9}}
 \newlabel{fig:ranking-genes}{{2}{9}}
@@ -39,25 +39,25 @@
 \newlabel{fig:top-genes}{{3}{10}}
 \@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces }}{11}}
 \newlabel{fig:S-age-gender}{{4}{11}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.3}Modeling the variation of parental bias for selected genes}{12}}
-\newlabel{sec:results-regression}{{3.3}{12}}
-\@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces }}{13}}
-\newlabel{fig:predicted-curves}{{5}{13}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.3}Modeling the variation of parental bias for selected genes}{11}}
+\newlabel{sec:results-regression}{{3.3}{11}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces }}{12}}
+\newlabel{fig:predicted-curves}{{5}{12}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.4}Inferring regulators and consequences of parental bias}{13}}
 \citation{Perez2015}
 \citation{Perez2015}
+\@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces Biological effects: estimate and $99\%$ confidence interval for each regression coefficient \(\beta _{jg}\) under the wnlm.Q model, where \(g\) corresponds to a gene and \(j\) to a biological covariate (Age, Ancestry.1) or a level of some biological factor (DxSCZ, GenderMale).}}{14}}
+\newlabel{fig:biol-effects}{{6}{14}}
+\@writefile{toc}{\contentsline {section}{\numberline {4}Discussion}{14}}
+\@writefile{lof}{\contentsline {figure}{\numberline {7}{\ignorespaces Comparison of the effects of age and gender between the present work and a previous study\nobreakspace  {}\cite  {Perez2015} in the mouse cerebellum. }}{15}}
+\newlabel{fig:mouse-cerebellum}{{7}{15}}
 \citation{Perez2015}
 \citation{DeVeale2012}
 \citation{Gregg2010a}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.4}Inferring regulators and consequences of parental bias}{14}}
-\@writefile{toc}{\contentsline {section}{\numberline {4}Discussion}{14}}
-\@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces Biological effects: estimate and $99\%$ confidence interval for each regression coefficient \(\beta _{jg}\) under the wnlm.Q model, where \(g\) corresponds to a gene and \(j\) to a biological covariate (Age, Ancestry.1) or a level of some biological factor (DxSCZ, GenderMale).}}{15}}
-\newlabel{fig:biol-effects}{{6}{15}}
-\@writefile{lof}{\contentsline {figure}{\numberline {7}{\ignorespaces Comparison of the effects of age and gender between the present work and a previous study\nobreakspace  {}\cite  {Perez2015} in the mouse cerebellum. }}{16}}
-\newlabel{fig:mouse-cerebellum}{{7}{16}}
 \citation{Perez2015}
 \citation{Law2014}
-\@writefile{lof}{\contentsline {figure}{\numberline {8}{\ignorespaces }}{17}}
-\newlabel{fig:scheme}{{8}{17}}
+\@writefile{lof}{\contentsline {figure}{\numberline {8}{\ignorespaces }}{16}}
+\newlabel{fig:scheme}{{8}{16}}
 \citation{Tucci2016}
 \citation{Peters2014}
 \bibdata{monoall-ms}
@@ -69,68 +69,68 @@
 \bibcite{Peters2014}{6}
 \bibcite{Plasschaert2014}{7}
 \bibcite{Tucci2016}{8}
-\@writefile{toc}{\contentsline {section}{\numberline {5}Supplementary Material}{21}}
-\@writefile{lof}{\contentsline {figure}{\numberline {S1}{\ignorespaces AGK models: M1 (left) and M2 (right)}}{22}}
-\newlabel{fig:agk}{{S1}{22}}
-\@writefile{lof}{\contentsline {figure}{\numberline {S2}{\ignorespaces }}{23}}
-\newlabel{fig:clusters}{{S2}{23}}
-\@writefile{lof}{\contentsline {figure}{\numberline {S3}{\ignorespaces }}{24}}
-\newlabel{fig:known-genes}{{S3}{24}}
-\@writefile{lof}{\contentsline {figure}{\numberline {S4}{\ignorespaces }}{25}}
-\newlabel{fig:predictor-associations}{{S4}{25}}
-\@writefile{lof}{\contentsline {figure}{\numberline {S5}{\ignorespaces }}{26}}
-\newlabel{fig:weight-of-evidence}{{S5}{26}}
-\@writefile{lof}{\contentsline {figure}{\numberline {S6}{\ignorespaces }}{27}}
-\newlabel{fig:qqnorm-logi.S}{{S6}{27}}
-\@writefile{lof}{\contentsline {figure}{\numberline {S7}{\ignorespaces }}{28}}
-\newlabel{fig:qqnorm-logi2.S}{{S7}{28}}
-\@writefile{lof}{\contentsline {figure}{\numberline {S8}{\ignorespaces }}{29}}
-\newlabel{fig:qqnorm-wnlm.S}{{S8}{29}}
-\@writefile{lof}{\contentsline {figure}{\numberline {S9}{\ignorespaces }}{30}}
-\newlabel{fig:qqnorm-wnlm.Q}{{S9}{30}}
-\@writefile{lof}{\contentsline {figure}{\numberline {S10}{\ignorespaces }}{31}}
-\newlabel{fig:qqnorm-wnlm.R}{{S10}{31}}
-\@writefile{lof}{\contentsline {figure}{\numberline {S11}{\ignorespaces }}{32}}
-\newlabel{fig:homoscedas-logi.S}{{S11}{32}}
-\@writefile{lof}{\contentsline {figure}{\numberline {S12}{\ignorespaces }}{33}}
-\newlabel{fig:homoscedas-logi2.S}{{S12}{33}}
-\@writefile{lof}{\contentsline {figure}{\numberline {S13}{\ignorespaces }}{34}}
-\newlabel{fig:homoscedas-wnlm.S}{{S13}{34}}
-\@writefile{lof}{\contentsline {figure}{\numberline {S14}{\ignorespaces }}{35}}
-\newlabel{fig:homoscedas-wnlm.Q}{{S14}{35}}
-\@writefile{lof}{\contentsline {figure}{\numberline {S15}{\ignorespaces }}{36}}
-\newlabel{fig:homoscedas-wnlm.R}{{S15}{36}}
-\@writefile{lof}{\contentsline {figure}{\numberline {S16}{\ignorespaces }}{37}}
-\newlabel{fig:influence-logi.S}{{S16}{37}}
-\@writefile{lof}{\contentsline {figure}{\numberline {S17}{\ignorespaces }}{38}}
-\newlabel{fig:influence-logi2.S}{{S17}{38}}
-\@writefile{lof}{\contentsline {figure}{\numberline {S18}{\ignorespaces }}{39}}
-\newlabel{fig:influence-wnlm.S}{{S18}{39}}
-\@writefile{lof}{\contentsline {figure}{\numberline {S19}{\ignorespaces }}{40}}
-\newlabel{fig:influence-wnlm.Q}{{S19}{40}}
-\@writefile{lof}{\contentsline {figure}{\numberline {S20}{\ignorespaces }}{41}}
-\newlabel{fig:influence-wnlm.R}{{S20}{41}}
-\@writefile{lof}{\contentsline {figure}{\numberline {S21}{\ignorespaces }}{42}}
-\newlabel{fig:logi-S-logi2-S-compare}{{S21}{42}}
-\@writefile{lof}{\contentsline {figure}{\numberline {S22}{\ignorespaces }}{43}}
-\newlabel{fig:wnlm-R-wnlm-Q-compare}{{S22}{43}}
-\@writefile{lof}{\contentsline {figure}{\numberline {S23}{\ignorespaces }}{44}}
-\newlabel{fig:logi-S-wnlm-Q-compare}{{S23}{44}}
-\@writefile{lof}{\contentsline {figure}{\numberline {S24}{\ignorespaces }}{45}}
-\newlabel{fig:all-effects-wnlm.Q}{{S24}{45}}
-\@writefile{lof}{\contentsline {figure}{\numberline {S25}{\ignorespaces }}{46}}
-\newlabel{fig:all-effects-logi.S}{{S25}{46}}
-\@writefile{lof}{\contentsline {figure}{\numberline {S26}{\ignorespaces }}{47}}
-\newlabel{fig:p-val-tdist-vs-perm}{{S26}{47}}
-\@writefile{lof}{\contentsline {figure}{\numberline {S27}{\ignorespaces Biological effects: estimates and $95\%$ confidence intervals under the wnlm.Q model}}{48}}
-\newlabel{fig:biol-effects-wnlm-Q-95}{{S27}{48}}
-\@writefile{lof}{\contentsline {figure}{\numberline {S28}{\ignorespaces Biological effects: estimates and $99\%$ confidence intervals under the logi.S model}}{49}}
-\newlabel{fig:biol-effects-logi-S-99}{{S28}{49}}
-\@writefile{lof}{\contentsline {figure}{\numberline {S29}{\ignorespaces }}{50}}
-\newlabel{fig:likelihood-surface}{{S29}{50}}
-\@writefile{lof}{\contentsline {figure}{\numberline {S30}{\ignorespaces }}{51}}
-\newlabel{fig:interaction-wnlm-Q}{{S30}{51}}
-\@writefile{lof}{\contentsline {figure}{\numberline {S31}{\ignorespaces }}{52}}
-\newlabel{fig:interaction-logi-S}{{S31}{52}}
-\@writefile{lof}{\contentsline {figure}{\numberline {S32}{\ignorespaces }}{53}}
-\newlabel{fig:anova}{{S32}{53}}
+\@writefile{toc}{\contentsline {section}{\numberline {5}Supplementary Material}{20}}
+\@writefile{lof}{\contentsline {figure}{\numberline {S1}{\ignorespaces AGK models: M1 (left) and M2 (right)}}{21}}
+\newlabel{fig:agk}{{S1}{21}}
+\@writefile{lof}{\contentsline {figure}{\numberline {S2}{\ignorespaces }}{22}}
+\newlabel{fig:clusters}{{S2}{22}}
+\@writefile{lof}{\contentsline {figure}{\numberline {S3}{\ignorespaces }}{23}}
+\newlabel{fig:known-genes}{{S3}{23}}
+\@writefile{lof}{\contentsline {figure}{\numberline {S4}{\ignorespaces }}{24}}
+\newlabel{fig:predictor-associations}{{S4}{24}}
+\@writefile{lof}{\contentsline {figure}{\numberline {S5}{\ignorespaces }}{25}}
+\newlabel{fig:weight-of-evidence}{{S5}{25}}
+\@writefile{lof}{\contentsline {figure}{\numberline {S6}{\ignorespaces }}{26}}
+\newlabel{fig:qqnorm-logi.S}{{S6}{26}}
+\@writefile{lof}{\contentsline {figure}{\numberline {S7}{\ignorespaces }}{27}}
+\newlabel{fig:qqnorm-logi2.S}{{S7}{27}}
+\@writefile{lof}{\contentsline {figure}{\numberline {S8}{\ignorespaces }}{28}}
+\newlabel{fig:qqnorm-wnlm.S}{{S8}{28}}
+\@writefile{lof}{\contentsline {figure}{\numberline {S9}{\ignorespaces }}{29}}
+\newlabel{fig:qqnorm-wnlm.Q}{{S9}{29}}
+\@writefile{lof}{\contentsline {figure}{\numberline {S10}{\ignorespaces }}{30}}
+\newlabel{fig:qqnorm-wnlm.R}{{S10}{30}}
+\@writefile{lof}{\contentsline {figure}{\numberline {S11}{\ignorespaces }}{31}}
+\newlabel{fig:homoscedas-logi.S}{{S11}{31}}
+\@writefile{lof}{\contentsline {figure}{\numberline {S12}{\ignorespaces }}{32}}
+\newlabel{fig:homoscedas-logi2.S}{{S12}{32}}
+\@writefile{lof}{\contentsline {figure}{\numberline {S13}{\ignorespaces }}{33}}
+\newlabel{fig:homoscedas-wnlm.S}{{S13}{33}}
+\@writefile{lof}{\contentsline {figure}{\numberline {S14}{\ignorespaces }}{34}}
+\newlabel{fig:homoscedas-wnlm.Q}{{S14}{34}}
+\@writefile{lof}{\contentsline {figure}{\numberline {S15}{\ignorespaces }}{35}}
+\newlabel{fig:homoscedas-wnlm.R}{{S15}{35}}
+\@writefile{lof}{\contentsline {figure}{\numberline {S16}{\ignorespaces }}{36}}
+\newlabel{fig:influence-logi.S}{{S16}{36}}
+\@writefile{lof}{\contentsline {figure}{\numberline {S17}{\ignorespaces }}{37}}
+\newlabel{fig:influence-logi2.S}{{S17}{37}}
+\@writefile{lof}{\contentsline {figure}{\numberline {S18}{\ignorespaces }}{38}}
+\newlabel{fig:influence-wnlm.S}{{S18}{38}}
+\@writefile{lof}{\contentsline {figure}{\numberline {S19}{\ignorespaces }}{39}}
+\newlabel{fig:influence-wnlm.Q}{{S19}{39}}
+\@writefile{lof}{\contentsline {figure}{\numberline {S20}{\ignorespaces }}{40}}
+\newlabel{fig:influence-wnlm.R}{{S20}{40}}
+\@writefile{lof}{\contentsline {figure}{\numberline {S21}{\ignorespaces }}{41}}
+\newlabel{fig:logi-S-logi2-S-compare}{{S21}{41}}
+\@writefile{lof}{\contentsline {figure}{\numberline {S22}{\ignorespaces }}{42}}
+\newlabel{fig:wnlm-R-wnlm-Q-compare}{{S22}{42}}
+\@writefile{lof}{\contentsline {figure}{\numberline {S23}{\ignorespaces }}{43}}
+\newlabel{fig:logi-S-wnlm-Q-compare}{{S23}{43}}
+\@writefile{lof}{\contentsline {figure}{\numberline {S24}{\ignorespaces }}{44}}
+\newlabel{fig:all-effects-wnlm.Q}{{S24}{44}}
+\@writefile{lof}{\contentsline {figure}{\numberline {S25}{\ignorespaces }}{45}}
+\newlabel{fig:all-effects-logi.S}{{S25}{45}}
+\@writefile{lof}{\contentsline {figure}{\numberline {S26}{\ignorespaces }}{46}}
+\newlabel{fig:p-val-tdist-vs-perm}{{S26}{46}}
+\@writefile{lof}{\contentsline {figure}{\numberline {S27}{\ignorespaces Biological effects: estimates and $95\%$ confidence intervals under the wnlm.Q model}}{47}}
+\newlabel{fig:biol-effects-wnlm-Q-95}{{S27}{47}}
+\@writefile{lof}{\contentsline {figure}{\numberline {S28}{\ignorespaces Biological effects: estimates and $99\%$ confidence intervals under the logi.S model}}{48}}
+\newlabel{fig:biol-effects-logi-S-99}{{S28}{48}}
+\@writefile{lof}{\contentsline {figure}{\numberline {S29}{\ignorespaces }}{49}}
+\newlabel{fig:likelihood-surface}{{S29}{49}}
+\@writefile{lof}{\contentsline {figure}{\numberline {S30}{\ignorespaces }}{50}}
+\newlabel{fig:interaction-wnlm-Q}{{S30}{50}}
+\@writefile{lof}{\contentsline {figure}{\numberline {S31}{\ignorespaces }}{51}}
+\newlabel{fig:interaction-logi-S}{{S31}{51}}
+\@writefile{lof}{\contentsline {figure}{\numberline {S32}{\ignorespaces }}{52}}
+\newlabel{fig:anova}{{S32}{52}}
