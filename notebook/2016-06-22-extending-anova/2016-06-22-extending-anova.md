@@ -169,6 +169,27 @@ my.segplot(data = Betas$logi.S, xlim = my.xlim)
 
 <img src="figure/reg-coef-unlm-R-1.png" title="plot of chunk reg-coef-unlm-R" alt="plot of chunk reg-coef-unlm-R" width="700px" />
 
+Filtering out results for logi.S if the fit is bad for a given gene, using decisions based on model checking analysis
+
+
+```r
+logi.S.OK <- read.csv("../../results/model-checking.csv", row.names = "gene")["logi.S.fit.OK"]
+# filter betas for logi.S
+B.logi.S.f <- Betas$logi.S
+B.logi.S.f[B.logi.S.f$Gene %in% c(rownames(logi.S.OK)[! logi.S.OK$logi.S.fit.OK], "WA"), c("Estimate", "Lower.CL", "Upper.CL")] <- NA
+# filtered and unfiltered long format Betas
+Betas.l.f <- Betas.l <- do.call(cbind, Betas)
+# perform filtering by replacing data with NAs
+Betas.l.f[Betas.l.f$logi.S.Gene %in% c(rownames(logi.S.OK)[! logi.S.OK$logi.S.fit.OK], "WA"), grep("logi\\.S\\.[ELU]", names(Betas.l.f))] <- NA
+```
+
+
+```r
+my.segplot(data = B.logi.S.f, xlim = my.xlim)
+```
+
+<img src="figure/reg-coef-logi-S-filt-1.png" title="plot of chunk reg-coef-logi-S-filt" alt="plot of chunk reg-coef-logi-S-filt" width="700px" />
+
 ## Comparison of models
 
 The pairwise model comparisons in terms of $\hat{\beta}$ under either of two selected models are meant to assess sensitivity of the results to various aspects of modeling:
@@ -181,17 +202,6 @@ The pairwise model comparisons in terms of $\hat{\beta}$ under either of two sel
 Each panel in the plot shows the theoretical zero line $\beta_{jg}=0$ under each of the two models (horizontal and vertical dashed lines).  The plotting symbols are color coded according to gene rank (rainbow, red to violet); the last "rank" #31 (violet) corresponds to the weighted average `WA` of read count ratio over genes.  The plotting symbols also display the rank with numbers, see the key on the top.  Genes acceptably fitted by both models are distinguished with a diamond symbol and **bold font** from those that could be fitted only by wnlm.Q.
 
 
-
-Filtering out results for logi.S if the fit is bad for a given gene, using decisions based on model checking analysis
-
-
-```r
-logi.S.OK <- read.csv("../../results/model-checking.csv", row.names = "gene")["logi.S.fit.OK"]
-# filtered and unfiltered long format Betas
-Betas.l.f <- Betas.l <- do.call(cbind, Betas)
-# perform filtering by replacing data with NAs
-Betas.l.f[Betas.l.f$logi.S.Gene %in% c(rownames(logi.S.OK)[! logi.S.OK$logi.S.fit.OK], "WA"), grep("logi\\.S\\.[ELU]", names(Betas.l.f))] <- NA
-```
 
 ### Logistic vs normal linear model
 

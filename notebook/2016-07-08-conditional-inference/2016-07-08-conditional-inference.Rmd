@@ -83,7 +83,8 @@ my.segplot2 <- function(dt, skip = FALSE, ...) {
     with(dt,
          dotplot(ordered(Level, levels = rev(levels(Level))) ~ Estimate | Gene,
                  groups = Level,
-                 subset = Coefficient %in% "Age" & ! Gene %in% "TMEM261P1",
+                 subset = Coefficient %in% "Age",
+                 #subset = Coefficient %in% "Age" & ! Gene %in% "TMEM261P1",
                  scales = list(relation = "free", draw = FALSE),
                  prepanel = function(x, y, subscripts, ...)
                      list(xlim = range(c(Lower.CL[subscripts], Upper.CL[subscripts]), na.rm = TRUE)),
@@ -117,23 +118,29 @@ In the following plots the effect of 5 conditions (*MSSM*, ..., *Female*) is exp
 * the individual displays (each corresponding to a given gene or aggregate dataset across genes) are scaled differently to emphasize the effects of conditioning.
 * the fit for TMEM261P1 did not converge under logi.S so the results are missing; for consistency TMEM261P1 is excluded for wnlm.Q as well
 
+```{r beta-age-cond-wnlm-Q, warning=FALSE, echo=FALSE, message=FALSE}
+my.segplot(Betas$wnlm.Q, main = expression(paste("Estimate and 99 % CI for ", beta[age] , " under wnlm.Q")))
+```
+
 ```{r beta-age-cond-logi-S, warning=FALSE, echo=FALSE, message=FALSE}
 skip <- ! sapply(M$logi.S$Marginal$All, `[[`, "converged")[1:30]
 my.segplot(Betas$logi.S, skip = skip, main = expression(paste("Estimate and 99 % CI for ", beta[age] , " under logi.S")))
 ```
 
-```{r beta-age-cond-wnlm-Q, warning=FALSE, echo=FALSE, message=FALSE}
-my.segplot(Betas$wnlm.Q, main = expression(paste("Estimate and 99 % CI for ", beta[age] , " under wnlm.Q")))
-```
-
 The same results plotted with different style
+
+```{r beta-age-cond-wnlm-Q-2, warning=FALSE, echo=FALSE, message=FALSE}
+my.segplot2(Betas$wnlm.Q, main = expression(paste("Estimate and 99 % CI for ", beta[age] , " under wnlm.Q")))
+```
 
 ```{r beta-age-cond-logi-S-2, warning=FALSE, echo=FALSE, message=FALSE}
 my.segplot2(Betas$logi.S, skip = skip, main = expression(paste("Estimate and 99 % CI for ", beta[age] , " under logi.S")))
 ```
 
-```{r beta-age-cond-wnlm-Q-2, warning=FALSE, echo=FALSE, message=FALSE}
-my.segplot2(Betas$wnlm.Q, main = expression(paste("Estimate and 99 % CI for ", beta[age] , " under wnlm.Q")))
+Exclude those genes for which the fit was deemed insufficient.  Requires the file `model-checking.csv`, which was generated in a subsequent analysis.
+
+```{r beta-age-cond-logi-S-2-skip, warning=FALSE, echo=FALSE, message=FALSE}
+my.segplot2(Betas$logi.S, skip = ! read.csv("../../results/model-checking.csv")$logi.S.fit.OK, main = expression(paste("Estimate and 99 % CI for ", beta[age] , " under logi.S")))
 ```
 
 ## Conclusion

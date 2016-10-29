@@ -252,6 +252,23 @@ my.segplot(data = Betas$wnlm.R, main = expression(paste("99 % CI for ", beta, " 
 my.segplot(data = Betas$unlm.R, main = expression(paste("99 % CI for ", beta, " under unlm.R")))
 ```
 
+Filtering out results for logi.S if the fit is bad for a given gene, using decisions based on model checking analysis
+
+```{r}
+logi.S.OK <- read.csv("../../results/model-checking.csv", row.names = "gene")["logi.S.fit.OK"]
+# filter betas for logi.S
+B.logi.S.f <- Betas$logi.S
+B.logi.S.f[B.logi.S.f$Gene %in% c(rownames(logi.S.OK)[! logi.S.OK$logi.S.fit.OK], "WA"), c("Estimate", "Lower.CL", "Upper.CL")] <- NA
+# filtered and unfiltered long format Betas
+Betas.l.f <- Betas.l <- do.call(cbind, Betas)
+# perform filtering by replacing data with NAs
+Betas.l.f[Betas.l.f$logi.S.Gene %in% c(rownames(logi.S.OK)[! logi.S.OK$logi.S.fit.OK], "WA"), grep("logi\\.S\\.[ELU]", names(Betas.l.f))] <- NA
+```
+
+```{r reg-coef-logi-S-filt, dev=c("png", "pdf"), fig.asp=1.7}
+my.segplot(data = B.logi.S.f, xlim = my.xlim)
+```
+
 ## Comparison of models
 
 The pairwise model comparisons in terms of $\hat{\beta}$ under either of two selected models are meant to assess sensitivity of the results to various aspects of modeling:
@@ -265,16 +282,6 @@ Each panel in the plot shows the theoretical zero line $\beta_{jg}=0$ under each
 
 ```{r echo=FALSE}
 source("2016-06-22-extending-anova.R")
-```
-
-Filtering out results for logi.S if the fit is bad for a given gene, using decisions based on model checking analysis
-
-```{r}
-logi.S.OK <- read.csv("../../results/model-checking.csv", row.names = "gene")["logi.S.fit.OK"]
-# filtered and unfiltered long format Betas
-Betas.l.f <- Betas.l <- do.call(cbind, Betas)
-# perform filtering by replacing data with NAs
-Betas.l.f[Betas.l.f$logi.S.Gene %in% c(rownames(logi.S.OK)[! logi.S.OK$logi.S.fit.OK], "WA"), grep("logi\\.S\\.[ELU]", names(Betas.l.f))] <- NA
 ```
 
 ### Logistic vs normal linear model

@@ -51,7 +51,7 @@ Deletion or duplication of some 15 loci has been reported to be associated with 
 
 ### Animal models
 
-We found MEST to be highly significantly associated to SCZ.  Disruption of MEST (a.k.a. PEG1) in mice showed involvement in embryonic growth as well as maternal behavior ([Lefebvre1998]).
+We found MEST (a.k.a. PEG1) to be highly significantly associated to SCZ.  [Lefebvre1998] disrupted MEST in mouse embryonic stem cells and observed embryonic growth retardation as well as abnormal maternal behavior.  MEST has been implicated with the Silver-Russell syndrome ([OMIM 180860], see also [Peters2014]) based on maternal uniparental disomy for chromosome 7 (mUPD7) at the segment 7q31-qter in some patients with the syndrome.  The Silver-Russell syndrome is characterized by growth- but not mental retardation.
 
 [Rees2014]: http://www.ncbi.nlm.nih.gov/pubmed/24311552
 [Sullivan2012]: http://www.ncbi.nlm.nih.gov/pubmed/22777127
@@ -59,6 +59,7 @@ We found MEST to be highly significantly associated to SCZ.  Disruption of MEST 
 [McNamara2013]: http://www.ncbi.nlm.nih.gov/pubmed/23697931
 [Fromer2016a]: http://www.ncbi.nlm.nih.gov/pubmed/27668389
 [Lefebvre1998]: http://www.ncbi.nlm.nih.gov/pubmed/9771709
+[OMIM 180860]: http://omim.org/entry/180860
 
 [signif-gene-effects-either.csv]: {{ site.baseurl }}/assets/projects/monoallelic-brain/signif-gene-effects-either.csv
 [signif-gene-effects-either-biomart.csv]: {{ site.baseurl }}/assets/projects/monoallelic-brain/signif-gene-effects-either-biomart.csv

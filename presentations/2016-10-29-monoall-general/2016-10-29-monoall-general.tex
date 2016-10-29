@@ -1,0 +1,429 @@
+\documentclass{beamer}
+%\documentclass[handout]{beamer}
+
+% language settings
+%\usepackage{fontspec, polyglossia}
+%\setdefaultlanguage{magyar}
+
+% common packages
+\usepackage{amsmath, multimedia, hyperref, color, multirow}
+%\usepackage{graphicx}
+
+% TikZ
+\usepackage{tikz}
+%\usetikzlibrary{arrows.meta, decorations.pathmorphing, decorations.pathreplacing, shapes.geometric,mindmap}
+%\usetikzlibrary{shapes.geometric,fadings,bayesnet}
+
+% beamer styles
+\mode<presentation>{
+%\usetheme{Pittsburgh}
+\usetheme{Copenhagen}
+\usecolortheme{beaver}
+%\usecolortheme{seahorse}
+%\usefonttheme{structureitalicserif}
+\setbeamercovered{transparent}
+}
+\setbeamertemplate{blocks}[rounded][shadow=true]
+\AtBeginSection[]{
+  \begin{frame}<beamer>{Contents}
+    \tableofcontents[currentsection]
+    %\tableofcontents[currentsection,currentsubsection]
+  \end{frame}
+}
+%\useoutertheme[]{tree}
+
+\title{Genomic Imprinting in the Human Brain}
+\subtitle{Links to Aging, Gender, and Schizophrenia}
+\author{Attila Guly\'{a}s-Kov\'{a}cs}
+\date{Mount Sinai School of Medicine}
+
+\newcommand{\platefigscale}[0]{0.7}
+\newcommand{\ownfigscale}[0]{0.4}
+
+\begin{document}
+
+\maketitle
+
+% SEC: Introduction
+\section{Introduction}
+\subsection{(Hypothetical) roles of imprinting}
+
+% ontogeny and imprinting
+\begin{frame}{Genomic imprints during development}
+\includegraphics[height=0.7\textheight]{figures/from-others/plasschaert-bartolomei-2014-fig1.jpeg}
+\vfill
+{\tiny Plasschaert \& Bartolomei Development. 2014}
+\end{frame}
+
+% physiological role: growth and neuropsych. syndromes
+\begin{frame}{Growth, sleep, behavior in therians}
+\begin{columns}[t]
+\begin{column}{0.4\textwidth}
+
+\includegraphics[width=\columnwidth]{figures/from-others/tucci-2016-plosgenet-fig1.png}
+
+{\tiny Tucci PLoS Genet. 2016}
+\end{column}
+
+\begin{column}{0.6\textwidth}
+
+\includegraphics[width=\columnwidth]{figures/from-others/peters-2014-imprinting-fig3.jpg}
+
+{\tiny Peters Nat Rev Genet. 2014}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}[t]{Sister disorders}
+\includegraphics[width=0.65\textwidth]{figures/from-others/peters-2014-imprinting-fig1b.jpg}
+{\tiny Peters Nat Rev Genet. 2014}
+\visible<1>{
+\begin{columns}[t]
+\begin{column}{0.5\textwidth}
+{\footnotesize Prader-Willi syndrome}
+
+\includegraphics<1>[width=0.65\columnwidth]{figures/from-others/Eugenia-Martínez-Vallejo-clothed-cropped.jpg}
+
+{\tiny Eugenia Martínez Vallejo}
+\end{column}
+
+\begin{column}{0.5\textwidth}
+{\footnotesize Angelman syndrome}
+
+\includegraphics<1>[width=0.65\columnwidth]{figures/from-others/boy-with-a-puppet-Giovanni-Francesco-Caroto.jpg}
+
+{\tiny Boy with a Puppet}
+\end{column}
+\end{columns}
+}
+
+\visible<2>{
+\footnotesize genetic architecture of schizophrenia
+\includegraphics[width=0.7\textwidth]{figures/from-others/sullivan-natrevgenet-2012-fig1b.jpg}
+{\tiny Sullivan Nat Rev Genet. 2012}
+}
+\end{frame}
+
+\begin{frame}{The imprinted brain hypothesis}
+\includegraphics[width=0.7\textwidth]{figures/from-others/crespi-2008-fig3.png}
+\vfill
+{\tiny \raggedright{Crespi \& Badcock Behav Brain Sci. 2008}}
+\end{frame}
+
+\begin{frame}{Postnatal age}
+\includegraphics[height=0.4\textheight]{figures/from-others/ubeda-2012-fig1.jpg}
+\hfill
+\includegraphics[height=0.4\textheight]{figures/from-others/ubeda-2012-fig3a.jpg}
+{\tiny Ubeda Evolution 2012}
+\vfill
+\includegraphics[height=0.3\textheight]{figures/from-others/perez-2015-elife-fig4b.png}
+{\tiny Perez et al eLife 2015}
+\end{frame}
+
+\subsection{Goals and study design}
+% questions: (1) which genes under what conditions: age, gender, genotype?
+% (2) role in psychiatric disorders?
+
+\begin{frame}[label=cmc]{The Common Mind data}
+% CommonMind: within cohort variation of age, gender, genotype, Dx; correlate
+% with RNA-seq-based measure of parental bias
+\includegraphics[height=0.75\textheight]{figures/by-me/commonmind-rna-seq/commonmind-rna-seq.pdf}
+\end{frame}
+
+% SEC: Results
+\section{Results \& Discussion}
+\subsection{Predictors of imprinting}
+
+\begin{frame}{Fitting models to read count ratios}
+\begin{columns}[t]
+\begin{column}{0.45\textwidth}
+\footnotesize 30 imprinted genes \(g\)
+\vfill
+\tiny
+\begin{tabular}{|r|l|}
+\hline
+response \(Y_g\) & transformation \\
+\hline
+read count ratio \(S_g\) & none \\
+\(Q_g\) & quasi-log \\
+\(R_g\) & rank \\
+\hline
+\end{tabular}
+\begin{tabular}{|r|l|}
+\hline
+predictor & term(s) \(x_{\cdot j} \beta_{gj}\)\\
+\hline
+Age & Age\\
+Gender & [Female], Male\\
+Dx & [AFF], Control, SCZ\\
+Ancestry.1-5 & Ancestry.1-5\\
+%\vdots & \vdots \\
+%Ancestry.5 & Ancestry.5\\
+Institution & [MSSM], Penn, Pitt\\
+PMI & PMI\\
+RIN & RIN\\
+RNA\_batch & [0], A, B, C, D, E, F, G, H\\
+\hline
+\end{tabular}
+
+\includegraphics[scale=\platefigscale]{figures/by-me/monoall-dependencies/glm/glm.pdf}
+
+\end{column}
+\begin{column}{0.60\textwidth}
+
+\includegraphics[width=\columnwidth]{figures/2016-08-23-glm-sampling-distributions/KCNK9-1.pdf}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}[plain]
+\begin{columns}[t]
+\begin{column}{0.5\textwidth}
+
+\includegraphics[height=\textheight]{figures/2016-06-22-extending-anova/reg-coef-wnlm-Q-1.pdf}
+\end{column}
+
+\begin{column}{0.5\textwidth}
+
+\includegraphics[height=\textheight]{figures/2016-06-22-extending-anova/reg-coef-logi-S-filt-1.pdf}
+\end{column}
+\end{columns}
+\end{frame}
+% genome-wide patterns of variation, complex figure
+
+% models and their fit to data (prediction-data overlay)
+
+% data fit: model checking
+
+% near collinearity, RNA quality, scatter plot matrix, likelihood surface
+
+\againframe{cmc}
+
+% designed experiment (mouse) vs observational study (human, CommonMind)
+\begin{frame}[t]
+\begin{columns}[t]
+\begin{column}{0.5\textwidth}
+designed experiment
+\includegraphics[scale=\platefigscale]{figures/by-me/monoall-dependencies/glm-designed/glm-designed.pdf}
+\end{column}
+
+\begin{column}{0.5\textwidth}
+observational study
+\includegraphics<1>[scale=\platefigscale]{figures/by-me/monoall-dependencies/glm/glm.pdf}
+\includegraphics<2->[scale=\platefigscale]{figures/by-me/monoall-dependencies/glm-param/glm-param.pdf}
+\end{column}
+\end{columns}
+\vfill
+
+\begin{columns}[t]
+\begin{column}{0.5\textwidth}
+%orthogonal
+
+\includegraphics<3>[height=0.4\textheight]{figures/from-others/tony-smith-die.png}
+\end{column}
+
+\begin{column}{0.5\textwidth}
+%non-orthogonal
+
+\includegraphics<3>[height=0.4\textheight]{figures/from-others/tony-smith-new-piece.png}
+\end{column}
+\end{columns}
+\end{frame}
+
+% ANOVA
+\begin{frame}{Decomposition of variance to predictors: fails}
+\includegraphics[scale=\ownfigscale]{figures/2016-06-22-extending-anova/anova-fw-rv-wnlm-Q-1.pdf}
+\end{frame}
+
+% likelihood surface
+\begin{frame}{Model identifiability: poor}{The likelihood of one parameter is linked to
+another}
+\includegraphics[scale=\ownfigscale]{figures/2016-08-21-likelihood-surface/ll-surf-coefs-wnlm-Q-1.pdf}
+\end{frame}
+
+\begin{frame}{Complication: interdependence of predictors}
+{The effect of one depends on another}
+\begin{columns}[t]
+\begin{column}{0.4\textwidth}
+
+\includegraphics[scale=\platefigscale]{figures/by-me/monoall-dependencies/bn/bn.pdf}
+
+\only<2>{interaction terms}
+\includegraphics<2>[scale=\platefigscale]{figures/by-me/monoall-dependencies/glm-interact/glm-interact.pdf}
+\end{column}
+
+\begin{column}{0.6\textwidth}
+
+\includegraphics[width=\columnwidth]{figures/2016-07-08-conditional-inference/beta-age-cond-wnlm-Q-2-1.pdf}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}
+{The main results}
+\begin{columns}[t]
+\begin{column}{0.5\textwidth}
+\begin{center}
+biological effects
+
+\includegraphics[width=\columnwidth]{figures/2016-08-08-imprinted-gene-clusters/segplot-wnlm-Q-99conf-1.pdf}
+
+\tiny
+model: wnlm.Q
+\end{center}
+\end{column}
+
+\begin{column}{0.5\textwidth}
+\begin{center}
+\only<2>{agreement between models}
+
+\includegraphics<2>[width=\columnwidth]{figures/2016-06-22-extending-anova/logi-S-filtered-wnlm-Q-compare-1.pdf}
+\end{center}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Significantly affected genes}
+\includegraphics<1>[scale=\ownfigscale]{figures/2016-10-03-permutation-test/p-values-1.pdf}
+\visible<2>{
+\tiny
+\begin{tabular}{lllll}
+Gene & Gene type & Chr & Coefficient & Known phenotype\\
+\hline
+ZDBF2 & protein coding & 2 & Age,  Ancestry.1 & \\
+NAP1L5 & protein coding & 4 & GenderMale & \\
+PEG10 & protein coding & 7 & DxSCZ & \\
+MEST & protein coding & 7 & DxSCZ & Silver-Russell syndrome\\
+KCNK9 & protein coding & 8 & Age & Birk-Barel mental retardation dysmorphism syndrome\\
+INPP5F & protein coding & 10 & Age & cell motility; endocytic recycling\\
+KCNQ1OT1 & antisense & 11 & GenderMale & Beckwith-Wiedemann syn.; Isol.~hemihyperplasia\\
+MEG3 & lincRNA & 14 & GenderMale & Mat/pat 14q32.2 hypermeth/microdel syndrome\\
+RP11-909M7.3 & lincRNA & 14 & DxSCZ & \\
+AL132709.5 & miRNA & 14 & Ancestry.1 & \\
+MAGEL2 & protein coding & 15 & Age & Prader-Willi syn.; Schaaf-Yang syn.;
+Arthrogryposis \\
+NDN & protein coding & 15 & GenderMale & Prader-Willi syndrome\\
+PWRN1 & lincRNA & 15 & Ancestry.1 & Prader-Willi syndrome\\
+UBE3A & protein coding & 15 & DxSCZ & Prader-Willi syn.; Angelman syn.; circadian rhythm\\
+PEG3 & protein coding & 19 & GenderMale & \\
+\end{tabular}
+}
+\end{frame}
+
+\begin{frame}
+UBE3A and MEST
+\end{frame}
+
+\begin{frame}{Comparison to a mouse study: agreement}
+\begin{columns}[t]
+\begin{column}{0.5\textwidth}
+\begin{center}
+present work
+
+\includegraphics[width=\columnwidth]{figures/2016-08-08-imprinted-gene-clusters/segplot-wnlm-Q-99conf-1.pdf}
+
+\end{center}
+\end{column}
+
+\begin{column}{0.5\textwidth}
+\begin{center}
+Perez et al 2015
+
+\includegraphics[height=0.3\textheight]{figures/from-others/perez-2015-elife-fig4b.png}
+\end{center}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Comparison to a mouse study: disagreement}
+\includegraphics[scale=\ownfigscale]{figures/2016-10-11-comparison-to-mouse-cerebellum/posterior-pp-vs-pval-wnlm-Q-1.pdf}
+\end{frame}
+
+\begin{frame}{Summary of results}
+\begin{itemize}
+\item parental bias of 30 imprinted genes was studied
+\item age, gender and genetics regulate genes in various manner
+\item bias of some genes is linked to schizophrenia 
+\item caution: found limitations of employed models
+\end{itemize}
+\end{frame}
+
+% (G)LM vs BN model: complex dependency structure and latent biol and tech variables
+
+% analysis of nonlinearity points to interactions
+
+% significant departures from beta = 0
+
+% direction of effect and clusters
+
+\subsection{Refining the (epi)genetics of schizophrenia}
+
+% return to main results; answer to 1st question: regulation by age,...
+
+% Comparison to BRAIM-mouse: agreement: effect of age and genotype; age: both
+% up- and downregulation; disagreement: specifics of age; gender in general
+
+% 2nd question: SCZ; UBE3A previous evidence (CNVs); MEST
+
+% Comparison to CommonMind SCZ differential expression; tighter dosage
+% regulation of imprinted genes than on-imprinted ones?
+
+% Imprinted brain hypothesis
+
+% SEC: Future extensions
+
+\begin{frame}{Reconciling Common Mind studies}
+
+\end{frame}
+
+\begin{frame}{Epigenetics and tissue specificity}
+
+\end{frame}
+
+% modeling: account for dependencies and increase statistical power: borrowing of strength via global (genome-wide) model:
+% BRAIM and AGK M2 or M3
+\begin{frame}{Improving models}
+{More questions and sharper answers}
+\begin{columns}[t]
+\begin{column}{0.4\textwidth}
+present
+
+\includegraphics[scale=\platefigscale]{figures/by-me/monoall-dependencies/glm/glm.pdf}
+\end{column}
+
+\begin{column}{0.6\textwidth}
+proposed
+
+\includegraphics[scale=\platefigscale]{figures/by-me/monoall-dependencies/glm-interact-bayes-hierar/glm-interact-bayes-hierar.pdf}
+\begin{itemize}
+\item borrowing of strength
+\item utilize data at higher resolution
+\item interactions and more predictors
+\begin{itemize}
+\item tissue specificity
+\item epigenetic marks 
+\end{itemize}
+\end{itemize}
+\end{column}
+\end{columns}
+
+\end{frame}
+
+% include and compare othe brain areas (CommonMind data)
+
+% identify epigenetic marks of imprinting (PsychENCODE)
+
+% eQTLs and methylation QTLs of imprinted genes vs GWAS SNPs
+
+\end{document}
+
+
+\begin{columns}[t]
+\begin{column}{0.5\textwidth}
+
+\end{column}
+
+\begin{column}{0.5\textwidth}
+
+\end{column}
+\end{columns}
