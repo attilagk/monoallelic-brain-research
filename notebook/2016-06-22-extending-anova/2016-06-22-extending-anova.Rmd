@@ -143,9 +143,9 @@ Similarly under `wnlm.R`:
 
 ### Figure for manuscript
 
-```{r anova-effects-fw-rv-logi-S, echo=FALSE, fig.asp = 2/3, out.width=700}
-print(update(plots$anova.logi.S, main = "ANOVA", layout = c(2, 1), aspect = "fill", par.settings = list(superpose.symbol = list(cex = 0.5))), split = c(1, 1, 2, 1), more = TRUE)
-print(update(plots$effects.logi.S, main = "QR decomposition", layout = c(2, 1), aspect = "fill"), split = c(2, 1, 2, 1), more = FALSE)
+```{r anova-effects-fw-rv-wnlm-Q, echo=FALSE, fig.asp = 2/3, out.width=700}
+print(update(plots$anova.wnlm.Q, main = "ANOVA", layout = c(2, 1), aspect = "fill", par.settings = list(superpose.symbol = list(cex = 0.5))), split = c(1, 1, 2, 1), more = TRUE)
+print(update(plots$effects.wnlm.Q, main = "QR decomposition", layout = c(2, 1), aspect = "fill"), split = c(2, 1, 2, 1), more = FALSE)
 ```
 
 ### Comparison with genes on relative scale

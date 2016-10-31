@@ -99,7 +99,7 @@ Similarly under `wnlm.R`:
 
 ### Figure for manuscript
 
-<img src="figure/anova-effects-fw-rv-logi-S-1.png" title="plot of chunk anova-effects-fw-rv-logi-S" alt="plot of chunk anova-effects-fw-rv-logi-S" width="700" />
+<img src="figure/anova-effects-fw-rv-wnlm-Q-1.png" title="plot of chunk anova-effects-fw-rv-wnlm-Q" alt="plot of chunk anova-effects-fw-rv-wnlm-Q" width="700" />
 
 ### Comparison with genes on relative scale
 

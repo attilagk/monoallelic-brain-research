@@ -116,17 +116,8 @@ Adjust p-values of 0 to `r 1/n.perm`, which is the reciprocal of the number of p
 both.p.val[with(both.p.val, ! is.na(p.val.perm) & p.val.perm == 0), "p.val.perm"] <- 1 / n.perm
 ```
 
-```{r p-val-tdist-vs-perm, echo=FALSE}
-xyplot(- log10(p.val.t.dist) ~ - log10(p.val.perm) | Gene, data = both.p.val, groups = Model,
-       par.settings = list(add.text = list(cex = 0.8)),
-       panel = function(...) {
-           panel.abline(a = 0, b = 1, col = "gray", lty = "dotted")
-           panel.xyplot(...)
-       },
-       auto.key = list(columns = 2),
-       xlab = expression(paste(plain(-log)[10], "p  (permutations)")),
-       ylab = expression(paste(plain(-log)[10], "p  (t-distribution)")),
-       ylim = c(-1, 15))
+```{r p-val-tdist-vs-perm}
+pvalplot.genes.as.panels(both.p.val, ylim = c(-1, 15))
 ```
 
 ### Filtering for poor fit
@@ -139,11 +130,25 @@ both.p.val <- cbind(both.p.val, logi.S.OK <- read.csv("../../results/model-check
 both.p.val[with(both.p.val, Model == "logi.S" & logi.S.fit.OK == FALSE), c("Estimate", "p.val.t.dist", "p.val.perm")] <- NA
 ```
 
+Repeat the previous plot with the filtered results:
+
+```{r p-val-tdist-vs-perm-filt}
+pvalplot.genes.as.panels(both.p.val, ylim = c(-1, 15))
+```
+
+Equal x and y scaling (isometric):
+
+```{r p-val-tdist-vs-perm-filt-iso, echo=FALSE}
+pvalplot.genes.as.panels(both.p.val, xlim = c(-0.5, 5), ylim = c(-0.5, 5))
+```
+
+### Figures for manuscript
+
 Figure for manuscript showing p-values calculated from both approaches (theory: t-distribution, and permutation test) and under both models (wnlm.Q and, when the fit was OK, also logi.S).
 The plotting symbols are color coded according to gene rank (rainbow, red to violet).  The plotting symbols also display the rank with numbers, see the key on the top.  Genes acceptably fitted by both models are distinguished with a diamond symbol and **bold font** from those that could be fitted only by wnlm.Q.
 
 
-```{r p-values, echo=FALSE}
+```{r p-values, echo=FALSE, fig.asp=0.8}
 mycol <- rainbow(n = length(levels(both.p.val$Gene)), start = 0, end = 5 / 6)
 mypch <- c(23, 22)
 mykey <- list(columns = 4, points = list(pch = ifelse(logi.S.OK$logi.S.fit.OK, mypch[1], mypch[2]), fill = mycol, alpha = 0.5),
@@ -170,6 +175,12 @@ p.val.plot <-
                 xlab = expression(paste(plain(-log)[10], "p  (permutations)")),
                 ylab = expression(paste(plain(-log)[10], "p  (t-distribution)"))))
 useOuterStrips(p.val.plot)
+```
+
+Leave logi.S out and show results only under wnlm.Q:
+
+```{r p-values-wnlm-Q, echo=FALSE, fig.asp=0.6}
+useOuterStrips(p.val.plot[, 1])
 ```
 
 ## Summarizing results

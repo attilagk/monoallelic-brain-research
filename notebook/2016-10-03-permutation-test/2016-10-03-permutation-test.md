@@ -1,20 +1,6 @@
 ## Preparations
 
 
-```
-## Loading required package: RColorBrewer
-```
-
-```
-## 
-## Attaching package: 'latticeExtra'
-```
-
-```
-## The following object is masked from 'package:ggplot2':
-## 
-##     layer
-```
 
 Load functions
 
@@ -118,6 +104,11 @@ Adjust p-values of 0 to 10<sup>-4</sup>, which is the reciprocal of the number o
 both.p.val[with(both.p.val, ! is.na(p.val.perm) & p.val.perm == 0), "p.val.perm"] <- 1 / n.perm
 ```
 
+
+```r
+pvalplot.genes.as.panels(both.p.val, ylim = c(-1, 15))
+```
+
 <img src="figure/p-val-tdist-vs-perm-1.png" title="plot of chunk p-val-tdist-vs-perm" alt="plot of chunk p-val-tdist-vs-perm" width="700px" />
 
 ### Filtering for poor fit
@@ -131,11 +122,30 @@ both.p.val <- cbind(both.p.val, logi.S.OK <- read.csv("../../results/model-check
 both.p.val[with(both.p.val, Model == "logi.S" & logi.S.fit.OK == FALSE), c("Estimate", "p.val.t.dist", "p.val.perm")] <- NA
 ```
 
+Repeat the previous plot with the filtered results:
+
+
+```r
+pvalplot.genes.as.panels(both.p.val, ylim = c(-1, 15))
+```
+
+<img src="figure/p-val-tdist-vs-perm-filt-1.png" title="plot of chunk p-val-tdist-vs-perm-filt" alt="plot of chunk p-val-tdist-vs-perm-filt" width="700px" />
+
+Equal x and y scaling (isometric):
+
+<img src="figure/p-val-tdist-vs-perm-filt-iso-1.png" title="plot of chunk p-val-tdist-vs-perm-filt-iso" alt="plot of chunk p-val-tdist-vs-perm-filt-iso" width="700px" />
+
+### Figures for manuscript
+
 Figure for manuscript showing p-values calculated from both approaches (theory: t-distribution, and permutation test) and under both models (wnlm.Q and, when the fit was OK, also logi.S).
 The plotting symbols are color coded according to gene rank (rainbow, red to violet).  The plotting symbols also display the rank with numbers, see the key on the top.  Genes acceptably fitted by both models are distinguished with a diamond symbol and **bold font** from those that could be fitted only by wnlm.Q.
 
 
 <img src="figure/p-values-1.png" title="plot of chunk p-values" alt="plot of chunk p-values" width="700px" />
+
+Leave logi.S out and show results only under wnlm.Q:
+
+<img src="figure/p-values-wnlm-Q-1.png" title="plot of chunk p-values-wnlm-Q" alt="plot of chunk p-values-wnlm-Q" width="700px" />
 
 ## Summarizing results
 

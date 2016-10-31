@@ -61,9 +61,6 @@ such that $z_{p}$ is the $p$ quantile of the standard normal distribution and $n
 ### Genome-wide data import and preparation
 
 
-```
-## Loading required package: RColorBrewer
-```
 
 Load functions:
 
@@ -320,6 +317,37 @@ setdiff(genes.regression.new, genes.regression.ifat) # what genes to add?
 ```
 ## [1] "MAGEL2" "ZIM2"   "FAM50B" "NDN"    "SNURF"  "KCNK9"  "DIRAS3"
 ```
+
+## Scaled Venn/Euler diagram
+
+The `VennDiagram` package implements scaled [Euler diagrams](https://en.wikipedia.org/wiki/Euler_diagram).
+
+
+```r
+library(VennDiagram)
+```
+
+To see the partitions induced by filtering and calling genes monoallelic (imprinted):
+
+
+```r
+g.sets <- list(in.dataset = names(S), passed.filter = names(Sf$min.reads.15), called.imprinted = genes.regression.new)
+sapply(g.sets, length)
+```
+
+```
+##       in.dataset    passed.filter called.imprinted 
+##            15584             5307               30
+```
+
+
+```r
+grid.draw(venn.diagram(g.sets, filename = NULL, cat.pos = 0, cat.dist = 1e-2 * c(1, 1, 0.5),
+                       fill = c("green", "blue", "red"), col = c("green", "blue", "red"),
+                       category.names = sub("\\.", " ", names(g.sets)), cat.cex = 1.4))
+```
+
+<img src="figure/filtering-calling-venn-euler-1.png" title="plot of chunk filtering-calling-venn-euler" alt="plot of chunk filtering-calling-venn-euler" height="700px" />
 
 ## Conclusion
 

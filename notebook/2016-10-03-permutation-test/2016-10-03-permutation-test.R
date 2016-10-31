@@ -21,3 +21,17 @@ annotate.signif <- function(v) {
                    if(x < 5e-2) return("*")
                    else return("")
                }})}
+
+
+pvalplot.genes.as.panels <- function(bothpv = both.p.val, ...) {
+    xyplot(- log10(p.val.t.dist) ~ - log10(p.val.perm) | Gene, data = bothpv, groups = Model,
+           par.settings = list(add.text = list(cex = 0.8)),
+           panel = function(...) {
+               panel.abline(a = 0, b = 1, col = "gray", lty = "dotted")
+               panel.xyplot(...)
+           },
+           auto.key = list(columns = 2),
+           xlab = expression(paste(plain(-log)[10], "p  (permutations)")),
+           ylab = expression(paste(plain(-log)[10], "p  (t-distribution)")),
+           ...)
+}

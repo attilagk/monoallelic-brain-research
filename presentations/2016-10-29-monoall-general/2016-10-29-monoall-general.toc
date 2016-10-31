@@ -4,4 +4,4 @@
 \beamer@subsectionintoc {1}{2}{Goals and study design}{9}{0}{1}
 \beamer@sectionintoc {2}{Results \& Discussion}{10}{0}{2}
 \beamer@subsectionintoc {2}{1}{Predictors of imprinting}{11}{0}{2}
-\beamer@subsectionintoc {2}{2}{Refining the (epi)genetics of schizophrenia}{29}{0}{2}
+\beamer@subsectionintoc {2}{2}{Refining the (epi)genetics of schizophrenia}{30}{0}{2}
