@@ -19,7 +19,7 @@ P$s.age.inst$lattice <-
            subset = Gene %in% gene.ids,
            groups = Institution,
            panel = function(x, y, ...) {
-               panel.xyplot(x, y, pch = 21, cex = 0.5, ...)
+               panel.xyplot(x, y, pch = 21, cex = 0.3, ...)
                panel.smoother(x, y, col = "black", lwd = 2, ...)
            },
            auto.key = list(title = "institution", columns = 3),
@@ -87,6 +87,93 @@ plot(P$s.age.gender$lattice)
 <img src="figure/R-age-gender-1.png" title="plot of chunk R-age-gender" alt="plot of chunk R-age-gender" width="700px" />
 
 <img src="figure/Q-age-gender-1.png" title="plot of chunk Q-age-gender" alt="plot of chunk Q-age-gender" width="700px" />
+
+### Gene and Gender
+
+
+```r
+source("2016-06-26-trellis-display-of-data.R")
+```
+
+#### $S$ statistic
+
+
+```r
+dp <- densityplot(~ S | Gene, groups = Gender, data = S.long, plot.points = FALSE)[1:30]
+update(my.update(dp, auto.key = list(title = "gender", text = c("Male", "Female"), columns = 2, points = TRUE, lines = FALSE)),
+       par.settings = list(superpose.line = list(fill = trellis.par.get("superpose.symbol")$fill[c(2, 1)],
+                                                   col = trellis.par.get("superpose.symbol")$col[c(2, 1)])),
+       scales = list(draw = FALSE, relation = "free"))
+```
+
+<img src="figure/S-Gender-density-1.png" title="plot of chunk S-Gender-density" alt="plot of chunk S-Gender-density" width="700px" />
+
+The same information in box and whisker representation:
+
+
+```r
+dp <- bwplot(Gender ~ S | Gene, data = S.long)[1:30]
+my.update(dp)
+```
+
+<img src="figure/S-Gender-bw-1.png" title="plot of chunk S-Gender-bw" alt="plot of chunk S-Gender-bw" width="700px" />
+
+#### $Q$ statistic
+
+<img src="figure/Q-Gender-density-1.png" title="plot of chunk Q-Gender-density" alt="plot of chunk Q-Gender-density" width="700px" />
+
+<img src="figure/Q-Gender-bw-1.png" title="plot of chunk Q-Gender-bw" alt="plot of chunk Q-Gender-bw" width="700px" />
+
+Only with MEG3, the most significantly affected gene by Gender (see a later post), conditioning on various RIN intervals
+
+
+```r
+Q.long$RIN.sh <- equal.count(Q.long$RIN)
+```
+
+
+```r
+densityplot(~ Q | RIN.sh, data = Q.long, groups = Gender, subset = Gene == "MEG3", scales = list(relation = "free"),
+            par.settings = list(superpose.line = list(fill = trellis.par.get("superpose.symbol")$fill[c(2, 1)],
+                                                      col = trellis.par.get("superpose.symbol")$col[c(2, 1)])),
+            auto.key=TRUE)
+```
+
+<img src="figure/Q-Gender-RIN-MEG3-density-1.png" title="plot of chunk Q-Gender-RIN-MEG3-density" alt="plot of chunk Q-Gender-RIN-MEG3-density" width="700px" />
+
+
+```r
+bwplot(Gender ~ Q | RIN.sh, data = Q.long, subset = Gene == "MEG3", scales = list(x = list(relation = "free")),
+            auto.key=TRUE)
+```
+
+<img src="figure/Q-Gender-RIN-MEG3-bw-1.png" title="plot of chunk Q-Gender-RIN-MEG3-bw" alt="plot of chunk Q-Gender-RIN-MEG3-bw" width="700px" />
+
+
+### Gene and Dx
+
+#### $S$ statistic
+
+For the density plots AFF had to be excluded (for some genes there are too few AFF individuals for kernel density estimation)
+
+<img src="figure/S-Dx-density-1.png" title="plot of chunk S-Dx-density" alt="plot of chunk S-Dx-density" width="700px" />
+
+The same information (extended with AFF) in box and whisker representation:
+
+<img src="figure/S-Dx-bw-1.png" title="plot of chunk S-Dx-bw" alt="plot of chunk S-Dx-bw" width="700px" />
+
+#### $Q$ statistic
+
+<img src="figure/Q-Dx-density-1.png" title="plot of chunk Q-Dx-density" alt="plot of chunk Q-Dx-density" width="700px" />
+
+<img src="figure/Q-Dx-bw-1.png" title="plot of chunk Q-Dx-bw" alt="plot of chunk Q-Dx-bw" width="700px" />
+
+Only with MEST, the most significantly affected gene by Dx (see a later post), conditioning on various RIN intervals
+
+<img src="figure/Q-Dx-RIN-MEST-density-1.png" title="plot of chunk Q-Dx-RIN-MEST-density" alt="plot of chunk Q-Dx-RIN-MEST-density" width="700px" />
+
+<img src="figure/Q-Dx-RIN-MEST-bw-1.png" title="plot of chunk Q-Dx-RIN-MEST-bw" alt="plot of chunk Q-Dx-RIN-MEST-bw" width="700px" />
+
 ### Dependence on gene, age, and total read count $N$
 
 <img src="figure/S-age-tot-read-count-1.png" title="plot of chunk S-age-tot-read-count" alt="plot of chunk S-age-tot-read-count" width="700px" /><img src="figure/S-age-tot-read-count-2.png" title="plot of chunk S-age-tot-read-count" alt="plot of chunk S-age-tot-read-count" width="700px" />

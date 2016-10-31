@@ -54,7 +54,7 @@ P$s.age.inst$lattice <-
            subset = Gene %in% gene.ids,
            groups = Institution,
            panel = function(x, y, ...) {
-               panel.xyplot(x, y, pch = 21, cex = 0.5, ...)
+               panel.xyplot(x, y, pch = 21, cex = 0.3, ...)
                panel.smoother(x, y, col = "black", lwd = 2, ...)
            },
            auto.key = list(title = "institution", columns = 3),
@@ -173,6 +173,108 @@ xyplot(Q ~ Age | Gene, data = Q.long, groups = Gender,
        xlab = "age",
        aspect = "fill", layout = c(6, 5))
 ```
+
+### Gene and Gender
+
+```{r}
+source("2016-06-26-trellis-display-of-data.R")
+```
+
+#### $S$ statistic
+
+```{r S-Gender-density, warning=FALSE}
+dp <- densityplot(~ S | Gene, groups = Gender, data = S.long, plot.points = FALSE)[1:30]
+update(my.update(dp, auto.key = list(title = "gender", text = c("Male", "Female"), columns = 2, points = TRUE, lines = FALSE)),
+       par.settings = list(superpose.line = list(fill = trellis.par.get("superpose.symbol")$fill[c(2, 1)],
+                                                   col = trellis.par.get("superpose.symbol")$col[c(2, 1)])),
+       scales = list(draw = FALSE, relation = "free"))
+```
+
+The same information in box and whisker representation:
+
+```{r S-Gender-bw, warning=FALSE}
+dp <- bwplot(Gender ~ S | Gene, data = S.long)[1:30]
+my.update(dp)
+```
+
+#### $Q$ statistic
+
+```{r Q-Gender-density, warning=FALSE, echo=FALSE}
+dp <- densityplot(~ Q | Gene, groups = Gender, data = Q.long, plot.points = FALSE)[1:30]
+update(my.update(dp, auto.key = list(title = "gender", text = c("Male", "Female"), columns = 2, points = TRUE, lines = FALSE)),
+       par.settings = list(superpose.line = list(fill = trellis.par.get("superpose.symbol")$fill[c(2, 1)],
+                                                   col = trellis.par.get("superpose.symbol")$col[c(2, 1)])),
+       scales = list(draw = FALSE, relation = "free"), xlab = "Q")
+```
+
+```{r Q-Gender-bw, warning=FALSE, echo=FALSE}
+dp <- bwplot(Gender ~ Q | Gene, data = Q.long)[1:30]
+update(my.update(dp), xlab = "Q")
+```
+
+Only with MEG3, the most significantly affected gene by Gender (see a later post), conditioning on various RIN intervals
+
+```{r}
+Q.long$RIN.sh <- equal.count(Q.long$RIN)
+```
+
+```{r Q-Gender-RIN-MEG3-density, warning=FALSE}
+densityplot(~ Q | RIN.sh, data = Q.long, groups = Gender, subset = Gene == "MEG3", scales = list(relation = "free"),
+            par.settings = list(superpose.line = list(fill = trellis.par.get("superpose.symbol")$fill[c(2, 1)],
+                                                      col = trellis.par.get("superpose.symbol")$col[c(2, 1)])),
+            auto.key=TRUE)
+```
+
+```{r Q-Gender-RIN-MEG3-bw, warning=FALSE}
+bwplot(Gender ~ Q | RIN.sh, data = Q.long, subset = Gene == "MEG3", scales = list(x = list(relation = "free")),
+            auto.key=TRUE)
+```
+
+
+### Gene and Dx
+
+#### $S$ statistic
+
+For the density plots AFF had to be excluded (for some genes there are too few AFF individuals for kernel density estimation)
+
+```{r S-Dx-density, warning=FALSE, echo=FALSE}
+dp <- densityplot(~ S | Gene, groups = Dx, data = S.long, plot.points = FALSE, subset = S.long$Dx %in% c("Control", "SCZ"))[1:30]
+update(my.update(dp), scales = list(draw = FALSE, relation = "free"),
+                 auto.key = list(title = "Dx", columns = 3, points = FALSE, lines = TRUE)) 
+```
+
+The same information (extended with AFF) in box and whisker representation:
+
+```{r S-Dx-bw, warning=FALSE, echo=FALSE}
+dp <- bwplot(Dx ~ S | Gene, data = S.long)[1:30]
+my.update(dp)
+```
+
+#### $Q$ statistic
+
+```{r Q-Dx-density, warning=FALSE, echo=FALSE}
+dp <- densityplot(~ Q | Gene, groups = Dx, data = Q.long, plot.points = FALSE, subset = Q.long$Dx %in% c("Control", "SCZ"))[1:30]
+update(my.update(dp, auto.key = list(title = "Dx", columns = 3, points = FALSE, lines = TRUE)), scales = list(draw = FALSE, relation = "free")) 
+```
+
+```{r Q-Dx-bw, warning=FALSE, echo=FALSE}
+dp <- bwplot(Dx ~ Q | Gene, data = Q.long)[1:30]
+update(my.update(dp), xlab = "Q")
+```
+
+Only with MEST, the most significantly affected gene by Dx (see a later post), conditioning on various RIN intervals
+
+```{r Q-Dx-RIN-MEST-density, warning=FALSE, echo=FALSE}
+densityplot(~ Q | RIN.sh, data = Q.long, groups = Dx, subset = Gene == "MEST",
+            scales = list(relation = "free"), plot.points = FALSE,
+            auto.key = list(title = "Dx", columns = 3, points = FALSE))
+```
+
+```{r Q-Dx-RIN-MEST-bw, warning=FALSE, echo=FALSE}
+bwplot(Dx ~ Q | RIN.sh, data = Q.long, subset = Gene == "MEST", scales = list(x = list(relation = "free")),
+            auto.key=TRUE)
+```
+
 ### Dependence on gene, age, and total read count $N$
 
 ```{r S-age-tot-read-count, dev=c("png", "pdf"), warning=FALSE, echo=FALSE}
