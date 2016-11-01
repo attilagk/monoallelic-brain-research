@@ -16,24 +16,9 @@ lattice.options(default.theme = "standard.theme")
 
 ```{r cache=TRUE, echo=FALSE}
 E <- get.predictors()
-# updated gene set
 gene.ids <- unlist(read.csv("../../data/genes.regression.new", as.is = TRUE))
 names(gene.ids) <- gene.ids
-Y <- get.readcounts(gene.ids)
-# e.vars defined in fit-glms.R
-S.long <- reshape(cbind(lapply(Y, getElement, "S"), E[ e.vars ]), # the data to be reshaped; e.vars is predifined
-                  v.names = "S", varying = list(names(Y)), # the component that varies with genes ('time')
-                  timevar = "Gene", times = names(Y), # the 'time' variable, i.e. gene symbol
-                  ids = rownames(E), idvar = "sample.id", # observation names: RNA sample ids
-                  direction = "long")
-S.long$Gene <- factor(S.long$Gene, levels = names(Y), ordered = TRUE)
-# in what follows exclude the unweighted averages 'UA.8' and 'UA' because total read count 'N' is not available for those
-Y.long <- cbind(stack(lapply(Y[ c(gene.ids, "WA.8", "WA") ], getElement, "S")),
-                stack(lapply(Y[ c(gene.ids, "WA.8", "WA") ], getElement, "N")),
-                E[ rep(seq_len(nrow(E)), length(gene.ids) + 2), e.vars ])
-names(Y.long)[1:3] <- c("S", "Gene", "N")
-Y.long$Gene <- factor(Y.long$Gene, levels = names(Y)[ 0:1 - length(Y) ], ordered = TRUE)
-Y.long[[4]] <- NULL
+Y.long <- reshape.Y2long(gene.ids)
 ```
 
 ## Dependence of $S$ on certain variables
@@ -41,16 +26,12 @@ Y.long[[4]] <- NULL
 ### Dependence on gene, age, and institution
 
 Implementation of the same plot both with the `lattice` and the `ggplot2` package.
-```{r echo=FALSE}
-lattice.options(default.args = list(as.table = TRUE))
-lattice.options(default.theme = "standard.theme")
-#lattice.options(default.theme = "ggplot2like"); lattice.options(ggplot2like.opts())
-```
+
 ```{r S-age-smooth, dev=c("png", "pdf"), warning=FALSE}
 P <- list()
 # lattice implementation
 P$s.age.inst$lattice <-
-    xyplot(S ~ Age | Gene, data = S.long,
+    xyplot(S ~ Age | Gene, data = Y.long,
            subset = Gene %in% gene.ids,
            groups = Institution,
            panel = function(x, y, ...) {
@@ -63,7 +44,7 @@ P$s.age.inst$lattice <-
            xlab = "age",
            aspect = "fill", layout = c(6, 5))
 # ggplot2 implementation
-g <- ggplot(data = S.long, aes(x = Age, y = S))
+g <- ggplot(data = Y.long, aes(x = Age, y = S))
 g <- g + geom_point(pch = "o", aes(color = Institution))
 g <- g + geom_smooth(method = "loess", color = "black")
 g <- g + facet_wrap(~ Gene)
@@ -78,7 +59,7 @@ plot(P$s.age.inst$ggplot2)
 P <- list()
 # lattice implementation
 P$s.age.gender$lattice <-
-    xyplot(S ~ Age | Gene, data = S.long, groups = Gender,
+    xyplot(S ~ Age | Gene, data = Y.long, groups = Gender,
            subset = Gene %in% gene.ids,
            panel = function(x, y, ...) {
                panel.xyplot(x, y, pch = 21, ...)
@@ -93,7 +74,7 @@ P$s.age.gender$lattice <-
            xlab = "age",
            aspect = "fill", layout = c(6, 5))
 # ggplot2 implementation
-g <- ggplot(data = S.long, aes(x = Age, y = S))
+g <- ggplot(data = Y.long, aes(x = Age, y = S))
 g <- g + geom_point(pch = "o", aes(color = Gender))
 g <- g + geom_smooth(method = "loess", color = "black")
 g <- g + facet_wrap(~ Gene)
@@ -102,46 +83,8 @@ plot(P$s.age.gender$lattice)
 #plot(P$s.age.gender$ggplot2)
 ```
 
-```{r cache=TRUE, echo=FALSE, echo=FALSE}
-# updated gene set
-Y <- get.readcounts(gene.ids)
-# e.vars defined in fit-glms.R
-R.long <- reshape(cbind(lapply(Y, getElement, "R"), E[ e.vars ]), # the data to be reshaped; e.vars is predifined
-                  v.names = "R", varying = list(names(Y)), # the component that varies with genes ('time')
-                  timevar = "Gene", times = names(Y), # the 'time' variable, i.e. gene symbol
-                  ids = rownames(E), idvar = "sample.id", # observation names: RNA sample ids
-                  direction = "long")
-R.long$Gene <- factor(R.long$Gene, levels = names(Y), ordered = TRUE)
-# in what follows exclude the unweighted averages 'UA.8' and 'UA' because total read count 'N' is not available for those
-Y.long.R <- cbind(stack(lapply(Y[ c(gene.ids, "WA.8", "WA") ], getElement, "R")),
-                stack(lapply(Y[ c(gene.ids, "WA.8", "WA") ], getElement, "N")),
-                E[ rep(seq_len(nrow(E)), length(gene.ids) + 2), e.vars ])
-names(Y.long.R)[1:3] <- c("R", "Gene", "N")
-Y.long.R$Gene <- factor(Y.long.R$Gene, levels = names(Y)[ 0:1 - length(Y) ], ordered = TRUE)
-Y.long.R[[4]] <- NULL
-```
-
-```{r cache=TRUE, echo=FALSE, echo=FALSE}
-# updated gene set
-Y <- get.readcounts(gene.ids)
-# e.vars defined in fit-glms.R
-Q.long <- reshape(cbind(lapply(Y, getElement, "Q"), E[ e.vars ]), # the data to be reshaped; e.vars is predifined
-                  v.names = "Q", varying = list(names(Y)), # the component that varies with genes ('time')
-                  timevar = "Gene", times = names(Y), # the 'time' variable, i.e. gene symbol
-                  ids = rownames(E), idvar = "sample.id", # observation names: RNA sample ids
-                  direction = "long")
-Q.long$Gene <- factor(Q.long$Gene, levels = names(Y), ordered = TRUE)
-# in what follows exclude the unweighted averages 'UA.8' and 'UA' because total read count 'N' is not available for those
-Y.long.Q <- cbind(stack(lapply(Y[ c(gene.ids, "WA.8", "WA") ], getElement, "Q")),
-                stack(lapply(Y[ c(gene.ids, "WA.8", "WA") ], getElement, "N")),
-                E[ rep(seq_len(nrow(E)), length(gene.ids) + 2), e.vars ])
-names(Y.long.Q)[1:3] <- c("Q", "Gene", "N")
-Y.long.Q$Gene <- factor(Y.long.Q$Gene, levels = names(Y)[ 0:1 - length(Y) ], ordered = TRUE)
-Y.long.Q[[4]] <- NULL
-```
-
 ```{r R-age-gender, dev=c("png", "pdf"), warning=FALSE, echo=FALSE}
-xyplot(R ~ Age | Gene, data = R.long, groups = Gender,
+xyplot(R ~ Age | Gene, data = Y.long, groups = Gender,
        subset = Gene %in% gene.ids,
        panel = function(x, y, ...) {
            panel.xyplot(x, y, pch = 21, ...)
@@ -158,7 +101,7 @@ xyplot(R ~ Age | Gene, data = R.long, groups = Gender,
 ```
 
 ```{r Q-age-gender, dev=c("png", "pdf"), warning=FALSE, echo=FALSE}
-xyplot(Q ~ Age | Gene, data = Q.long, groups = Gender,
+xyplot(Q ~ Age | Gene, data = Y.long, groups = Gender,
        subset = Gene %in% gene.ids,
        panel = function(x, y, ...) {
            panel.xyplot(x, y, pch = 21, ...)
@@ -172,107 +115,6 @@ xyplot(Q ~ Age | Gene, data = Q.long, groups = Gender,
        ylab = "transformed read count ratio, Q",
        xlab = "age",
        aspect = "fill", layout = c(6, 5))
-```
-
-### Gene and Gender
-
-```{r}
-source("2016-06-26-trellis-display-of-data.R")
-```
-
-#### $S$ statistic
-
-```{r S-Gender-density, warning=FALSE}
-dp <- densityplot(~ S | Gene, groups = Gender, data = S.long, plot.points = FALSE)[1:30]
-update(my.update(dp, auto.key = list(title = "gender", text = c("Male", "Female"), columns = 2, points = TRUE, lines = FALSE)),
-       par.settings = list(superpose.line = list(fill = trellis.par.get("superpose.symbol")$fill[c(2, 1)],
-                                                   col = trellis.par.get("superpose.symbol")$col[c(2, 1)])),
-       scales = list(draw = FALSE, relation = "free"))
-```
-
-The same information in box and whisker representation:
-
-```{r S-Gender-bw, warning=FALSE}
-dp <- bwplot(Gender ~ S | Gene, data = S.long)[1:30]
-my.update(dp)
-```
-
-#### $Q$ statistic
-
-```{r Q-Gender-density, warning=FALSE, echo=FALSE}
-dp <- densityplot(~ Q | Gene, groups = Gender, data = Q.long, plot.points = FALSE)[1:30]
-update(my.update(dp, auto.key = list(title = "gender", text = c("Male", "Female"), columns = 2, points = TRUE, lines = FALSE)),
-       par.settings = list(superpose.line = list(fill = trellis.par.get("superpose.symbol")$fill[c(2, 1)],
-                                                   col = trellis.par.get("superpose.symbol")$col[c(2, 1)])),
-       scales = list(draw = FALSE, relation = "free"), xlab = "Q")
-```
-
-```{r Q-Gender-bw, warning=FALSE, echo=FALSE}
-dp <- bwplot(Gender ~ Q | Gene, data = Q.long)[1:30]
-update(my.update(dp), xlab = "Q")
-```
-
-Only with MEG3, the most significantly affected gene by Gender (see a later post), conditioning on various RIN intervals
-
-```{r}
-Q.long$RIN.sh <- equal.count(Q.long$RIN)
-```
-
-```{r Q-Gender-RIN-MEG3-density, warning=FALSE}
-densityplot(~ Q | RIN.sh, data = Q.long, groups = Gender, subset = Gene == "MEG3", scales = list(relation = "free"),
-            par.settings = list(superpose.line = list(fill = trellis.par.get("superpose.symbol")$fill[c(2, 1)],
-                                                      col = trellis.par.get("superpose.symbol")$col[c(2, 1)])),
-            auto.key=TRUE)
-```
-
-```{r Q-Gender-RIN-MEG3-bw, warning=FALSE}
-bwplot(Gender ~ Q | RIN.sh, data = Q.long, subset = Gene == "MEG3", scales = list(x = list(relation = "free")),
-            auto.key=TRUE)
-```
-
-
-### Gene and Dx
-
-#### $S$ statistic
-
-For the density plots AFF had to be excluded (for some genes there are too few AFF individuals for kernel density estimation)
-
-```{r S-Dx-density, warning=FALSE, echo=FALSE}
-dp <- densityplot(~ S | Gene, groups = Dx, data = S.long, plot.points = FALSE, subset = S.long$Dx %in% c("Control", "SCZ"))[1:30]
-update(my.update(dp), scales = list(draw = FALSE, relation = "free"),
-                 auto.key = list(title = "Dx", columns = 3, points = FALSE, lines = TRUE)) 
-```
-
-The same information (extended with AFF) in box and whisker representation:
-
-```{r S-Dx-bw, warning=FALSE, echo=FALSE}
-dp <- bwplot(Dx ~ S | Gene, data = S.long)[1:30]
-my.update(dp)
-```
-
-#### $Q$ statistic
-
-```{r Q-Dx-density, warning=FALSE, echo=FALSE}
-dp <- densityplot(~ Q | Gene, groups = Dx, data = Q.long, plot.points = FALSE, subset = Q.long$Dx %in% c("Control", "SCZ"))[1:30]
-update(my.update(dp, auto.key = list(title = "Dx", columns = 3, points = FALSE, lines = TRUE)), scales = list(draw = FALSE, relation = "free")) 
-```
-
-```{r Q-Dx-bw, warning=FALSE, echo=FALSE}
-dp <- bwplot(Dx ~ Q | Gene, data = Q.long)[1:30]
-update(my.update(dp), xlab = "Q")
-```
-
-Only with MEST, the most significantly affected gene by Dx (see a later post), conditioning on various RIN intervals
-
-```{r Q-Dx-RIN-MEST-density, warning=FALSE, echo=FALSE}
-densityplot(~ Q | RIN.sh, data = Q.long, groups = Dx, subset = Gene == "MEST",
-            scales = list(relation = "free"), plot.points = FALSE,
-            auto.key = list(title = "Dx", columns = 3, points = FALSE))
-```
-
-```{r Q-Dx-RIN-MEST-bw, warning=FALSE, echo=FALSE}
-bwplot(Dx ~ Q | RIN.sh, data = Q.long, subset = Gene == "MEST", scales = list(x = list(relation = "free")),
-            auto.key=TRUE)
 ```
 
 ### Dependence on gene, age, and total read count $N$
@@ -307,12 +149,6 @@ g <- g + facet_wrap(~ Gene)
 P$s.age.n$ggplot2 <- g
 plot(P$s.age.n$lattice)
 plot(P$s.age.n$ggplot2)
-```
-
-```{r cache=TRUE}
-M <- do.all.fits(Y[ 0:1 - length(Y) ], # omit the last two components: "UA.8" and "UA"
-                 E, preds = e.vars, sel.models = c("wnlm.R", "logi.S"),
-                 x = TRUE, y = TRUE) # store model matrix 'x' and response 'y'
 ```
 
 ## Associations between explanatory variables

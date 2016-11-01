@@ -15,7 +15,7 @@ Implementation of the same plot both with the `lattice` and the `ggplot2` packag
 P <- list()
 # lattice implementation
 P$s.age.inst$lattice <-
-    xyplot(S ~ Age | Gene, data = S.long,
+    xyplot(S ~ Age | Gene, data = Y.long,
            subset = Gene %in% gene.ids,
            groups = Institution,
            panel = function(x, y, ...) {
@@ -28,7 +28,7 @@ P$s.age.inst$lattice <-
            xlab = "age",
            aspect = "fill", layout = c(6, 5))
 # ggplot2 implementation
-g <- ggplot(data = S.long, aes(x = Age, y = S))
+g <- ggplot(data = Y.long, aes(x = Age, y = S))
 g <- g + geom_point(pch = "o", aes(color = Institution))
 g <- g + geom_smooth(method = "loess", color = "black")
 g <- g + facet_wrap(~ Gene)
@@ -51,7 +51,7 @@ plot(P$s.age.inst$ggplot2)
 P <- list()
 # lattice implementation
 P$s.age.gender$lattice <-
-    xyplot(S ~ Age | Gene, data = S.long, groups = Gender,
+    xyplot(S ~ Age | Gene, data = Y.long, groups = Gender,
            subset = Gene %in% gene.ids,
            panel = function(x, y, ...) {
                panel.xyplot(x, y, pch = 21, ...)
@@ -66,7 +66,7 @@ P$s.age.gender$lattice <-
            xlab = "age",
            aspect = "fill", layout = c(6, 5))
 # ggplot2 implementation
-g <- ggplot(data = S.long, aes(x = Age, y = S))
+g <- ggplot(data = Y.long, aes(x = Age, y = S))
 g <- g + geom_point(pch = "o", aes(color = Gender))
 g <- g + geom_smooth(method = "loess", color = "black")
 g <- g + facet_wrap(~ Gene)
@@ -80,120 +80,13 @@ plot(P$s.age.gender$lattice)
 #plot(P$s.age.gender$ggplot2)
 ```
 
-
-
-
-
 <img src="figure/R-age-gender-1.png" title="plot of chunk R-age-gender" alt="plot of chunk R-age-gender" width="700px" />
 
 <img src="figure/Q-age-gender-1.png" title="plot of chunk Q-age-gender" alt="plot of chunk Q-age-gender" width="700px" />
 
-### Gene and Gender
-
-
-```r
-source("2016-06-26-trellis-display-of-data.R")
-```
-
-#### $S$ statistic
-
-
-```r
-dp <- densityplot(~ S | Gene, groups = Gender, data = S.long, plot.points = FALSE)[1:30]
-update(my.update(dp, auto.key = list(title = "gender", text = c("Male", "Female"), columns = 2, points = TRUE, lines = FALSE)),
-       par.settings = list(superpose.line = list(fill = trellis.par.get("superpose.symbol")$fill[c(2, 1)],
-                                                   col = trellis.par.get("superpose.symbol")$col[c(2, 1)])),
-       scales = list(draw = FALSE, relation = "free"))
-```
-
-<img src="figure/S-Gender-density-1.png" title="plot of chunk S-Gender-density" alt="plot of chunk S-Gender-density" width="700px" />
-
-The same information in box and whisker representation:
-
-
-```r
-dp <- bwplot(Gender ~ S | Gene, data = S.long)[1:30]
-my.update(dp)
-```
-
-<img src="figure/S-Gender-bw-1.png" title="plot of chunk S-Gender-bw" alt="plot of chunk S-Gender-bw" width="700px" />
-
-#### $Q$ statistic
-
-<img src="figure/Q-Gender-density-1.png" title="plot of chunk Q-Gender-density" alt="plot of chunk Q-Gender-density" width="700px" />
-
-<img src="figure/Q-Gender-bw-1.png" title="plot of chunk Q-Gender-bw" alt="plot of chunk Q-Gender-bw" width="700px" />
-
-Only with MEG3, the most significantly affected gene by Gender (see a later post), conditioning on various RIN intervals
-
-
-```r
-Q.long$RIN.sh <- equal.count(Q.long$RIN)
-```
-
-
-```r
-densityplot(~ Q | RIN.sh, data = Q.long, groups = Gender, subset = Gene == "MEG3", scales = list(relation = "free"),
-            par.settings = list(superpose.line = list(fill = trellis.par.get("superpose.symbol")$fill[c(2, 1)],
-                                                      col = trellis.par.get("superpose.symbol")$col[c(2, 1)])),
-            auto.key=TRUE)
-```
-
-<img src="figure/Q-Gender-RIN-MEG3-density-1.png" title="plot of chunk Q-Gender-RIN-MEG3-density" alt="plot of chunk Q-Gender-RIN-MEG3-density" width="700px" />
-
-
-```r
-bwplot(Gender ~ Q | RIN.sh, data = Q.long, subset = Gene == "MEG3", scales = list(x = list(relation = "free")),
-            auto.key=TRUE)
-```
-
-<img src="figure/Q-Gender-RIN-MEG3-bw-1.png" title="plot of chunk Q-Gender-RIN-MEG3-bw" alt="plot of chunk Q-Gender-RIN-MEG3-bw" width="700px" />
-
-
-### Gene and Dx
-
-#### $S$ statistic
-
-For the density plots AFF had to be excluded (for some genes there are too few AFF individuals for kernel density estimation)
-
-<img src="figure/S-Dx-density-1.png" title="plot of chunk S-Dx-density" alt="plot of chunk S-Dx-density" width="700px" />
-
-The same information (extended with AFF) in box and whisker representation:
-
-<img src="figure/S-Dx-bw-1.png" title="plot of chunk S-Dx-bw" alt="plot of chunk S-Dx-bw" width="700px" />
-
-#### $Q$ statistic
-
-<img src="figure/Q-Dx-density-1.png" title="plot of chunk Q-Dx-density" alt="plot of chunk Q-Dx-density" width="700px" />
-
-<img src="figure/Q-Dx-bw-1.png" title="plot of chunk Q-Dx-bw" alt="plot of chunk Q-Dx-bw" width="700px" />
-
-Only with MEST, the most significantly affected gene by Dx (see a later post), conditioning on various RIN intervals
-
-<img src="figure/Q-Dx-RIN-MEST-density-1.png" title="plot of chunk Q-Dx-RIN-MEST-density" alt="plot of chunk Q-Dx-RIN-MEST-density" width="700px" />
-
-<img src="figure/Q-Dx-RIN-MEST-bw-1.png" title="plot of chunk Q-Dx-RIN-MEST-bw" alt="plot of chunk Q-Dx-RIN-MEST-bw" width="700px" />
-
 ### Dependence on gene, age, and total read count $N$
 
 <img src="figure/S-age-tot-read-count-1.png" title="plot of chunk S-age-tot-read-count" alt="plot of chunk S-age-tot-read-count" width="700px" /><img src="figure/S-age-tot-read-count-2.png" title="plot of chunk S-age-tot-read-count" alt="plot of chunk S-age-tot-read-count" width="700px" />
-
-
-```r
-M <- do.all.fits(Y[ 0:1 - length(Y) ], # omit the last two components: "UA.8" and "UA"
-                 E, preds = e.vars, sel.models = c("wnlm.R", "logi.S"),
-                 x = TRUE, y = TRUE) # store model matrix 'x' and response 'y'
-```
-
-```
-## Warning: glm.fit: algorithm did not converge
-```
-
-```
-## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
-
-## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
-```
 
 ## Associations between explanatory variables
 

@@ -1,0 +1,159 @@
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+library(lattice)
+library(latticeExtra)
+source("../../src/import-data.R")
+source("../../src/fit-glms.R")
+opts_chunk$set(dpi = 144)
+opts_chunk$set(out.width = "700px")
+opts_chunk$set(dev = c("png", "pdf"))
+lattice.options(default.args = list(as.table = TRUE))
+lattice.options(default.theme = "standard.theme")
+```
+
+## Conditioning on a gene and some predictor(s)
+
+Import data on read counts and predictors and cast them in convenient long format.
+
+```{r cache=TRUE, echo=TRUE}
+gene.ids <- unlist(read.csv("../../data/genes.regression.new", as.is = TRUE))
+names(gene.ids) <- gene.ids
+Y.long <- reshape.Y2long(gene.ids)
+```
+
+### Gene and Gender
+
+```{r}
+my.update <- function(dp, ...) {
+    update(dp, scales = list(x = list(draw = FALSE, relation = "free")),
+           par.settings = list(add.text = list(cex = 0.8)),
+           xlab = "read count ratio, S",
+           ...)
+}
+```
+
+#### $S$ statistic
+
+```{r S-Gender-density, warning=FALSE}
+dp <- densityplot(~ S | Gene, groups = Gender, data = Y.long, plot.points = FALSE)[1:30]
+update(my.update(dp, auto.key = list(title = "Gender", text = c("Male", "Female"), columns = 2, points = TRUE, lines = FALSE)),
+       par.settings = list(superpose.line = list(fill = trellis.par.get("superpose.symbol")$fill[c(2, 1)],
+                                                   col = trellis.par.get("superpose.symbol")$col[c(2, 1)])),
+       scales = list(draw = FALSE, relation = "free"))
+```
+
+The same information in box and whisker representation:
+
+```{r S-Gender-bw, warning=FALSE}
+dp <- bwplot(Gender ~ S | Gene, data = Y.long)[1:30]
+my.update(dp)
+```
+
+#### $Q$ statistic
+
+```{r Q-Gender-density, warning=FALSE, echo=FALSE}
+dp <- densityplot(~ Q | Gene, groups = Gender, data = Y.long, plot.points = FALSE)[1:30]
+update(my.update(dp, auto.key = list(title = "Gender", text = c("Male", "Female"), columns = 2, points = TRUE, lines = FALSE)),
+       par.settings = list(superpose.line = list(fill = trellis.par.get("superpose.symbol")$fill[c(2, 1)],
+                                                   col = trellis.par.get("superpose.symbol")$col[c(2, 1)])),
+       scales = list(draw = FALSE, relation = "free"), xlab = "Q")
+```
+
+```{r Q-Gender-bw, warning=FALSE, echo=FALSE}
+dp <- bwplot(Gender ~ Q | Gene, data = Y.long)[1:30]
+update(my.update(dp), xlab = "Q")
+```
+
+Only with MEG3, the most significantly affected gene by Gender (see a later post), conditioning on various RIN intervals
+
+```{r}
+Y.long$RIN.copy <- Y.long$RIN
+Y.long$RIN <- equal.count(Y.long$RIN, number = 3)
+```
+
+```{r Q-Gender-RIN-MEG3-density, warning=FALSE}
+lp <- densityplot(~ Q | RIN * Institution, data = Y.long, groups = Gender, subset = Gene == "MEG3",
+                  scales = list(relation = "free"), plot.points = FALSE,
+                  par.settings = list(superpose.line = list(fill = trellis.par.get("superpose.symbol")$fill[c(2, 1)], col = trellis.par.get("superpose.symbol")$col[c(2, 1)])),
+                  auto.key=TRUE)
+useOuterStrips(lp)
+```
+
+```{r Q-Gender-RIN-MEG3-bw, warning=FALSE}
+lp <- bwplot(Gender ~ Q | RIN * Institution, data = Y.long, subset = Gene == "MEG3", scales = list(x = list(relation = "free")),
+            auto.key=TRUE)
+useOuterStrips(lp)
+```
+
+
+### Gene and Dx
+
+#### $S$ statistic
+
+For the density plots AFF had to be excluded (for some genes there are too few AFF individuals for kernel density estimation)
+
+```{r S-Dx-density, warning=FALSE, echo=FALSE}
+dp <- densityplot(~ S | Gene, groups = Dx, data = Y.long, plot.points = FALSE, subset = Y.long$Dx %in% c("Control", "SCZ"))[1:30]
+update(my.update(dp), scales = list(draw = FALSE, relation = "free"),
+                 auto.key = list(title = "Dx", columns = 3, points = FALSE, lines = TRUE)) 
+```
+
+The same information (extended with AFF) in box and whisker representation:
+
+```{r S-Dx-bw, warning=FALSE, echo=FALSE}
+dp <- bwplot(Dx ~ S | Gene, data = Y.long)[1:30]
+my.update(dp)
+```
+
+#### $Q$ statistic
+
+```{r Q-Dx-density, warning=FALSE, echo=FALSE}
+dp <- densityplot(~ Q | Gene, groups = Dx, data = Y.long, plot.points = FALSE, subset = Y.long$Dx %in% c("Control", "SCZ"))[1:30]
+update(my.update(dp, auto.key = list(title = "Dx", columns = 3, points = FALSE, lines = TRUE)), scales = list(draw = FALSE, relation = "free")) 
+```
+
+```{r Q-Dx-bw, warning=FALSE, echo=FALSE}
+dp <- bwplot(Dx ~ Q | Gene, data = Y.long)[1:30]
+update(my.update(dp), xlab = "Q")
+```
+
+Only with MEST, the most significantly affected gene by Dx (see a later post), conditioning on various RIN intervals
+
+```{r Q-Dx-RIN-MEST-density, warning=FALSE, echo=FALSE}
+lp <- densityplot(~ Q | RIN * Institution, data = Y.long, groups = Dx, subset = Gene == "MEST",
+            scales = list(relation = "free"), plot.points = FALSE,
+            auto.key = list(title = "Dx", columns = 3, points = FALSE))
+useOuterStrips(lp)
+```
+
+```{r Q-Dx-RIN-MEST-bw, warning=FALSE, echo=FALSE}
+lp <- bwplot(Dx ~ Q | RIN * Institution, data = Y.long, subset = Gene == "MEST", scales = list(x = list(relation = "free")),
+            auto.key=TRUE)
+useOuterStrips(lp)
+```
+
+## Correlation and gene proximity
+
+```{r}
+gs <- read.csv("../../results/gene-clusters.csv", row.names = 1)[-1 * 2:14]
+gs.sel <- gs[as.character(read.csv("../../data/genes.regression.new")[ , 1, drop = TRUE]), -1 * c(1, 6) ]
+gs.sel$Gene <- factor(rownames(gs.sel), levels = rownames(gs.sel), ordered = TRUE)
+gs.sel <- gs.sel[with(gs.sel, order(seg, start)), ]
+gs.sel[c("cluster", "start", "gene.type")]
+```
+
+Select 3-3 consecutive genes in cluster 27 (chr 14) and 28 (chr 15), respectively.  Produce scatter plot matrix as well as parallel plot first using the $S$ statistic and then the $Q$ statistic.  These plots show no clear pattern in which correlation would depend on gene proximity.
+
+### $S$ statistic
+
+```{r splom-clus-27-28-s}
+sel.g <- as.character(gs.sel[gs.sel$seg %in% c(27, 28), "Gene"])[1:6]
+splom(m <- sapply(get.readcounts(gene.ids)[sel.g], getElement, "S"), pch = "+", pscales = 0)
+parallelplot(m)
+```
+
+### $Q$ statistic
+
+```{r splom-clus-27-28-q}
+splom(m <- sapply(get.readcounts(gene.ids)[sel.g], getElement, "Q"), pch = "+", pscales = 0)
+parallelplot(m)
+```

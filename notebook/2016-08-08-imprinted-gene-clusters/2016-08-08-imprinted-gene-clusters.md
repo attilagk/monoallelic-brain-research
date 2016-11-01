@@ -102,6 +102,12 @@ gs <- gs.seg[names(frac), ]
 gs$score <- unlist(frac["1", ])
 ```
 
+Write results to file:
+
+```r
+write.csv(gs, file = "../../results/gene-clusters.csv")
+```
+
 Eeach cluster has several genes including the "nearby candidate" category; note the median as well.
 
 

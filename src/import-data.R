@@ -133,3 +133,25 @@ gene.ids <- c("PEG3", "INPP5F", "SNRPN", "PWAR6", "ZDBF2", "MEG3", "ZNF331", "GR
              # 'green' novel 1 MB imprinted genes; note that PWAR6 is already
              # included above
              "TMEM261P1", "AL132709.5", "RP11-909M7.3", "SNORD116-20", "RP13-487P22.1", "hsa-mir-335", "PWRN1")
+
+
+# reshape data on (transformed) read counts and predictors to long format
+#
+# Arguments
+# gene.ids: the ids for selected genes
+# Z: the wide format read count data resulted from a call to the get.readcounts function
+# E: the wide format predictor data resulted from a call to the get.predictors function
+# e.v: selected explanatory variables
+#
+# Value: a data frame in the long format, where the same variables for
+# different genes (e.g. total read count N) are stacked on each other
+reshape.Y2long <- function(gene.ids, Z = get.readcounts(gene.ids)[gene.ids], E = get.predictors(), e.v = e.vars) {
+    stats <- names(Z[[1]])
+    names(stats) <- stats
+    l <- lapply(stats, function(s) stack(lapply(Z, getElement, s)))
+    Y.long <- data.frame(sapply(l, getElement, 1))
+    Y.long$Gene <- factor(l[[1]][ , 2, drop = TRUE])
+    Y.long <- cbind(Y.long, E[ rep(seq_len(nrow(E)), length(Z)), e.v ])
+    Y.long$Gene <- factor(Y.long$Gene, levels = names(Z), ordered = TRUE)
+    return(Y.long)
+}
