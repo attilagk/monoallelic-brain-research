@@ -17,7 +17,7 @@
 \newlabel{sec:filtering}{{2.4}{4}}
 \newlabel{eq:S-definition}{{1}{4}}
 \newlabel{eq:unbiased-test}{{2}{4}}
-\@writefile{lot}{\contentsline {table}{\numberline {1}{\ignorespaces Specificiation of four normal linear models based on read count transformation \(\tau \) and weights \(w_{ig}\).}}{5}}
+\@writefile{lot}{\contentsline {table}{\numberline {1}{\ignorespaces Specification and notation of normal linear models based on the weight \(w_{ig}\) on each observation and the transformation \(\tau \) applied to the set \(\{S_{ig} | g\}\) of read count ratios for a given gene \(g\).}}{5}}
 \newlabel{tab:nlm}{{1}{5}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {2.5}Regression models to explain population-wide variation}{5}}
 \newlabel{sec:methods-regression}{{2.5}{5}}
@@ -30,7 +30,7 @@
 \@writefile{toc}{\contentsline {subsection}{\numberline {3.1}Study design}{6}}
 \@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces  Quantifying parental expression bias in human individuals using the read count ratio statistic \(S\). The bias towards the expression of the maternal (red) or paternal (blue) copy of some gene in individual is measured based on the count of RNA-seq reads carrying the reference allele (small closed circles) and the count of reads carrying an alternative allele (open squares) at all SNPs in that gene for which the individual is heterozygous. The differences in the unobserved parental expression bias between individual \(i_1\) and \(i_2\) arise only from biological differences such as their disease status (black and gray silhouettes), age, or gender. In addition to these, the differences in the observed read count ratio also reflect variation from technical sources like tissue preparation, or RNA sequencing. }}{7}}
 \newlabel{fig:study-design}{{1}{7}}
-\@writefile{lot}{\contentsline {table}{\numberline {2}{\ignorespaces Variables used as predictors of read count ratio for the study of regulation and consequences of parental bias. The right column lists the corresponding regression parameters and, in square brackets [ ], the baseline level against which other levels are contrasted. PMI: post-mortem interval; Dx: disease status; AFF: affective spectrum disorder; SCZ: schizophrenia; RIN: RNA integrity number; RIN2: the square of RIN; Ancestry.\(k\): the \(k\)-th eigenvalue from the decomposition of genotypes indicating population structure}}{8}}
+\@writefile{lot}{\contentsline {table}{\numberline {2}{\ignorespaces  \emph  {Left column:} predictors (explanatory variables) of read count ratio for the study of regulation and consequences of parental bias. \emph  {Right column:} levels of each factor valued (categorical) predictor. Square brackets \([...]\) surround the baseline level against which other levels are contrasted. \emph  {Abbreviations:} PMI: post-mortem interval; Dx: disease status; AFF: affective spectrum disorder; SCZ: schizophrenia; RIN: RNA integrity number; RIN2: the square of RIN; Ancestry.\(k\): the \(k\)-th eigenvalue from the decomposition of genotypes indicating population structure}}{8}}
 \newlabel{tab:predictors}{{2}{8}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {3.2}Genome- and population-wide variation of parental bias}{8}}
 \@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces }}{9}}
@@ -44,13 +44,12 @@
 \@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces }}{12}}
 \newlabel{fig:predicted-curves}{{5}{12}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {3.4}Inferring regulators and consequences of parental bias}{13}}
-\citation{Perez2015}
-\citation{Perez2015}
 \@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces Biological effects: estimate and $99\%$ confidence interval for each regression coefficient \(\beta _{jg}\) under the wnlm.Q model, where \(g\) corresponds to a gene and \(j\) to a biological covariate (Age, Ancestry.1) or a level of some biological factor (DxSCZ, GenderMale).}}{14}}
-\newlabel{fig:biol-effects}{{6}{14}}
+\newlabel{fig:biol-effects-wnlm.Q}{{6}{14}}
 \@writefile{toc}{\contentsline {section}{\numberline {4}Discussion}{14}}
-\@writefile{lof}{\contentsline {figure}{\numberline {7}{\ignorespaces Comparison of the effects of age and gender between the present work and a previous study\nobreakspace  {}\cite  {Perez2015} in the mouse cerebellum. }}{15}}
-\newlabel{fig:mouse-cerebellum}{{7}{15}}
+\@writefile{lof}{\contentsline {figure}{\numberline {7}{\ignorespaces }}{15}}
+\newlabel{fig:pval-wnlm.Q}{{7}{15}}
+\newlabel{tab:signif-gene-effects}{{3.4}{15}}
 \citation{Perez2015}
 \citation{DeVeale2012}
 \citation{Gregg2010a}
@@ -70,6 +69,8 @@
 \bibcite{Plasschaert2014}{7}
 \bibcite{Tucci2016}{8}
 \@writefile{toc}{\contentsline {section}{\numberline {5}Supplementary Material}{20}}
+\citation{Perez2015}
+\citation{Perez2015}
 \@writefile{lof}{\contentsline {figure}{\numberline {S1}{\ignorespaces AGK models: M1 (left) and M2 (right)}}{21}}
 \newlabel{fig:agk}{{S1}{21}}
 \@writefile{lof}{\contentsline {figure}{\numberline {S2}{\ignorespaces }}{22}}
@@ -83,54 +84,38 @@
 \@writefile{lof}{\contentsline {figure}{\numberline {S6}{\ignorespaces }}{26}}
 \newlabel{fig:qqnorm-logi.S}{{S6}{26}}
 \@writefile{lof}{\contentsline {figure}{\numberline {S7}{\ignorespaces }}{27}}
-\newlabel{fig:qqnorm-logi2.S}{{S7}{27}}
+\newlabel{fig:qqnorm-wnlm.Q}{{S7}{27}}
 \@writefile{lof}{\contentsline {figure}{\numberline {S8}{\ignorespaces }}{28}}
-\newlabel{fig:qqnorm-wnlm.S}{{S8}{28}}
+\newlabel{fig:homoscedas-logi.S}{{S8}{28}}
 \@writefile{lof}{\contentsline {figure}{\numberline {S9}{\ignorespaces }}{29}}
-\newlabel{fig:qqnorm-wnlm.Q}{{S9}{29}}
+\newlabel{fig:homoscedas-wnlm.Q}{{S9}{29}}
 \@writefile{lof}{\contentsline {figure}{\numberline {S10}{\ignorespaces }}{30}}
-\newlabel{fig:qqnorm-wnlm.R}{{S10}{30}}
+\newlabel{fig:influence-logi.S}{{S10}{30}}
 \@writefile{lof}{\contentsline {figure}{\numberline {S11}{\ignorespaces }}{31}}
-\newlabel{fig:homoscedas-logi.S}{{S11}{31}}
+\newlabel{fig:influence-wnlm.Q}{{S11}{31}}
 \@writefile{lof}{\contentsline {figure}{\numberline {S12}{\ignorespaces }}{32}}
-\newlabel{fig:homoscedas-logi2.S}{{S12}{32}}
+\newlabel{fig:logi.S-logi2.S-compare}{{S12}{32}}
 \@writefile{lof}{\contentsline {figure}{\numberline {S13}{\ignorespaces }}{33}}
-\newlabel{fig:homoscedas-wnlm.S}{{S13}{33}}
+\newlabel{fig:wnlm.R-wnlm.Q-compare}{{S13}{33}}
 \@writefile{lof}{\contentsline {figure}{\numberline {S14}{\ignorespaces }}{34}}
-\newlabel{fig:homoscedas-wnlm.Q}{{S14}{34}}
+\newlabel{fig:logi.S-wnlm.Q-compare}{{S14}{34}}
 \@writefile{lof}{\contentsline {figure}{\numberline {S15}{\ignorespaces }}{35}}
-\newlabel{fig:homoscedas-wnlm.R}{{S15}{35}}
+\newlabel{fig:all-effects-wnlm.Q}{{S15}{35}}
 \@writefile{lof}{\contentsline {figure}{\numberline {S16}{\ignorespaces }}{36}}
-\newlabel{fig:influence-logi.S}{{S16}{36}}
-\@writefile{lof}{\contentsline {figure}{\numberline {S17}{\ignorespaces }}{37}}
-\newlabel{fig:influence-logi2.S}{{S17}{37}}
+\newlabel{fig:all-effects-logi.S}{{S16}{36}}
+\@writefile{lof}{\contentsline {figure}{\numberline {S17}{\ignorespaces Biological effects: estimates and $99\%$ confidence intervals under the logi.S model}}{37}}
+\newlabel{fig:biol-effects-logi.S}{{S17}{37}}
 \@writefile{lof}{\contentsline {figure}{\numberline {S18}{\ignorespaces }}{38}}
-\newlabel{fig:influence-wnlm.S}{{S18}{38}}
+\newlabel{fig:p-val-tdist-vs-perm}{{S18}{38}}
 \@writefile{lof}{\contentsline {figure}{\numberline {S19}{\ignorespaces }}{39}}
-\newlabel{fig:influence-wnlm.Q}{{S19}{39}}
+\newlabel{fig:pval}{{S19}{39}}
 \@writefile{lof}{\contentsline {figure}{\numberline {S20}{\ignorespaces }}{40}}
-\newlabel{fig:influence-wnlm.R}{{S20}{40}}
+\newlabel{fig:likelihood-surface}{{S20}{40}}
 \@writefile{lof}{\contentsline {figure}{\numberline {S21}{\ignorespaces }}{41}}
-\newlabel{fig:logi-S-logi2-S-compare}{{S21}{41}}
+\newlabel{fig:interaction-wnlm.Q}{{S21}{41}}
 \@writefile{lof}{\contentsline {figure}{\numberline {S22}{\ignorespaces }}{42}}
-\newlabel{fig:wnlm-R-wnlm-Q-compare}{{S22}{42}}
+\newlabel{fig:interaction-logi.S}{{S22}{42}}
 \@writefile{lof}{\contentsline {figure}{\numberline {S23}{\ignorespaces }}{43}}
-\newlabel{fig:logi-S-wnlm-Q-compare}{{S23}{43}}
-\@writefile{lof}{\contentsline {figure}{\numberline {S24}{\ignorespaces }}{44}}
-\newlabel{fig:all-effects-wnlm.Q}{{S24}{44}}
-\@writefile{lof}{\contentsline {figure}{\numberline {S25}{\ignorespaces }}{45}}
-\newlabel{fig:all-effects-logi.S}{{S25}{45}}
-\@writefile{lof}{\contentsline {figure}{\numberline {S26}{\ignorespaces }}{46}}
-\newlabel{fig:p-val-tdist-vs-perm}{{S26}{46}}
-\@writefile{lof}{\contentsline {figure}{\numberline {S27}{\ignorespaces Biological effects: estimates and $95\%$ confidence intervals under the wnlm.Q model}}{47}}
-\newlabel{fig:biol-effects-wnlm-Q-95}{{S27}{47}}
-\@writefile{lof}{\contentsline {figure}{\numberline {S28}{\ignorespaces Biological effects: estimates and $99\%$ confidence intervals under the logi.S model}}{48}}
-\newlabel{fig:biol-effects-logi-S-99}{{S28}{48}}
-\@writefile{lof}{\contentsline {figure}{\numberline {S29}{\ignorespaces }}{49}}
-\newlabel{fig:likelihood-surface}{{S29}{49}}
-\@writefile{lof}{\contentsline {figure}{\numberline {S30}{\ignorespaces }}{50}}
-\newlabel{fig:interaction-wnlm-Q}{{S30}{50}}
-\@writefile{lof}{\contentsline {figure}{\numberline {S31}{\ignorespaces }}{51}}
-\newlabel{fig:interaction-logi-S}{{S31}{51}}
-\@writefile{lof}{\contentsline {figure}{\numberline {S32}{\ignorespaces }}{52}}
-\newlabel{fig:anova}{{S32}{52}}
+\newlabel{fig:anova}{{S23}{43}}
+\@writefile{lof}{\contentsline {figure}{\numberline {S24}{\ignorespaces Comparison of the effects of age and gender between the present work and a previous study\nobreakspace  {}\cite  {Perez2015} in the mouse cerebellum. }}{43}}
+\newlabel{fig:mouse-cerebellum}{{S24}{43}}

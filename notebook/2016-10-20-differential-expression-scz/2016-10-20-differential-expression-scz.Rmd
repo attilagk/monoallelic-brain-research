@@ -1,3 +1,10 @@
+```{r echo=FALSE, warnings=FALSE}
+library(VennDiagram)
+opts_chunk$set(dpi = 144)
+opts_chunk$set(out.width = "700px")
+opts_chunk$set(dev = c("png", "pdf"))
+```
+
 ## Import data
 
 ```{r}
@@ -32,6 +39,8 @@ Further information on the significant gene(s):
 read.csv("../../results/signif-gene-effects-either-manual-annot.csv", row.names = 1)[both$signif, ]
 ```
 
-## Conclusion
+```{r venn-triple}
+grid.draw(venn.diagram(list(diff.e.genes$Gene.Symbol, our.genes$selected, c("RP11-909M7.3", "PEG10", "MEST", "UBE3A")), filename=NULL, category = c("SCZ: overall expression", "called imprinted", "SCZ: parental bias"), ext.text = FALSE, cat.pos = c(-15, 15, 15), cat.cex = rep(1.2, 3), col = my.col <- c("darkgreen", "blue", "red"), fill = my.col, cat.col = my.col))
+```
 
 Out of the `r length(our.genes$signif)` genes that our study found to be significantly associated to some biological predictor in terms of allelic bias, only `r length(both$signif)` of them, `r both$signif`, was/were found to be differentially expressed by Fromer et al.

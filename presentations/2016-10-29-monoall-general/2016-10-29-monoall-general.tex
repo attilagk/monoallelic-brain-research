@@ -80,19 +80,18 @@
 \visible<1>{
 \begin{columns}[t]
 \begin{column}{0.5\textwidth}
-{\footnotesize Prader-Willi syndrome}
-
-\includegraphics<1>[width=0.65\columnwidth]{figures/from-others/Eugenia-Martínez-Vallejo-clothed-cropped.jpg}
-
-{\tiny Eugenia Martínez Vallejo}
-\end{column}
-
-\begin{column}{0.5\textwidth}
 {\footnotesize Angelman syndrome}
 
 \includegraphics<1>[width=0.65\columnwidth]{figures/from-others/boy-with-a-puppet-Giovanni-Francesco-Caroto.jpg}
 
 {\tiny Boy with a Puppet}
+\end{column}
+\begin{column}{0.5\textwidth}
+{\footnotesize Prader-Willi syndrome}
+
+\includegraphics<1>[width=0.65\columnwidth]{figures/from-others/Eugenia-Martínez-Vallejo-clothed-cropped.jpg}
+
+{\tiny Eugenia Martínez Vallejo}
 \end{column}
 \end{columns}
 }
@@ -123,6 +122,20 @@
 \subsection{Goals and study design}
 % questions: (1) which genes under what conditions: age, gender, genotype?
 % (2) role in psychiatric disorders?
+
+\begin{frame}{Our research study}
+\begin{description}
+\item[data/project] Common Mind Consortium
+\item[approach] human genomics
+\item[questions] imprinted genes in the brain
+\begin{itemize}
+\item variation of parental bias across genes and individuals
+\item regulators: age, gender, genotype (ancestry)
+\item psychiatric disorders (SCZ, AFF)  
+\end{itemize}
+\item[participants] \alert{Ifat Keydar}, Eva Xia, Menachem Fromer, Doug Ruderfer, Ravi Sachinanandam, Andrew Chess
+\end{description}
+\end{frame}
 
 \begin{frame}[label=cmc]{The Common Mind data}
 % CommonMind: within cohort variation of age, gender, genotype, Dx; correlate
@@ -159,15 +172,13 @@ read count ratio \(S_g\) & none \\
 \hline
 predictor & term(s) \(x_{\cdot j} \beta_{gj}\)\\
 \hline
-Age & Age\\
+Age & \\
 Gender & [Female], Male\\
 Dx & [AFF], Control, SCZ\\
-Ancestry.1-5 & Ancestry.1-5\\
-%\vdots & \vdots \\
-%Ancestry.5 & Ancestry.5\\
+Ancestry.1-5 & \\
 Institution & [MSSM], Penn, Pitt\\
-PMI & PMI\\
-RIN & RIN\\
+PMI & \\
+RIN & \\
 RNA\_batch & [0], A, B, C, D, E, F, G, H\\
 \hline
 \end{tabular}
@@ -293,31 +304,8 @@ model: wnlm.Q
 \includegraphics<1>[scale=\ownfigscale]{figures/2016-10-03-permutation-test/p-values-1.pdf}
 \visible<2>{
 \tiny
-\begin{tabular}{lllll}
-Gene & Gene type & Chr & Coefficient & Known phenotype\\
-\hline
-ZDBF2 & protein coding & 2 & Age,  Ancestry.1 & \\
-NAP1L5 & protein coding & 4 & GenderMale & \\
-PEG10 & protein coding & 7 & DxSCZ & \\
-MEST & protein coding & 7 & DxSCZ & Silver-Russell syndrome\\
-KCNK9 & protein coding & 8 & Age & Birk-Barel mental retardation dysmorphism syndrome\\
-INPP5F & protein coding & 10 & Age & cell motility; endocytic recycling\\
-KCNQ1OT1 & antisense & 11 & GenderMale & Beckwith-Wiedemann syn.; Isol.~hemihyperplasia\\
-MEG3 & lincRNA & 14 & GenderMale & Mat/pat 14q32.2 hypermeth/microdel syndrome\\
-RP11-909M7.3 & lincRNA & 14 & DxSCZ & \\
-AL132709.5 & miRNA & 14 & Ancestry.1 & \\
-MAGEL2 & protein coding & 15 & Age & Prader-Willi syn.; Schaaf-Yang syn.;
-Arthrogryposis \\
-NDN & protein coding & 15 & GenderMale & Prader-Willi syndrome\\
-PWRN1 & lincRNA & 15 & Ancestry.1 & Prader-Willi syndrome\\
-UBE3A & protein coding & 15 & DxSCZ & Prader-Willi syn.; Angelman syn.; circadian rhythm\\
-PEG3 & protein coding & 19 & GenderMale & \\
-\end{tabular}
+\input{../../results/signif-gene-effects-either-manual-annot.tex}
 }
-\end{frame}
-
-\begin{frame}
-UBE3A and MEST
 \end{frame}
 
 \begin{frame}{Comparison to a mouse study: agreement}
@@ -378,8 +366,10 @@ Perez et al 2015
 
 % SEC: Future extensions
 
-\begin{frame}{Reconciling Common Mind studies}
+\begin{frame}{Comparison to overall expression analysis\(^\ast\)}
+\includegraphics[height=0.8\textheight]{figures/2016-10-20-differential-expression-scz/venn-triple-1.pdf}
 
+{\tiny\(\ast\)Fromer et al 2016}
 \end{frame}
 
 \begin{frame}{Epigenetics and tissue specificity}

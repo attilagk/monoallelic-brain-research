@@ -1,3 +1,12 @@
+
+```
+## Loading required package: grid
+```
+
+```
+## Loading required package: futile.logger
+```
+
 ## Import data
 
 
@@ -55,10 +64,15 @@ read.csv("../../results/signif-gene-effects-either-manual-annot.csv", row.names 
 ## PEG10 paternally expressed 10 protein_coding               7
 ##       Gene.Start..bp. rank..our.study. Associated.coefficient..our.study.
 ## PEG10        94656325               14                              DxSCZ
-##       Phenotype
-## PEG10
+##       Phenotype     PMID
+## PEG10           16341224
 ```
 
-## Conclusion
+
+```r
+grid.draw(venn.diagram(list(diff.e.genes$Gene.Symbol, our.genes$selected, c("RP11-909M7.3", "PEG10", "MEST", "UBE3A")), filename=NULL, category = c("SCZ: overall expression", "called imprinted", "SCZ: parental bias"), ext.text = FALSE, cat.pos = c(-15, 15, 15), cat.cex = rep(1.2, 3), col = my.col <- c("darkgreen", "blue", "red"), fill = my.col, cat.col = my.col))
+```
+
+<img src="figure/venn-triple-1.png" title="plot of chunk venn-triple" alt="plot of chunk venn-triple" width="700px" />
 
 Out of the 15 genes that our study found to be significantly associated to some biological predictor in terms of allelic bias, only 1 of them, PEG10, was/were found to be differentially expressed by Fromer et al.

@@ -28,6 +28,16 @@ Lorem ipsum...
 
 \section{Introduction}
 
+\begin{enumerate}
+\item imprinting, evolution, theory, physiological role: early development and
+later behavior
+\item human imprinting disorders, links to SCZ, imprinted brain hypothesis
+\item parental bias in the fine regulation of overall expression; tissue,
+development, aging, gender
+\item mouse models, human: Common Mind Consortium: general goals, data/approach, Frommer et al,
+our study
+\end{enumerate}
+
 Variation of expression level across genes, lifetime, cells, tissue types, as
 well as individuals in the human population is clearly a major determinant of
 phenotype REF.  A distinct, though related, question is the role of the
@@ -247,17 +257,19 @@ linear models as laid out in Table~\ref{tab:nlm}.
 
 \begin{table}
 \begin{center}
-\begin{tabular}{c|cc}
-model & transformation \(\tau\) & weights \(w_{ig}\) \\
+\begin{tabular}{r|cc}
+ & \multicolumn{2}{c}{weights \(w_{ig}\)} \\
+ & 1 & \(T_{ig}\) \\
 \hline
-unlm.S & none & 1 \\
-unlm.R & rank transf. & 1 \\
-wnlm.S & none & \(T_{ig}\) \\
-wnlm.R & rank transf. & \(T_{ig}\) \\
+no transformation & unlm.S & wnlm.S \\
+quasi-log transf. & unlm.Q & wnlm.Q \\
+rank transf. & unlm.R & wnlm.R \\
 \end{tabular}
 \end{center}
-\caption{Specificiation of four normal linear models based on read count
-transformation \(\tau\) and weights \(w_{ig}\).}
+\caption{Specification and notation of normal linear models based on the weight
+\(w_{ig}\) on each observation and the
+transformation \(\tau\) applied to the set \(\{S_{ig} | g\}\) of read count
+ratios for a given gene \(g\).}
 \label{tab:nlm}
 \end{table}
 
@@ -365,24 +377,23 @@ also reflects variation of \(S_g\) that arise from technical sources.
 \begin{table}
 \begin{center}
 \begin{tabular}{r|l}
-predictor & parameter(s)\\
+predictor & levels\\
 \hline
-Age & Age\\
+Age &  \\
 Institution & [MSSM], Penn, Pitt\\
 Gender & [Female], Male\\
-PMI & PMI\\
+PMI & \\
 Dx & [AFF], Control, SCZ\\
-RIN & RIN\\
-RIN2 & RIN2\\
+RIN &  \\
 RNA\_batch & [0], A, B, C, D, E, F, G, H\\
-Ancestry.1 & Ancestry.1\\
-\vdots & \vdots \\
-Ancestry.5 & Ancestry.5\\
+Ancestry.1 & \\
+\vdots & \\
+Ancestry.5 &  \\
 \end{tabular}
-\caption{Variables used as predictors of read count ratio for the study of
-regulation and consequences of parental bias.  The right column lists the
-corresponding regression parameters and, in square brackets [ ], the baseline
-level against which other levels are contrasted.  PMI: post-mortem interval; Dx:
+\caption{ \emph{Left column:} predictors (explanatory variables) of read count ratio for the study of
+regulation and consequences of parental bias.  \emph{Right column:} levels of
+each factor valued (categorical) predictor.  Square brackets \([...]\) surround the baseline
+level against which other levels are contrasted.  \emph{Abbreviations:} PMI: post-mortem interval; Dx:
 disease status; AFF: affective spectrum disorder; SCZ: schizophrenia; RIN: RNA
 integrity number; RIN2: the square of RIN; Ancestry.\(k\): the \(k\)-th
 eigenvalue from the decomposition of genotypes indicating population structure}
@@ -542,15 +553,14 @@ An in-depth checking of model fit was carried out involving all models,
 predictors, and selected genes (except TMEM261P1, for which the iterative
 weighted least square fitting algorithm did not converge under logistic
 models).  This analysis examined the normality of residuals
-(Fig.~\ref{fig:qqnorm-logi.S}, \ref{fig:qqnorm-logi2.S},
-\ref{fig:qqnorm-wnlm.S}, \ref{fig:qqnorm-wnlm.Q}, \ref{fig:qqnorm-wnlm.R}),
+(Fig.~\ref{fig:qqnorm-logi.S},
+\ref{fig:qqnorm-wnlm.Q},
 the independence of residuals from the fitted value (i.e.~homoscedasticity,
-Fig.~\ref{fig:homoscedas-logi.S}, \ref{fig:homoscedas-logi2.S},
-\ref{fig:homoscedas-wnlm.S}, \ref{fig:homoscedas-wnlm.Q},
-\ref{fig:homoscedas-wnlm.R}), and the influence of each case/individual on the
+Fig.~\ref{fig:homoscedas-logi.S},
+\ref{fig:homoscedas-wnlm.Q})
+and the influence of each case/individual on the
 fit to address outliers (Fig.~\ref{fig:influence-logi.S},
-\ref{fig:influence-logi2.S}, \ref{fig:homoscedas-wnlm.S},
-\ref{fig:homoscedas-wnlm.Q}, \ref{fig:influence-wnlm.R}).  These model
+\ref{fig:homoscedas-wnlm.Q}).  These model
 checking results revealed the following patterns.  First, for all genes the
 normal linear model seems to fit at
 least reasonably well to quasi-log-transformed data (wnlm.Q) slightly less
@@ -563,13 +573,13 @@ quality of the fit permits for a given gene---also on logi.S.
 Comparing the estimated regression coefficients \(\hat{\beta}_{jg}\) for some
 gene \(g\) and parameter under the two logistic models logi.S and logi2.S
 revealed close agreement between these two models
-(Fig.~\ref{fig:logi-S-logi2-S-compare}) suggesting that making inferences
+(Fig.~\ref{fig:logi.S-logi2.S-compare}) suggesting that making inferences
 under the better fitting logi.S and without logi2.S does not incur information
 loss.  Comparing similarly the best-fitting normal linear model, wnlm.Q, to
 the less powerful and slightly less well fitting wnlm.R showed also good
-agreement (Fig.~\ref{fig:wnlm-R-wnlm-Q-compare}) suggesting the use of wnlm.Q
+agreement (Fig.~\ref{fig:wnlm.R-wnlm.Q-compare}) suggesting the use of wnlm.Q
 without wnlm.R.  Comparing logi.S to wnlm.Q showed less close but still good
-qualitative agreement (Fig.~\ref{fig:logi-S-wnlm-Q-compare}) depending on how
+qualitative agreement (Fig.~\ref{fig:logi.S-wnlm.Q-compare}) depending on how
 well logi.S fitted the data for a given gene (cf.~\ref{fig:qqnorm-logi.S}).  A
 comparison based on 99\% confidence intervals (CIs)
 (Fig.~\ref{fig:all-effects-wnlm.Q},~\ref{fig:all-effects-logi.S}) also
@@ -620,7 +630,7 @@ consistency under these two models.
 
 The effects of four biological predictors---age, gender, ancestry and
 psychiatric condition---on read count ratio of individual genes are depicted
-in Fig.~\ref{fig:biol-effects}.
+in Fig.~\ref{fig:biol-effects-wnlm.Q}.
 
 TODO: finish the rest of the Results section.
 
@@ -632,18 +642,22 @@ TODO: finish the rest of the Results section.
 regression coefficient \(\beta_{jg}\) under the wnlm.Q model, where \(g\)
 corresponds to a gene and \(j\) to a biological covariate (Age, Ancestry.1) or
 a level of some biological factor (DxSCZ, GenderMale).}
-\label{fig:biol-effects}
+\label{fig:biol-effects-wnlm.Q}
 \end{figure}
 
 \begin{figure}
 \begin{center}
-\includegraphics[width=0.6\textwidth]{figures/2016-10-11-comparison-to-mouse-cerebellum/posterior-pp-vs-pval-wnlm-Q-1.pdf}
+\includegraphics[scale=0.6]{figures/2016-10-03-permutation-test/p-values-wnlm-Q-1.pdf}
 \end{center}
-\caption{Comparison of the effects of age and gender between the present work and a
-previous study~\cite{Perez2015} in the mouse cerebellum. }
-\label{fig:mouse-cerebellum}
+\caption{}
+\label{fig:pval-wnlm.Q}
 \end{figure}
 
+\begin{table}
+\footnotesize
+\input{../results/signif-gene-effects-either-manual-annot.tex}
+\label{tab:signif-gene-effects}
+\end{table}
 
 \section{Discussion}
 
@@ -824,34 +838,10 @@ regulators such as age, gender, and ancestry.
 
 \begin{figure}
 \begin{center}
-\includegraphics[scale=0.6]{figures/2016-09-23-model-checking/qqnorm-logi2-S-1.pdf}
-\end{center}
-\caption{}
-\label{fig:qqnorm-logi2.S}
-\end{figure}
-
-\begin{figure}
-\begin{center}
-\includegraphics[scale=0.6]{figures/2016-09-23-model-checking/qqnorm-wnlm-S-1.pdf}
-\end{center}
-\caption{}
-\label{fig:qqnorm-wnlm.S}
-\end{figure}
-
-\begin{figure}
-\begin{center}
 \includegraphics[scale=0.6]{figures/2016-09-23-model-checking/qqnorm-wnlm-Q-1.pdf}
 \end{center}
 \caption{}
 \label{fig:qqnorm-wnlm.Q}
-\end{figure}
-
-\begin{figure}
-\begin{center}
-\includegraphics[scale=0.6]{figures/2016-09-23-model-checking/qqnorm-wnlm-R-1.pdf}
-\end{center}
-\caption{}
-\label{fig:qqnorm-wnlm.R}
 \end{figure}
 
 \begin{figure}
@@ -864,34 +854,10 @@ regulators such as age, gender, and ancestry.
 
 \begin{figure}
 \begin{center}
-\includegraphics[scale=0.6]{figures/2016-09-23-model-checking/homoscedas-logi2-S-1.pdf}
-\end{center}
-\caption{}
-\label{fig:homoscedas-logi2.S}
-\end{figure}
-
-\begin{figure}
-\begin{center}
-\includegraphics[scale=0.6]{figures/2016-09-23-model-checking/homoscedas-wnlm-S-1.pdf}
-\end{center}
-\caption{}
-\label{fig:homoscedas-wnlm.S}
-\end{figure}
-
-\begin{figure}
-\begin{center}
 \includegraphics[scale=0.6]{figures/2016-09-23-model-checking/homoscedas-wnlm-Q-1.pdf}
 \end{center}
 \caption{}
 \label{fig:homoscedas-wnlm.Q}
-\end{figure}
-
-\begin{figure}
-\begin{center}
-\includegraphics[scale=0.6]{figures/2016-09-23-model-checking/homoscedas-wnlm-R-1.pdf}
-\end{center}
-\caption{}
-\label{fig:homoscedas-wnlm.R}
 \end{figure}
 
 \begin{figure}
@@ -904,22 +870,6 @@ regulators such as age, gender, and ancestry.
 
 \begin{figure}
 \begin{center}
-\includegraphics[scale=0.6]{figures/2016-09-23-model-checking/influence-logi2-S-1.pdf}
-\end{center}
-\caption{}
-\label{fig:influence-logi2.S}
-\end{figure}
-
-\begin{figure}
-\begin{center}
-\includegraphics[scale=0.6]{figures/2016-09-23-model-checking/influence-wnlm-S-1.pdf}
-\end{center}
-\caption{}
-\label{fig:influence-wnlm.S}
-\end{figure}
-
-\begin{figure}
-\begin{center}
 \includegraphics[scale=0.6]{figures/2016-09-23-model-checking/influence-wnlm-Q-1.pdf}
 \end{center}
 \caption{}
@@ -928,18 +878,10 @@ regulators such as age, gender, and ancestry.
 
 \begin{figure}
 \begin{center}
-\includegraphics[scale=0.6]{figures/2016-09-23-model-checking/influence-wnlm-R-1.pdf}
-\end{center}
-\caption{}
-\label{fig:influence-wnlm.R}
-\end{figure}
-
-\begin{figure}
-\begin{center}
 \includegraphics[scale=0.6]{figures/2016-06-22-extending-anova/logi-S-logi2-S-compare-1.pdf}
 \end{center}
 \caption{}
-\label{fig:logi-S-logi2-S-compare}
+\label{fig:logi.S-logi2.S-compare}
 \end{figure}
 
 \begin{figure}
@@ -947,7 +889,7 @@ regulators such as age, gender, and ancestry.
 \includegraphics[scale=0.6]{figures/2016-06-22-extending-anova/wnlm-R-wnlm-Q-compare-1.pdf}
 \end{center}
 \caption{}
-\label{fig:wnlm-R-wnlm-Q-compare}
+\label{fig:wnlm.R-wnlm.Q-compare}
 \end{figure}
 
 \begin{figure}
@@ -955,7 +897,7 @@ regulators such as age, gender, and ancestry.
 \includegraphics[scale=0.6]{figures/2016-06-22-extending-anova/logi-S-wnlm-Q-compare-1.pdf}
 \end{center}
 \caption{}
-\label{fig:logi-S-wnlm-Q-compare}
+\label{fig:logi.S-wnlm.Q-compare}
 \end{figure}
 
 \begin{figure}
@@ -976,7 +918,16 @@ regulators such as age, gender, and ancestry.
 
 \begin{figure}
 \begin{center}
-\includegraphics[scale=0.6]{figures/2016-10-03-permutation-test/p-val-tdist-vs-perm-1.pdf}
+\includegraphics[scale=0.6]{figures/2016-08-08-imprinted-gene-clusters/segplot-logi-S-99conf-1.pdf}
+\end{center}
+\caption{Biological effects: estimates and $99\%$ confidence intervals under
+the logi.S model}
+\label{fig:biol-effects-logi.S}
+\end{figure}
+
+\begin{figure}
+\begin{center}
+\includegraphics[scale=0.6]{figures/2016-10-03-permutation-test/p-val-tdist-vs-perm-filt-iso-1.pdf}
 \end{center}
 \caption{}
 \label{fig:p-val-tdist-vs-perm}
@@ -984,20 +935,10 @@ regulators such as age, gender, and ancestry.
 
 \begin{figure}
 \begin{center}
-\includegraphics[scale=0.6]{figures/2016-08-08-imprinted-gene-clusters/segplot-wnlm-Q-95conf-1.pdf}
+\includegraphics[scale=0.6]{figures/2016-10-03-permutation-test/p-values-1.pdf}
 \end{center}
-\caption{Biological effects: estimates and $95\%$ confidence intervals under
-the wnlm.Q model}
-\label{fig:biol-effects-wnlm-Q-95}
-\end{figure}
-
-\begin{figure}
-\begin{center}
-\includegraphics[scale=0.6]{figures/2016-08-08-imprinted-gene-clusters/segplot-logi-S-99conf-1.pdf}
-\end{center}
-\caption{Biological effects: estimates and $99\%$ confidence intervals under
-the logi.S model}
-\label{fig:biol-effects-logi-S-99}
+\caption{}
+\label{fig:pval}
 \end{figure}
 
 \begin{figure}
@@ -1013,15 +954,15 @@ the logi.S model}
 \includegraphics[scale=0.6]{figures/2016-07-08-conditional-inference/beta-age-cond-wnlm-Q-2-1.pdf}
 \end{center}
 \caption{}
-\label{fig:interaction-wnlm-Q}
+\label{fig:interaction-wnlm.Q}
 \end{figure}
 
 \begin{figure}
 \begin{center}
-\includegraphics[scale=0.6]{figures/2016-07-08-conditional-inference/beta-age-cond-logi-S-2-1.pdf}
+\includegraphics[scale=0.6]{figures/2016-07-08-conditional-inference/beta-age-cond-logi-S-2-skip-1.pdf}
 \end{center}
 \caption{}
-\label{fig:interaction-logi-S}
+\label{fig:interaction-logi.S}
 \end{figure}
 
 \begin{figure}
@@ -1030,6 +971,13 @@ the logi.S model}
 \end{center}
 \caption{}
 \label{fig:anova}
+\end{figure}
+
+\begin{figure}
+\includegraphics[width=0.6\textwidth]{figures/2016-10-11-comparison-to-mouse-cerebellum/posterior-pp-vs-pval-wnlm-Q-1.pdf}
+\caption{Comparison of the effects of age and gender between the present work and a
+previous study~\cite{Perez2015} in the mouse cerebellum. }
+\label{fig:mouse-cerebellum}
 \end{figure}
 
 % Supplementary tables
