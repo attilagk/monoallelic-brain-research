@@ -248,7 +248,7 @@ setdiff(genes.regression.ifat, genes.regression.new) # what genes to remove?
 setdiff(genes.regression.new, genes.regression.ifat) # what genes to add?
 ```
 
-## Scaled Venn/Euler diagram
+## Cumulative loss of data
 
 The `VennDiagram` package implements scaled [Euler diagrams](https://en.wikipedia.org/wiki/Euler_diagram).
 
@@ -256,17 +256,33 @@ The `VennDiagram` package implements scaled [Euler diagrams](https://en.wikipedi
 library(VennDiagram)
 ```
 
-To see the partitions induced by filtering and calling genes monoallelic (imprinted):
+The partitions induced by filtering and calling genes monoallelic (imprinted) are illustrated by the following Euler or Venn diagrams.  Note that, for an Euler diagram but not for a Venn diagram, the shapes (circles or ellipses) are proportional to the size of the set they represent and that topological relationship among shapes is such that there is no overlap if the intersection of the corresponding sets is the empty set $\{\}$.
 
 ```{r}
-g.sets <- list(in.dataset = names(S), passed.filter = names(Sf$min.reads.15), called.imprinted = genes.regression.new)
+g.sets <- list(in.dataset = 1:22254, passed.initial.filter = names(S), passed.final.filter = names(Sf$min.reads.15), called.imprinted = genes.regression.new)
 sapply(g.sets, length)
 ```
 
-```{r filtering-calling-venn-euler}
-grid.draw(venn.diagram(g.sets, filename = NULL, cat.pos = 0, cat.dist = 1e-2 * c(1, 1, 0.5),
-                       fill = c("green", "blue", "red"), col = c("green", "blue", "red"),
-                       category.names = sub("\\.", " ", names(g.sets)), cat.cex = 1.4))
+```{r venn-total-initialf-finalf}
+l <- c(n.sets <- lapply(g.sets[-4], length), n.sets[-1], rep(n.sets[3], 2))
+names(l) <- NULL
+l <- c(l, list(category = gsub("\\.", " ", names(g.sets[-4])), cat.cex = 1.2, cat.pos = 0, cat.dist = 1e-2))
+grid.draw(do.call(draw.triple.venn, l))
+```
+
+```{r venn-total-finalf-called, echo=FALSE}
+l <- c(n.sets <- lapply(g.sets[-2], length), n.sets[-1], rep(n.sets[3], 2))
+names(l) <- NULL
+l <- c(l, list(category = gsub("\\.", " ", names(g.sets[-2])), cat.cex = 1.2, cat.pos = 0, cat.dist = 1e-2))
+grid.draw(do.call(draw.triple.venn, l))
+```
+
+```{r venn-total-initialf-finalf-called, echo=FALSE}
+l <- c(n.sets <- lapply(g.sets, length), n.sets[2:4], n.sets[3:4], n.sets[4], n.sets[3:4], rep(n.sets[4], 3))
+names(l) <- NULL
+my.col <- list(c("yellow", "green", "blue", "red"))
+l <- c(l, list(category = gsub("\\.", " ", names(g.sets)), cat.cex = 1.2, cat.pos = 0, cat.dist = 1e-2), fill = my.col)
+grid.draw(do.call(draw.quad.venn, l))
 ```
 
 ## Conclusion

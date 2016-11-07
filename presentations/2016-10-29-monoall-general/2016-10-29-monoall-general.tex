@@ -52,31 +52,46 @@
 \begin{frame}{Genomic imprints during development}
 \includegraphics[height=0.7\textheight]{figures/from-others/plasschaert-bartolomei-2014-fig1.jpeg}
 \vfill
-{\tiny Plasschaert \& Bartolomei Development. 2014}
+{\tiny Plasschaert \& Bartolomei 2014 Development.}
 \end{frame}
 
 % physiological role: growth and neuropsych. syndromes
-\begin{frame}{Physiological roles in therians}{Growth, metabolism, sleep, and behavior}
+\begin{frame}{Imprinting and placentation}{}
 \begin{columns}[t]
 \begin{column}{0.4\textwidth}
 
-\includegraphics[width=\columnwidth]{figures/from-others/tucci-2016-plosgenet-fig1.png}
+parental expression bias
 
-{\tiny Tucci PLoS Genet. 2016}
+\includegraphics[width=\columnwidth]{figures/from-others/renfree-2012-fig2.jpg}
+
+{\tiny Renfree et al 2012 Philos Trans R Soc Lond B}
+
 \end{column}
 
 \begin{column}{0.6\textwidth}
 
-\includegraphics[width=\columnwidth]{figures/from-others/peters-2014-imprinting-fig3.jpg}
+function, evolution,
+\onslide<2>{kinship theory}
 
-{\tiny Peters Nat Rev Genet. 2014}
+\includegraphics[width=\columnwidth]{figures/from-others/smits-et-al-2008-fig5.jpg}
+
+{\tiny Smits et al 2008 Nat Genet}
 \end{column}
 \end{columns}
+\begin{center}
+\end{center}
 \end{frame}
 
-\begin{frame}[t]{Sister disorders}
+%% physiological role: growth and neuropsych. syndromes
+%\begin{frame}{Further physiological roles}{}
+%\includegraphics[width=\columnwidth]{figures/from-others/peters-2014-imprinting-fig3.jpg}
+%
+%{\tiny Peters 2014 Nat Rev Genet.}
+%\end{frame}
+
+\begin{frame}[t]{Sister disorders, neuropsychiatric functions}
 \includegraphics[width=0.65\textwidth]{figures/from-others/peters-2014-imprinting-fig1b.jpg}
-{\tiny Peters Nat Rev Genet. 2014}
+{\tiny Peters 2014 Nat Rev Genet.}
 \visible<1>{
 \begin{columns}[t]
 \begin{column}{0.5\textwidth}
@@ -99,24 +114,24 @@
 \visible<2>{
 \footnotesize genetic architecture of schizophrenia
 \includegraphics[width=0.7\textwidth]{figures/from-others/sullivan-natrevgenet-2012-fig1b.jpg}
-{\tiny Sullivan Nat Rev Genet. 2012}
+{\tiny Sullivan 2012 Nat Rev Genet.}
 }
 \end{frame}
 
 \begin{frame}{The imprinted brain hypothesis}
 \includegraphics[width=0.7\textwidth]{figures/from-others/crespi-2008-fig3.png}
 \vfill
-{\tiny \raggedright{Crespi \& Badcock Behav Brain Sci. 2008}}
+{\tiny \raggedright{Crespi \& Badcock 2008 Behav Brain Sci.}}
 \end{frame}
 
-\begin{frame}{Postnatal age}
+\begin{frame}{Changes in postnatal age: predictions, results}
 \includegraphics[height=0.4\textheight]{figures/from-others/ubeda-2012-fig1.jpg}
 \hfill
 \includegraphics[height=0.4\textheight]{figures/from-others/ubeda-2012-fig3a.jpg}
-{\tiny Ubeda Evolution 2012}
+{\tiny Ubeda 2012 Evolution}
 \vfill
 \includegraphics[height=0.3\textheight]{figures/from-others/perez-2015-elife-fig4b.png}
-{\tiny Perez et al eLife 2015}
+{\tiny Perez et al 2015 eLife}
 \end{frame}
 
 \subsection{Goals and study design}
@@ -126,7 +141,7 @@
 \begin{frame}{Our research study}
 \begin{description}
 \item[data/project] Common Mind Consortium
-\item[approach] human genomics
+%\item[approach] human genomics
 \item[questions] imprinted genes in the brain
 \begin{itemize}
 \item variation of parental bias across genes and individuals
@@ -145,32 +160,54 @@
 
 % SEC: Results
 \section{Results \& Discussion}
-\subsection{Predictors of imprinting}
+\subsection{Predictors of parental bias}
 
-\begin{frame}{Selected genes}
-\begin{center}
-\includegraphics[height=0.7\textheight]{figures/2016-08-01-ifats-filters/filtering-calling-venn-euler-1.pdf}
-\end{center}
+\begin{frame}{Calling imprinted genes}
+\begin{columns}[t]
+\begin{column}{0.5\textwidth}
+
+\includegraphics[height=0.7\textheight]{figures/2016-08-01-ifats-filters/venn-total-finalf-called-1.pdf}
+\end{column}
+
+\begin{column}{0.5\textwidth}
+
+\includegraphics[height=0.7\textheight]{figures/2016-08-01-ifats-filters/top-ranking-genes-1.pdf}
+\end{column}
+\end{columns}
 \end{frame}
 
 \begin{frame}{Fitting models to read count ratios}
-\begin{columns}[t]
+\begin{columns}
+\begin{column}{0.60\textwidth}
+
+\includegraphics[width=\columnwidth]{figures/2016-08-23-glm-sampling-distributions/KCNK9-1.pdf}
+\end{column}
 \begin{column}{0.45\textwidth}
-\footnotesize 30 imprinted genes \(g\)
+\begin{equation*}
+Y_g = X \beta_g + \epsilon_g
+\end{equation*}
 \vfill
+%\begin{tabular}{|r|l|}
+%\hline
+%response \(Y_g\) & transformation \\
+%\hline
+%read count ratio \(S_g\) & none \\
+%\(Q_g\) & quasi-log \\
+%\(R_g\) & rank \\
+%\hline
+%\end{tabular}
+\footnotesize
+\begin{itemize}
+\item \(Y_g\) from read count ratio
+\item \(X\) based on predictor(s)
+\item \( \beta_g = 0 \; \Leftrightarrow \) no effect
+\end{itemize}
+\onslide<2>
 \tiny
+\vfill
 \begin{tabular}{|r|l|}
 \hline
-response \(Y_g\) & transformation \\
-\hline
-read count ratio \(S_g\) & none \\
-\(Q_g\) & quasi-log \\
-\(R_g\) & rank \\
-\hline
-\end{tabular}
-\begin{tabular}{|r|l|}
-\hline
-predictor & term(s) \(x_{\cdot j} \beta_{gj}\)\\
+predictor & levels \\
 \hline
 Age & \\
 Gender & [Female], Male\\
@@ -183,12 +220,8 @@ RNA\_batch & [0], A, B, C, D, E, F, G, H\\
 \hline
 \end{tabular}
 
-\includegraphics[scale=\platefigscale]{figures/by-me/monoall-dependencies/glm/glm.pdf}
+%\includegraphics[scale=\platefigscale]{figures/by-me/monoall-dependencies-2/designed/designed.pdf}
 
-\end{column}
-\begin{column}{0.60\textwidth}
-
-\includegraphics[width=\columnwidth]{figures/2016-08-23-glm-sampling-distributions/KCNK9-1.pdf}
 \end{column}
 \end{columns}
 \end{frame}
@@ -214,20 +247,19 @@ RNA\_batch & [0], A, B, C, D, E, F, G, H\\
 
 % near collinearity, RNA quality, scatter plot matrix, likelihood surface
 
-\againframe{cmc}
-
 % designed experiment (mouse) vs observational study (human, CommonMind)
-\begin{frame}[t]
+\begin{frame}[t, plain]
 \begin{columns}[t]
 \begin{column}{0.5\textwidth}
 designed experiment
-\includegraphics[scale=\platefigscale]{figures/by-me/monoall-dependencies/glm-designed/glm-designed.pdf}
+
+\includegraphics[scale=\platefigscale]{figures/by-me/monoall-dependencies-2/designed/designed.pdf}
+
 \end{column}
 
 \begin{column}{0.5\textwidth}
 observational study
-\includegraphics<1>[scale=\platefigscale]{figures/by-me/monoall-dependencies/glm/glm.pdf}
-\includegraphics<2->[scale=\platefigscale]{figures/by-me/monoall-dependencies/glm-param/glm-param.pdf}
+\includegraphics[scale=\platefigscale]{figures/by-me/monoall-dependencies-2/obs/obs.pdf}
 \end{column}
 \end{columns}
 \vfill
@@ -236,37 +268,36 @@ observational study
 \begin{column}{0.5\textwidth}
 %orthogonal
 
-\includegraphics<3>[height=0.4\textheight]{figures/from-others/tony-smith-die.png}
+\includegraphics[height=0.35\textheight]{figures/from-others/tony-smith-die.png}
 \end{column}
 
 \begin{column}{0.5\textwidth}
 %non-orthogonal
 
-\includegraphics<3>[height=0.4\textheight]{figures/from-others/tony-smith-new-piece.png}
+\includegraphics[height=0.35\textheight]{figures/from-others/tony-smith-new-piece.png}
 \end{column}
 \end{columns}
 \end{frame}
 
+\againframe{cmc}
+
 % ANOVA
-\begin{frame}{Decomposition of variance to predictors: fails}
+\begin{frame}{ANOVA is inconclusive}
 \includegraphics[scale=\ownfigscale]{figures/2016-06-22-extending-anova/anova-fw-rv-wnlm-Q-1.pdf}
 \end{frame}
 
 % likelihood surface
-\begin{frame}{Model identifiability: poor}{The likelihood of one parameter is linked to
+\begin{frame}{Poor model identifiability}{The likelihood of one parameter is linked to
 another}
 \includegraphics[scale=\ownfigscale]{figures/2016-08-21-likelihood-surface/ll-surf-coefs-wnlm-Q-1.pdf}
 \end{frame}
 
-\begin{frame}{Complication: interdependence of predictors}
+\begin{frame}{Complication: interaction}
 {The effect of one depends on another}
 \begin{columns}[t]
 \begin{column}{0.4\textwidth}
 
-\includegraphics[scale=\platefigscale]{figures/by-me/monoall-dependencies/bn/bn.pdf}
-
-\only<2>{interaction terms}
-\includegraphics<2>[scale=\platefigscale]{figures/by-me/monoall-dependencies/glm-interact/glm-interact.pdf}
+\includegraphics[scale=\platefigscale]{figures/by-me/monoall-dependencies-2/obs-contextual/obs-contextual.pdf}
 \end{column}
 
 \begin{column}{0.6\textwidth}
@@ -308,38 +339,38 @@ model: wnlm.Q
 }
 \end{frame}
 
-\begin{frame}{Comparison to a mouse study: agreement}
-\begin{columns}[t]
-\begin{column}{0.5\textwidth}
-\begin{center}
-present work
-
-\includegraphics[width=\columnwidth]{figures/2016-08-08-imprinted-gene-clusters/segplot-wnlm-Q-99conf-1.pdf}
-
-\end{center}
-\end{column}
-
-\begin{column}{0.5\textwidth}
-\begin{center}
-Perez et al 2015
-
-\includegraphics[height=0.3\textheight]{figures/from-others/perez-2015-elife-fig4b.png}
-\end{center}
-\end{column}
-\end{columns}
-\end{frame}
-
-\begin{frame}{Comparison to a mouse study: disagreement}
-\includegraphics[scale=\ownfigscale]{figures/2016-10-11-comparison-to-mouse-cerebellum/posterior-pp-vs-pval-wnlm-Q-1.pdf}
-\end{frame}
-
+%\begin{frame}{Comparison to a mouse study: agreement}
+%\begin{columns}[t]
+%\begin{column}{0.5\textwidth}
+%\begin{center}
+%present work
+%
+%\includegraphics[width=\columnwidth]{figures/2016-08-08-imprinted-gene-clusters/segplot-wnlm-Q-99conf-1.pdf}
+%
+%\end{center}
+%\end{column}
+%
+%\begin{column}{0.5\textwidth}
+%\begin{center}
+%Perez et al 2015
+%
+%\includegraphics[height=0.3\textheight]{figures/from-others/perez-2015-elife-fig4b.png}
+%\end{center}
+%\end{column}
+%\end{columns}
+%\end{frame}
+%
+%\begin{frame}{Comparison to a mouse study: disagreement}
+%\includegraphics[scale=\ownfigscale]{figures/2016-10-11-comparison-to-mouse-cerebellum/posterior-pp-vs-pval-wnlm-Q-1.pdf}
+%\end{frame}
+%
 \begin{frame}{Summary of results}
-\begin{itemize}
+\begin{enumerate}
 \item parental bias of 30 imprinted genes was studied
 \item age, gender and genetics regulate genes in various manner
 \item bias of some genes is linked to schizophrenia 
 \item caution: found limitations of employed models
-\end{itemize}
+\end{enumerate}
 \end{frame}
 
 % (G)LM vs BN model: complex dependency structure and latent biol and tech variables
@@ -379,25 +410,32 @@ Perez et al 2015
 % modeling: account for dependencies and increase statistical power: borrowing of strength via global (genome-wide) model:
 % BRAIM and AGK M2 or M3
 \begin{frame}{Improving models}
-{More questions and sharper answers}
 \begin{columns}[t]
-\begin{column}{0.4\textwidth}
+\begin{column}{0.3\textwidth}
 present
 
-\includegraphics[scale=\platefigscale]{figures/by-me/monoall-dependencies/glm/glm.pdf}
+\includegraphics[scale=\platefigscale]{figures/by-me/monoall-dependencies-2/obs-simple-general/obs-simple-general.pdf}
 \end{column}
-
-\begin{column}{0.6\textwidth}
+\begin{column}{0.3\textwidth}
 proposed
 
-\includegraphics[scale=\platefigscale]{figures/by-me/monoall-dependencies/glm-interact-bayes-hierar/glm-interact-bayes-hierar.pdf}
+\includegraphics[scale=\platefigscale]{figures/by-me/monoall-dependencies-2/obs-bayesian/obs-bayesian.pdf}
+\end{column}
+\begin{column}{0.6\textwidth}
+\begin{itemize}
+\item more power
 \begin{itemize}
 \item borrowing of strength
-\item utilize data at higher resolution
-\item interactions and more predictors
+\item shared parameters
+\end{itemize}
+%\item utilize data at higher resolution
+\item<2-> more flexibility
 \begin{itemize}
+\item interactions
 \item tissue specificity
 \item epigenetic marks 
+\end{itemize} 
+\begin{itemize}
 \end{itemize}
 \end{itemize}
 \end{column}

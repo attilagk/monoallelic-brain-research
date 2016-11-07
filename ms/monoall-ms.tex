@@ -90,237 +90,9 @@ ancestry, and by performing the RNA-seq based quantification of parental bias.
 
 \section{Methods}
 
-\subsection{Brain samples}
-
-\footnote{This and the following two subsections
-have been taken apart from a few minor modifications, literally from Ifat's
-version of the manuscript.  They require double-checking because I was not
-involved with the work described in them.}
-
-Human RNA samples were collected from the dorsolateral prefrontal cortex of
-the CommonMind consortium (CMC), from a total of \(579\) individuals after
-quality control. Subjects included 267 control individuals, as well as 258
-with schizophrenia (SCZ) and 54 with affective spectrum disorder (AFF).
-RNA-seq library preparation uses Ribo-Zero (which selects against ribosomal
-RNA) to prepare the RNA, followed by Illumina paired end library generation.
-RNAseq was performed on Illumina HiSeq 2000.
-
-\subsection{RNA-seq, mapping and SNP calling}
-
-We mapped 100bp, paired-end reads (\(\approx50\) million reads per sample) using Tophat
-to Ensembl gene transcripts of the human genome (hg19; February, 2009) using
-default parameters with 6 mismatches allowed per pair (200bp total). We
-required both reads in a pair to be successfully mapped and we removed reads
-that mapped to \(>1\) genomic locus. Then, we removed PCR replicates using the
-Samtools rmdup utility; around one third of the reads mapped (which is
-expected, given the parameters we used and the known high repeat content of
-the human genome). We used Cufflinks to determine gene expression of Ensembl
-genes, using default parameters. Using the BCFtools utility of Samtools, we
-called SNPs (SNVs only, no indels). Then, we invoked a quality filter
-requiring a Phred score \(>20\) (corresponding to a probability for an
-incorrect SNP call \(<0.01\)).
-
-We annotated known SNPs using dbSNP (dbSNP 138, October 2013). Considering all
-579 samples, we find 936,193 SNPs in total, 563,427 (60\%) of which are novel.
-Further filtering of this SNP list removed the novel SNPs and removed SNPs
-that either did not match the alleles reported in dbSNP or had more than 2
-alleles in dbSNP. We also removed SNPs without at least 10 mapped reads in at
-least one sample. Read depth was measured using the Samtools Pileup utility.
-After these filters were applied, 364,509 SNPs remained in 22,254 genes. These
-filters enabled use of data with low coverage, as described below. For the 579
-samples there are 203 million data points (reads overlapping one of the
-364,509 SNPs defined above), of which 158 million (78\%) have genotype data
-available (array or imputation), which is used later in the pipeline.
-
-\subsection{Genotyping and calibration of imputed SNPs}
-
-DNA samples were genotyped using the Illumina Infinium SNP array. We used
-PLINK with default parameters to impute genotypes for SNPs not present on the
-Infinium SNP array using 1000 genomes data. To maximize the number of genes
-assessable for monoallelic expression, while minimizing false positive
-monoallelic expression calls which can arise if the underlying SNP has been
-incorrectly called as heterozygous by the imputation, we calibrated the
-imputation parameters.
-
-We first examined how many SNPs were heterozygous in DNA calls and had a
-discordant RNA call (i.e. homozygous RNA-SNP call) using different imputation
-parameters. Known imprinted genes were excluded. We examined RNA-seq reads
-overlapping array-called heterozygous SNPs which we assigned a heterozyous
-likelihood value, \(L_\mathrm{het}\) of 1, separately from RNA seq data
-overlapping imputed heterozygous SNPs, where \(L_\mathrm{het}\) values could
-range from 0 to 1. Based on iterative examination with different thresholds,
-we selected a \(L_\mathrm{het}\) cutoff of 0.95 (i.e. imputation confidence
-level of 95\%), and a minimal coverage of 7 reads per SNP. With these
-parameters, the discordance rate (monoallelic RNA genotype in the context of a
-heterozygous DNA genotype) was 0.71\% for array-called SNPs and 3.2\% for
-imputed SNPs.
-
-While undoubtedly, a portion of the excess of discordance for the imputed SNPs
-is due to imputation error, downstream parts of analytic pipeline are designed
-taking into account the possibility of imputation error, as described below.
-One key is that for most genes there are multiple imputed SNPs and we consider
-data for all of them. Another key is that if even one SNP has evidence for
-biallelic expression (whether or not there is imputation data), we exlcude
-that individual due to the conflict. At this point, the matrix includes 147
-million data points covering 213,208 SNPs, of which 114 million (77\%) have
-imputation data.
-
-\subsection{The read count ratio and related quality filtering}
-
-\label{sec:filtering}
-
-The central quantity of this work is an \(m\times n\) matrix of read count ratios
-\(\mathbf{S} = [S_{ig}]_{ig};\; i=1,...,m; \; g\in\mathcal{G}\), where
-\(m=579\) is the number of individuals and \(n\) is the number of genes
-in a set \(\mathcal{G}\) of unfiltered or filtered genes (\(n=15584\) and \(5307\),
-respectively).  The read count ratio for
-individual \(i\) and gene \(g\) is defined as
-\begin{equation}
-S_{ig} = \frac{H_{ig}}{T_{ig}}= \frac{\sum_s H_s}{\sum_sT_s},
-\label{eq:S-definition}
-\end{equation}
-where the summation runs through all heterozygous SNPs \(s\) that occur in
-\((i,g)\).  The statistic \(H_s\) and \(T_s\) in Eq.~\ref{eq:S-definition} are
-the higher and total RNA-seq read count at SNP \(s\); \(H_s\) is higher in the
-sense that if the alleles at \(s\) are \(a,b\) and the corresponding read counts
-\(X_a,X_b\), then \(H_s = X_a\) if \(X_a\ge X_b\) and \(H_s = X_b\) otherwise.
-The total read count is simply \(T_s = X_a + X_b\).
-
-Two kind of data filters were applied sequentially: (1) a \emph{read count-based}
-and (2) an \emph{individual-based}.  The read count-based filter removes any
-such pair $(i,g)$ of individual $i$ and genes $g$ for which the total read
-count $T_{ig}<t_\mathrm{rc}$, where $t_\mathrm{rc}$ is the read count
-threshold and was set to 15. The individual-based filter removes any genes $g$ (across all
-individuals) if read count data involving $g$ are available on less than
-$t_\mathrm{ind}$ number of individuals, set to 25.
-These filtering procedures were preceded by an initial read count-based
-filter, which removed each combination \((i,s)\) of individual \(i\) and SNP
-\(s\) for which fewer than 7 reads had quality score \(\ge20\).  After the
-initial filtering the number of genes was \(n=15584\), which decreased to
-\(n=5307\) after the final, individual-based, filtering step.
-
-The test for nearly unbiased expression of parental transcripts was defined by
-the criterion
-\begin{equation}
-S_{ig} \le 0.6 \text{ and } \mathrm{UCL}_{ig} \le 0.7,
-\label{eq:unbiased-test}
-\end{equation}
-where the 95\% upper confidence limit was calculated from a normal approximation to
-likelihood:
-\begin{equation}
-\mathrm{UCL}_{ig} = S_{ig} + z_{0.975} \sqrt{\frac{S_{ig} (1 - S_{ig})}{T_{ig}}},
-\end{equation}
-such that $z_{p}$ is the $p$ quantile of the standard normal distribution and
-$T_{ig}$ is, as before, the total read count.
-
-\subsection{Regression models to explain population-wide variation}
-\label{sec:methods-regression}
-
-Let \(m\) denote the number of individuals/samples and \(\mathcal{G}\) the set
-of \(n=5307\) genes that passed quality filtering.  Regression analysis
-involved a subset \(\mathcal{G}_1\subset\mathcal{G}\) of \(n_1=30\) genes
-called as imprinted.
-
-The basic model, unlm.S, is
-\begin{eqnarray}
-\mathbf{S} &=& \mathbf{X} \boldsymbol{\beta} + \boldsymbol{\varepsilon},
-\label{eq:unlm.S-matrix-form} \\
-\varepsilon_{ig} &\overset{\mathrm{iid}}{\sim}& \mathrm{Norm}(0, \sigma^2_g)
-\end{eqnarray}
-where the response \(\mathbf{S}\) is an \(m\times n_1\) matrix of read count ratios,
-\(\mathrm{X}\) is an \(m\times p\) design matrix, \(\boldsymbol{\beta}\) is a \(p\times n_1\) matrix of regression
-coefficients~(Table~\ref{tab:predictors}), the random error \(\boldsymbol{\varepsilon}\) has the same
-dimension as \(\mathbf{S}\), and gene \(g\in \mathcal{G}_1\).  Eq.~\ref{eq:unlm.S-matrix-form} may be given as
-\begin{equation}
-S_g = \mathbf{X} \beta_g + \varepsilon_g,
-\label{eq:unlm.S-vector-form}
-\end{equation}
-where the vectors \(S_g, \beta_g, \varepsilon_g\)
-are single columns taken from their respective matrix counterparts.
-
-unlm.S was extended in several ways, yielding
-\begin{enumerate}
-\item four normal linear models unlm.S, unlm.R, wnlm.S, wnlm.S
-\item two logistic models logi.S and logi2.S.
-\end{enumerate}
-
-The general form of the four normal linar models
-(cf.~\ref{eq:unlm.S-vector-form}) is
-\begin{equation}
-\mathbf{W}_g^{1/2} \tau(S_g) = \mathbf{W}_g^{1/2} \mathbf{X} \beta_g + \varepsilon_g.
-\label{eq:nlm-general}
-\end{equation}
-The extension here consists of \(\mathbf{W}_g\), an \(m\times m\) diagonal matrix of
-weights \(w_{ig}\) on the \(i\)-th diagonal position, and \(\tau\), a
-transformation on read counts.  These quantities specify the four normal
-linear models as laid out in Table~\ref{tab:nlm}.
-
-\begin{table}
-\begin{center}
-\begin{tabular}{r|cc}
- & \multicolumn{2}{c}{weights \(w_{ig}\)} \\
- & 1 & \(T_{ig}\) \\
-\hline
-no transformation & unlm.S & wnlm.S \\
-quasi-log transf. & unlm.Q & wnlm.Q \\
-rank transf. & unlm.R & wnlm.R \\
-\end{tabular}
-\end{center}
-\caption{Specification and notation of normal linear models based on the weight
-\(w_{ig}\) on each observation and the
-transformation \(\tau\) applied to the set \(\{S_{ig} | g\}\) of read count
-ratios for a given gene \(g\).}
-\label{tab:nlm}
-\end{table}
-
-The logistic models, logi.S or logi2.S, share the general form
-\begin{eqnarray}
-S_g &=& \mu_g + c\, \varepsilon_g
-\label{eq:logi-general}
-\\
-\mu_g &=& h(\mathbf{X} \beta_g) \\
-\varepsilon_{ig} + \mu_g &\overset{\mathrm{iid}}{\sim}& \mathrm{Binom}(\mu_g, T_{ig}).
-\label{eq:binom-error}
-\end{eqnarray}
-The link function \(h\) is \(h(u) = e^u / (1 + e^u)\) for logi.S and \(h(u) =
-e^u / (2 + 2e^u)] + 1/2\) for logi2.S, and the scaling constant \(c=\) 1
- and \(1/2\), respectively.  Thus, the response \(S_g\) under logi2.S is scaled and shifted relative to
-that under logi.S such that (with probabilty one) \(1/2\le S_{ig}\le 1\) under the former and
-\(0\le S_{ig}\le 1\) under the latter.
-
-Each of the six models has \(p\times n_1\) regression parameters corresponding to the
-dimension of \(\boldsymbol{\beta}\).  This allows different behavior for
-different genes since \(\beta_1\neq ...\neq\beta_{n_1}\) in general.
-Therefore, the estimated regression coefficients are reported as \(\hat{\beta}_g =
-(\hat{\beta}_{1g},...,\hat{\beta}_{jg},...,\hat{\beta}_{pg})\) for each gene \(g\), often
-replacing index \(j\) with the name of the parameter such as \emph{Age} or
-\emph{InstitutionPitt}.
-
-A second set of six models was also
-fitted, for which \(\boldsymbol{\beta}\) was constrained such that \(\beta_1 =
-... = \beta_{n_1}\).  This was achieved by aggregating over genes
-\(g\in\mathcal{G}_1\) the higher read count \(H'_i = \sum_g H_{ig}\), the
-total read count \(T'_i = \sum_g T_{ig}\), redefining the read count ratio
-as \(S'_i = H'_i / T'_i\), and replacing \(S_g\) by \(S'=(S'_1,...,S'_m)\) in
-Eq.~\ref{eq:unlm.S-vector-form},~\ref{eq:nlm-general},~\ref{eq:logi-general}, and \(T_{ig}\) by \(T'_i\) in
-Table~\ref{tab:nlm} and Eq.~\ref{eq:binom-error}.  Note that such aggregation
-simplifies the matrix variables in Eq.~\ref{eq:unlm.S-matrix-form} to the
-corresponding vector variables in Eq.~\ref{eq:unlm.S-vector-form}.  Because \(S'_i\) is a
-weighted average of \(\{S_{ig}\}_i\), results under these models are reported
-as \(\hat{\beta}_\mathrm{WA} =
-(\hat{\beta}_{1\mathrm{WA}},...,\hat{\beta}_{j\mathrm{WA}},...,\hat{\beta}_{p\mathrm{WA}})\).  A
-third set of models is a slight variation of this second set in that
-aggregation was done on a smaller subset of 8 genes selected at the initial
-stage of the study.  Under these models the results are reported using the
-WA.8 subscript instead of WA.
-
-These \(3\times 6\) models are all multiple regression ones with \(p<1\)
-parameters.  Three corresponding sets of models with a single Age parameter
-(\(p=1\)) were also fitted but the results were only used for graphical
-comparison of model fits in terms of predictions
-Fig.~\ref{fig:predicted-curves} but not for quantitative inference.
-
-\section{Results}
+\begin{itemize}
+\item move to the Results the number of genes and read counts at various stages of filtering
+\end{itemize}
 
 \subsection{Study design}
 
@@ -415,12 +187,245 @@ models may successfully capture the observed complex pattern of correlations
 among the measured variables (Section~\ref{sec:results-regression}); but our
 theoretical work also showed that their computational implementation and
 evaluation of their properties and performance in relevant tasks would reach
-far beyond the present scope.  Therefore, we decided to resort to relatively
+beyond the present scope.  Therefore, we decided to resort to relatively
 simple conventional models, some of which were found to fit reasonably well to
 allow quantitative inferences on the small subset of genes called imprinted
 (Section~\ref{sec:results-regression}).  On the genome-wide scale (next section) we
 present only an exploratory statistical analysis, which none-the-less permits
 qualitative conclusions under careful interpretation.
+
+\subsection{Brain samples}
+
+\footnote{This and the following two subsections
+have been taken apart from a few minor modifications, literally from Ifat's
+version of the manuscript.  They require double-checking because I was not
+involved with the work described in them.}
+
+Human RNA samples were collected from the dorsolateral prefrontal cortex of
+the CommonMind consortium (CMC), from a total of \(579\) individuals after
+quality control. Subjects included 267 control individuals, as well as 258
+with schizophrenia (SCZ) and 54 with affective spectrum disorder (AFF).
+RNA-seq library preparation uses Ribo-Zero (which selects against ribosomal
+RNA) to prepare the RNA, followed by Illumina paired end library generation.
+RNAseq was performed on Illumina HiSeq 2000.
+
+\subsection{RNA-seq, mapping and SNP calling}
+
+We mapped 100bp, paired-end reads (\(\approx50\) million reads per sample) using Tophat
+to Ensembl gene transcripts of the human genome (hg19; February, 2009) using
+default parameters with 6 mismatches allowed per pair (200bp total). We
+required both reads in a pair to be successfully mapped and we removed reads
+that mapped to \(>1\) genomic locus. Then, we removed PCR replicates using the
+Samtools rmdup utility; around one third of the reads mapped (which is
+expected, given the parameters we used and the known high repeat content of
+the human genome). We used Cufflinks to determine gene expression of Ensembl
+genes, using default parameters. Using the BCFtools utility of Samtools, we
+called SNPs (SNVs only, no indels). Then, we invoked a quality filter
+requiring a Phred score \(>20\) (corresponding to a probability for an
+incorrect SNP call \(<0.01\)).
+
+We annotated known SNPs using dbSNP (dbSNP 138, October 2013). Considering all
+579 samples, we find 936,193 SNPs in total, 563,427 (60\%) of which are novel.
+Further filtering of this SNP list removed the novel SNPs and removed SNPs
+that either did not match the alleles reported in dbSNP or had more than 2
+alleles in dbSNP. We also removed SNPs without at least 10 mapped reads in at
+least one sample. Read depth was measured using the Samtools Pileup utility.
+After these filters were applied, 364,509 SNPs remained in 22,254 genes. These
+filters enabled use of data with low coverage, as described below. For the 579
+samples there are 203 million data points (reads overlapping one of the
+364,509 SNPs defined above), of which 158 million (78\%) have genotype data
+available (array or imputation), which is used later in the pipeline.
+
+\subsection{Genotyping and calibration of imputed SNPs}
+
+DNA samples were genotyped using the Illumina Infinium SNP array. We used
+PLINK with default parameters to impute genotypes for SNPs not present on the
+Infinium SNP array using 1000 genomes data. To maximize the number of genes
+assessable for monoallelic expression, while minimizing false positive
+monoallelic expression calls which can arise if the underlying SNP has been
+incorrectly called as heterozygous by the imputation, we calibrated the
+imputation parameters.
+
+We first examined how many SNPs were heterozygous in DNA calls and had a
+discordant RNA call (i.e. homozygous RNA-SNP call) using different imputation
+parameters. Known imprinted genes were excluded. We examined RNA-seq reads
+overlapping array-called heterozygous SNPs which we assigned a heterozyous
+likelihood value, \(L_\mathrm{het}\) of 1, separately from RNA seq data
+overlapping imputed heterozygous SNPs, where \(L_\mathrm{het}\) values could
+range from 0 to 1. Based on iterative examination with different thresholds,
+we selected a \(L_\mathrm{het}\) cutoff of 0.95 (i.e. imputation confidence
+level of 95\%), and a minimal coverage of 7 reads per SNP. With these
+parameters, the discordance rate (monoallelic RNA genotype in the context of a
+heterozygous DNA genotype) was 0.71\% for array-called SNPs and 3.2\% for
+imputed SNPs.
+
+While undoubtedly, a portion of the excess of discordance for the imputed SNPs
+is due to imputation error, downstream parts of analytic pipeline are designed
+taking into account the possibility of imputation error, as described below.
+One key is that for most genes there are multiple imputed SNPs and we consider
+data for all of them. Another key is that if even one SNP has evidence for
+biallelic expression (whether or not there is imputation data), we exlcude
+that individual due to the conflict. At this point, the matrix includes 147
+million data points covering 213,208 SNPs, of which 114 million (77\%) have
+imputation data.
+
+\subsection{The read count ratio and final quality filtering}
+
+\label{sec:filtering}
+
+The central quantity of this work is an \(m\times n\) matrix of read count ratios
+\(\mathbf{S} = [S_{ig}]_{ig};\; i=1,...,m; \; g\in\mathcal{G}\), where
+\(m=579\) is the number of individuals and \(n\) is the number of genes
+in a set \(\mathcal{G}\) of unfiltered or filtered genes (\(n=15584\) and \(5307\),
+respectively).  The read count ratio for
+individual \(i\) and gene \(g\) is defined as
+\begin{equation}
+S_{ig} = \frac{H_{ig}}{T_{ig}}= \frac{\sum_s H_s}{\sum_sT_s},
+\label{eq:S-definition}
+\end{equation}
+where the summation runs through all heterozygous SNPs \(s\) that occur in the
+pair
+\((i,g)\).  The statistic \(H_s\) and \(T_s\) in Eq.~\ref{eq:S-definition} are
+the higher and total RNA-seq read count at SNP \(s\); \(H_s\) is higher in the
+sense that if the alleles at \(s\) are \(a,b\) and the corresponding read counts
+\(X_a,X_b\), then \(H_s = X_a\) if \(X_a\ge X_b\) and \(H_s = X_b\) otherwise.
+The total read count is simply \(T_s = X_a + X_b\).
+
+Two kind of data filters were applied sequentially: (1) a \emph{read
+count-based} and (2) an \emph{individual-based}.  The read count-based filter
+removes any such pair $(i,g)$ of individual $i$ and genes $g$ for which the
+total read count $T_{ig}<t_\mathrm{rc}$, where the read count threshold
+$t_\mathrm{rc}$ was set to 15. The individual-based filter removes any genes
+$g$ (across all individuals) if read count data involving $g$ are available
+for less than $t_\mathrm{ind}$ number of individuals, set to 25.
+These final filtering procedures decreased the number of genes in the data from
+\(n=15584\) to \(n=5307\).
+
+The test for nearly unbiased expression of parental transcripts was defined by
+the criterion
+\begin{equation}
+S_{ig} \le 0.6 \text{ and } \mathrm{UCL}_{ig} \le 0.7,
+\label{eq:unbiased-test}
+\end{equation}
+where the 95\% upper confidence limit was calculated from a normal approximation to
+likelihood:
+\begin{equation}
+\mathrm{UCL}_{ig} = S_{ig} + z_{0.975} \sqrt{\frac{S_{ig} (1 - S_{ig})}{T_{ig}}},
+\end{equation}
+such that $z_{p}$ is the $p$ quantile of the standard normal distribution and
+$T_{ig}$ is, as before, the total read count.
+
+\subsection{Regression models}
+\label{sec:methods-regression}
+
+Let \(m\) denote the number of individuals/samples and \(\mathcal{G}\) the set
+of \(n=5307\) genes that passed quality filtering.  Regression analysis
+involved a subset \(\mathcal{G}_1\subset\mathcal{G}\) of \(n_1=30\) genes
+called as imprinted.
+
+The basic model, unlm.S, is
+\begin{eqnarray}
+\mathbf{S} &=& \mathbf{X} \boldsymbol{\beta} + \boldsymbol{\varepsilon},
+\label{eq:unlm.S-matrix-form} \\
+\varepsilon_{ig} &\overset{\mathrm{iid}}{\sim}& \mathrm{Norm}(0, \sigma^2_g)
+\end{eqnarray}
+where the response \(\mathbf{S}\) is an \(m\times n_1\) matrix of read count ratios,
+\(\mathrm{X}\) is an \(m\times p\) design matrix, \(\boldsymbol{\beta}\) is a \(p\times n_1\) matrix of regression
+coefficients~(Table~\ref{tab:predictors}), the random error \(\boldsymbol{\varepsilon}\) has the same
+dimension as \(\mathbf{S}\), and gene \(g\in \mathcal{G}_1\).  Eq.~\ref{eq:unlm.S-matrix-form} may be given as
+\begin{equation}
+S_g = \mathbf{X} \beta_g + \varepsilon_g,
+\label{eq:unlm.S-vector-form}
+\end{equation}
+where the vectors \(S_g, \beta_g, \varepsilon_g\)
+are single columns taken from their respective matrix counterparts.
+
+unlm.S was extended in several ways, yielding
+\begin{enumerate}
+\item six normal linear models (Table~\ref{tab:nlm})
+\item two logistic models logi.S and logi2.S.
+\end{enumerate}
+
+The general form of the normal linar models
+(cf.~\ref{eq:unlm.S-vector-form}) is
+\begin{equation}
+\mathbf{W}_g^{1/2} \tau(S_g) = \mathbf{W}_g^{1/2} \mathbf{X} \beta_g + \varepsilon_g.
+\label{eq:nlm-general}
+\end{equation}
+The extension here consists of \(\mathbf{W}_g\), an \(m\times m\) diagonal matrix of
+weights \(w_{ig}\) on the \(i\)-th diagonal position, and \(\tau\), a
+transformation on read counts.  Besides the trivial identity transformation
+(i.e.~no transformation) two kinds of transformation were used: the rank
+transformation and a quasi-log transformation \(\tau_Q\) defined as
+\begin{equation}
+\tau_Q(S_{ig};T_{ig}) \equiv Q_{ig} = - \log \left( 1 - S_{ig} \frac{T_{ig}}{T_{ig} + c}
+\right),
+\end{equation}
+with pseudo read count \(c=1\) to avoid zero in the parenthesis since the \(\log\)
+function is undefined at \(0\).
+
+\begin{table}
+\begin{center}
+\begin{tabular}{r|cc}
+ & \multicolumn{2}{c}{weights \(w_{ig}\)} \\
+ & 1 & \(T_{ig}\) \\
+\hline
+no transformation & unlm.S & wnlm.S \\
+quasi-log transf. & unlm.Q & wnlm.Q \\
+rank transf. & unlm.R & wnlm.R \\
+\end{tabular}
+\end{center}
+\caption{Specification and notation of normal linear models based on the weight
+\(w_{ig}\) on each observation and the
+transformation \(\tau\) applied to the set \(\{S_{ig} | g\}\) of read count
+ratios for a given gene \(g\).}
+\label{tab:nlm}
+\end{table}
+
+The logistic models, logi.S or logi2.S, share the general form
+\begin{eqnarray}
+S_g &=& \mu_g + c\, \varepsilon_g
+\label{eq:logi-general}
+\\
+\mu_g &=& h(\mathbf{X} \beta_g) \\
+\varepsilon_{ig} + \mu_g &\overset{\mathrm{iid}}{\sim}& \mathrm{Binom}(\mu_g, T_{ig}).
+\label{eq:binom-error}
+\end{eqnarray}
+The link function \(h\) is \(h(u) = e^u / (1 + e^u)\) for logi.S and \(h(u) =
+e^u / (2 + 2e^u)] + 1/2\) for logi2.S, and the scaling constant \(c=\) 1
+ and \(1/2\), respectively.  Thus, the response \(S_g\) under logi2.S is scaled and shifted relative to
+that under logi.S such that (with probabilty one) \(1/2\le S_{ig}\le 1\) under the former and
+\(0\le S_{ig}\le 1\) under the latter.
+
+Each of the eight models (including normal linear and logisitc models) has \(p\times n_1\) regression parameters corresponding to the
+dimension of \(\boldsymbol{\beta}\).  This allows different behavior for
+different genes since \(\beta_1\neq ...\neq\beta_{n_1}\) in general.
+Therefore, the estimated regression coefficients are reported as \(\hat{\beta}_g =
+(\hat{\beta}_{1g},...,\hat{\beta}_{jg},...,\hat{\beta}_{pg})\) for each gene \(g\), often
+replacing index \(j\) with the name of the parameter such as \emph{Age} or
+\emph{InstitutionPitt} (Table~\ref{tab:predictors}).
+
+A second set of eight models was also
+fitted, for which \(\boldsymbol{\beta}\) was constrained such that \(\beta_1 =
+... = \beta_{n_1}\).  This was achieved by aggregating over genes
+\(g\in\mathcal{G}_1\) the higher read count \(H'_i = \sum_g H_{ig}\), the
+total read count \(T'_i = \sum_g T_{ig}\), redefining the read count ratio
+as \(S'_i = H'_i / T'_i\), and replacing \(S_g\) by \(S'=(S'_1,...,S'_m)\) in
+Eq.~\ref{eq:unlm.S-vector-form},~\ref{eq:nlm-general},~\ref{eq:logi-general}, and \(T_{ig}\) by \(T'_i\) in
+Table~\ref{tab:nlm} and Eq.~\ref{eq:binom-error}.  Note that such aggregation
+simplifies the matrix variables in Eq.~\ref{eq:unlm.S-matrix-form} to the
+corresponding vector variables in Eq.~\ref{eq:unlm.S-vector-form}.  Because \(S'_i\) is a
+weighted average of \(\{S_{ig}\}_i\), results under these models are reported
+as \(\hat{\beta}_\mathrm{WA} =
+(\hat{\beta}_{1\mathrm{WA}},...,\hat{\beta}_{j\mathrm{WA}},...,\hat{\beta}_{p\mathrm{WA}})\).
+
+These \(2\times 8\) models are all multiple regression ones with \(p<1\)
+parameters.  Two corresponding sets of models with a single Age parameter
+(\(p=1\)) were also fitted but the results were only used for graphical
+comparison of model fits in terms of predictions
+Fig.~\ref{fig:predicted-curves} but not for quantitative inference.
+
+\section{Results}
 
 \subsection{Genome- and population-wide variation of parental bias}
 
@@ -432,7 +437,7 @@ qualitative conclusions under careful interpretation.
 \label{fig:ranking-genes}
 \end{figure}
 
-The top three plots of Fig.~\ref{fig:ranking-genes} all show the empirical distribution
+The upper three plots of Fig.~\ref{fig:ranking-genes} all show the empirical distribution
 of \(S_\mathrm{PEG10}, S_\mathrm{ZNF331}\) and \(S_\mathrm{AFAP1}\), where
 PEG10 and ZNF331 are \emph{known imprinted genes} based on prior evidence and
 AFAP1 is referred to as \emph{candidate gene} as it lacks such evidence.  For
@@ -449,9 +454,9 @@ whichever is greater) transcripts.  But the shift is clearly
 stronger for PEG10 than for ZNF331, suggesting quantitative differences even
 among imprinted genes.  This motivated the ranking of all 5307 genes
 based on a gene score that quantifies the shift in distribution.  We defined the score of
-gene \(g\) as the fraction of individuals with \(S_{ig}>0.9\); as the filled green
+gene \(g\) as the fraction of individuals \(i\) with \(S_{ig}>0.9\); as the filled green
 circles show in Fig.~\ref{fig:ranking-genes} this is equivalent to 1 less the
-empirical distribution function (ECDF), evaluated at \(0.9\) (the second and
+empirical distribution function (ECDF), evaluated at \(0.9\) (second and
 third plots from the top of Fig.~\ref{fig:ranking-genes}).
 
 The lower half of Fig.~\ref{fig:ranking-genes} shows the distribution of
@@ -493,7 +498,7 @@ these results indicate the context-dependence of imprinting.
 \end{center}
 \end{figure}
 
-\subsection{Modeling the variation of parental bias for selected genes}
+\subsection{Evaluating predictive models of parental bias}
 \label{sec:results-regression}
 
 We selected the 27 top-scoring genes in the ``known imprinted'' and ``nearby
@@ -554,13 +559,13 @@ predictors, and selected genes (except TMEM261P1, for which the iterative
 weighted least square fitting algorithm did not converge under logistic
 models).  This analysis examined the normality of residuals
 (Fig.~\ref{fig:qqnorm-logi.S},
-\ref{fig:qqnorm-wnlm.Q},
+\ref{fig:qqnorm-wnlm.Q}),
 the independence of residuals from the fitted value (i.e.~homoscedasticity,
 Fig.~\ref{fig:homoscedas-logi.S},
 \ref{fig:homoscedas-wnlm.Q})
 and the influence of each case/individual on the
 fit to address outliers (Fig.~\ref{fig:influence-logi.S},
-\ref{fig:homoscedas-wnlm.Q}).  These model
+\ref{fig:influence-wnlm.Q}).  These model
 checking results revealed the following patterns.  First, for all genes the
 normal linear model seems to fit at
 least reasonably well to quasi-log-transformed data (wnlm.Q) slightly less
@@ -602,7 +607,7 @@ These findings validate our approach to modeling the variation of parental bias
 the observed predictor variables.  In what follows we make inferences on
 the biological predictors.
 
-\subsection{Inferring regulators and consequences of parental bias}
+\subsection{Inferred biological predictors of parental bias}
 
 Since all of these models account for each predictor separately, they are
 expected, in principle, to successfully dissect their effects although the

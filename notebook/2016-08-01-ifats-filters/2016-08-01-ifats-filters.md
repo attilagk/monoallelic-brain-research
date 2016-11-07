@@ -318,7 +318,7 @@ setdiff(genes.regression.new, genes.regression.ifat) # what genes to add?
 ## [1] "MAGEL2" "ZIM2"   "FAM50B" "NDN"    "SNURF"  "KCNK9"  "DIRAS3"
 ```
 
-## Scaled Venn/Euler diagram
+## Cumulative loss of data
 
 The `VennDiagram` package implements scaled [Euler diagrams](https://en.wikipedia.org/wiki/Euler_diagram).
 
@@ -327,27 +327,34 @@ The `VennDiagram` package implements scaled [Euler diagrams](https://en.wikipedi
 library(VennDiagram)
 ```
 
-To see the partitions induced by filtering and calling genes monoallelic (imprinted):
+The partitions induced by filtering and calling genes monoallelic (imprinted) are illustrated by the following Euler or Venn diagrams.  Note that, for an Euler diagram but not for a Venn diagram, the shapes (circles or ellipses) are proportional to the size of the set they represent and that topological relationship among shapes is such that there is no overlap if the intersection of the corresponding sets is the empty set $\{\}$.
 
 
 ```r
-g.sets <- list(in.dataset = names(S), passed.filter = names(Sf$min.reads.15), called.imprinted = genes.regression.new)
+g.sets <- list(in.dataset = 1:22254, passed.initial.filter = names(S), passed.final.filter = names(Sf$min.reads.15), called.imprinted = genes.regression.new)
 sapply(g.sets, length)
 ```
 
 ```
-##       in.dataset    passed.filter called.imprinted 
-##            15584             5307               30
+##            in.dataset passed.initial.filter   passed.final.filter 
+##                 22254                 15584                  5307 
+##      called.imprinted 
+##                    30
 ```
 
 
 ```r
-grid.draw(venn.diagram(g.sets, filename = NULL, cat.pos = 0, cat.dist = 1e-2 * c(1, 1, 0.5),
-                       fill = c("green", "blue", "red"), col = c("green", "blue", "red"),
-                       category.names = sub("\\.", " ", names(g.sets)), cat.cex = 1.4))
+l <- c(n.sets <- lapply(g.sets[-4], length), n.sets[-1], rep(n.sets[3], 2))
+names(l) <- NULL
+l <- c(l, list(category = gsub("\\.", " ", names(g.sets[-4])), cat.cex = 1.2, cat.pos = 0, cat.dist = 1e-2))
+grid.draw(do.call(draw.triple.venn, l))
 ```
 
-<img src="figure/filtering-calling-venn-euler-1.png" title="plot of chunk filtering-calling-venn-euler" alt="plot of chunk filtering-calling-venn-euler" height="700px" />
+<img src="figure/venn-total-initialf-finalf-1.png" title="plot of chunk venn-total-initialf-finalf" alt="plot of chunk venn-total-initialf-finalf" height="700px" />
+
+<img src="figure/venn-total-finalf-called-1.png" title="plot of chunk venn-total-finalf-called" alt="plot of chunk venn-total-finalf-called" height="700px" />
+
+<img src="figure/venn-total-initialf-finalf-called-1.png" title="plot of chunk venn-total-initialf-finalf-called" alt="plot of chunk venn-total-initialf-finalf-called" height="700px" />
 
 ## Conclusion
 
