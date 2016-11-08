@@ -4,4 +4,4 @@
 \beamer@subsectionintoc {1}{2}{Goals and study design}{10}{0}{1}
 \beamer@sectionintoc {2}{Results \& Discussion}{12}{0}{2}
 \beamer@subsectionintoc {2}{1}{Predictors of parental bias}{13}{0}{2}
-\beamer@subsectionintoc {2}{2}{Refining the (epi)genetics of schizophrenia}{27}{0}{2}
+\beamer@subsectionintoc {2}{2}{Refining the (epi)genetics of schizophrenia}{30}{0}{2}
