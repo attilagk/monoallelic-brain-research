@@ -1,7 +1,7 @@
 \beamer@endinputifotherversion {3.36pt}
-\beamer@sectionintoc {1}{Introduction}{2}{0}{1}
-\beamer@subsectionintoc {1}{1}{(Hypothetical) roles of imprinting}{3}{0}{1}
-\beamer@subsectionintoc {1}{2}{Goals and study design}{10}{0}{1}
+\beamer@sectionintoc {1}{Introduction}{3}{0}{1}
+\beamer@subsectionintoc {1}{1}{Imprinting and parental bias}{3}{0}{1}
+\beamer@subsectionintoc {1}{2}{Our study: motivation \& design}{9}{0}{1}
 \beamer@sectionintoc {2}{Results \& Discussion}{12}{0}{2}
-\beamer@subsectionintoc {2}{1}{Predictors of parental bias}{13}{0}{2}
-\beamer@subsectionintoc {2}{2}{Refining the (epi)genetics of schizophrenia}{30}{0}{2}
+\beamer@subsectionintoc {2}{1}{Predictors of parental bias}{12}{0}{2}
+\beamer@subsectionintoc {2}{2}{Outlook}{32}{0}{2}

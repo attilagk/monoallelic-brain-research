@@ -106,14 +106,30 @@ ll.grid <- function(l.M = M$logi.S, gene = "PEG3", n.pnts = 101,
 # fm: a formula to be passed to levelplot as first argument
 # df: the logL surface to be passed to levelplot as the 'data' argument
 ll.surfaceplot <- function(fm = formula(- rel.log.L ~ beta.A * beta.B | gene), df = ll.grid(), ...) {
+    bits <- 8
     levelplot(fm, data = df,
               scales = list(x = list(relation = "free")), colorkey = list(space = "top"),
               aspect = 1,
               b.hat.A = df$beta.hat.A, b.hat.B = df$beta.hat.B,
               panel = function(x, y, z, b.hat.A, b.hat.B, subscripts, ...) {
-                  panel.levelplot(x = x, y = y, z = z, subscripts = subscripts, contour = TRUE, lwd = 0.5, ...)
+                  panel.levelplot(x = x, y = y, z = z, subscripts = subscripts, contour = FALSE, lwd = 0.5, ...)
                   panel.xyplot(x = b.hat.A[subscripts[1]], y = b.hat.B[subscripts[1]], col = "black", pch = 16)
                   panel.text(x = b.hat.A[subscripts[1]], y = b.hat.B[subscripts[1]], pos = 4, labels = expression(hat(beta)))
               },
+              col.regions = hsv(h = 2^bits:1 / 2^bits, s = 0.9, v = 0.9),
+              strip = strip.custom(bg = "white"),
+              cuts = 2^bits,
+              ...)
+}
+
+ll.wireframe <- function(dt = dat$coefs.wnlm.Q, v.A = "Ancestry.2", ...) {
+    wireframe(rel.log.L ~ beta.A * beta.B | v.name.A, data = dt,
+              subset = v.name.A == v.A, shade = TRUE, strip = FALSE,
+              shade.colors.palette = function(irr, ref, height, ...)
+                  trellis.par.get("shade.colors")$palette(irr, ref, 1 - height, ...),
+              scales = list(arrows = FALSE),
+              xlab = substitute(expression(paste(beta, "[ ", v.A, " ]")), list(v.A = v.A)),
+              ylab = expression(paste(beta, "[ Age ]")),
+              zlab = "rel log L",
               ...)
 }

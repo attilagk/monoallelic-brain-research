@@ -15,6 +15,25 @@ These shortcomings are corrected here and the corresponding changes in results a
 ### Preliminaries
 
 
+```
+## Stackoverflow is a great place to get help:
+## http://stackoverflow.com/tags/ggplot2.
+```
+
+```
+## Loading required package: RColorBrewer
+```
+
+```
+## 
+## Attaching package: 'latticeExtra'
+```
+
+```
+## The following object is masked from 'package:ggplot2':
+## 
+##     layer
+```
 
 
 ```r

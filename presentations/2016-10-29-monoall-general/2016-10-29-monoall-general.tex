@@ -1,6 +1,8 @@
 \documentclass{beamer}
 %\documentclass[handout]{beamer}
 
+%\includeonlyframes{interaction}
+
 % language settings
 %\usepackage{fontspec, polyglossia}
 %\setdefaultlanguage{magyar}
@@ -25,17 +27,17 @@
 }
 \setbeamertemplate{blocks}[rounded][shadow=true]
 \AtBeginSection[]{
-  \begin{frame}<beamer>{Contents}
-    \tableofcontents[currentsection]
-    %\tableofcontents[currentsection,currentsubsection]
-  \end{frame}
+  %\begin{frame}<beamer>{Contents}
+  %  \tableofcontents[currentsection]
+  %  %\tableofcontents[currentsection,currentsubsection]
+  %\end{frame}
 }
 %\useoutertheme[]{tree}
 
 \title{Genomic Imprinting in the Human Brain}
 \subtitle{Links to Aging, Gender, and Schizophrenia}
 \author{Attila Guly\'{a}s-Kov\'{a}cs}
-\date{Mount Sinai School of Medicine}
+\date{Chess Lab}
 
 \newcommand{\platefigscale}[0]{0.7}
 \newcommand{\ownfigscale}[0]{0.4}
@@ -44,8 +46,13 @@
 
 \maketitle
 
+\begin{frame}
+
+\tableofcontents
+\end{frame}
+
 \section{Introduction}
-\subsection{(Hypothetical) roles of imprinting}
+\subsection{Imprinting and parental bias}
 
 % 1% of genes are imprinted in mice
 % imprints are sex-specific methylated DNA regions generated in gametogenesis
@@ -70,8 +77,6 @@
 \begin{columns}[t]
 \begin{column}{0.4\textwidth}
 
-parental expression bias
-
 \includegraphics[width=\columnwidth]{figures/from-others/renfree-2012-fig2.jpg}
 
 {\tiny Renfree et al 2012 Philos Trans R Soc Lond B}
@@ -80,15 +85,30 @@ parental expression bias
 
 \begin{column}{0.6\textwidth}
 
-function, evolution,
-\onslide<2>{kinship theory}
-
 \includegraphics[width=\columnwidth]{figures/from-others/smits-et-al-2008-fig5.jpg}
 
 {\tiny Smits et al 2008 Nat Genet}
 \end{column}
 \end{columns}
 \begin{center}
+\end{center}
+\end{frame}
+
+\begin{frame}{Kinship theory}
+{Application of kin selection to imprinting}
+\begin{center}
+\begin{columns}[t]
+\begin{column}{0.5\textwidth}
+
+\includegraphics[width=0.8\columnwidth]{figures/from-others/nowak-et-al-2010-fig1top.jpg}
+\end{column}
+
+\begin{column}{0.5\textwidth}
+
+\includegraphics[width=0.7\columnwidth]{figures/from-others/nowak-et-al-2010-fig3ab.jpg}
+\end{column}
+\end{columns}
+{\tiny Nowak et al 2010 Nature}
 \end{center}
 \end{frame}
 
@@ -135,21 +155,29 @@ function, evolution,
 {\tiny \raggedright{Crespi \& Badcock 2008 Behav Brain Sci.}}
 \end{frame}
 
-% clarifying the functional roles of imprinted genes requires characterizing their variation
+\subsection{Our study: motivation \& design}
+
+% clarifying the functional roles of imprinted genes requires characterization of their variation
 % variation across devel. time, tissue type, gender,...
 % variation in postnatal age, aging unclear especially in humans
 % theoretical and experimental mouse studies
-\begin{frame}{Changes in postnatal age: predictions, results}
-\includegraphics[height=0.4\textheight]{figures/from-others/ubeda-2012-fig1.jpg}
-\hfill
-\includegraphics[height=0.4\textheight]{figures/from-others/ubeda-2012-fig3a.jpg}
-{\tiny Ubeda 2012 Evolution}
-\vfill
-\includegraphics[height=0.3\textheight]{figures/from-others/perez-2015-elife-fig4b.png}
-{\tiny Perez et al 2015 eLife}
-\end{frame}
+\begin{frame}{Explaining variation of parental bias: age}
+\begin{columns}[t]
+\begin{column}{0.5\textwidth}
 
-\subsection{Goals and study design}
+\includegraphics[height=0.5\textheight]{figures/from-others/ubeda-2012-fig3a.jpg}
+
+{\tiny Ubeda 2012 Evolution}
+\end{column}
+
+\begin{column}{0.5\textwidth}
+
+\includegraphics[height=0.3\textheight]{figures/from-others/perez-2015-elife-fig4b.png}
+
+{\tiny Perez et al 2015 eLife}
+\end{column}
+\end{columns}
+\end{frame}
 
 % our study aims to characterize that variation in humans using CMC data
 \begin{frame}{Our research study}
@@ -179,9 +207,13 @@ function, evolution,
 \section{Results \& Discussion}
 \subsection{Predictors of parental bias}
 
+\begin{frame}
+\tableofcontents[currentsection]
+\end{frame}
+
 % based on read count and S we filtered genes and called imprinted genes
 % we used the eCDF of S (shades of color) as well as a simple test for biallelic expr (black)
-% 30 genes called imprinted, most previously know, few novel
+% 30 genes called imprinted, most previously known, few novel
 \begin{frame}[label=filtering-calling]{Calling imprinted genes}
 \begin{columns}[t]
 \begin{column}{0.5\textwidth}
@@ -198,7 +230,7 @@ function, evolution,
 
 % main question: explain variation of parental bias gaged with read count ratio S
 % Y axis: S or Q, a transformed S; X axis: age of death
-% green dots: data on KCNK9 gene: observations from hundreds of individuals
+% green dots: data on PEG3 gene: observations from hundreds of individuals
 % phenomenological approach: fit several regression models to data and use the best fitting one(s)
 % response Y depending on (explained by) predictor X and reg. coef beta
 % predicted curve (black); the slope given by beta; no dependence => beta=0
@@ -211,7 +243,7 @@ function, evolution,
 \begin{columns}
 \begin{column}{0.60\textwidth}
 
-\includegraphics[width=\columnwidth]{figures/2016-08-23-glm-sampling-distributions/KCNK9-1.pdf}
+\includegraphics[width=\columnwidth]{figures/2016-08-23-glm-sampling-distributions/PEG3-1.pdf}
 \end{column}
 \begin{column}{0.45\textwidth}
 \begin{equation*}
@@ -231,7 +263,7 @@ Y_g = X \beta_g + \epsilon_g
 \begin{itemize}
 \item \(Y_g\) from read count ratio
 \item \(X\) based on predictor(s)
-\item \( \beta_g = 0 \; \Leftrightarrow \) no effect
+\item \(\mathcal{H}_0:\; \beta_g = 0 \; \Leftrightarrow \) no effect
 \end{itemize}
 \onslide<2>
 \tiny
@@ -253,6 +285,20 @@ RNA\_batch & [0], A, B, C, D, E, F, G, H\\
 
 %\includegraphics[scale=\platefigscale]{figures/by-me/monoall-dependencies-2/designed/designed.pdf}
 
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Estimating \(\beta\) and testing for \(\mathcal{H}_0:\;\beta=0\)}
+\begin{columns}[t]
+\begin{column}{0.5\textwidth}
+
+\includegraphics[scale=\ownfigscale]{figures/2016-08-21-likelihood-surface/explain-rll-wireframe-1.png}
+\end{column}
+
+\begin{column}{0.5\textwidth}
+
+\includegraphics[scale=\ownfigscale]{figures/2016-08-21-likelihood-surface/explain-rll-levelplot-1.pdf}
 \end{column}
 \end{columns}
 \end{frame}
@@ -279,10 +325,10 @@ RNA\_batch & [0], A, B, C, D, E, F, G, H\\
 % IN BOTH CASES we have a response Y which either depends on somehow (arrows) or indep of 3 predictors (X_j)
 % 3 corresponding betas describe these (in)dependencies; e.g beta2=0
 % our data consist of observations on Y and X_j
-% A CRUCIAL DIFFERENCE is in the dependencies (correlations) among X_j
-% in designed experiments we determine X_j so we have the means to prevent correlations between them
-% this is equilant to orthogonality of X_j; equal number (=1) of observations fall on each of the 8 verteces of a cube
-% in obs studies we can only observe but not control X_j and so cannot prevent correlations
+% A CRUCIAL DIFFERENCE is in the orthogonality of x_.j, the columns of the design matrix
+% in designed experiments we determine X_j so we can make them orthogonal
+% geometric meaning: equal number (=1) of observations fall on each of the 8 verteces of a cube
+% in obs studies we can only observe but not control X_j, which vary randomly and may correlate with each other
 % correlations come from either direct dependence between X_j or indirect dependence mediated by e.g. Y
 % either way: the result is non-orthognality; the cube becomes slanted, a parallelepiped
 % example for X2 -> X3 dependency...
@@ -320,12 +366,6 @@ observational study
 % ...in the CMC data we see that age depends on another predictor, institution
 \againframe{cmc}
 
-% non-orthogonality => ANOVA fails
-% we cannot estimate the component of variability due to each predictor in isolation from others
-\begin{frame}{Consequence: ANOVA is inconclusive}
-\includegraphics[scale=\ownfigscale]{figures/2016-06-22-extending-anova/anova-fw-rv-wnlm-Q-1.pdf}
-\end{frame}
-
 % non-orthogonality => difficult to differentiate between different submodels using the likelihood based on data
 % log-likelihood is a function on multidim param space of several betas => difficult to visualize
 % here only 2D slices of LL given by pairs of betas
@@ -340,12 +380,18 @@ observational study
 \includegraphics[scale=\ownfigscale]{figures/2016-08-21-likelihood-surface/ll-surf-coefs-wnlm-Q-1.pdf}
 \end{frame}
 
+% non-orthogonality => ANOVA fails
+% we cannot estimate the component of variability due to each predictor in isolation from others
+\begin{frame}{Consequence: ANOVA is inconclusive}
+\includegraphics[scale=\ownfigscale]{figures/2016-06-22-extending-anova/anova-fw-rv-wnlm-Q-1.pdf}
+\end{frame}
+
 % two predictors interact when the effect of one predictor (X1) depends on the value (a or b) of another (X2) 
 % this is distinct from correlation/non-orthogonality of predictors
 % e.g. if X2=a then X1 has no effect on Y (beta1=0) but if X2=b then it does % (beta1>0)
-% we found that effect of Age on S depended on both Institution and Gender at various degrees for differnt genes
+% we found that effect of Age on S depended on both Institution and Gender at various degrees for different genes
 % we didn't model interactions to avoid extra parameters and decrease in power => our conclusions on beta are too simplistic
-\begin{frame}{Further complication: interaction}
+\begin{frame}[label=interaction]{Further complication: interaction}
 {The effect of one predictor depends on another}
 \begin{columns}[t]
 \begin{column}{0.4\textwidth}
@@ -366,7 +412,7 @@ observational study
 % all 4 predictors, in particular Age, may both increase or decrease parental bias
 % SCZ is associated to parental bias of several genes consistent with imprinted brain theory
 % there seems to be some variability within imprinted gene clusters suggesting they are not regulated exclusively in a concerted fashion
-% comparing these results to those under the log.S model shows reasonable greement
+% comparing these results to those under the log.S model shows reasonable agreement
 \begin{frame}
 {The main results}
 \begin{columns}[t]
@@ -431,18 +477,6 @@ Perez et al 2015
 \includegraphics[scale=\ownfigscale]{figures/2016-10-11-comparison-to-mouse-cerebellum/posterior-pp-vs-pval-wnlm-Q-1.pdf}
 \end{frame}
 
-\begin{frame}{Summary of results}
-\begin{enumerate}
-\item parental bias of 30 imprinted genes was studied
-\item age, gender and genetics regulate genes in various manner
-\item bias of some genes is linked to schizophrenia 
-\item our statistical models have limitations
-\end{enumerate}
-\end{frame}
-
-
-\subsection{Refining the (epi)genetics of schizophrenia}
-
 % we found 4 imprinted genes with signif. association between SCZ--parental bias
 % but only 1 of those 4 was found by the CMC to have association between SCZ--overall expression (i.e. not parent-specific)
 % another imprinted gene was found with SCZ--overall expr. but not with SCZ--parental bias
@@ -454,11 +488,23 @@ Perez et al 2015
 {\tiny\(\ast\)Fromer et al 2016}
 \end{frame}
 
+\begin{frame}{Summary of results}
+\begin{enumerate}
+\item \(\approx 1\%\) of genes imprinted in the human brain
+\item age, gender and genetics regulate parental bias 
+\item bias of some genes is linked to schizophrenia 
+\item our statistical models have limitations
+\end{enumerate}
+\end{frame}
+
+
+\subsection{Outlook}
+
 \againframe{filtering-calling}
 
 % modeling: account for dependencies and increase statistical power: borrowing of strength via global (genome-wide) model:
 % BRAIM and AGK M2 or M3
-\begin{frame}{Possibilities for future studies}
+\begin{frame}{Improving and extending statistical approach}
 \begin{columns}[t]
 \begin{column}{0.3\textwidth}
 present: ``flat''

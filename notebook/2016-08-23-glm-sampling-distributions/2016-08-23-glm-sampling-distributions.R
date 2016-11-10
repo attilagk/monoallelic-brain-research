@@ -150,5 +150,6 @@ plot.predictions <- function(df, fm = formula(density ~ x * y | family), ...) {
               scales = list(y = list(relation = "free")), colorkey = FALSE,
               ylim = list(c(0.44, 1.06), c(0.44, 1.06), c(0.44, 1.06), c(0, 8)),
               xlab = "age", ylab = "S: read count ratio;  Q: transformed S",
+              cut = 30,
               ...)
 }
