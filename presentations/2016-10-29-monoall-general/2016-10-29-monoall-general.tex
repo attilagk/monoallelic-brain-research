@@ -1,7 +1,7 @@
 \documentclass{beamer}
 %\documentclass[handout]{beamer}
 
-%\includeonlyframes{interaction}
+\includeonlyframes{bsm,title,toc,imprint-mouse-devel,igf2-imprint-evol,sister-disorders,previous-age-studies,our-study,cmc,toc-current,filtering-calling,fitting-models,ll-surface,all-betas,orthogonality,identifiability,anova,betas-cluster,signif-genes,cf-overall-expression,summary,psych-encode,improving-model}
 
 % language settings
 %\usepackage{fontspec, polyglossia}
@@ -44,10 +44,17 @@
 
 \begin{document}
 
+\begin{frame}[label=bsm]{Brain somatic mosaicism in schizophrenia}
+\begin{center}
+\includegraphics[height=0.7\textheight]{figures/from-others/poduri-2013-fig1ef.jpg}
+\end{center}
+\end{frame}
+
+\begin{frame}[plain, label=title]
 \maketitle
+\end{frame}
 
-\begin{frame}
-
+\begin{frame}[label=toc]
 \tableofcontents
 \end{frame}
 
@@ -58,7 +65,7 @@
 % imprints are sex-specific methylated DNA regions generated in gametogenesis
 % this results in parental bias in the expression of imprinted genes in the progeny
 % complete bias: monoallelic expression
-\begin{frame}{Genomic imprints during development}
+\begin{frame}[label=imprint-mouse-devel]{Genomic imprints during development}
 \includegraphics[height=0.7\textheight]{figures/from-others/plasschaert-bartolomei-2014-fig1.jpeg}
 \vfill
 {\tiny Plasschaert \& Bartolomei 2014 Development.}
@@ -73,7 +80,7 @@
 % kinship theory of imprinting: interactions (e.g. among siblings), inclusive fitness, relatedness
 % maternal half siblings: closer relatedness of maternal genes than paternal genes => conflict
 % resolution: growth promoting genes paternally biased, growth inhibiting maternally (e.g. Igf2, H19)
-\begin{frame}{Imprinting and placentation}{}
+\begin{frame}[label=igf2-imprint-evol]{Imprinting and placentation}{}
 \begin{columns}[t]
 \begin{column}{0.4\textwidth}
 
@@ -94,7 +101,7 @@
 \end{center}
 \end{frame}
 
-\begin{frame}{Kinship theory}
+\begin{frame}[label=kinship-theory]{Kinship theory}
 {Application of kin selection to imprinting}
 \begin{center}
 \begin{columns}[t]
@@ -117,7 +124,7 @@
 % Igf2/H19: Beckwith–Wiedeman syn, Silver-Russell syn
 % Ube3a cluster 15q13: Angelman (mental retardation); Prader-Willi (obesity, mental defects)
 % CNV in 15q13 increases risk of SCZ, a highly polygenic disorder with many common variants with mild risk
-\begin{frame}[t]{Sister disorders, neuropsychiatric functions}
+\begin{frame}[t, label=sister-disorders]{Sister disorders, neuropsychiatric functions}
 \includegraphics[width=0.65\textwidth]{figures/from-others/peters-2014-imprinting-fig1b.jpg}
 {\tiny Peters 2014 Nat Rev Genet.}
 \visible<1>{
@@ -149,7 +156,7 @@
 % uses kinship theory to explain psychiatric conditions
 % PEGs self-oriented cognition, - inc. fitness, autistic; MEGs mentalistic cognition, + incl. fitness, psychotic
 % this hypothesis guides the study the role of imprinting in psychiatric disorders e.g. SCZ
-\begin{frame}{The imprinted brain theory}
+\begin{frame}[label=imprinted-brain]{The imprinted brain theory}
 \includegraphics[width=0.7\textwidth]{figures/from-others/crespi-2008-fig3.png}
 \vfill
 {\tiny \raggedright{Crespi \& Badcock 2008 Behav Brain Sci.}}
@@ -161,7 +168,7 @@
 % variation across devel. time, tissue type, gender,...
 % variation in postnatal age, aging unclear especially in humans
 % theoretical and experimental mouse studies
-\begin{frame}{Explaining variation of parental bias: age}
+\begin{frame}[label=previous-age-studies]{Explaining variation of parental bias: age}
 \begin{columns}[t]
 \begin{column}{0.5\textwidth}
 
@@ -180,7 +187,7 @@
 \end{frame}
 
 % our study aims to characterize that variation in humans using CMC data
-\begin{frame}{Our research study}
+\begin{frame}[label=our-study]{Our research study}
 \begin{description}
 \item[data/project] Common Mind Consortium
 %\item[approach] human genomics
@@ -207,7 +214,7 @@
 \section{Results \& Discussion}
 \subsection{Predictors of parental bias}
 
-\begin{frame}
+\begin{frame}[label=toc-current]
 \tableofcontents[currentsection]
 \end{frame}
 
@@ -239,17 +246,29 @@
 % estimate of beta far from 0 and estimation error small => reject H0: beta=0 confidently
 % confidence quantified with CIs and p-values
 % complication: besides age many other predictors; multiple regression: X based on all of them
-\begin{frame}{Explaining variation of parental bias with predictors}
-\begin{columns}
+\begin{frame}[label=fitting-models]{Explaining variation of parental bias with predictors}
+\begin{columns}[t]
 \begin{column}{0.60\textwidth}
 
-\includegraphics[width=\columnwidth]{figures/2016-08-23-glm-sampling-distributions/PEG3-1.pdf}
+\includegraphics<1>[width=\columnwidth]{figures/2016-08-23-glm-sampling-distributions/PEG3-data-only-1.png}
+\includegraphics<2->[width=\columnwidth]{figures/2016-08-23-glm-sampling-distributions/PEG3-1.png}
+
 \end{column}
+
 \begin{column}{0.45\textwidth}
+
+\footnotesize
+\begin{itemize}
+\item \(Y_g\) from read count ratio
+\item \(X\) based on predictor(s)
+\item \(\mathcal{H}_0:\) no effect \only<2->{ \(\Leftrightarrow \beta_g = 0 \)}
+\end{itemize}
+\vfill
+\only<2->{
 \begin{equation*}
 Y_g = X \beta_g + \epsilon_g
 \end{equation*}
-\vfill
+}
 %\begin{tabular}{|r|l|}
 %\hline
 %response \(Y_g\) & transformation \\
@@ -259,13 +278,8 @@ Y_g = X \beta_g + \epsilon_g
 %\(R_g\) & rank \\
 %\hline
 %\end{tabular}
-\footnotesize
-\begin{itemize}
-\item \(Y_g\) from read count ratio
-\item \(X\) based on predictor(s)
-\item \(\mathcal{H}_0:\; \beta_g = 0 \; \Leftrightarrow \) no effect
-\end{itemize}
-\onslide<2>
+
+\only<3->{
 \tiny
 \vfill
 \begin{tabular}{|r|l|}
@@ -273,23 +287,23 @@ Y_g = X \beta_g + \epsilon_g
 predictor & levels \\
 \hline
 Age & \\
-Gender & [Female], Male\\
-Dx & [AFF], Control, SCZ\\
+Gender & Female, Male\\
+Dx & AFF, Control, SCZ\\
 Ancestry.1-5 & \\
-Institution & [MSSM], Penn, Pitt\\
+Institution & MSSM, Penn, Pitt\\
 PMI & \\
 RIN & \\
-RNA\_batch & [0], A, B, C, D, E, F, G, H\\
+RNA\_batch & 0, A, B, C, D, E, F, G, H\\
 \hline
 \end{tabular}
-
+}
 %\includegraphics[scale=\platefigscale]{figures/by-me/monoall-dependencies-2/designed/designed.pdf}
 
 \end{column}
 \end{columns}
 \end{frame}
 
-\begin{frame}{Estimating \(\beta\) and testing for \(\mathcal{H}_0:\;\beta=0\)}
+\begin{frame}[label=ll-surface]{Estimating \(\beta\) and testing for \(\mathcal{H}_0:\;\beta=0\)}
 \begin{columns}[t]
 \begin{column}{0.5\textwidth}
 
@@ -298,7 +312,7 @@ RNA\_batch & [0], A, B, C, D, E, F, G, H\\
 
 \begin{column}{0.5\textwidth}
 
-\includegraphics[scale=\ownfigscale]{figures/2016-08-21-likelihood-surface/explain-rll-levelplot-1.pdf}
+\includegraphics[scale=\ownfigscale]{figures/2016-08-21-likelihood-surface/explain-rll-levelplot-1.png}
 \end{column}
 \end{columns}
 \end{frame}
@@ -332,7 +346,7 @@ RNA\_batch & [0], A, B, C, D, E, F, G, H\\
 % correlations come from either direct dependence between X_j or indirect dependence mediated by e.g. Y
 % either way: the result is non-orthognality; the cube becomes slanted, a parallelepiped
 % example for X2 -> X3 dependency...
-\begin{frame}[t, plain]
+\begin{frame}[t, plain, label=orthogonality]
 \begin{columns}[t]
 \begin{column}{0.5\textwidth}
 designed experiment
@@ -375,14 +389,14 @@ observational study
 % within the second contour line the (beta_Age, beta_RIN) are still quite likely
 % but non-orthogonality of Age and RIN results in interdependence of likely values of beta_Age and beta_RIN
 % so if beta_RIN=0.11 (quite likely), then the most likely value of beta_Age=0 => our conclusion changes on the age effect
-\begin{frame}{Consequence: poor identifiability}
+\begin{frame}[label=identifiability]{Consequence: poor identifiability}
 %{The likelihood of one parameter is linked to another}
-\includegraphics[scale=\ownfigscale]{figures/2016-08-21-likelihood-surface/ll-surf-coefs-wnlm-Q-1.pdf}
+\includegraphics[scale=\ownfigscale]{figures/2016-08-21-likelihood-surface/ll-surf-coefs-wnlm-Q-1.png}
 \end{frame}
 
 % non-orthogonality => ANOVA fails
 % we cannot estimate the component of variability due to each predictor in isolation from others
-\begin{frame}{Consequence: ANOVA is inconclusive}
+\begin{frame}[label=anova]{Consequence: ANOVA is inconclusive}
 \includegraphics[scale=\ownfigscale]{figures/2016-06-22-extending-anova/anova-fw-rv-wnlm-Q-1.pdf}
 \end{frame}
 
@@ -413,7 +427,7 @@ observational study
 % SCZ is associated to parental bias of several genes consistent with imprinted brain theory
 % there seems to be some variability within imprinted gene clusters suggesting they are not regulated exclusively in a concerted fashion
 % comparing these results to those under the log.S model shows reasonable agreement
-\begin{frame}
+\begin{frame}[label=betas-cluster]
 {The main results}
 \begin{columns}[t]
 \begin{column}{0.5\textwidth}
@@ -429,9 +443,9 @@ model: wnlm.Q
 
 \begin{column}{0.5\textwidth}
 \begin{center}
-\only<2>{agreement between models}
+\only<1->{agreement between models}
 
-\includegraphics<2>[width=\columnwidth]{figures/2016-06-22-extending-anova/logi-S-filtered-wnlm-Q-compare-1.pdf}
+\includegraphics<1->[width=\columnwidth]{figures/2016-06-22-extending-anova/logi-S-filtered-wnlm-Q-compare-1.pdf}
 \end{center}
 \end{column}
 \end{columns}
@@ -441,16 +455,18 @@ model: wnlm.Q
 % method 1 vs 2 (wnlm.Q) and 3 vs 4 (logi.S): parametric vs non-parametric
 % the agreement is good but not perfect => difficulty of making inferences based on multiple plausible models
 % heuristic rule: method 1 AND method 2; ignore methods 3,4 because Andy doesn't like logi.S
-\begin{frame}{Significantly affected genes}
-\includegraphics<1>[scale=\ownfigscale]{figures/2016-10-03-permutation-test/p-values-1.pdf}
-\visible<2>{
+\begin{frame}[label=p-val]{p-values}
+\includegraphics[scale=\ownfigscale]{figures/2016-10-03-permutation-test/p-values-1.pdf}
+\end{frame}
+
+\begin{frame}[label=signif-genes]{Significantly affected genes}
+{Test: parametric + non-parametric (permutations)}
 \tiny
 \input{../../results/signif-gene-effects-either-manual-annot.tex}
-}
 \end{frame}
 
 % in agreement with us Perez et al also found that Age may both increase or decrease parental bias...
-\begin{frame}{Comparison to a mouse study: agreement}
+\begin{frame}[label=cf-mouse-agreement]{Comparison to a mouse study: agreement}
 \begin{columns}[t]
 \begin{column}{0.5\textwidth}
 \begin{center}
@@ -473,7 +489,7 @@ Perez et al 2015
 
 % ...but the age associated genes identified by Perez et al differ from those that we found
 % moreover, they didn't find any gene associated to Gender while we did
-\begin{frame}{Comparison to a mouse study: disagreement}
+\begin{frame}[label=cf-mouse-disagreement]{Comparison to a mouse study: disagreement}
 \includegraphics[scale=\ownfigscale]{figures/2016-10-11-comparison-to-mouse-cerebellum/posterior-pp-vs-pval-wnlm-Q-1.pdf}
 \end{frame}
 
@@ -482,13 +498,13 @@ Perez et al 2015
 % another imprinted gene was found with SCZ--overall expr. but not with SCZ--parental bias
 % explanation: our method uses extra info (genotype) enhancing sensitivity for gageing overall expr. of imprinted genes 
 % future diff-exp studies for imprinted genes might benefit from taking parental bias into account
-\begin{frame}{Comparison to overall expression analysis\(^\ast\)}
+\begin{frame}[label=cf-overall-expression]{Comparison to overall expression analysis\(^\ast\)}
 \includegraphics[height=0.8\textheight]{figures/2016-10-20-differential-expression-scz/venn-triple-1.pdf}
 
 {\tiny\(\ast\)Fromer et al 2016}
 \end{frame}
 
-\begin{frame}{Summary of results}
+\begin{frame}[label=summary]{Summary of results}
 \begin{enumerate}
 \item \(\approx 1\%\) of genes imprinted in the human brain
 \item age, gender and genetics regulate parental bias 
@@ -500,11 +516,11 @@ Perez et al 2015
 
 \subsection{Outlook}
 
-\againframe{filtering-calling}
+%\againframe{filtering-calling}
 
 % modeling: account for dependencies and increase statistical power: borrowing of strength via global (genome-wide) model:
 % BRAIM and AGK M2 or M3
-\begin{frame}{Improving and extending statistical approach}
+\begin{frame}[label=improving-model]{Improving and extending statistical approach}
 \begin{columns}[t]
 \begin{column}{0.3\textwidth}
 present: ``flat''
@@ -524,11 +540,11 @@ proposed: hierarch.
 \item shared parameters
 \end{itemize}
 %\item utilize data at higher resolution
-\item<2-> more realism
+\item<1-> more realism
 \begin{itemize}
 \item interactions
 \end{itemize} 
-\item<3-> more answers
+\item<1-> more answers
 \begin{itemize}
 \item tissue specificity
 \item DNA methylation
@@ -537,6 +553,12 @@ proposed: hierarch.
 \end{column}
 \end{columns}
 
+\end{frame}
+
+\begin{frame}[label=psych-encode]
+\begin{center}
+\includegraphics[height=0.6\textheight]{figures/from-others/psychENCODE.png}
+\end{center}
 \end{frame}
 
 % include and compare othe brain areas (CommonMind data)

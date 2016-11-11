@@ -130,16 +130,20 @@ grid.predictions.1gene <- function(gene = "GRB10", lll.M = M, M.multi = "simple"
 # Arguments
 # df: a thin, long data frame obtained with grid.predictions
 # fm: a formula
+# show.model: whether to show model desnsity besides the data
 #
 # Details
 # A rectangle with dotted line shows demarcates the theoretically possible
 # region (non-negative age and S between 0.5 and 1 or S between 0 and 100).
-plot.predictions <- function(df, fm = formula(density ~ x * y | family), ...) {
+plot.predictions <- function(df, fm = formula(density ~ x * y | family),
+                             show.model = TRUE, ...) {
     levelplot(fm, data = df, M.family = df$family,
               panel = function(x, y, subscripts, M.family, ...) {
-                  panel.levelplot(x, y, subscripts = subscripts, contour = TRUE, lwd = 0.5, col = "gray", ...)
-                  panel.xyplot(x = x[subscripts][nx <- seq_along(unique(x))], y = df$mu[subscripts][nx],
-                               col = "black", type = "l", lwd = 2, ...)
+                  if(show.model) {
+                      panel.levelplot(x, y, subscripts = subscripts, contour = TRUE, lwd = 0.5, col = "gray", ...)
+                      panel.xyplot(x = x[subscripts][nx <- seq_along(unique(x))], y = df$mu[subscripts][nx],
+                                   col = "black", type = "l", lwd = 2, ...)
+                  }
                   panel.xyplot(x = df$obs.x[subscripts], y = df$obs.y[subscripts],
                                pch = 21, col = "darkgreen", fill = "green", alpha = 0.5, cex = 0.5, ...)
                   is.Q <- grepl("nlm.Q", M.family[subscripts][1])
@@ -148,6 +152,7 @@ plot.predictions <- function(df, fm = formula(density ~ x * y | family), ...) {
               },
               par.settings = list(panel.background = list(col = "gray"), regions = list(col = rev(trellis.par.get("regions")$col))),
               scales = list(y = list(relation = "free")), colorkey = FALSE,
+              strip = strip.custom(strip.levels = c(show.model, FALSE)),
               ylim = list(c(0.44, 1.06), c(0.44, 1.06), c(0.44, 1.06), c(0, 8)),
               xlab = "age", ylab = "S: read count ratio;  Q: transformed S",
               cut = 30,

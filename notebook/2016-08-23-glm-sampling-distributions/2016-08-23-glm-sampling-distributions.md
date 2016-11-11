@@ -51,6 +51,14 @@ gp <-
 
 <img src="figure/PEG10-1.png" title="plot of chunk PEG10" alt="plot of chunk PEG10" width="700px" />
 
+#### Plot only data
+
+The following plots are generated for overlay with the ones above in presentation slides.
+
+<img src="figure/PEG3-data-only-1.png" title="plot of chunk PEG3-data-only" alt="plot of chunk PEG3-data-only" width="700px" />
+
+<img src="figure/KCNK9-data-only-1.png" title="plot of chunk KCNK9-data-only" alt="plot of chunk KCNK9-data-only" width="700px" />
+
 ### Figure for manuscript
 
 The figures illustrate the widening of prediction intervals under the logistic models but not the normal linear models.  The discrete nature of the binomial error distribution under logistic models can also be seen: the denominator of the binomial distribution is 61 (GRB10) and 16  (KCNK9); these were defined as the average of the total read count for a given gene.

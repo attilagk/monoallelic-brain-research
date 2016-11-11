@@ -81,7 +81,7 @@ The same restricted function in a different representation:
 
 ```r
 lp2 <- ll.surfaceplot(fm = formula(rel.log.L ~ beta.A * beta.B | v.name.A),
-                      df = dat$coefs.wnlm.Q[dat$coefs.wnlm.Q$v.name.A == "Ancestry.2", ])
+                      df = dat$coefs.wnlm.Q[dat$coefs.wnlm.Q$v.name.A == "Ancestry.2", ], zeroline = TRUE)
 update(lp2, strip = FALSE, xlab = expression(paste(beta, "[ Ancestry.2 ]")), ylab = expression(paste(beta, "[ Age ]")), main = "rel. log likelihood")
 ```
 

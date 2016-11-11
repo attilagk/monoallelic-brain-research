@@ -92,6 +92,18 @@ plots <- list()
 (plots$PEG10 <- plot.predictions(gp$PEG10, main = "PEG10"))
 ```
 
+#### Plot only data
+
+The following plots are generated for overlay with the ones above in presentation slides.
+
+```{r PEG3-data-only, echo=FALSE}
+(plots$PEG3 <- plot.predictions(gp$PEG3, main = "PEG3", show.model = FALSE))
+```
+
+```{r KCNK9-data-only, echo=FALSE}
+(plots$KCNK9 <- plot.predictions(gp$KCNK9, main = "KCNK9", show.model = FALSE))
+```
+
 ### Figure for manuscript
 
 The figures illustrate the widening of prediction intervals under the logistic models but not the normal linear models.  The discrete nature of the binomial error distribution under logistic models can also be seen: the denominator of the binomial distribution is `r gp$GRB10$n[1]` (GRB10) and `r gp$KCNK9$n[1]`  (KCNK9); these were defined as the average of the total read count for a given gene.
