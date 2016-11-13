@@ -225,6 +225,15 @@ mtype.compare.plot(mtypeA = "logi.S", mtypeB = "wnlm.Q", dt = Betas.l.f, do.key 
 
 <img src="figure/logi-S-filtered-wnlm-Q-compare-1.png" title="plot of chunk logi-S-filtered-wnlm-Q-compare" alt="plot of chunk logi-S-filtered-wnlm-Q-compare" width="700px" />
 
+Only for 4 biological predictors
+
+
+```r
+mtype.compare.plot(mtypeA = "logi.S", mtypeB = "wnlm.Q", dt = Betas.l.f, do.key = TRUE)[c(1,4,6,17)]
+```
+
+<img src="figure/logi-S-filtered-wnlm-Q-compare-4pred-1.png" title="plot of chunk logi-S-filtered-wnlm-Q-compare-4pred" alt="plot of chunk logi-S-filtered-wnlm-Q-compare-4pred" width="700px" />
+
 ### Scaling of the logit link function
 
 There is very little impact on the $2\times$ difference in scaling of the logit link function because most of the observed cases are near the upper bound of the link function (which is 1), where the scaling has the smallest effect on the predictions.

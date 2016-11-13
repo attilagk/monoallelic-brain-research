@@ -1,7 +1,7 @@
 \documentclass{beamer}
 %\documentclass[handout]{beamer}
 
-\includeonlyframes{bsm,title,toc,imprint-mouse-devel,igf2-imprint-evol,sister-disorders,previous-age-studies,our-study,cmc,toc-current,filtering-calling,fitting-models,ll-surface,all-betas,orthogonality,identifiability,anova,betas-cluster,signif-genes,cf-overall-expression,summary,psych-encode,improving-model}
+\includeonlyframes{bsm,title,toc,imprint-mouse-devel,igf2-imprint-evol,sister-disorders,previous-age-studies,our-study,cmc,toc-current,filtering-calling,fitting-models,ll-surface,all-betas,orthogonality,identifiability,anova,betas-cluster,signif-genes,cf-overall-expression,summary,improving-model,p-val,imprinted-brain,chess-lab}
 
 % language settings
 %\usepackage{fontspec, polyglossia}
@@ -66,9 +66,11 @@
 % this results in parental bias in the expression of imprinted genes in the progeny
 % complete bias: monoallelic expression
 \begin{frame}[label=imprint-mouse-devel]{Genomic imprints during development}
+\begin{center}
 \includegraphics[height=0.7\textheight]{figures/from-others/plasschaert-bartolomei-2014-fig1.jpeg}
 \vfill
 {\tiny Plasschaert \& Bartolomei 2014 Development.}
+\end{center}
 \end{frame}
 
 % Igf2 and H19: among the first genes found imprinted in mice
@@ -80,7 +82,7 @@
 % kinship theory of imprinting: interactions (e.g. among siblings), inclusive fitness, relatedness
 % maternal half siblings: closer relatedness of maternal genes than paternal genes => conflict
 % resolution: growth promoting genes paternally biased, growth inhibiting maternally (e.g. Igf2, H19)
-\begin{frame}[label=igf2-imprint-evol]{Imprinting and placentation}{}
+\begin{frame}[label=igf2-imprint-evol]{Parental bias and placental development}{}
 \begin{columns}[t]
 \begin{column}{0.4\textwidth}
 
@@ -157,9 +159,11 @@
 % PEGs self-oriented cognition, - inc. fitness, autistic; MEGs mentalistic cognition, + incl. fitness, psychotic
 % this hypothesis guides the study the role of imprinting in psychiatric disorders e.g. SCZ
 \begin{frame}[label=imprinted-brain]{The imprinted brain theory}
+\begin{center}
 \includegraphics[width=0.7\textwidth]{figures/from-others/crespi-2008-fig3.png}
 \vfill
 {\tiny \raggedright{Crespi \& Badcock 2008 Behav Brain Sci.}}
+\end{center}
 \end{frame}
 
 \subsection{Our study: motivation \& design}
@@ -261,7 +265,7 @@
 \begin{itemize}
 \item \(Y_g\) from read count ratio
 \item \(X\) based on predictor(s)
-\item \(\mathcal{H}_0:\) no effect \only<2->{ \(\Leftrightarrow \beta_g = 0 \)}
+\item \(\mathcal{H}_0:\) no dependence \only<2->{ \(\Leftrightarrow \beta_g = 0 \)}
 \end{itemize}
 \vfill
 \only<2->{
@@ -312,7 +316,7 @@ RNA\_batch & 0, A, B, C, D, E, F, G, H\\
 
 \begin{column}{0.5\textwidth}
 
-\includegraphics[scale=\ownfigscale]{figures/2016-08-21-likelihood-surface/explain-rll-levelplot-1.png}
+\includegraphics[scale=\ownfigscale]{figures/2016-08-21-likelihood-surface/explain-rll-levelplot-B-1.png}
 \end{column}
 \end{columns}
 \end{frame}
@@ -391,18 +395,22 @@ observational study
 % so if beta_RIN=0.11 (quite likely), then the most likely value of beta_Age=0 => our conclusion changes on the age effect
 \begin{frame}[label=identifiability]{Consequence: poor identifiability}
 %{The likelihood of one parameter is linked to another}
+\begin{center}
 \includegraphics[scale=\ownfigscale]{figures/2016-08-21-likelihood-surface/ll-surf-coefs-wnlm-Q-1.png}
+\end{center}
 \end{frame}
 
 % non-orthogonality => ANOVA fails
 % we cannot estimate the component of variability due to each predictor in isolation from others
 \begin{frame}[label=anova]{Consequence: ANOVA is inconclusive}
+\begin{center}
 \includegraphics[scale=\ownfigscale]{figures/2016-06-22-extending-anova/anova-fw-rv-wnlm-Q-1.pdf}
+\end{center}
 \end{frame}
 
 % two predictors interact when the effect of one predictor (X1) depends on the value (a or b) of another (X2) 
 % this is distinct from correlation/non-orthogonality of predictors
-% e.g. if X2=a then X1 has no effect on Y (beta1=0) but if X2=b then it does % (beta1>0)
+% e.g. if X2=a then X1 has no dependence on Y (beta1=0) but if X2=b then it does % (beta1>0)
 % we found that effect of Age on S depended on both Institution and Gender at various degrees for different genes
 % we didn't model interactions to avoid extra parameters and decrease in power => our conclusions on beta are too simplistic
 \begin{frame}[label=interaction]{Further complication: interaction}
@@ -443,9 +451,9 @@ model: wnlm.Q
 
 \begin{column}{0.5\textwidth}
 \begin{center}
-\only<1->{agreement between models}
+\only<2->{agreement between models}
 
-\includegraphics<1->[width=\columnwidth]{figures/2016-06-22-extending-anova/logi-S-filtered-wnlm-Q-compare-1.pdf}
+\includegraphics<2->[width=\columnwidth]{figures/2016-06-22-extending-anova/logi-S-filtered-wnlm-Q-compare-4pred-1.pdf}
 \end{center}
 \end{column}
 \end{columns}
@@ -455,12 +463,14 @@ model: wnlm.Q
 % method 1 vs 2 (wnlm.Q) and 3 vs 4 (logi.S): parametric vs non-parametric
 % the agreement is good but not perfect => difficulty of making inferences based on multiple plausible models
 % heuristic rule: method 1 AND method 2; ignore methods 3,4 because Andy doesn't like logi.S
-\begin{frame}[label=p-val]{p-values}
+\begin{frame}[label=p-val]{p-values for \(\mathcal{H}_0:\) no dependence}
+\begin{center}
 \includegraphics[scale=\ownfigscale]{figures/2016-10-03-permutation-test/p-values-1.pdf}
+\end{center}
 \end{frame}
 
-\begin{frame}[label=signif-genes]{Significantly affected genes}
-{Test: parametric + non-parametric (permutations)}
+\begin{frame}[label=signif-genes]{Affected genes (\(\mathcal{H}_0\) rejected)}
+%{Test: parametric + non-parametric (permutations)}
 \tiny
 \input{../../results/signif-gene-effects-either-manual-annot.tex}
 \end{frame}
@@ -499,9 +509,11 @@ Perez et al 2015
 % explanation: our method uses extra info (genotype) enhancing sensitivity for gageing overall expr. of imprinted genes 
 % future diff-exp studies for imprinted genes might benefit from taking parental bias into account
 \begin{frame}[label=cf-overall-expression]{Comparison to overall expression analysis\(^\ast\)}
+\begin{center}
 \includegraphics[height=0.8\textheight]{figures/2016-10-20-differential-expression-scz/venn-triple-1.pdf}
 
 {\tiny\(\ast\)Fromer et al 2016}
+\end{center}
 \end{frame}
 
 \begin{frame}[label=summary]{Summary of results}
@@ -523,9 +535,10 @@ Perez et al 2015
 \begin{frame}[label=improving-model]{Improving and extending statistical approach}
 \begin{columns}[t]
 \begin{column}{0.3\textwidth}
-present: ``flat''
+\only<1>{present: ``flat''}
 
-\includegraphics[scale=\platefigscale]{figures/by-me/monoall-dependencies-2/obs-simple-general/obs-simple-general.pdf}
+\includegraphics<1>[scale=\platefigscale]{figures/by-me/monoall-dependencies-2/obs-simple-general/obs-simple-general.pdf}
+\includegraphics<2->[width=\columnwidth]{figures/from-others/psychENCODE.png}
 \end{column}
 \begin{column}{0.3\textwidth}
 proposed: hierarch.
@@ -544,7 +557,7 @@ proposed: hierarch.
 \begin{itemize}
 \item interactions
 \end{itemize} 
-\item<1-> more answers
+\item<2-> more answers
 \begin{itemize}
 \item tissue specificity
 \item DNA methylation
@@ -555,17 +568,25 @@ proposed: hierarch.
 
 \end{frame}
 
-\begin{frame}[label=psych-encode]
-\begin{center}
-\includegraphics[height=0.6\textheight]{figures/from-others/psychENCODE.png}
-\end{center}
+\begin{frame}[label=chess-lab]{Thank you}
+\begin{columns}[t]
+\begin{column}{0.6\textwidth}
+
+Chess lab
+\begin{itemize}
+\item Andy Chess
+\item Chaggai Rosenbluh
+\item Eva Xia
+\item Mehaa Bajaj   
+\end{itemize}
+\end{column}
+
+\begin{column}{0.4\textwidth}
+
+\includegraphics[width=\columnwidth]{figures/from-others/chess-board.jpg}
+\end{column}
+\end{columns}
 \end{frame}
-
-% include and compare othe brain areas (CommonMind data)
-
-% identify epigenetic marks of imprinting (PsychENCODE)
-
-% eQTLs and methylation QTLs of imprinted genes vs GWAS SNPs
 
 \end{document}
 

@@ -108,9 +108,15 @@ ll.grid <- function(l.M = M$logi.S, gene = "PEG3", n.pnts = 101,
 # bits: to specify color bitdepth
 # zeroline: whether to draw it
 ll.surfaceplot <- function(fm = formula(- rel.log.L ~ beta.A * beta.B | gene), df = ll.grid(),
-                           bits = 8, zeroline.A = TRUE,
-                           hv.B = c(0, -0.004),
-                           ...) {
+                           bits = 8, hv.A = NA, hv.B = NA, ...) {
+    my.panel.abline <- function(hv, direction = "h") {
+        l.B <- length(hv)
+        l <- list(lty = c(1, rep(seq_len(l.B / 2) + 1, each = 2)), lwd = c(1, rep(2, length(hv))),
+                  col = c("black", rep("white", length(hv))))
+        if(direction == "h") l$h <- hv
+        else l$v <- hv
+        do.call(panel.abline, l)
+    }
     levelplot(fm, data = df,
               scales = list(x = list(relation = "free")), colorkey = list(space = "top"),
               aspect = 1,
@@ -118,8 +124,8 @@ ll.surfaceplot <- function(fm = formula(- rel.log.L ~ beta.A * beta.B | gene), d
               panel = function(x, y, z, b.hat.A, b.hat.B, subscripts, ...) {
                   panel.levelplot(x = x, y = y, z = z, subscripts = subscripts, contour = FALSE, lwd = 0.5, ...)
                   panel.xyplot(x = b.hat.A[subscripts[1]], y = b.hat.B[subscripts[1]], col = "black", pch = 16)
-                  panel.abline(h=hv.B, lty = seq_along(hv.B), col = c("white", rep("black", length(hv.B))))
-                  if(zeroline.A) panel.abline(v=0, lty = 1, col = "white")
+                  my.panel.abline(hv.A, "v")
+                  my.panel.abline(hv.B, "h")
                   panel.text(x = b.hat.A[subscripts[1]], y = b.hat.B[subscripts[1]], pos = 4, labels = expression(hat(beta)))
               },
               col.regions = hsv(h = 2^bits:1 / 2^bits, s = 0.9, v = 0.9),
