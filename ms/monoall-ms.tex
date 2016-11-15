@@ -360,6 +360,7 @@ transformation and a quasi-log transformation \(\tau_Q\) defined as
 \begin{equation}
 \tau_Q(S_{ig};T_{ig}) \equiv Q_{ig} = - \log \left( 1 - S_{ig} \frac{T_{ig}}{T_{ig} + c}
 \right),
+\label{eq:Q}
 \end{equation}
 with pseudo read count \(c=1\) to avoid zero in the parenthesis since the \(\log\)
 function is undefined at \(0\).
@@ -490,24 +491,18 @@ all known imprinted genes (within the 5307-sized gene set) score low.  As the
 known imprinted genes were identified in different tissue types and organisms,
 these results indicate the context-dependence of imprinting.
 
-\begin{figure}
-\begin{center}
-\includegraphics[scale=0.6]{figures/2016-06-26-trellis-display-of-data/S-age-gender-1.png}
-\caption{}
-\label{fig:S-age-gender}
-\end{center}
-\end{figure}
-
-\subsection{Evaluating predictive models of parental bias}
-\label{sec:results-regression}
-
 We selected the 27 top-scoring genes in the ``known imprinted'' and ``nearby
 candidate'' categories shown in blue and green in Fig.~\ref{fig:top-genes} and
 added three more known imprinted genes (NLRP2, IGF2 and UBE3A) that scored
-reasonably high (Fig.~\ref{fig:known-genes}).  The sources and psychological
-consequences of the variation of parental bias in these 30 genes was analyzed
-further through the detailed characterization how the read count ratio depends
-on the biological and technical variables---i.e.~the predictors---listed in Table~\ref{tab:predictors}.
+reasonably high (Fig.~\ref{fig:known-genes}).
+
+\subsection{Selecting predictive models of parental bias}
+\label{sec:results-regression}
+
+The sources and psychological consequences of the variation of parental bias
+in these 30 genes was analyzed further through the detailed characterization
+how the read count ratio depends on the biological and technical
+variables---i.e.~the predictors---listed in Table~\ref{tab:predictors}.
 
 Fig.~\ref{fig:S-age-gender} shows patterns of dependence (or independence) of
 the read count ratio \(S_g\) for a given gene \(g\) on age and gender.  From
@@ -515,6 +510,14 @@ this visual inspection it seems that for several genes age is informative to
 the distribution of \(S_g\) in terms of both the location (e.g.~the mean of
 \(S_g\)) and scale (e.g.~variance); such apparent dependence on gender is not
 clear.
+
+\begin{figure}
+\begin{center}
+\includegraphics[scale=0.6]{figures/2016-06-26-trellis-display-of-data/S-age-gender-1.png}
+\caption{}
+\label{fig:S-age-gender}
+\end{center}
+\end{figure}
 
 This qualitative result, however, is greatly complicated by the association
 among predictors: taking only pairwise associations the situation is already
@@ -530,31 +533,83 @@ shows how \(T_{ig}\) varies both within a gene and across genes.
 \begin{center}
 \includegraphics[scale=0.6]{figures/2016-08-23-glm-sampling-distributions/KCNK9-1.png}
 \end{center}
-\caption{}
+\caption{Fitting four families of generalized linear models to the same data
+set.  In each panel the horizontal axis is age and the vertical axis is the
+possibly transformed read count ratio.  For all panels the green scatter
+represents the same data set (KCNK9 gene, cf.~Fig\ref{fig:S-age-gender})
+except that in the bottom right panel the observed read count ratio is
+transformed according to Eq.~\ref{eq:Q}.  Given each one of four model
+families the predicted read count ratio is represented by thick black curves.
+The probability mass or density of the sampling distribution is indicated by a
+cyan-to-magenta gradient and various prediction limits by gray lines.  Note
+that for demonstration the depicted fitted models are all simple in the sense
+that they contain age as a sole predictor.  Quantitative inference, however,
+was based on the corresponding multiple regression models including all
+predictors (Table~\ref{tab:predictors}).
+  }
 \label{fig:predicted-curves}
 \end{figure}
 
-These considerations motivated us to fit various generalized linear regression
-models, one for each gene, by treating read count ratio as response and the
-variables in Table~\ref{tab:predictors} as predictors. The thick black curves
-and colored strips in Fig.~\ref{fig:predicted-curves} represent the predicted
-read count ratio and prediction intervals, respectively, under four of these
-models for the gene KCNK9.  Among our models the logistic ones, logi.S and
-logi2.S, have several desirable theoretical properties: they prohibit values
-\(S_{g}>1\), capture at least some of the obvious dependence of the variance
-of \(S_{g}\) on its mean, and take into account the amount of available data
-since they are natural extensions of simple binomial models conditioned on the
-observed total read count \(T_{ig}\).  The known robustness and easy
-interpretation of normal linear models motivated their use for the
-present data.  The flavors of normal linear models of this study are
-characterized by two features: (i.)~whether or not they are weighted by
-\(T_{ig}\) and (ii.)~the transformation, if any, that had been applied to
-\(S_{ig}\) before the fit.  While weighting had little impact (not shown) the
-transformation was critical: Fig.~\ref{fig:predicted-curves} demonstrates how
-a quasi-log-transformation \(Q\) dramatically improves fit (compare wnlm.Q to
-wnlm.S).
+These results motivated us to model the dependence of read count ratio for a
+given gene on all predictors jointly in a multiple regression framework.  More
+specifically, we used generalized linear models (GLMs).  With GLMs we sought
+to find a reasonable compromise between simplicity and generality.  While that
+simplicity facilitates parameter estimation and tests for independence,
+generality allows fitting several GLM families, among which the best family or
+families can then be selected based on the fit.  Thus the purpose of fitting
+was twofold: (1) model selection, as well as (2) inference of dependencies
+between the read count ratio and predictors given the selected model family or
+families.
 
-An in-depth checking of model fit was carried out involving all models,
+Out of the eight GLM families two are logistic (logi.S, logi2.S in
+Fig.~\ref{fig:predicted-curves} top).  These have several desirable
+theoretical properties for count-based data: zero probability for values
+\(S_{g}>1\), recapitulating the observed dependence of the variance of
+\(S_{g}\) on its mean, and the ability to take into account the observed total
+read counts.  These properties frollow from the fact that logistic models are
+natural extensions of simple binomial models conditioned on the observed total
+read count \(T_{ig}\).  The remaining six fitted GLM families contain various
+normal linear models (see Fig.~\ref{fig:predicted-curves} bottom for two of
+these).  Although these are in general less suitable for count-type data they
+are robust and easily interpretable. The families of normal linear models of
+this study are characterized by two features: (i.)~whether or not they are
+weighted by \(T_{ig}\) and (ii.)~the transformation, if any, that had been
+applied to \(S_{ig}\) before the fit.  Transformation proved critical (see
+below) but weighting had little impact either on model fit or parameter
+estimates (not shown) so we removed unweighted models (unlm.Q, unlm.R, unlm.S)
+reasoning that the mentioned small differences under weighted models reflect their
+improved power due to their ability to utilize information in the observed
+total read count.
+
+We addressed model fit by using both Akaike Information Criterion (AIC) and
+diagnostic graphs based on standardized deviance residuals.  However, only the
+latter approach turned out conclusive because the estimate for AIC appeared
+more biased for certain GLM families than for others, which rendered comparison
+based on the information criterion unreliable for this problem.  In
+particular, the homoscedasticity (constant error variance) assumed by normal
+linear models
+was strongly violated for wnlm.S because of the dependence of scale
+of the read count ratio \(S\) on its location
+(Fig.~\ref{fig:S-age-gender}).  The bottom left panel of Fig.~\ref{fig:predicted-curves}
+shows this dependence on age for KCNK9, while the bottom right panel
+illustrates how the dependence of scale but not that of location is abolished
+by the quasi-log transformation \(Q\) (Eq.~\ref{eq:Q}).  The resulting
+homoscedasticity afforded the wnlm.Q model good fit for all genes in terms of
+three distinct diagnostics based on the residuals
+(Fig.~\ref{fig:qqnorm-wnlm.Q},~\ref{fig:homoscedas-wnlm.Q},~\ref{fig:influence-wnlm.Q}).
+Rank transformation \(R\) and the fitting of wnlm.R lead to a much lesser
+improvement than \(Q\) and wnml.Q (not shown).
+
+The same model checking diagnostics for the logistic models suggested good
+fit under logi.S for 8 of the 30 genes
+(Fig.~\ref{fig:qqnorm-logi.S},~\ref{fig:homoscedas-logi.S},~\ref{fig:influence-logi.S}).
+These genes are highlighted with bold font in the top of Fig.~\ref{fig:pval-wnlm.Q}.
+For subsequent analysis we selected both the logi.S model family for these 8
+genes and the wnlm.Q family for all 30 genes.
+
+\section{Old results}
+
+ An in-depth checking of model fit was carried out involving all models,
 predictors, and selected genes (except TMEM261P1, for which the iterative
 weighted least square fitting algorithm did not converge under logistic
 models).  This analysis examined the normality of residuals
@@ -590,10 +645,7 @@ comparison based on 99\% confidence intervals (CIs)
 (Fig.~\ref{fig:all-effects-wnlm.Q},~\ref{fig:all-effects-logi.S}) also
 revealed that logi.S is more powerful in detecting a significant effect and
 rejecting the null hypothesis \(\beta_{jg}=0\), which is in line with the
-mentioned theoretical advantages of logistic models.  But since the more
-conservative wnlm.Q provides in general better fit when all selected genes are
-considered, it was chosen as the preferred model of inference while logi.S is used mainly
-to confirm findings under wnlm.Q.
+mentioned theoretical advantages of logistic models.
 
 The p-value for each null hypothesis was
 calculated not only the standard way based on normal distribution theory but
@@ -607,7 +659,7 @@ These findings validate our approach to modeling the variation of parental bias
 the observed predictor variables.  In what follows we make inferences on
 the biological predictors.
 
-\subsection{Inferred biological predictors of parental bias}
+\subsection{Associations between biological variables and genes' parental bias}
 
 Since all of these models account for each predictor separately, they are
 expected, in principle, to successfully dissect their effects although the

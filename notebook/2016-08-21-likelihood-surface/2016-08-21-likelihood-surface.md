@@ -92,27 +92,16 @@ lp2 <- ll.surfaceplot(fm = formula(rel.log.L ~ beta.A * beta.B | v.name.A), df =
 update(lp2, strip = FALSE, xlab = expression(paste(beta, "[ Ancestry.2 ]")), ylab = expression(paste(beta, "[ Age ]")), main = "rel. log likelihood")
 ```
 
-```
-## Waiting for profiling to be done...
-## Waiting for profiling to be done...
-```
-
 <img src="figure/explain-rll-levelplot-B-1.png" title="plot of chunk explain-rll-levelplot-B" alt="plot of chunk explain-rll-levelplot-B" width="500px" />
 
 ...and then the same intervals and $\beta_z = 0$ for $z = \mathrm{Ancestry.2}$.
 
 
-
-```
-## Waiting for profiling to be done...
-## Waiting for profiling to be done...
-```
-
 <img src="figure/explain-rll-levelplot-A-1.png" title="plot of chunk explain-rll-levelplot-A" alt="plot of chunk explain-rll-levelplot-A" width="500px" />
 
-Even though at the ML estimate $\hat{\beta}$ the observed information $\frac{\partial\log L(\beta_z)}{\partial\beta_z}$ for $z = \mathrm{Ancestry.2}$ is smaller than that for $z = \mathrm{Age}$, the confidence interval for $\mathrm{Age}$ is broader, which contradicts the expected narrower CI for $\mathrm{Age}$ under the asymptotic normality of $\hat\beta$.  This might indicate poor model fit.
+Even though at the ML estimate $\hat{\beta}$ the observed information $\frac{\partial\log L(\beta_z)}{\partial\beta_z}$ for $z = \mathrm{Ancestry.2}$ is smaller than that for $z = \mathrm{Age}$, the confidence interval for $\mathrm{Age}$ is broader, which contradicts the expected narrower CI for $\mathrm{Age}$ under the asymptotic normality of $\hat\beta$.  Although this might indicate poor model fit it appears also plausible that $\beta_\mathrm{Age}$ is more strongly non-orthogonal than $\beta_\mathrm{Ancestry.2}$ to one or more other $\beta_z$'s, and that non-orthogonality more greatly increases the variance of $\hat\beta_\mathrm{Age}$ compared to the variance that this 2D restriction of the log likelihood  visually suggests.
 
-### Association of $\beta_\mathrm{Age}$ to other coefficients
+### Orthogonality of $\beta_\mathrm{Age}$ to other coefficients
 
 Relative log likelihood is shown for straight forward comparison between different models.  $\beta_\mathrm{Age}$ is associated with coefficients of both technical and biological predictors.  Association to the coefficient of RNA-quality RIN (RNA Integrity Number) is the strongest.  From these pairwise associations the network of causal dependencies does not follow directly.
 

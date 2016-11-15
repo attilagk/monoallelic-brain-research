@@ -29,7 +29,7 @@ Y <- get.readcounts(gene.ids = genes2fit, count.thrs = 0)
 
 Fit models:
 
-```{r cache=TRUE, warning=FALSE}
+```{r cache=TRUE, warning=FALSE, message=FALSE}
 # exclude unweighed aggregates UA.8 and UA from fitting
 ids2fit <- grep("^UA(.8)?$", names(Y), value = TRUE, invert = TRUE)
 M <- do.all.fits(Y[ids2fit], preds = e.vars)
@@ -100,7 +100,7 @@ ll.wireframe(dt = dat$coefs.wnlm.Q.2, v.A = "Ancestry.2", par.settings = list(ax
 
 Now the same restricted function in levelplot representations.  First with confidence intervals (0.8 and 0.99) and $\beta_z = 0$ for $z = \mathrm{Age}$...
 
-```{r explain-rll-levelplot-B, fig.width=5, fig.asp=1, out.width="500px", warning=FALSE}
+```{r explain-rll-levelplot-B, fig.width=5, fig.asp=1, out.width="500px", warning=FALSE, message=FALSE}
 lp2 <- ll.surfaceplot(fm = formula(rel.log.L ~ beta.A * beta.B | v.name.A), df = dat$coefs.wnlm.Q.2[dat$coefs.wnlm.Q.2$v.name.A == "Ancestry.2", ], hv.B = c(0, unlist(get.single.estimate.CI(M$wnlm.Q$PEG3, 0.80)["Age", c("Lower.CL", "Upper.CL"), drop = TRUE]), unlist(get.single.estimate.CI(M$wnlm.Q$PEG3, 0.99)["Age", c("Lower.CL", "Upper.CL"), drop = TRUE])))
 update(lp2, strip = FALSE, xlab = expression(paste(beta, "[ Ancestry.2 ]")), ylab = expression(paste(beta, "[ Age ]")), main = "rel. log likelihood")
 ```
@@ -108,14 +108,14 @@ update(lp2, strip = FALSE, xlab = expression(paste(beta, "[ Ancestry.2 ]")), yla
 ...and then the same intervals and $\beta_z = 0$ for $z = \mathrm{Ancestry.2}$.
 
 
-```{r explain-rll-levelplot-A, fig.width=5, fig.asp=1, out.width="500px", echo=FALSE, warning=FALSE}
+```{r explain-rll-levelplot-A, fig.width=5, fig.asp=1, out.width="500px", echo=FALSE, warning=FALSE, message=FALSE}
 lp2 <- ll.surfaceplot(fm = formula(rel.log.L ~ beta.A * beta.B | v.name.A), df = dat$coefs.wnlm.Q.2[dat$coefs.wnlm.Q.2$v.name.A == "Ancestry.2", ], hv.A = c(0, unlist(get.single.estimate.CI(M$wnlm.Q$PEG3, 0.80)["Ancestry.2", c("Lower.CL", "Upper.CL"), drop = TRUE]), unlist(get.single.estimate.CI(M$wnlm.Q$PEG3, 0.99)["Ancestry.2", c("Lower.CL", "Upper.CL"), drop = TRUE])))
 update(lp2, strip = FALSE, xlab = expression(paste(beta, "[ Ancestry.2 ]")), ylab = expression(paste(beta, "[ Age ]")), main = "rel. log likelihood")
 ```
 
-Even though at the ML estimate $\hat{\beta}$ the observed information $\frac{\partial\log L(\beta_z)}{\partial\beta_z}$ for $z = \mathrm{Ancestry.2}$ is smaller than that for $z = \mathrm{Age}$, the confidence interval for $\mathrm{Age}$ is broader, which contradicts the expected narrower CI for $\mathrm{Age}$ under the asymptotic normality of $\hat\beta$.  This might indicate poor model fit.
+Even though at the ML estimate $\hat{\beta}$ the observed information $\frac{\partial\log L(\beta_z)}{\partial\beta_z}$ for $z = \mathrm{Ancestry.2}$ is smaller than that for $z = \mathrm{Age}$, the confidence interval for $\mathrm{Age}$ is broader, which contradicts the expected narrower CI for $\mathrm{Age}$ under the asymptotic normality of $\hat\beta$.  Although this might indicate poor model fit it appears also plausible that $\beta_\mathrm{Age}$ is more strongly non-orthogonal than $\beta_\mathrm{Ancestry.2}$ to one or more other $\beta_z$'s, and that non-orthogonality more greatly increases the variance of $\hat\beta_\mathrm{Age}$ compared to the variance that this 2D restriction of the log likelihood  visually suggests.
 
-### Association of $\beta_\mathrm{Age}$ to other coefficients
+### Orthogonality of $\beta_\mathrm{Age}$ to other coefficients
 
 Relative log likelihood is shown for straight forward comparison between different models.  $\beta_\mathrm{Age}$ is associated with coefficients of both technical and biological predictors.  Association to the coefficient of RNA-quality RIN (RNA Integrity Number) is the strongest.  From these pairwise associations the network of causal dependencies does not follow directly.
 
