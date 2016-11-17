@@ -138,7 +138,7 @@ Equal x and y scaling (isometric):
 ### Figures for manuscript
 
 Figure for manuscript showing p-values calculated from both approaches (theory: t-distribution, and permutation test) and under both models (wnlm.Q and, when the fit was OK, also logi.S).
-The plotting symbols are color coded according to gene rank (rainbow, red to violet).  The plotting symbols also display the rank with numbers, see the key on the top.  Genes acceptably fitted by both models are distinguished with a diamond symbol and **bold font** from those that could be fitted only by wnlm.Q.
+The plotting symbols are color coded according to gene rank (rainbow, red to violet).  The plotting symbols also display the rank with numbers, see the key on the top.  Genes acceptably fitted by both models are distinguished with a diamond symbol and **bold font** from those that could be fitted only by wnlm.Q.  Gray rectangle shows the decision rule, which rejects the null hypothesis if the p-value is smaller than 0.05 given both the t-distribution and the permutation-based test.
 
 
 <img src="figure/p-values-1.png" title="plot of chunk p-values" alt="plot of chunk p-values" width="700px" />

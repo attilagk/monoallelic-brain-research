@@ -1,4 +1,11 @@
-\begin{thebibliography}{1}
+\begin{thebibliography}{10}
+
+\bibitem{Broad2009}
+Kevin~D Broad, James~P Curley, and Eric~B Keverne.
+\newblock {Increased apoptosis during neonatal brain development underlies the
+  adult behavioral deficits seen in mice lacking a functional paternally
+  expressed gene 3 (Peg3).}
+\newblock {\em Developmental neurobiology}, 69(5):314--25, apr 2009.
 
 \bibitem{Chess2012}
 Andrew Chess.
@@ -25,6 +32,12 @@ Charity~W Law, Yunshun Chen, Wei Shi, and Gordon~K Smyth.
   RNA-seq read counts.}
 \newblock {\em Genome biology}, 15(2):R29, jan 2014.
 
+\bibitem{McNamara2013}
+Gr{\'{a}}inne~I. McNamara and Anthony~R. Isles.
+\newblock {Dosage-sensitivity of imprinted genes expressed in the brain:
+  15q11–q13 and neuropsychiatric illness}.
+\newblock {\em Biochemical Society Transactions}, 41(3):721--726, jun 2013.
+
 \bibitem{Perez2015}
 Julio~D Perez, Nimrod~D Rubinstein, Daniel~E Fernandez, Stephen~W Santoro,
   Leigh~A Needleman, Olivia Ho-Shing, John~J Choi, Mariela Zirlinger,
@@ -36,8 +49,8 @@ Julio~D Perez, Nimrod~D Rubinstein, Daniel~E Fernandez, Stephen~W Santoro,
 \bibitem{Peters2014}
 Jo~Peters.
 \newblock {The role of genomic imprinting in biology and disease: an expanding
-  view}.
-\newblock {\em Nature Reviews Genetics}, 15(8):517--530, jun 2014.
+  view.}
+\newblock {\em Nature reviews. Genetics}, 15(8):517--30, aug 2014.
 
 \bibitem{Plasschaert2014}
 Robert~N Plasschaert, Marisa~S Bartolomei, S.~Abu-Amero, D.~Monk,
@@ -152,6 +165,12 @@ Robert~N Plasschaert, Marisa~S Bartolomei, S.~Abu-Amero, D.~Monk,
   S.~Verhaagh, M.~Buitelaar, C.~Popp-Snijders, and D.~P. Barlow.
 \newblock {Genomic imprinting in development, growth, behavior and stem cells.}
 \newblock {\em Development (Cambridge, England)}, 141(9):1805--13, may 2014.
+
+\bibitem{Sullivan2012}
+Patrick~F Sullivan, Mark~J Daly, and Michael O'Donovan.
+\newblock {Genetic architectures of psychiatric disorders: the emerging picture
+  and its implications}.
+\newblock {\em Nature Reviews Genetics}, 13(8):537--551, aug 2012.
 
 \bibitem{Tucci2016}
 Valter Tucci, SN~Archer, H~Oster, S~Maret, S~Dorsaz, L~Gurcel, S~Pradervand,

@@ -388,7 +388,9 @@ The logistic models, logi.S or logi2.S, share the general form
 S_g &=& \mu_g + c\, \varepsilon_g
 \label{eq:logi-general}
 \\
-\mu_g &=& h(\mathbf{X} \beta_g) \\
+\mu_g &=& h(\mathbf{X} \beta_g)
+\label{eq:glm-mean-predictor}
+\\
 \varepsilon_{ig} + \mu_g &\overset{\mathrm{iid}}{\sim}& \mathrm{Binom}(\mu_g, T_{ig}).
 \label{eq:binom-error}
 \end{eqnarray}
@@ -496,7 +498,7 @@ candidate'' categories shown in blue and green in Fig.~\ref{fig:top-genes} and
 added three more known imprinted genes (NLRP2, IGF2 and UBE3A) that scored
 reasonably high (Fig.~\ref{fig:known-genes}).
 
-\subsection{Selecting predictive models of parental bias}
+\subsection{Selection among predictive models of parental bias}
 \label{sec:results-regression}
 
 The sources and psychological consequences of the variation of parental bias
@@ -607,89 +609,69 @@ These genes are highlighted with bold font in the top of Fig.~\ref{fig:pval-wnlm
 For subsequent analysis we selected both the logi.S model family for these 8
 genes and the wnlm.Q family for all 30 genes.
 
-\section{Old results}
+\subsection{Biological predictors and interpretation}
 
- An in-depth checking of model fit was carried out involving all models,
-predictors, and selected genes (except TMEM261P1, for which the iterative
-weighted least square fitting algorithm did not converge under logistic
-models).  This analysis examined the normality of residuals
-(Fig.~\ref{fig:qqnorm-logi.S},
-\ref{fig:qqnorm-wnlm.Q}),
-the independence of residuals from the fitted value (i.e.~homoscedasticity,
-Fig.~\ref{fig:homoscedas-logi.S},
-\ref{fig:homoscedas-wnlm.Q})
-and the influence of each case/individual on the
-fit to address outliers (Fig.~\ref{fig:influence-logi.S},
-\ref{fig:influence-wnlm.Q}).  These model
-checking results revealed the following patterns.  First, for all genes the
-normal linear model seems to fit at
-least reasonably well to quasi-log-transformed data (wnlm.Q) slightly less
-well to rank-transformed data (wnlm.R) and much worse to untransformed data
-(wnlm.S).  Second, both logistic models appear to exhibit greatly variable
-fit across genes but the fit of logi.S is in general better than that of
-logi2.S.  Given these results we made inferences based on wnlm.Q and---if the
-quality of the fit permits for a given gene---also on logi.S.
+For each of four biological terms \(j\) in our linear predictor
+(Eq.~\ref{eq:nlm-general}, \ref{eq:glm-mean-predictor}) and each gene \(g\) called imprinted
+we tested the null hypothesis \(\mathcal{H}_{jg} : \beta_{jg} = 0\) meaning that the read count ratio is independent of
+that term (Fig~\ref{fig:pval-wnlm.Q}). Of these terms Age and Ancestry.1 represent either a continuous predictor
+whereas GenderMale and DxSCZ are “treatment” levels of a categorical predictor (Gender and Dx,
+respectively) contrasted with the corresponding control levels (GenderFemale and DxControl, see
+Table~\ref{tab:predictors}). The biological interpretation of the rejection of
+\(\mathcal{H}_{jg}\) is that parental bias depends on
+the predictor. Such probabilistic dependence may emerge from either of the following mechanistic
+(causal) relations: (1) the predictor regulates the parental bias of the gene; (2) parental bias
+regulates the predictor; (3) they both regulate or are both regulated by a third, latent, variable.
 
-Comparing the estimated regression coefficients \(\hat{\beta}_{jg}\) for some
-gene \(g\) and parameter under the two logistic models logi.S and logi2.S
-revealed close agreement between these two models
-(Fig.~\ref{fig:logi.S-logi2.S-compare}) suggesting that making inferences
-under the better fitting logi.S and without logi2.S does not incur information
-loss.  Comparing similarly the best-fitting normal linear model, wnlm.Q, to
-the less powerful and slightly less well fitting wnlm.R showed also good
-agreement (Fig.~\ref{fig:wnlm.R-wnlm.Q-compare}) suggesting the use of wnlm.Q
-without wnlm.R.  Comparing logi.S to wnlm.Q showed less close but still good
-qualitative agreement (Fig.~\ref{fig:logi.S-wnlm.Q-compare}) depending on how
-well logi.S fitted the data for a given gene (cf.~\ref{fig:qqnorm-logi.S}).  A
-comparison based on 99\% confidence intervals (CIs)
-(Fig.~\ref{fig:all-effects-wnlm.Q},~\ref{fig:all-effects-logi.S}) also
-revealed that logi.S is more powerful in detecting a significant effect and
-rejecting the null hypothesis \(\beta_{jg}=0\), which is in line with the
-mentioned theoretical advantages of logistic models.
+\begin{figure}
+\begin{center}
+\includegraphics[scale=0.6]{figures/2016-10-03-permutation-test/p-values-wnlm-Q-1.pdf}
+\end{center}
+\caption{}
+\label{fig:pval-wnlm.Q}
+\end{figure}
 
-The p-value for each null hypothesis was
-calculated not only the standard way based on normal distribution theory but
-also from a random permutation test (Fig.~\ref{fig:p-val-tdist-vs-perm}).  The
-two approaches to the p-value agreed closely under wnlm.Q for all genes while
-under logi.S the agreement depended on model fit and in particular on the
-normality of residuals (cf.~Fig.~\ref{fig:qqnorm-logi.S}).
+Given a model family (wnlm.Q or possibly logi.S) each hypothesis was tested both parametrically
+and non-parametrically (see axes labeled with ``t-distribution'' and
+``permutations'', respectively,
+on Fig.~\ref{fig:pval-wnlm.Q},~\ref{fig:pval} and~\ref{fig:pval-tdist-vs-perm}). The p-value estimates showed good agreement across estimation methods
+(parametric vs. non-parametric, Fig.~\ref{fig:pval}). This agreement could be expected from the regularity
+of the likelihood function (Fig. \ref{fig:ll-surf-explain}), since that allows
+the parametric method---which is based
+on asymptotic properties of maximum likelihood estimation---to work well already at the current
+sample size. The agreement across models was weaker but still reasonable (Fig.~\ref{fig:pval}); the test
+under logi.S appeared more powerful and/or more biased than that under wnlm.Q for most cases. Using a
+heuristic decision rule (gray area in Fig. \ref{fig:pval-wnlm.Q}) we rejected
+the marginal hypothesis \(\mathcal{H}_{jg}\) if the conditional
+hypotheses ``\(\mathcal{H}_{jg} |\text{parametric method}\)'' and
+``\(\mathcal{H}_{jg} |\text{non-parametric method}\)'' were both rejected at size
+\(\alpha = 0.05\) under the wnlm.Q model.
 
-These findings validate our approach to modeling the variation of parental bias
-(using wnlm.Q and logi.S models) and how that variation is explained by
-the observed predictor variables.  In what follows we make inferences on
-the biological predictors.
+For each of the four terms (Age,...) the hypothesis of independence was rejected for some genes
+(Fig.~\ref{fig:pval-wnlm.Q}). This appears to suggest that aging, gender and ancestry-related genetic variation regulates
+parental bias of those genes whereas the risk of schizophrenia is regulated by it; but, as discussed
+above, indirect causation involving a latent variable is also possible.
 
-\subsection{Associations between biological variables and genes' parental bias}
+\begin{table}
+\footnotesize
+\input{../results/signif-gene-effects-either-manual-annot.tex}
+\caption{}
+\label{tab:signif-gene-effects}
+\end{table}
 
-Since all of these models account for each predictor separately, they are
-expected, in principle, to successfully dissect their effects although the
-observed association among the predictors might adversely affect parameter
-estimation due to collinearity.  Inspection of likelihood surfaces suggested
-that perhaps with the exception of those including the predictor RIN, the
-associations only moderately distort likelihood surfaces
-(Fig.~\ref{fig:likelihood-surface}).
+Table \ref{tab:signif-gene-effects} presents some known properties of all genes for which read count ratio was found
+to depend on at least one of the four biological terms. For some of these genes the dependence
+is consistent with prior information on their physiological or pathological role (cf.~Discussion).
+For instance, association of PEG3 to gender is consistent with its role in morphological sexual
+differentiation in the brain and in sexual and maternal behavior \cite{Broad2009}. Similarly, association of
+UBE3A to schizophrenia is consistent with its suggested role as a risk factor for this and other
+psychiatric conditions based on variation of its gene dose and copy number variation of its broader
+locus 15q11q13 (PraderWilli/Angelman region) \cite{Sullivan2012, McNamara2013}.
 
-Fig.~\ref{fig:all-effects-wnlm.Q}~,\ref{fig:all-effects-logi.S},
-and present the estimated regression coefficients
-along with their 99\% confidence intervals.  The
-more significant results under logistic models indicated that they were indeed
-more powerful than the weighted or unweighed normal linear models, in
-agreement with their better fit and favorable theoretical properties and that
-they avoid the loss of information incurred by rank transformation.  But it
-must be added to this conclusion that logistic models might also be more prone
-to bias because much of their predicted sigmoidal curve was extrapolated from
-the data (Fig.~\ref{fig:predicted-curves}).  Results were very similar under
-the two logistic models.  Moreover, the great variation of regression
-coefficients across genes suggested that the ``.WA'' models were inadequate
-because predictors likely affect genes differentially.  These findings made us
-give priority to the logi.S model and use wnlm.R mainly to check the results'
-consistency under these two models.
-
-The effects of four biological predictors---age, gender, ancestry and
-psychiatric condition---on read count ratio of individual genes are depicted
-in Fig.~\ref{fig:biol-effects-wnlm.Q}.
-
-TODO: finish the rest of the Results section.
+Of the 30 genes called imprinted in our study only PEG10 and IGF2 had been found previously
+\cite{Fromer2016a} to be differentially expressed in SCZ based on the same RNA-seq data set but based on an
+analysis that ignores allele-specific read counts. PEG10, but not IGF2, is among the 4 genes the
+present work found to be associated with schizophrenia.
 
 \begin{figure}
 \begin{center}
@@ -702,19 +684,51 @@ a level of some biological factor (DxSCZ, GenderMale).}
 \label{fig:biol-effects-wnlm.Q}
 \end{figure}
 
-\begin{figure}
-\begin{center}
-\includegraphics[scale=0.6]{figures/2016-10-03-permutation-test/p-values-wnlm-Q-1.pdf}
-\end{center}
-\caption{}
-\label{fig:pval-wnlm.Q}
-\end{figure}
+Fig.~\ref{fig:biol-effects-wnlm.Q} and~\ref{fig:biol-effects-logi.S} extend
+the above results in two ways. First, they present the theoretical value
+\(\beta_{jg} = 0\) under the null hypothesis (dashed line) and the least
+square estimates \(\hat\beta_{jg}\) (blue dots).  The latter inform on the
+direction and size of the effect of each term \(j\) on read count ratio of
+each significantly affected gene \(g\). Along with these quantities the 99\%
+confidence intervals are also presented (horizontal bars in
+Fig.~\ref{fig:biol-effects-wnlm.Q} and~\ref{fig:biol-effects-logi.S}; see also
+Fig.~\ref{fig:ll-surf-explain} for the illustration of the link between
+confidence intervals and the geometry of the log-likelihood surface). For any
+given term we found significantly affected genes with both negative
+(e.g.~INPP5F) and positive (e.g.~KNCK9) direction.  For instance, the read
+count ratio of INPP5F depended negatively on age, while that of KCNK9
+positively, suggesting that aging may both down- and up-regulate parental
+bias. Interestingly, we found that both genes for which the dependence on
+DxSCZ is negative (UBE3A and RP11-909M7.3/MEG8) had been previously
+established as maternally expressed, whereas both genes with positive
+dependence (PEG10, MEST) as paternally expressed.
 
-\begin{table}
-\footnotesize
-\input{../results/signif-gene-effects-either-manual-annot.tex}
-\label{tab:signif-gene-effects}
-\end{table}
+The second extension in Fig.~\ref{fig:biol-effects-wnlm.Q} and~\ref{fig:biol-effects-logi.S} is the arrangement of genes according to their chromosomal location and containment in various imprinted gene clusters. We found clusters (e.g. clus 14
+on chr 7, clus 27 on chr 14, and clus 28 on chr 15) within which some gene exhibited significant
+dependence on a given predictor while all other genes did not. For a possibly causal predictor such
+as age this result might mean that if the significant dependence indeed reflects true association
+between that gene and the predictor, then all other genes in the cluster are either independent or
+dependent only to a degree that could not be detected as significant change. However, we did not
+observe two significant dependencies of opposing direction in the same cluster, which was expected
+given the central role of of a single imprinting control region in the establishment and maintenance
+of imprinting and parental bias for all genes in a cluster.
+
+\subsection{Limitations}
+
+The previous section focussed mainly on dependence or independence between a gene's read
+count ratio. As for the size of the effect, \(\hat\beta_{jg_1},
+\hat\beta_{jg_2},...\)~were compared (Fig.~\ref{fig:biol-effects-wnlm.Q}) providing relative
+effect sizes across genes \(g_1, g_2,...\)~for a given predictor \(j\). But how do predictors compare to each
+other for any given gene? In particular, of the total variation in read count ratio what fraction is
+explained by technical, and what fraction by biological predictors? Can we estimate the variation in
+parental bias by removing the technical variation from all explained variation of read count ratio?
+Unfortunately these questions proved unresolvable within the present experimental design and
+fitted models. We performed ANOVA with the aim of assigning a component of variation to
+each predictor but this failed because the reduction of residual sum of squares on the addition of
+a predictor to the model strongly depended on the sequence in which predictors were added (see
+Fig.~\ref{fig:anova} for a forward and reverse sequence). Such failure of ANOVA follows from non-orthogonality
+of the terms (predictor variables and their levels) of the linear predictor
+(Fig.~\ref{fig:predictor-associations}).
 
 \section{Discussion}
 
@@ -887,14 +901,6 @@ regulators such as age, gender, and ancestry.
 
 \begin{figure}
 \begin{center}
-\includegraphics[scale=0.6]{figures/2016-09-23-model-checking/qqnorm-logi-S-1.pdf}
-\end{center}
-\caption{}
-\label{fig:qqnorm-logi.S}
-\end{figure}
-
-\begin{figure}
-\begin{center}
 \includegraphics[scale=0.6]{figures/2016-09-23-model-checking/qqnorm-wnlm-Q-1.pdf}
 \end{center}
 \caption{}
@@ -903,10 +909,10 @@ regulators such as age, gender, and ancestry.
 
 \begin{figure}
 \begin{center}
-\includegraphics[scale=0.6]{figures/2016-09-23-model-checking/homoscedas-logi-S-1.pdf}
+\includegraphics[scale=0.6]{figures/2016-09-23-model-checking/qqnorm-logi-S-1.pdf}
 \end{center}
 \caption{}
-\label{fig:homoscedas-logi.S}
+\label{fig:qqnorm-logi.S}
 \end{figure}
 
 \begin{figure}
@@ -919,10 +925,10 @@ regulators such as age, gender, and ancestry.
 
 \begin{figure}
 \begin{center}
-\includegraphics[scale=0.6]{figures/2016-09-23-model-checking/influence-logi-S-1.pdf}
+\includegraphics[scale=0.6]{figures/2016-09-23-model-checking/homoscedas-logi-S-1.pdf}
 \end{center}
 \caption{}
-\label{fig:influence-logi.S}
+\label{fig:homoscedas-logi.S}
 \end{figure}
 
 \begin{figure}
@@ -935,18 +941,35 @@ regulators such as age, gender, and ancestry.
 
 \begin{figure}
 \begin{center}
-\includegraphics[scale=0.6]{figures/2016-06-22-extending-anova/logi-S-logi2-S-compare-1.pdf}
+\includegraphics[scale=0.6]{figures/2016-09-23-model-checking/influence-logi-S-1.pdf}
 \end{center}
 \caption{}
-\label{fig:logi.S-logi2.S-compare}
+\label{fig:influence-logi.S}
 \end{figure}
 
 \begin{figure}
 \begin{center}
-\includegraphics[scale=0.6]{figures/2016-06-22-extending-anova/wnlm-R-wnlm-Q-compare-1.pdf}
+\includegraphics[scale=0.6]{figures/2016-10-03-permutation-test/p-val-tdist-vs-perm-filt-iso-1.pdf}
 \end{center}
 \caption{}
-\label{fig:wnlm.R-wnlm.Q-compare}
+\label{fig:pval-tdist-vs-perm}
+\end{figure}
+
+\begin{figure}
+\begin{center}
+\includegraphics[scale=0.6]{figures/2016-10-03-permutation-test/p-values-1.pdf}
+\end{center}
+\caption{}
+\label{fig:pval}
+\end{figure}
+
+\begin{figure}
+\begin{center}
+\includegraphics[scale=0.6]{figures/2016-08-21-likelihood-surface/explain-rll-wireframe-1.png}
+\includegraphics[scale=0.6]{figures/2016-08-21-likelihood-surface/explain-rll-levelplot-B-1.png}
+\end{center}
+\caption{}
+\label{fig:ll-surf-explain}
 \end{figure}
 
 \begin{figure}
@@ -984,22 +1007,6 @@ the logi.S model}
 
 \begin{figure}
 \begin{center}
-\includegraphics[scale=0.6]{figures/2016-10-03-permutation-test/p-val-tdist-vs-perm-filt-iso-1.pdf}
-\end{center}
-\caption{}
-\label{fig:p-val-tdist-vs-perm}
-\end{figure}
-
-\begin{figure}
-\begin{center}
-\includegraphics[scale=0.6]{figures/2016-10-03-permutation-test/p-values-1.pdf}
-\end{center}
-\caption{}
-\label{fig:pval}
-\end{figure}
-
-\begin{figure}
-\begin{center}
 \includegraphics[scale=0.6]{figures/2016-08-21-likelihood-surface/ll-surf-coefs-wnlm-Q-1.png}
 \end{center}
 \caption{}
@@ -1028,6 +1035,14 @@ the logi.S model}
 \end{center}
 \caption{}
 \label{fig:anova}
+\end{figure}
+
+\begin{figure}
+\begin{center}
+\includegraphics[scale=0.6]{figures/2016-10-20-differential-expression-scz/venn-triple-1.pdf}
+\end{center}
+\caption{}
+\label{fig:diff-exp-scz}
 \end{figure}
 
 \begin{figure}

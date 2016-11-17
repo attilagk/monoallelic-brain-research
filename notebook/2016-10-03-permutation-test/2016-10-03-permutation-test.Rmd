@@ -145,7 +145,7 @@ pvalplot.genes.as.panels(both.p.val, xlim = c(-0.5, 5), ylim = c(-0.5, 5))
 ### Figures for manuscript
 
 Figure for manuscript showing p-values calculated from both approaches (theory: t-distribution, and permutation test) and under both models (wnlm.Q and, when the fit was OK, also logi.S).
-The plotting symbols are color coded according to gene rank (rainbow, red to violet).  The plotting symbols also display the rank with numbers, see the key on the top.  Genes acceptably fitted by both models are distinguished with a diamond symbol and **bold font** from those that could be fitted only by wnlm.Q.
+The plotting symbols are color coded according to gene rank (rainbow, red to violet).  The plotting symbols also display the rank with numbers, see the key on the top.  Genes acceptably fitted by both models are distinguished with a diamond symbol and **bold font** from those that could be fitted only by wnlm.Q.  Gray rectangle shows the decision rule, which rejects the null hypothesis if the p-value is smaller than 0.05 given both the t-distribution and the permutation-based test.
 
 
 ```{r p-values, echo=FALSE, fig.asp=0.8}
@@ -164,8 +164,11 @@ p.val.plot <-
                 gene = as.character(as.integer(Gene)), estimate = Estimate, model = Model,
                 panel = function(x, y, groups, subscripts, gene, estimate, ...){
                     sig.lev <- c(-log10(5e-2), 2, 3)
-                    panel.abline(v = sig.lev , h = sig.lev, col = "gray")
-                    panel.abline(a = 0, b = 1, col = "gray", lty = "dotted")
+                    panel.abline(v = sig.lev, h = sig.lev, col = "gray", lty = "solid")
+                    panel.rect(sig.lev[1], sig.lev[1], 1e2, 1e2, col = "gray", border = "transparent")
+                    #panel.abline(v = sig.lev[-1], h = sig.lev[-1], col = "white", lty = "dotted")
+                    panel.abline(v = sig.lev, h = sig.lev, col = "white", lty = "dashed")
+                    panel.abline(a = 0, b = 1, col = "black", lty = "dotted")
                     col <- trellis.par.get("superpose.symbol")$fill
                     panel.xyplot(x, y, pch = ifelse(logi.S.OK$logi.S.fit.OK, mypch[1], mypch[2]), fill = col, col = col, cex = 1.5, alpha = 0.5)
                     panel.text(x, y, labels = gene[subscripts], cex = 0.7, font = ifelse(logi.S.OK$logi.S.fit.OK, 2, 1), ...)

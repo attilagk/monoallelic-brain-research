@@ -3,44 +3,44 @@ Capacity: max_strings=35307, hash_size=35307, hash_prime=30011
 The top-level auxiliary file: monoall-ms.aux
 The style file: plain.bst
 Database file #1: monoall-ms.bib
-You've used 8 entries,
+You've used 11 entries,
             2118 wiz_defined-function locations,
-            567 strings with 18889 characters,
-and the built_in function-call counts, 27463 in all, are:
-= -- 1861
-> -- 4117
+            589 strings with 19593 characters,
+and the built_in function-call counts, 28514 in all, are:
+= -- 1968
+> -- 4166
 < -- 0
-+ -- 1646
-- -- 1638
-* -- 3430
-:= -- 5256
-add.period$ -- 24
-call.type$ -- 8
-change.case$ -- 843
++ -- 1665
+- -- 1654
+* -- 3522
+:= -- 5433
+add.period$ -- 33
+call.type$ -- 11
+change.case$ -- 860
 chr.to.int$ -- 0
-cite$ -- 8
-duplicate$ -- 88
-empty$ -- 209
-format.name$ -- 1638
-if$ -- 4533
+cite$ -- 11
+duplicate$ -- 121
+empty$ -- 288
+format.name$ -- 1654
+if$ -- 4743
 int.to.chr$ -- 0
-int.to.str$ -- 8
-missing$ -- 8
-newline$ -- 43
-num.names$ -- 16
-pop$ -- 827
+int.to.str$ -- 11
+missing$ -- 11
+newline$ -- 58
+num.names$ -- 22
+pop$ -- 838
 preamble$ -- 1
-purify$ -- 835
+purify$ -- 849
 quote$ -- 0
-skip$ -- 56
+skip$ -- 77
 stack$ -- 0
-substring$ -- 203
-swap$ -- 8
+substring$ -- 287
+swap$ -- 11
 text.length$ -- 0
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 32
+type$ -- 44
 warning$ -- 0
-while$ -- 28
-width$ -- 9
-write$ -- 90
+while$ -- 40
+width$ -- 13
+write$ -- 123
