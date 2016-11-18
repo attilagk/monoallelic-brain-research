@@ -3,8 +3,7 @@
 \usetikzlibrary{arrows.meta}
 \bibliographystyle{plain}
 
-\title{Variation of Genomic Imprinting in the Human Population,
-and Analysis of its Sources and Psychiatric Consequences}
+\title{Regulators of Genomic Imprinting in the Human Brain and Links to Schizophrenia}
 \author{Attila Guly\'{a}s-Kov\'{a}cs\(^\ast\), Ifat Keydar\(^\ast\),\\
 Eva Xia, Menachem Fromer, Doug Ruderfer,\\
 Ravi Sachinanandam, Andrew Chess}
@@ -38,55 +37,15 @@ development, aging, gender
 our study
 \end{enumerate}
 
-Variation of expression level across genes, lifetime, cells, tissue types, as
-well as individuals in the human population is clearly a major determinant of
-phenotype REF.  A distinct, though related, question is the role of the
-\emph{ratio} between maternal (or paternal) transcripts and those from both
-alleles of a given gene.  Besides the random thermal fluctuations, which occur
-in all genes, some genes display systematic \emph{parental bias} in allelic
-expression.  The extreme form of this bias is known as monoallelic expression,
-which may be non-random if expression is biased towards only one parent or
-random otherwise \cite{Chess2012}.
+\subsection{Last paragraph of Introduction}
 
-Genomic imprinting is the classic, non-random, case of monoallelic expression,
-which is mediated by epigenetic mechanisms that either concern single genes or
-entire imprinted gene clusters~\cite{Peters2014,Plasschaert2014}.  Having
-emerged late in evolution~\cite{Tucci2016}, imprinting of several genes have
-been implicated in biological functions of mainly neurological, psychological,
-behavioral and social type.  Mutations disrupting the expression of certain
-imprinted genes are deeply penetrant causes of rare syndromes displaying
-psychological, cognitive, and social dysfunction.  But it remains to be
-established to what extent more subtle perturbations of parental bias might
-contribute to common, highly polygenic psychiatric disorders such as
-schizophrenia or autism.
-
-Also of interest is how and why parental bias for a given imprinted gene
-might vary between individuals.  Age is a prime candidate for regulator
-given that several imprinted genes have been found to be functionally associated to either
-perinatal stage (e.g.~suckling) or young adulthood (e.g.~maternal care).
-Gender and ancestry are obvious further candidates.
-
-A modern approach to study the variation of parental bias is to differentiate
-maternal and paternal transcripts based on those single nucleotide
-polymorphisms (SNPs) that contribute to the heterozygosity of a given
-individual and gene.  Coupled with high throughput techniques such as RNA-seq
-this approach permits the quantification of both genome-wide and
-among-individual variation.  Several research groups
-\cite{Gregg2010a,Perez2015,DeVeale2012} combined this approach with F1 hybrids
-of crossed mouse strains and found, for instance, that \(\approx 1\%\) of all
-genes are imprinted, although some \cite{Perez2015} of the same researchers
-previously estimated \(> 5\%\), leaving this question controversial.
-Another finding is the differential effect of age, but not gender, on parental
-bias: shifting from neonatal age to young adulthood down-regulated bias in
-ca.~\(20\%\) of detected imprinted genes, up-regulated in \(6\%\) and had no
-effect on the remaining nearly \(75\%\).
-
-While such designed mouse experiments afford high statistical power their
-relevance is at best unclear to human neuropsychological function, ageing and
-ancestry.  The present work directly addresses these points by utilizing
-post-mortem tissue samples from the dorsolateral prefrontal cortex (DLFPC)
-from nearly 600 individuals of different age, psychiatric condition, and
-ancestry, and by performing the RNA-seq based quantification of parental bias.
+In this work we studied how parental bias varies both across all genes expressed
+in the human dorsolateral prefrontal cortex (DLPFC) and, based on that variation,
+identified imprinted genes in that brain area.  We subjected those imprinted
+genes to statistical analysis, based on which we inferred that age, gender and
+genetic variation related to population structure each regulate a different
+subset of imprinted genes.  The same analysis showed the involvement of
+several imprinted genes in schizophrenia.
 
 \section{Methods}
 
@@ -96,25 +55,43 @@ ancestry, and by performing the RNA-seq based quantification of parental bias.
 
 \subsection{Study design}
 
-The genome- and population-wide variation of parental bias was assessed using
-DLPFC tissue samples, one from each of \(m=579\) study individuals
-\(i=1,...,m\)~(Fig.~\ref{fig:study-design}).
-For each combination \((i,g)\) of individuals and \(15584\) genes
-\(g\in\{g_1,...,g_{15584}\}\) (which passed an initial quality filter, see
-Section~\ref{sec:filtering}) the set
-of all heterozygous SNPs was identified with SNP-array genotyping, and
-expression was quantified at each SNP separately for the two alleles by
-counting RNA-seq reads noting the allele associated with the \emph{higher read
-count} (as opposed to the \emph{lower read count}).  For a given \((i,g)\)
-combination higher and lower read counts were then separately aggregated
-across the heterozygous SNPs yielding the statistics \(H_{ig}\) and
-\(L_{ig}\), as well as the \emph{total read count} \(T_{ig} = H_{ig} +
-L_{ig}\).  Genes were then quality filtered based on the conditional
-distribution of total read count across the 579 individuals for any given
-gene, leaving \(n=5307\) genes in the analysis.  The \emph{read count ratio}
-statistic, defined as \(S_{ig} = H_{ig}/T_{ig}\), was used to quantify
-parental bias towards the more highly expressed parental allele (see also
-Eq.~\ref{eq:S-definition} in Section~\ref{sec:filtering}).
+We used allele-specific RNA-seq data from CMC to probe the parental bias of allelic
+expression for each gene \(g\) that is substantially expressed in the DLPFC.
+We exploited the fact that single nucleotide polymorphisms (SNPs) provide a
+way to distinguish between the two parental copies.  For a heterozygous SNP
+\(s\) in a gene the reference and the alternative variant tags the maternal
+and paternal copy or the other way around.  When parental bias towards
+positively biased allele \(b\) (which may be maternal or paternal) is strong
+then it seems likely that the count of reads tagged by the corresponding SNP
+variant (which may be reference or alternative) is also relatively high.
+
+This intuition be formalized by introducing \(p\), the fraction of
+transcripts from the parent towards which expression is biased with the
+interpretation of parental bias.  Note that \(1/2\le p\le 1\).  Similarly,
+let \(B\) denote the count of RNA-seq reads that map to the \(b\) allele and
+let \(T\) be the total read count.  Then, assuming that \(B\) is a binomial
+random variable with given expected relative frequency \(p\) and denominator
+\(T\), the probability that \(B\) is the higher of the two read counts,
+i.e.~\(B \ge T - B\), is \[\sum_{x:T/2\le x\le T} {x \choose T} p^x (1 -
+p)^{T-x}.\] It is easy to see that this probability increases with \(p\),
+the parental bias, which supports our intuition.
+
+This motivated us to quantify parental bias using a statistic called
+\emph{read count ratio} \(S\) whose definition we
+based on the total read count \(T\) and the \emph{higher read count} \(H\)
+(i.e.~the count of reads carrying the reference or alternative SNP variant,
+whichever is higher) and use \(S\).  The
+definition is
+\begin{equation}
+S_{ig} = \frac{H_{ig}}{T_{ig}}= \frac{\sum_s H_s}{\sum_sT_s},
+\label{eq:S-definition}
+\end{equation}
+where \(i\) identifies an individual, \(g\) a gene, and the summation runs
+over all SNPs \(s\) for which gene \(g\) is heterozygous in individual \(i\).
+Note that if \(B_{ig}\) is the count or reads that map to the \(b\) allele (as
+above) and if we make the same distributional assumption that \(B_{ig}\sim
+\mathrm{Binom}(p_{ig}, T_{ig})\) then \(E[S_{ig}] \downarrow p_{ig}\) as
+\(p_{ig} \uparrow 1\).
 
 \begin{figure}
 \begin{center}
@@ -134,17 +111,24 @@ in the unobserved parental expression bias between individual \(i_1\) and
 \label{fig:study-design}
 \end{figure}
 
+Fig.~\ref{fig:study-design} illustrates the calculation of \(S_{ig}\) for the
+combination of two hypothetical genes, \(g_1,g_2\), and two individuals,
+\(i_1,i_2\).  It also shows an example for the less likely event that the lower rather
+than the higher read count corresponds to the SNP variant tagging the higher
+expressed allele (see SNP \(s_3\) in gene \(g_1\) in individual \(i_2\)).
 
-Taking a genome-wide viewpoint, it is helpful to regard the read count ratio
-as a set of random variables \(\{S_{g_1},...,S_{g_n}\}\), each of which varies
-across the human population described by its own distribution.  The difference
-(or similarity) among the corresponding set of distributions is an indicator
-of biological mechanisms that differentiate genes' parental bias.  For any
-given gene \(g\) the observed \(S_{1g},...,S_{mg}\) from the present data on
-\(m\le579\) individuals estimates the distribution of \(S_g\).  That
-distribution, in turn, informs us on further biological mechanisms that
-differentiate individuals' parental bias for that gene but at the same time
-also reflects variation of \(S_g\) that arise from technical sources.
+Using the read count ratio we analyzed two aspects of the variation of
+parental bias.  First, we called imprinted genes by ranking all expressed
+genes according to the \emph{gene score}, a summary statistic that quantifies
+how right-shifted the distribution of \(S_{ig}\) is for any given gene \(g\).
+Note that this classification used other sources of information as well (see
+Results).  Second, given a gene \(g\) that we called imprinted, we sought to
+identify biological regulators and psychiatric consequences of parental bias
+by studying the conditional distribution of \(S_{\cdot g}\) given observations
+\(x_{\cdot 1}, x_{\cdot 2},...\) on features of study individuals that are not
+gene-specific. We call these features \emph{predictors} because we used them
+in a regression model framework.  These predictors and their
+various levels are listed in Table~\ref{tab:predictors}.
 
 \begin{table}
 \begin{center}
@@ -157,7 +141,7 @@ Gender & [Female], Male\\
 PMI & \\
 Dx & [AFF], Control, SCZ\\
 RIN &  \\
-RNA\_batch & [0], A, B, C, D, E, F, G, H\\
+RNA\_batch & [A], B, C, D, E, F, G, H, 0\\
 Ancestry.1 & \\
 \vdots & \\
 Ancestry.5 &  \\
@@ -173,26 +157,11 @@ eigenvalue from the decomposition of genotypes indicating population structure}
 \end{center}
 \end{table}
 
-Besides the genomic measurements leading to read count ratios our data include
-observations on variables (Table~\ref{tab:predictors}) that we found (see
-Section~\ref{sec:results-regression} below) to be informative for the genome-wide
-dissection of various biological mechanisms and technical effects underlying
-the observed variation of read counts.  We carried out a theoretical
-study\footnote{I wonder if we should attach my modeling article confidentially
-for the reviewers.  See that article
-at:\\http://bernie.anbg.mssm.edu/\~{}attila/assets/projects/monoallelic-brain/2016-04-14-braim-model.pdf}
-that culminated in several probabilistic models of read counts---even at
-individual SNPs---and other observed variables (Fig.~\ref{fig:agk}).  These
-models may successfully capture the observed complex pattern of correlations
-among the measured variables (Section~\ref{sec:results-regression}); but our
-theoretical work also showed that their computational implementation and
-evaluation of their properties and performance in relevant tasks would reach
-beyond the present scope.  Therefore, we decided to resort to relatively
-simple conventional models, some of which were found to fit reasonably well to
-allow quantitative inferences on the small subset of genes called imprinted
-(Section~\ref{sec:results-regression}).  On the genome-wide scale (next section) we
-present only an exploratory statistical analysis, which none-the-less permits
-qualitative conclusions under careful interpretation.
+Before we carried out our read count ratio-based analyses, however, we cleaned
+our RNA-seq data by quality-filtering and by improving the accuracy of SNP
+calling with the use of DNA SNP array data and imputation. In the following
+subsections of Methods we describe the data, these procedures, as well as our
+regression models in detail.
 
 \subsection{Brain samples}
 
@@ -281,7 +250,6 @@ respectively).  The read count ratio for
 individual \(i\) and gene \(g\) is defined as
 \begin{equation}
 S_{ig} = \frac{H_{ig}}{T_{ig}}= \frac{\sum_s H_s}{\sum_sT_s},
-\label{eq:S-definition}
 \end{equation}
 where the summation runs through all heterozygous SNPs \(s\) that occur in the
 pair
@@ -686,36 +654,43 @@ a level of some biological factor (DxSCZ, GenderMale).}
 
 Fig.~\ref{fig:biol-effects-wnlm.Q} and~\ref{fig:biol-effects-logi.S} extend
 the above results in two ways. First, they present the theoretical value
-\(\beta_{jg} = 0\) under the null hypothesis (dashed line) and the least
-square estimates \(\hat\beta_{jg}\) (blue dots).  The latter inform on the
-direction and size of the effect of each term \(j\) on read count ratio of
-each significantly affected gene \(g\). Along with these quantities the 99\%
-confidence intervals are also presented (horizontal bars in
-Fig.~\ref{fig:biol-effects-wnlm.Q} and~\ref{fig:biol-effects-logi.S}; see also
-Fig.~\ref{fig:ll-surf-explain} for the illustration of the link between
-confidence intervals and the geometry of the log-likelihood surface). For any
-given term we found significantly affected genes with both negative
-(e.g.~INPP5F) and positive (e.g.~KNCK9) direction.  For instance, the read
-count ratio of INPP5F depended negatively on age, while that of KCNK9
-positively, suggesting that aging may both down- and up-regulate parental
-bias. Interestingly, we found that both genes for which the dependence on
-DxSCZ is negative (UBE3A and RP11-909M7.3/MEG8) had been previously
-established as maternally expressed, whereas both genes with positive
-dependence (PEG10, MEST) as paternally expressed.
+\(\beta_{jg} = 0\) under the null hypothesis (dashed line) and the maximum
+likelihood estimates \(\hat\beta_{jg}\) (colored symbols).  For each
+regression term \(j\) the \(\hat\beta_{jg}\) under wnlm.Q agreed reasonably
+with that under logi.S (Fig.~\ref{fig:logi.S-wnlm.Q-compare}).  The estimates
+\(\hat\beta_{jg}\) inform on the direction and size of the effect of each term
+\(j\) on read count ratio of each significantly affected gene \(g\).  Along
+with these quantities the 99\% confidence intervals are also presented
+(horizontal bars in Fig.~\ref{fig:biol-effects-wnlm.Q}
+and~\ref{fig:biol-effects-logi.S}; see also Fig.~\ref{fig:ll-surf-explain} for
+the illustration of the link between confidence intervals and the geometry of
+the log-likelihood surface). For any given term we found significantly
+affected genes with both negative (e.g.~INPP5F) and positive (e.g.~KNCK9)
+direction.  For instance, the read count ratio of INPP5F depended negatively
+on age, while that of KCNK9 positively, suggesting that aging may both down-
+and up-regulate parental bias. Interestingly, we found that both genes for
+which the dependence on DxSCZ is negative (UBE3A and RP11-909M7.3/MEG8) had
+been previously established as maternally expressed, whereas both genes with
+positive dependence (PEG10, MEST) as paternally expressed.
 
-The second extension in Fig.~\ref{fig:biol-effects-wnlm.Q} and~\ref{fig:biol-effects-logi.S} is the arrangement of genes according to their chromosomal location and containment in various imprinted gene clusters. We found clusters (e.g. clus 14
-on chr 7, clus 27 on chr 14, and clus 28 on chr 15) within which some gene exhibited significant
-dependence on a given predictor while all other genes did not. For a possibly causal predictor such
-as age this result might mean that if the significant dependence indeed reflects true association
-between that gene and the predictor, then all other genes in the cluster are either independent or
-dependent only to a degree that could not be detected as significant change. However, we did not
-observe two significant dependencies of opposing direction in the same cluster, which was expected
-given the central role of of a single imprinting control region in the establishment and maintenance
-of imprinting and parental bias for all genes in a cluster.
+The second extension in Fig.~\ref{fig:biol-effects-wnlm.Q}
+and~\ref{fig:biol-effects-logi.S} is the arrangement of genes according to
+their chromosomal location and containment in various imprinted gene clusters.
+We found clusters (e.g. clus 14 on chr 7, clus 27 on chr 14, and clus 28 on
+chr 15) within which some gene exhibited significant dependence on a given
+predictor while all other genes did not. For a possibly causal predictor such
+as age this result might mean that if the significant dependence indeed
+reflects true association between that gene and the predictor, then all other
+genes in the cluster are either independent or dependent only to a degree that
+could not be detected as significant change. However, we did not observe two
+significant dependencies of opposing direction in the same cluster, which was
+expected given the central role of of a single imprinting control region in
+the establishment and maintenance of imprinting and parental bias for all
+genes in a cluster.
 
 \subsection{Limitations}
 
-The previous section focussed mainly on dependence or independence between a gene's read
+The previous section focussed mainly on the question of dependence or independence between a gene's read
 count ratio. As for the size of the effect, \(\hat\beta_{jg_1},
 \hat\beta_{jg_2},...\)~were compared (Fig.~\ref{fig:biol-effects-wnlm.Q}) providing relative
 effect sizes across genes \(g_1, g_2,...\)~for a given predictor \(j\). But how do predictors compare to each
@@ -728,121 +703,55 @@ each predictor but this failed because the reduction of residual sum of squares 
 a predictor to the model strongly depended on the sequence in which predictors were added (see
 Fig.~\ref{fig:anova} for a forward and reverse sequence). Such failure of ANOVA follows from non-orthogonality
 of the terms (predictor variables and their levels) of the linear predictor
-(Fig.~\ref{fig:predictor-associations}).
+due to the dependencies among predictors (Fig.~\ref{fig:predictor-associations}).
+
+We observed non-orthogonality not only among terms of the linear predictor but
+also among the regression coefficients (Fig.~\ref{fig:ll-non-orthogonality}).
+This means that the log-likelihood \(\ell\) of a given coefficient, such as
+\(\beta_\mathrm{Age}\) depended on other coefficients.  The dependence of
+\(\ell(\beta_\mathrm{Age})\) on \(\beta_\mathrm{RIN}\), the coefficient for
+RNA integrity number, appeared particularly strong pointing to the sensitivity
+of our analysis to RNA quality.
+
+It is reasonable to assume for several predictors that their effects on the
+read count ratio that are not specific to any gene.  Such predictors are RIN
+and the ones identifying RNA batches.  Accounting both for gene specific and
+for aspecific effects at the same time cannot be achieved in the present GLM
+framework (Fig.~\ref{fig:glm-vs-hierarch} left); therefore all fitted GLM
+families mentioned so far assumed gene specific effect for all predictors.
+Both under wnlm.Q and under logi.S RIN and the RNA\_batchB,...RNA\_batch0
+predictors were found to differentially affect the read count ratio for
+different genes
+(Fig.~\ref{fig:all-effects-wnlm.Q},~\ref{fig:all-effects-logi.S}.  This result
+is hard to explain mechanistically.  Rather, it seems to highlight the
+mentioned limitation of the GLM framework.  One consequence of this limitation
+is that, due to the discussed non-orthogonality of parameters, some technical
+effects may manifest as biological ones and vice versa.
+
+Another consequence of the lack of information sharing is relatively low
+power.  More complex models of this characteristic would have even lower power
+but complexity is often needed to account for interactions among predictors.
+To assess interactions we studied the contextual dependence of read count
+ratio on age
+(Fig.~\ref{fig:interaction-wnlm.Q},~\ref{fig:interaction-logi.S}).  In the
+context of different institutions or genders the estimates for
+\(\beta_\mathrm{Age}\) were somewhat different from the marginal estimates
+\(\hat\beta_\mathrm{Age}\) seen in Fig.~\ref{fig:biol-effects-wnlm.Q}
+and~\ref{fig:biol-effects-logi.S}.  This suggests that interactions are
+indeed present between age and some other predictors but the identity of these
+predictors is uncertain due to the associations among them.
+
+We also fitted model families (Fig.~\ref{fig:glm-vs-hierarch} middle) that
+assume that the effects of all predictors are \emph{not} gene specific and so
+pool even heterogeneous information together across genes.  But this approach
+did not find significant dependence of read count ratio on any of the
+biological predictors (Fig.~\ref{fig:all-effects-wnlm.Q}), which is consistent
+with the our earlier result (Fig.~\ref{fig:biol-effects-wnlm.Q}) that each of
+biological predictor affected relatively few genes significantly and these
+effects were often of opposite direction.
 
 \section{Discussion}
 
-The main results of this work may be interpreted in terms of the scheme in
-Fig.~\ref{fig:scheme}.  The scheme presents all \(n\) imprinted genes in a
-tissue, such as the DLPFC, which is relevant to neural function.  Parental
-bias is putatively regulated by age, gender, ancestry, and possibly other
-biological factors.  The nature of regulation---simple up- or down-regulation,
-no effect, or some more complex pattern---is captured in the functions
-\(\psi_1,...,\psi_n\).  Function \(\phi\) maps jointly the \(n\) parental
-biases to neuropsychology, and connects therefore the molecular phenotypic
-level to the organismal one.
-
-\begin{figure}[h]
-\begin{center}
-\begin{tikzpicture}[align=center]
-\node at (-4,2) {\emph{regulators}};
-\node[draw] (A) at (-4,0) {age,\\gender,\\ancestry,\\...};
-\node at (0,2) {\emph{parental bias}};
-\node[draw] (G1) at (0,1) {gene \(g_1\)};
-\node at (0,0) {\vdots};
-\node[draw] (Gn) at (0,-1) {gene \(g_n\)};
-\coordinate (C) at (2,0);
-\node[draw] (B) at (4,0) {neuro-\\psychology};
-\draw[-Stealth] (A) -- node[anchor=south] {\(\psi_1\)} (G1);
-\draw[-Stealth] (A) -- node[anchor=south] {\(\psi_n\)} (Gn);
-\draw[-Stealth] (C) -- node[anchor=south] {\(\phi\)} (B);
-\draw (G1) .. controls (1,0) and (2,0) .. (C);
-\draw (Gn) .. controls (1,0) and (2,0) .. (C);
-\end{tikzpicture}
-\end{center}
-\caption{}
-\label{fig:scheme}
-\end{figure}
-
-Our genome-wide analysis suggests that \(<1\%\) of all genes are imprinted,
-which implies \(n\approx 200\).  This provides evidence, in addition to
-previous similarly conservative estimates of \(n\)
-\cite{Perez2015,DeVeale2012}, against the controversial estimate of \(n\approx
-1300\) \cite{Gregg2010a}.
-
-More interestingly, we find that several regression coefficients differ
-significantly from zero, which suggests that age, gender and ancestry do
-indeed regulate parental bias in at least some imprinted genes in the human
-DLPFC.  We infer that these three regulators exert gene-specific effects, up-
-or down-regulating parental bias in a subset of imprinted genes while having
-no (detectable) impact on the rest.  That these predictors differ in the
-subset of genes they affect significantly hints at the potential complexity of
-regulation.  A further layer of that complexity arises from possible
-interactions among these predictors, which is in fact consistent with the
-dependence of the age effect on gender in our conditional analysis.
-
-The interpretation of the present results as the effect of (human) ancestry on
-parental bias points to genetic regulatory mechanisms of imprinting that
-modulate the known epigenetic mechanisms.  Given the late emergence of
-imprinting in therian phylogeny and its role in neuropsychological and social
-function, the genetics of parental bias may well be an increasingly important
-target of natural selection.  Also, the ancestry effect is a remarkable
-novelty of our work since previous studies, all using in-bread mouse strains,
-failed to address this point.  As for age, a similar differential effect was
-found in the mouse cerebellum to the effect we observe here. Gender, however,
-had no significant effect in the same mouse study.
-
-The above interpretation certainly depends on our statistical inference, which
-in turn is based on the present data and regression models, both of which have
-serious limitations.  Some of these---related to differing sequencing and
-genotyping protocols---might be alleviated by improved across-institute
-standardization.  But others, such as the confounding of age by certain
-technical variables (e.g.~institution), are hopelessly entangled with the
-observational nature of post mortem human studies, which precludes orthogonal,
-that is clearly interpretable, decomposition of the variation of the observed
-measure of parental bias (the response) into separate technical and biological
-components.  In addition, non-orthogonality also limits statistical power.  But even
-if the data fulfilled orthogonality, the present regression models would still
-remain too rigid to account for the relative overdispersion of RNA-seq read
-counts, the uncertainty surrounding haplotype, and that genes are neither
-completely independent nor completely identical in their parental bias.  In
-future work these ought to be tackled either with recently developed
-hierarchical models built on normal linear model \cite{Perez2015,Law2014} or,
-if regulators indeed strongly interact as the present work indicates, by the
-adoption of Bayesian networks.
-
-The molecular mechanism mediating the age effect.  TODO: clusters and regression
-coefficients for gender and ancestry
-
-Even if the regulatory effect of age, gender, ancestry, etc, on parental bias
-is more firmly established by methodological improvements and more data, it
-still remains to be determined whether (and how) the corresponding changes in
-expression phenotype affect neural and psychological properties and might be
-causal to some common psychiatric disorders.  This work may be considered an
-initial step towards that aim as the estimated regression coefficients,
-associated with SCZ or AFF, provide statistically weak hints at that
-causality.
-
-A more general question is how function \(\phi\) in Fig.~\ref{fig:scheme}
-integrates parental bias across genes and maps that signal to organismal
-phenotype.  That mapping occurs through the intermediate domain of cellular
-metabolism.  Therefore, extending the present ``multi-omic'' data collection
-with a metabolic layer appears promising, especially because rather specific
-metabolism characterizes several imprinted genes \cite{Tucci2016,Peters2014}.
-Adopting single-cell RNA-seq in the present framework would be another
-interesting extension that could possibly elucidate the role of random
-monoallelic expression.
-
-In fact, the question regarding the map \(\phi\) is even more general, since
-it is plausible that parental bias acts jointly with overall expression level
-(this is not indicated in Fig.~\ref{fig:scheme}).  If so, the resolution of
-the prevailing system biology is to be refined from mere genes to separate
-maternal and paternal copies.  On the other hand, the present finding that
-parental bias substantially varies across individuals even withing the same
-tissue calls for a conceptual shift from the current practice of regarding
-genes unconditionally as either imprinted or not to considering instead the
-conditional distribution of their parental bias within the population given
-regulators such as age, gender, and ancestry.
 
 \bibliography{monoall-ms}
 
@@ -965,6 +874,15 @@ regulators such as age, gender, and ancestry.
 
 \begin{figure}
 \begin{center}
+\includegraphics[scale=0.6]{figures/2016-08-08-imprinted-gene-clusters/segplot-logi-S-99conf-1.pdf}
+\end{center}
+\caption{Biological effects: estimates and $99\%$ confidence intervals under
+the logi.S model}
+\label{fig:biol-effects-logi.S}
+\end{figure}
+
+\begin{figure}
+\begin{center}
 \includegraphics[scale=0.6]{figures/2016-08-21-likelihood-surface/explain-rll-wireframe-1.png}
 \includegraphics[scale=0.6]{figures/2016-08-21-likelihood-surface/explain-rll-levelplot-B-1.png}
 \end{center}
@@ -978,6 +896,18 @@ regulators such as age, gender, and ancestry.
 \end{center}
 \caption{}
 \label{fig:logi.S-wnlm.Q-compare}
+\end{figure}
+
+\begin{figure}
+\begin{center}
+\includegraphics{figures/by-me/monoall-dependencies-2/obs-simple-general/obs-simple-general}
+\hspace{\fill}
+\includegraphics{figures/by-me/monoall-dependencies-2/obs-simple-general-gene-aspec/obs-simple-general-gene-aspec}
+\hspace{\fill}
+\includegraphics{figures/by-me/monoall-dependencies-2/obs-bayesian/obs-bayesian}
+\end{center}
+\caption{}
+\label{fig:glm-vs-hierarch}
 \end{figure}
 
 \begin{figure}
@@ -998,19 +928,10 @@ regulators such as age, gender, and ancestry.
 
 \begin{figure}
 \begin{center}
-\includegraphics[scale=0.6]{figures/2016-08-08-imprinted-gene-clusters/segplot-logi-S-99conf-1.pdf}
-\end{center}
-\caption{Biological effects: estimates and $99\%$ confidence intervals under
-the logi.S model}
-\label{fig:biol-effects-logi.S}
-\end{figure}
-
-\begin{figure}
-\begin{center}
 \includegraphics[scale=0.6]{figures/2016-08-21-likelihood-surface/ll-surf-coefs-wnlm-Q-1.png}
 \end{center}
 \caption{}
-\label{fig:likelihood-surface}
+\label{fig:ll-non-orthogonality}
 \end{figure}
 
 \begin{figure}
@@ -1045,12 +966,12 @@ the logi.S model}
 \label{fig:diff-exp-scz}
 \end{figure}
 
-\begin{figure}
-\includegraphics[width=0.6\textwidth]{figures/2016-10-11-comparison-to-mouse-cerebellum/posterior-pp-vs-pval-wnlm-Q-1.pdf}
-\caption{Comparison of the effects of age and gender between the present work and a
-previous study~\cite{Perez2015} in the mouse cerebellum. }
-\label{fig:mouse-cerebellum}
-\end{figure}
+%\begin{figure}
+%\includegraphics[width=0.6\textwidth]{figures/2016-10-11-comparison-to-mouse-cerebellum/posterior-pp-vs-pval-wnlm-Q-1.pdf}
+%\caption{Comparison of the effects of age and gender between the present work and a
+%previous study~\cite{Perez2015} in the mouse cerebellum. }
+%\label{fig:mouse-cerebellum}
+%\end{figure}
 
 % Supplementary tables
 

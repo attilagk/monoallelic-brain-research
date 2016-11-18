@@ -88,7 +88,11 @@ Now the same restricted function in levelplot representations.  First with confi
 
 
 ```r
-lp2 <- ll.surfaceplot(fm = formula(rel.log.L ~ beta.A * beta.B | v.name.A), df = dat$coefs.wnlm.Q.2[dat$coefs.wnlm.Q.2$v.name.A == "Ancestry.2", ], hv.B = c(0, unlist(get.single.estimate.CI(M$wnlm.Q$PEG3, 0.80)["Age", c("Lower.CL", "Upper.CL"), drop = TRUE]), unlist(get.single.estimate.CI(M$wnlm.Q$PEG3, 0.99)["Age", c("Lower.CL", "Upper.CL"), drop = TRUE])))
+lp2 <- ll.surfaceplot(fm = formula(rel.log.L ~ beta.A * beta.B | v.name.A),
+                      df = dat$coefs.wnlm.Q.2[dat$coefs.wnlm.Q.2$v.name.A == "Ancestry.2", ],
+                      hv.B = c(0,
+                               unlist(get.single.estimate.CI(M$wnlm.Q$PEG3, 0.80)["Age", c("Lower.CL", "Upper.CL"), drop = TRUE]),
+                               unlist(get.single.estimate.CI(M$wnlm.Q$PEG3, 0.99)["Age", c("Lower.CL", "Upper.CL"), drop = TRUE])))
 update(lp2, strip = FALSE, xlab = expression(paste(beta, "[ Ancestry.2 ]")), ylab = expression(paste(beta, "[ Age ]")), main = "rel. log likelihood")
 ```
 
@@ -122,6 +126,25 @@ ll.surfaceplot(fm = formula(rel.log.L ~ beta.A * beta.B | v.name.A), df = dat$co
 #### logi.S, PEG3
 
 <img src="figure/ll-surf-coefs-logi-S-1.png" title="plot of chunk ll-surf-coefs-logi-S" alt="plot of chunk ll-surf-coefs-logi-S" width="700px" />
+
+#### Variance matrix of $\hat\beta$
+
+Under regularity conditions the maximum likelihood estimate is asymptotically normal so that $\hat\beta \sim \mathrm{Norm}(\beta^0, I(\beta^0)^{-1})$.  Thus the inverse of the Fisher information $I$ evaluated at the unknown true value $\beta^0$ of $\beta$ is the variance matrix of the ML estimate.  The R help page for `vcov` writes that this function returns
+
+>A matrix of the estimated covariances between the parameter estimates in the linear or non-linear predictor of the model.
+
+Based on this `vcov` returns something like $J(\hat\beta)^{-1}$, which is the inverse of the observed information evaluated at the ML estimate and which is meant to estimate $I(\beta^0)^{-1})$.  To see the correlation structure of $\hat\beta$:
+
+
+```r
+levelplot(cov2cor(vcov(M$wnlm.Q$PEG3)), scales = list(x = list(rot = 90)), xlab = "", ylab = "", main = "wnlm.Q")
+```
+
+<img src="figure/beta-hat-corr-wnlm-Q-1.png" title="plot of chunk beta-hat-corr-wnlm-Q" alt="plot of chunk beta-hat-corr-wnlm-Q" width="600px" />
+
+<img src="figure/beta-hat-corr-logi-S-1.png" title="plot of chunk beta-hat-corr-logi-S" alt="plot of chunk beta-hat-corr-logi-S" width="600px" />
+
+These plots do not show even just nearly as high correlation between $\hat\beta_\mathrm{Age}$ and $\hat\beta_\mathrm{RIN}$ as it seems from the very elongated diagonal quasi-ellipse in the likelihood surface restricted to $\{\hat\beta_\mathrm{Age}\} \times \{\hat\beta_\mathrm{RIN}\}$.  For example, under wnlm.Q, the correlation $\mathrm{cor}(\hat\beta_\mathrm{Age},\hat\beta_\mathrm{RIN})=$ 0.098913, while for the circle-like ellipse $\mathrm{cor}(\hat\beta_\mathrm{Age},\hat\beta_\mathrm{Ancestry.2})=$ 0.0979938.  The fact that using the `vcov` function gives $\mathrm{cor}(\hat\beta_\mathrm{Age},\hat\beta_\mathrm{RIN})>0$ is also puzzling since the elongated ellipse runs from the top left to the bottom right suggesting that $\mathrm{cor}(\hat\beta_\mathrm{Age},\hat\beta_\mathrm{RIN})<0$.  At this point I cannot resolve these contradictions.
 
 ### Consistency among genes
 
