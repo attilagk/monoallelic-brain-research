@@ -55,17 +55,17 @@ several imprinted genes in schizophrenia.
 
 \subsection{Study design}
 
-We used allele-specific RNA-seq data from CMC to probe the parental bias of allelic
+We used allele-specific RNA-seq data from the CommonMind project to probe the parental bias of allelic
 expression for each gene \(g\) that is substantially expressed in the DLPFC.
 We exploited the fact that single nucleotide polymorphisms (SNPs) provide a
 way to distinguish between the two parental copies.  For a heterozygous SNP
 \(s\) in a gene the reference and the alternative variant tags the maternal
-and paternal copy or the other way around.  When parental bias towards
+and paternal gene copy or the other way around.  When parental bias towards
 positively biased allele \(b\) (which may be maternal or paternal) is strong
 then it seems likely that the count of reads tagged by the corresponding SNP
 variant (which may be reference or alternative) is also relatively high.
 
-This intuition be formalized by introducing \(p\), the fraction of
+This intuition may be formalized by introducing \(p\), the fraction of
 transcripts from the parent towards which expression is biased with the
 interpretation of parental bias.  Note that \(1/2\le p\le 1\).  Similarly,
 let \(B\) denote the count of RNA-seq reads that map to the \(b\) allele and
@@ -73,25 +73,29 @@ let \(T\) be the total read count.  Then, assuming that \(B\) is a binomial
 random variable with given expected relative frequency \(p\) and denominator
 \(T\), the probability that \(B\) is the higher of the two read counts,
 i.e.~\(B \ge T - B\), is \[\sum_{x:T/2\le x\le T} {x \choose T} p^x (1 -
-p)^{T-x}.\] It is easy to see that this probability increases with \(p\),
-the parental bias, which supports our intuition.
+p)^{T-x}.\] The fact that this probability increases with \(p\),
+the parental bias supports our intuition.
 
-This motivated us to quantify parental bias using a statistic called
-\emph{read count ratio} \(S\) whose definition we
+These considerations motivated us to quantify parental bias using a statistic called
+\emph{read count ratio} \(S\), whose definition we
 based on the total read count \(T\) and the \emph{higher read count} \(H\)
 (i.e.~the count of reads carrying the reference or alternative SNP variant,
-whichever is higher) and use \(S\).  The
+whichever is higher).  The
 definition is
 \begin{equation}
 S_{ig} = \frac{H_{ig}}{T_{ig}}= \frac{\sum_s H_s}{\sum_sT_s},
 \label{eq:S-definition}
 \end{equation}
 where \(i\) identifies an individual, \(g\) a gene, and the summation runs
-over all SNPs \(s\) for which gene \(g\) is heterozygous in individual \(i\).
+over all SNPs \(s\) for which gene \(g\) is heterozygous in individual \(i\) (Fig.~\ref{fig:study-design}).
 Note that if \(B_{ig}\) is the count or reads that map to the \(b\) allele (as
-above) and if we make the same distributional assumption that \(B_{ig}\sim
-\mathrm{Binom}(p_{ig}, T_{ig})\) then \(E[S_{ig}] \downarrow p_{ig}\) as
-\(p_{ig} \uparrow 1\).
+above) and if we make the same distributional assumption as above, namely that \(B_{ig}\sim
+\mathrm{Binom}(p_{ig}, T_{ig})\), then \(\mathrm{Pr}(H_{ig}=B_{ig}|p_{ig})\), the probability of correctly
+assigning the reads with the higher count to the allele towards which
+expression is biased, tends to 1 as \(p_{ig} \rightarrow 1\).  We used this
+theoretical result in that we subjected only those genes to statistical
+inference, whose read count ratio was found to be high and, therefore, whose
+\(p_{ig}\) is expected to be high as well.
 
 \begin{figure}
 \begin{center}
@@ -106,7 +110,9 @@ and the count of reads carrying an alternative allele (open squares) at all
 SNPs in that gene for which the individual is heterozygous.  The differences
 in the unobserved parental expression bias between individual \(i_1\) and
 \(i_2\) arise only from biological differences such as their disease status
-(black and gray silhouettes), age, or gender.  In addition to these, the differences in the observed read count ratio also reflect variation from technical sources like tissue preparation, or RNA sequencing.
+(black and gray silhouettes), age, or gender.  In addition to these, the
+differences in the observed read count ratio also reflect variation from
+technical sources like tissue preparation, or RNA sequencing.
 }
 \label{fig:study-design}
 \end{figure}
@@ -125,9 +131,9 @@ Note that this classification used other sources of information as well (see
 Results).  Second, given a gene \(g\) that we called imprinted, we sought to
 identify biological regulators and psychiatric consequences of parental bias
 by studying the conditional distribution of \(S_{\cdot g}\) given observations
-\(x_{\cdot 1}, x_{\cdot 2},...\) on features of study individuals that are not
+\(x_{\cdot 1},...,x_{\cdot p}\) on features of study individuals that are not
 gene-specific. We call these features \emph{predictors} because we used them
-in a regression model framework.  These predictors and their
+in a regression model framework.  Predictors and their
 various levels are listed in Table~\ref{tab:predictors}.
 
 \begin{table}
@@ -163,22 +169,19 @@ calling with the use of DNA SNP array data and imputation. In the following
 subsections of Methods we describe the data, these procedures, as well as our
 regression models in detail.
 
-\subsection{Brain samples}
+\subsection{Data}
 
-\footnote{This and the following two subsections
-have been taken apart from a few minor modifications, literally from Ifat's
-version of the manuscript.  They require double-checking because I was not
-involved with the work described in them.}
+\subsubsection{Brain samples}
 
 Human RNA samples were collected from the dorsolateral prefrontal cortex of
-the CommonMind consortium (CMC), from a total of \(579\) individuals after
+the CommonMind consortium from a total of \(579\) individuals after
 quality control. Subjects included 267 control individuals, as well as 258
 with schizophrenia (SCZ) and 54 with affective spectrum disorder (AFF).
 RNA-seq library preparation uses Ribo-Zero (which selects against ribosomal
 RNA) to prepare the RNA, followed by Illumina paired end library generation.
 RNAseq was performed on Illumina HiSeq 2000.
 
-\subsection{RNA-seq, mapping and SNP calling}
+\subsubsection{RNA-seq, mapping, SNP calling and filtering}
 
 We mapped 100bp, paired-end reads (\(\approx50\) million reads per sample) using Tophat
 to Ensembl gene transcripts of the human genome (hg19; February, 2009) using
@@ -200,64 +203,49 @@ that either did not match the alleles reported in dbSNP or had more than 2
 alleles in dbSNP. We also removed SNPs without at least 10 mapped reads in at
 least one sample. Read depth was measured using the Samtools Pileup utility.
 After these filters were applied, 364,509 SNPs remained in 22,254 genes. These
-filters enabled use of data with low coverage, as described below. For the 579
-samples there are 203 million data points (reads overlapping one of the
-364,509 SNPs defined above), of which 158 million (78\%) have genotype data
-available (array or imputation), which is used later in the pipeline.
+filters enabled use of data with low coverage.  For the 579
+samples there were 203 million reads overlapping one of the
+364,509 SNPs defined above.  Of those 158 million (78\%) had genotype data
+available from either SNP array or imputation.
 
-\subsection{Genotyping and calibration of imputed SNPs}
+\subsubsection{Genotyping and calibration of imputed SNPs}
 
 DNA samples were genotyped using the Illumina Infinium SNP array. We used
 PLINK with default parameters to impute genotypes for SNPs not present on the
-Infinium SNP array using 1000 genomes data. To maximize the number of genes
-assessable for monoallelic expression, while minimizing false positive
-monoallelic expression calls which can arise if the underlying SNP has been
-incorrectly called as heterozygous by the imputation, we calibrated the
-imputation parameters.
+Infinium SNP array using 1000 genomes data.  We calibrated the
+imputation parameters to find a reasonable balance between the number of genes
+subjected to calling imprinting and the number false positive
+calls since the latter can arise if a SNP is
+incorrectly called heterozygous.
 
 We first examined how many SNPs were heterozygous in DNA calls and had a
-discordant RNA call (i.e. homozygous RNA-SNP call) using different imputation
+discordant RNA call (i.e.~homozygous SNP call from RNA-seq) using different imputation
 parameters. Known imprinted genes were excluded. We examined RNA-seq reads
-overlapping array-called heterozygous SNPs which we assigned a heterozyous
-likelihood value, \(L_\mathrm{het}\) of 1, separately from RNA seq data
-overlapping imputed heterozygous SNPs, where \(L_\mathrm{het}\) values could
-range from 0 to 1. Based on iterative examination with different thresholds,
-we selected a \(L_\mathrm{het}\) cutoff of 0.95 (i.e. imputation confidence
+overlapping array-called heterozygous SNPs which we assigned a heterozygosity
+score \(L_\mathrm{het}\) of 1, separately from RNA seq data
+overlapping imputed heterozygous SNPs, where the \(L_\mathrm{het}\) score could
+range from 0 to 1.  After testing different thresholds
+we selected an \(L_\mathrm{het}\) cutoff of 0.95 (i.e. imputation confidence
 level of 95\%), and a minimal coverage of 7 reads per SNP. With these
 parameters, the discordance rate (monoallelic RNA genotype in the context of a
 heterozygous DNA genotype) was 0.71\% for array-called SNPs and 3.2\% for
 imputed SNPs.
 
-While undoubtedly, a portion of the excess of discordance for the imputed SNPs
-is due to imputation error, downstream parts of analytic pipeline are designed
-taking into account the possibility of imputation error, as described below.
-One key is that for most genes there are multiple imputed SNPs and we consider
-data for all of them. Another key is that if even one SNP has evidence for
-biallelic expression (whether or not there is imputation data), we exlcude
-that individual due to the conflict. At this point, the matrix includes 147
-million data points covering 213,208 SNPs, of which 114 million (77\%) have
-imputation data.
+The higher rate of discordance for the imputed SNPs
+is due to imputation error.  These were taken into
+account in two ways.
+First, we considered all imputed SNPs for a gene \(g\) and individual \(i\)
+jointly.  Second, we excluded
+any individual, for which one or more SNPs supported biallelic
+expression.
 
-\subsection{The read count ratio and final quality filtering}
+%At this point, the matrix includes 147
+%million data points covering 213,208 SNPs, of which 114 million (77\%) have
+%imputation data.
+
+\subsection{Quality filtering}
 
 \label{sec:filtering}
-
-The central quantity of this work is an \(m\times n\) matrix of read count ratios
-\(\mathbf{S} = [S_{ig}]_{ig};\; i=1,...,m; \; g\in\mathcal{G}\), where
-\(m=579\) is the number of individuals and \(n\) is the number of genes
-in a set \(\mathcal{G}\) of unfiltered or filtered genes (\(n=15584\) and \(5307\),
-respectively).  The read count ratio for
-individual \(i\) and gene \(g\) is defined as
-\begin{equation}
-S_{ig} = \frac{H_{ig}}{T_{ig}}= \frac{\sum_s H_s}{\sum_sT_s},
-\end{equation}
-where the summation runs through all heterozygous SNPs \(s\) that occur in the
-pair
-\((i,g)\).  The statistic \(H_s\) and \(T_s\) in Eq.~\ref{eq:S-definition} are
-the higher and total RNA-seq read count at SNP \(s\); \(H_s\) is higher in the
-sense that if the alleles at \(s\) are \(a,b\) and the corresponding read counts
-\(X_a,X_b\), then \(H_s = X_a\) if \(X_a\ge X_b\) and \(H_s = X_b\) otherwise.
-The total read count is simply \(T_s = X_a + X_b\).
 
 Two kind of data filters were applied sequentially: (1) a \emph{read
 count-based} and (2) an \emph{individual-based}.  The read count-based filter
@@ -267,21 +255,29 @@ $t_\mathrm{rc}$ was set to 15. The individual-based filter removes any genes
 $g$ (across all individuals) if read count data involving $g$ are available
 for less than $t_\mathrm{ind}$ number of individuals, set to 25.
 These final filtering procedures decreased the number of genes in the data from
-\(n=15584\) to \(n=5307\).
+\(15584\) to \(n=5307\).
 
-The test for nearly unbiased expression of parental transcripts was defined by
-the criterion
+\subsection{Test for nearly unbiased expression}
+
+\label{sec:quality-filter}
+
+This test was defined by the criterion
 \begin{equation}
 S_{ig} \le 0.6 \text{ and } \mathrm{UCL}_{ig} \le 0.7,
 \label{eq:unbiased-test}
 \end{equation}
-where the 95\% upper confidence limit was calculated from a normal approximation to
-likelihood:
+where the 95\% upper confidence limit \(\mathrm{UCL}_{ig}\) for the expected
+read count ratio \(p_{ig}\) was calculated based on the assumption
+that the higher read count \(H_{ig}=S_{ig}T_{ig}\sim \mathrm{Binom}(p_{ig},
+T_{ig})\), on the fact that binomial random variables are
+asymptotically (as \(T_{ig}\rightarrow \infty\)) normal with
+\(\mathrm{var}(H_{ig}) = T_{ig}p_{ig}(1-p_{ig})\), and on the equalities
+\(\mathrm{var}(S_{ig}) = \mathrm{var}(H_{ig}/T_{ig}) =
+\mathrm{var}(H_{ig})/T_{ig}^2\).  Therefore
 \begin{equation}
 \mathrm{UCL}_{ig} = S_{ig} + z_{0.975} \sqrt{\frac{S_{ig} (1 - S_{ig})}{T_{ig}}},
 \end{equation}
-such that $z_{p}$ is the $p$ quantile of the standard normal distribution and
-$T_{ig}$ is, as before, the total read count.
+where $z_{p}$ is the $p$ quantile of the standard normal distribution.
 
 \subsection{Regression models}
 \label{sec:methods-regression}
@@ -404,38 +400,59 @@ Fig.~\ref{fig:predicted-curves} but not for quantitative inference.
 \begin{center}
 \includegraphics[scale=0.6]{figures/2016-07-19-genome-wide-S/complex-plot-1.png}
 \end{center}
-\caption{}
+\caption{
+Using the read count ratio statistic \(S\) to report on variation of parental
+bias across individuals and genes.  \emph{Upper half}, from top to bottom: (1)
+kernel density estimate; (2) the graph of the survival function 1 - ECDF,
+where ECDF means empirical cumulative distribution function; note color scale
+for heat map and green filled circles marking genes' score; (3) the heat map
+representation of the survival function.  \emph{Lower half}, main panels: heat
+map of the survival function for all 5307 analyzed genes ranked according to
+their score; right side panels: gene score.
+}
 \label{fig:ranking-genes}
 \end{figure}
 
-The upper three plots of Fig.~\ref{fig:ranking-genes} all show the empirical distribution
-of \(S_\mathrm{PEG10}, S_\mathrm{ZNF331}\) and \(S_\mathrm{AFAP1}\), where
-PEG10 and ZNF331 are \emph{known imprinted genes} based on prior evidence and
-AFAP1 is referred to as \emph{candidate gene} as it lacks such evidence.  For
-all three genes \(S_g\) varies greatly within its theoretical range
-\([\frac{1}{2}, 1]\).  This variation is attributable to both technical and biological effects
-and is consistent with substantial population-wide variation of parental bias.
+\(n=5307\) genes passed our filters designed to remove genes with scarce
+RNA-seq data reflecting low expression and/or technical problems pertaining to
+RNA sequencing.  On these we performed exploratory statistical analysis based
+on the read count ratio statistic \(S_{ig}\), whose results (below) we
+interpreted in terms of the variation of parental bias both across genes \(g\)
+and individuals \(i\).
 
-The probability density of \(S_g\) for the two known imprinted
-genes is shifted towards the theoretical maximum (relative to the density of
-the candidate gene), which indicates near monoallelic expression in a great
-fraction of individuals for these two genes.  This is expected if \(S_g\) is
-indeed a useful estimator of the relative level of maternal (or paternal,
-whichever is greater) transcripts.  But the shift is clearly
-stronger for PEG10 than for ZNF331, suggesting quantitative differences even
-among imprinted genes.  This motivated the ranking of all 5307 genes
-based on a gene score that quantifies the shift in distribution.  We defined the score of
-gene \(g\) as the fraction of individuals \(i\) with \(S_{ig}>0.9\); as the filled green
-circles show in Fig.~\ref{fig:ranking-genes} this is equivalent to 1 less the
-empirical distribution function (ECDF), evaluated at \(0.9\) (second and
-third plots from the top of Fig.~\ref{fig:ranking-genes}).
+Fig.~\ref{fig:ranking-genes} presents the conditional empirical distribution
+of \(S_{\cdot g}\) given each gene \(g\) he location and the scale of
+\(S_{\cdot g}\).  The three plots of the upper half show the distribution for
+only three genes but in three distinct representations, while the main panels of the
+lower half present the distribution for all 5307 genes in the most compact
+representation.  Two of the three genes in the upper half, PEG10 and ZNF331,
+are \emph{known imprinted genes} in the sense that they had previously been
+found imprinted in various tissue types, developmental stages and species.  The third,
+AFAP1, is a \emph{candidate gene} as it lacks such evidence.  For
+all three genes \(S_{\cdot g}\) varies considerably within its theoretical range
+\([\frac{1}{2}, 1]\).  This suggests variation of parental bias across study
+individuals, although some component of the variation of \(S_{\cdot g}\) must
+originate from technical sources.  Later subsections present our modeling and
+detailed analysis of the across-individual variation on genes called
+imprinted.  The rest of the present subsection provides account on the calling
+of imprinted genes in the context of adult human DLPFC.
 
-The lower half of Fig.~\ref{fig:ranking-genes} shows the distribution of
-\(S_{g_1},...,S_{g_{n}}\) ordered by rank from the top (rank 1) to bottom
-(rank 5307).  Although the distributional shift is gradual from the top ranking
-\(g_1=\mathrm{MAGEL2}\) to the lowest ranking genes,
-Fig.~\ref{fig:ranking-genes} provides a visual argument that the fraction of
-imprinted genes is no more than \(1\%\) of all genes.
+We called imprinted genes on two grounds: first, on a gene score that we
+interpret as the gene's tendency to parental bias and, second, on whether the
+gene had been described previously as imprinted in some context or is located near (within 1
+megabase of) such known imprinted genes.  We defined gene score as the
+location statistic \(1 - \mathrm{ECDF}_g(0.9)\), the fraction of individuals
+\(i\) for which \(S_{ig}>0.9\).  This score is shown in side plots of the
+lower half of Fig.~\ref{fig:ranking-genes} as gray filled circles or, for the
+three genes mentioned above, as larger green circles (the latter are also
+present in the second from top graph).  Based on the score genes were ranked;
+the heat map of empirical distribution of \(S_{\cdot g}\) of ranked genes
+suggests that the top \(\approx 50\) genes, which constitute \(\approx 1\%\)
+of all genes in our analysis, are qualitatively different from the bottom
+\(\approx 99\%\) suggesting that most of them are imprinted.  Consistent with
+this, the top-scoring genes tended to cluster around genomic locations that
+had been previously described as imprinted gene clusters
+(Fig.~\ref{fig:clusters}).
 
 \begin{figure}
 \begin{center}
@@ -445,40 +462,47 @@ imprinted genes is no more than \(1\%\) of all genes.
 \end{center}
 \end{figure}
 
-Consistent with previously described imprinted gene clusters the top-scoring
-genes tend to cluster according to genomic position (Fig.~\ref{fig:clusters})
-and most, but not all, of them are known imprinted genes
-(Fig.~\ref{fig:top-genes}).  The high scoring candidates were classified on
-the basis of their distance from known imprinted gene clusters as nearby and
-distant candidates; the former class was taken as novel imprinted genes and
-the latter as false positives by considering the epigenetic nature of
-imprinting mechanisms and the typical, MB-scale, length of those epigenetic
-marks.  Besides this mechanistic argument, the fraction of individuals passing
-a statistical test for the nearly unbiased expression of alleles
-(Eq.~\ref{eq:unbiased-test}) also supports this classification, as shown by
-the black bars in Fig.~\ref{fig:top-genes}. Conversely, more than a third of
-all known imprinted genes (within the 5307-sized gene set) score low.  As the
-known imprinted genes were identified in different tissue types and organisms,
-these results indicate the context-dependence of imprinting.
+The set of top scoring 50 genes was highly enriched in genes known to be
+imprinted, marked by blue in Fig.~\ref{fig:top-genes}, or genes located near
+such known genes (green).  In the top 50 set 27 such genes were found; we
+called these and three more relatively high-scoring ``blue'' genes (NLRP2,
+IGF2, and UBE3A in Fig.~\ref{fig:known-genes}) imprinted in the context of
+human adult DLFPC.
 
-We selected the 27 top-scoring genes in the ``known imprinted'' and ``nearby
-candidate'' categories shown in blue and green in Fig.~\ref{fig:top-genes} and
-added three more known imprinted genes (NLRP2, IGF2 and UBE3A) that scored
-reasonably high (Fig.~\ref{fig:known-genes}).
+Our classification implies that the remaining 23 genes (red in
+Fig.~\ref{fig:top-genes}) in the top 50 set are not
+imprinted.  This was supported by two additional lines of evidence.  First, we
+looked an aspect of the empirical distribution of \(S_{\cdot g}\)
+that is more complex than the gene score.  This meant
+testing the hypothesis for each gene \(g\) and individual \(i\) that allelic
+expression is (nearly) unbiased
+(Eq.~\ref{eq:unbiased-test}).  The fraction of individuals for which the test
+was \emph{not} rejected tended to be much higher for the ``red'' genes in the
+top 50 (black bars in Fig.~\ref{fig:top-genes}) consistent with our
+classification.  The second line of evidence came from a test of false call
+for heterozygous genotype (TODO: details).
+
+More than a third of
+all previously known imprinted genes (within our 5307-sized gene set) had a low score
+based on \(S_{\cdot g}\) in the present context of human adult DLPFC.  This
+suggests that imprinting of these genes is context-dependent or that they are
+in fact imprinted in the present context but our method classified them
+falsely.
 
 \subsection{Selection among predictive models of parental bias}
 \label{sec:results-regression}
 
 The sources and psychological consequences of the variation of parental bias
-in these 30 genes was analyzed further through the detailed characterization
-how the read count ratio depends on the biological and technical
-variables---i.e.~the predictors---listed in Table~\ref{tab:predictors}.
+in the 30 genes called imprinted was analyzed further through the detailed
+characterization of how the read count ratio depends on the biological and
+technical explanatory variables referred to as predictors
+(Table~\ref{tab:predictors}).
 
 Fig.~\ref{fig:S-age-gender} shows patterns of dependence (or independence) of
-the read count ratio \(S_g\) for a given gene \(g\) on age and gender.  From
+the read count ratio \(S_{\cdot g}\) for a given gene \(g\) on age and gender.  From
 this visual inspection it seems that for several genes age is informative to
-the distribution of \(S_g\) in terms of both the location (e.g.~the mean of
-\(S_g\)) and scale (e.g.~variance); such apparent dependence on gender is not
+the distribution of \(S_{\cdot g}\) in terms of both the location (e.g.~the mean of
+\(S_{\cdot g}\)) and scale (e.g.~variance); such apparent dependence on gender is not
 clear.
 
 \begin{figure}
@@ -531,12 +555,12 @@ was twofold: (1) model selection, as well as (2) inference of dependencies
 between the read count ratio and predictors given the selected model family or
 families.
 
-Out of the eight GLM families two are logistic (logi.S, logi2.S in
+Out of the eight GLM families two were logistic (logi.S, logi2.S in
 Fig.~\ref{fig:predicted-curves} top).  These have several desirable
-theoretical properties for count-based data: zero probability for values
-\(S_{g}>1\), recapitulating the observed dependence of the variance of
-\(S_{g}\) on its mean, and the ability to take into account the observed total
-read counts.  These properties frollow from the fact that logistic models are
+theoretical properties for count-based data: they give zero probability for values
+\(S_{\cdot g}>1\), they account for the observed dependence of the variance of
+\(S_{\cdot g}\) on its mean, and are able to take into account the observed total
+read counts.  These properties follow from the fact that logistic models are
 natural extensions of simple binomial models conditioned on the observed total
 read count \(T_{ig}\).  The remaining six fitted GLM families contain various
 normal linear models (see Fig.~\ref{fig:predicted-curves} bottom for two of
@@ -579,17 +603,26 @@ genes and the wnlm.Q family for all 30 genes.
 
 \subsection{Biological predictors and interpretation}
 
-For each of four biological terms \(j\) in our linear predictor
-(Eq.~\ref{eq:nlm-general}, \ref{eq:glm-mean-predictor}) and each gene \(g\) called imprinted
-we tested the null hypothesis \(\mathcal{H}_{jg} : \beta_{jg} = 0\) meaning that the read count ratio is independent of
-that term (Fig~\ref{fig:pval-wnlm.Q}). Of these terms Age and Ancestry.1 represent either a continuous predictor
-whereas GenderMale and DxSCZ are “treatment” levels of a categorical predictor (Gender and Dx,
-respectively) contrasted with the corresponding control levels (GenderFemale and DxControl, see
-Table~\ref{tab:predictors}). The biological interpretation of the rejection of
-\(\mathcal{H}_{jg}\) is that parental bias depends on
-the predictor. Such probabilistic dependence may emerge from either of the following mechanistic
-(causal) relations: (1) the predictor regulates the parental bias of the gene; (2) parental bias
-regulates the predictor; (3) they both regulate or are both regulated by a third, latent, variable.
+We selected four biological terms in our linear predictor
+(Eq.~\ref{eq:nlm-general}, \ref{eq:glm-mean-predictor}).
+Of these terms Age and
+Ancestry.1 represent either a continuous predictor whereas GenderMale and
+DxSCZ are “treatment” levels of a categorical predictor (Gender and Dx,
+respectively) contrasted with the corresponding control levels (GenderFemale
+and DxControl, see Table~\ref{tab:predictors}).  We left out DxAFF because of
+the small number of AFF individuals appeared to substantially decrease the power of the hypothesis
+test described below.
+
+For each term \(j\), and each gene \(g\) called imprinted, we tested the null
+hypothesis \(\mathcal{H}_{jg} : \beta_{jg} = 0\) meaning that the read count
+ratio is independent of that term (Fig~\ref{fig:pval-wnlm.Q}).  The
+phenomenological interpretation of the rejection of \(\mathcal{H}_{jg}\) is
+simply that parental bias probabilistically depends on the predictor.  The
+mechanistic interpretation is more complicated because such probabilistic
+dependence may manifest from either of the following causal relations: (1) the
+predictor regulates the parental bias of the gene; (2) parental bias regulates
+the predictor; (3) they both regulate or are both regulated by a third,
+latent, variable.
 
 \begin{figure}
 \begin{center}
@@ -629,7 +662,7 @@ above, indirect causation involving a latent variable is also possible.
 
 Table \ref{tab:signif-gene-effects} presents some known properties of all genes for which read count ratio was found
 to depend on at least one of the four biological terms. For some of these genes the dependence
-is consistent with prior information on their physiological or pathological role (cf.~Discussion).
+is consistent with prior information on the gene's physiological or pathological role (cf.~Discussion).
 For instance, association of PEG3 to gender is consistent with its role in morphological sexual
 differentiation in the brain and in sexual and maternal behavior \cite{Broad2009}. Similarly, association of
 UBE3A to schizophrenia is consistent with its suggested role as a risk factor for this and other
@@ -637,8 +670,9 @@ psychiatric conditions based on variation of its gene dose and copy number varia
 locus 15q11q13 (PraderWilli/Angelman region) \cite{Sullivan2012, McNamara2013}.
 
 Of the 30 genes called imprinted in our study only PEG10 and IGF2 had been found previously
-\cite{Fromer2016a} to be differentially expressed in SCZ based on the same RNA-seq data set but based on an
-analysis that ignores allele-specific read counts. PEG10, but not IGF2, is among the 4 genes the
+\cite{Fromer2016a} to be differentially expressed in SCZ based on the same
+RNA-seq data set but obtained with an approach
+that ignores allele-specific read counts. PEG10, but not IGF2, is among the 4 genes the
 present work found to be associated with schizophrenia.
 
 \begin{figure}
@@ -653,25 +687,26 @@ a level of some biological factor (DxSCZ, GenderMale).}
 \end{figure}
 
 Fig.~\ref{fig:biol-effects-wnlm.Q} and~\ref{fig:biol-effects-logi.S} extend
-the above results in two ways. First, they present the theoretical value
-\(\beta_{jg} = 0\) under the null hypothesis (dashed line) and the maximum
-likelihood estimates \(\hat\beta_{jg}\) (colored symbols).  For each
-regression term \(j\) the \(\hat\beta_{jg}\) under wnlm.Q agreed reasonably
-with that under logi.S (Fig.~\ref{fig:logi.S-wnlm.Q-compare}).  The estimates
-\(\hat\beta_{jg}\) inform on the direction and size of the effect of each term
-\(j\) on read count ratio of each significantly affected gene \(g\).  Along
-with these quantities the 99\% confidence intervals are also presented
-(horizontal bars in Fig.~\ref{fig:biol-effects-wnlm.Q}
-and~\ref{fig:biol-effects-logi.S}; see also Fig.~\ref{fig:ll-surf-explain} for
-the illustration of the link between confidence intervals and the geometry of
-the log-likelihood surface). For any given term we found significantly
-affected genes with both negative (e.g.~INPP5F) and positive (e.g.~KNCK9)
-direction.  For instance, the read count ratio of INPP5F depended negatively
-on age, while that of KCNK9 positively, suggesting that aging may both down-
-and up-regulate parental bias. Interestingly, we found that both genes for
-which the dependence on DxSCZ is negative (UBE3A and RP11-909M7.3/MEG8) had
-been previously established as maternally expressed, whereas both genes with
-positive dependence (PEG10, MEST) as paternally expressed.
+the above results in two ways. First, they present the maximum likelihood
+estimates \(\hat\beta_{jg}\) as colored symbols, which are to be compared to
+the dashed lines that represent the theoretical value \(\beta_{jg} = 0\) under
+the null hypothesis.  For each regression term \(j\) the \(\hat\beta_{jg}\)
+under wnlm.Q agreed reasonably with that under logi.S
+(Fig.~\ref{fig:logi.S-wnlm.Q-compare}).  The estimates \(\hat\beta_{jg}\)
+inform on the direction and size of the effect of each term \(j\) on read
+count ratio of each significantly affected gene \(g\).  Along with these
+quantities the 99\% confidence intervals are also presented (horizontal bars
+in Fig.~\ref{fig:biol-effects-wnlm.Q} and~\ref{fig:biol-effects-logi.S}; see
+also Fig.~\ref{fig:ll-surf-explain} for the illustration of the link between
+confidence intervals and the geometry of the log-likelihood surface). For any
+given term we found significantly affected genes with both negative
+(e.g.~INPP5F) and positive (e.g.~KNCK9) direction.  For instance, the read
+count ratio of INPP5F depended negatively on age, while that of KCNK9
+positively, suggesting that aging may both down- and up-regulate parental
+bias. Interestingly, we found that both genes for which the dependence on
+DxSCZ is negative (UBE3A and RP11-909M7.3/MEG8) had been previously
+established as maternally expressed, whereas both genes with positive
+dependence (PEG10, MEST) as paternally expressed.
 
 The second extension in Fig.~\ref{fig:biol-effects-wnlm.Q}
 and~\ref{fig:biol-effects-logi.S} is the arrangement of genes according to
@@ -752,7 +787,7 @@ effects were often of opposite direction.
 
 \section{Discussion}
 
-
+\bibliographystyle{plain}
 \bibliography{monoall-ms}
 
 \section{Supplementary Material}
