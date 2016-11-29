@@ -13,6 +13,18 @@ Kevin~D Broad, James~P Curley, and Eric~B Keverne.
   expressed gene 3 (Peg3).}
 \newblock {\em Developmental neurobiology}, 69(5):314--25, apr 2009.
 
+\bibitem{Crespi2008a}
+Bernard Crespi and Christopher Badcock.
+\newblock {Psychosis and autism as diametrical disorders of the social brain.}
+\newblock {\em The Behavioral and brain sciences}, 31(3):241--61; discussion
+  261--320, jun 2008.
+
+\bibitem{DeVeale2012}
+Brian DeVeale, Derek van~der Kooy, and Tomas Babak.
+\newblock {Critical evaluation of imprinted gene expression by RNA-seq: A new
+  perspective}.
+\newblock {\em PLoS Genetics}, 8(3):e1002600, jan 2012.
+
 \bibitem{Fromer2016a}
 Menachem Fromer, Panos Roussos, Solveig~K Sieberts, Jessica~S Johnson, David~H
   Kavanagh, Thanneer~M Perumal, Douglas~M Ruderfer, Edwin~C Oh, Aaron Topol,
@@ -30,6 +42,13 @@ Menachem Fromer, Panos Roussos, Solveig~K Sieberts, Jessica~S Johnson, David~H
 \newblock {Gene expression elucidates functional impact of polygenic risk for
   schizophrenia.}
 \newblock {\em Nature neuroscience}, sep 2016.
+
+\bibitem{Gregg2010a}
+Christopher Gregg, Jiangwen Zhang, Brandon Weissbourd, Shujun Luo, Gary~P
+  Schroth, David Haig, and Catherine Dulac.
+\newblock {High-resolution analysis of parent-of-origin allelic expression in
+  the mouse brain.}
+\newblock {\em Science (New York, N.Y.)}, 329(5992):643--8, aug 2010.
 
 \bibitem{Hannon2016}
 Eilis Hannon, Helen Spiers, Joana Viana, Ruth Pidsley, Joe Burrage, Therese~M
@@ -68,11 +87,36 @@ Charity~W Law, Yunshun Chen, Wei Shi, and Gordon~K Smyth.
   RNA-seq read counts.}
 \newblock {\em Genome biology}, 15(2):R29, jan 2014.
 
+\bibitem{McDonald2005}
+J~F McDonald, M~A Matzke, and A~J Matzke.
+\newblock {Host defenses to transposable elements and the evolution of genomic
+  imprinting.}
+\newblock {\em Cytogenetic and genome research}, 110(1-4):242--9, 2005.
+
 \bibitem{McNamara2013}
 Gr{\'{a}}inne~I. McNamara and Anthony~R. Isles.
 \newblock {Dosage-sensitivity of imprinted genes expressed in the brain:
   15q11–q13 and neuropsychiatric illness}.
 \newblock {\em Biochemical Society Transactions}, 41(3):721--726, jun 2013.
+
+\bibitem{Perez2015}
+Julio~D Perez, Nimrod~D Rubinstein, Daniel~E Fernandez, Stephen~W Santoro,
+  Leigh~A Needleman, Olivia Ho-Shing, John~J Choi, Mariela Zirlinger,
+  Shau-Kwaun Chen, Jun~S Liu, and Catherine Dulac.
+\newblock {Quantitative and functional interrogation of parent-of-origin
+  allelic expression biases in the brain.}
+\newblock {\em eLife}, 4:e07860, jan 2015.
+
+\bibitem{Peters2014}
+Jo~Peters.
+\newblock {The role of genomic imprinting in biology and disease: an expanding
+  view.}
+\newblock {\em Nature reviews. Genetics}, 15(8):517--30, aug 2014.
+
+\bibitem{Plasschaert2014}
+Robert~N Plasschaert and Marisa~S Bartolomei.
+\newblock {Genomic imprinting in development, growth, behavior and stem cells.}
+\newblock {\em Development (Cambridge, England)}, 141(9):1805--13, may 2014.
 
 \bibitem{Rees2014}
 Elliott Rees, James T~R Walters, Lyudmila Georgieva, Anthony~R Isles,
@@ -84,10 +128,37 @@ Elliott Rees, James T~R Walters, Lyudmila Georgieva, Anthony~R Isles,
 \newblock {\em The British journal of psychiatry : the journal of mental
   science}, 204(2):108--14, feb 2014.
 
+\bibitem{Renfree2012}
+M.~B. Renfree, S.~Suzuki, and T.~Kaneko-Ishino.
+\newblock {The origin and evolution of genomic imprinting and viviparity in
+  mammals}.
+\newblock {\em Philosophical Transactions of the Royal Society B: Biological
+  Sciences}, 368(1609):20120151--20120151, nov 2012.
+
 \bibitem{Sullivan2012}
 Patrick~F Sullivan, Mark~J Daly, and Michael O'Donovan.
 \newblock {Genetic architectures of psychiatric disorders: the emerging picture
   and its implications}.
 \newblock {\em Nature Reviews Genetics}, 13(8):537--551, aug 2012.
+
+\bibitem{Ubeda2012}
+Francisco Ubeda and Andy Gardner.
+\newblock {A model for genomic imprinting in the social brain: elders.}
+\newblock {\em Evolution; international journal of organic evolution},
+  66(5):1567--81, may 2012.
+
+\bibitem{Varrault2006}
+Annie Varrault, Charlotte Gueydan, Annie Delalbre, Anja Bellmann, Souheir
+  Houssami, Cindy Aknin, Dany Severac, Laetitia Chotard, Malik Kahli, Anne {Le
+  Digarcher}, Paul Pavlidis, and Laurent Journot.
+\newblock {Zac1 regulates an imprinted gene network critically involved in the
+  control of embryonic growth.}
+\newblock {\em Developmental cell}, 11(5):711--22, nov 2006.
+
+\bibitem{Wilkins2003}
+Jon~F Wilkins and David Haig.
+\newblock {What good is genomic imprinting: the function of parent-specific
+  gene expression.}
+\newblock {\em Nature reviews. Genetics}, 4(5):359--68, may 2003.
 
 \end{thebibliography}
