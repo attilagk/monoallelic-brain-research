@@ -70,7 +70,6 @@
 \newlabel{fig:S-age-gender}{{4}{13}}
 \@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces Fitting four families of generalized linear models to the same data set. In each panel the horizontal axis is age and the vertical axis is the possibly transformed read count ratio. For all panels the green scatter represents the same data set (KCNK9 gene, cf.\nobreakspace  {}Fig4\hbox {}) except that in the bottom right panel the observed read count ratio is transformed according to Eq.\nobreakspace  {}8\hbox {}. Given each one of four model families the predicted read count ratio is represented by thick black curves. The probability mass or density of the sampling distribution is indicated by a cyan-to-magenta gradient and various prediction limits by gray lines. Note that for demonstration the depicted fitted models are all simple in the sense that they contain age as a sole predictor. Quantitative inference, however, was based on the corresponding multiple regression models including all predictors (Table\nobreakspace  {}1\hbox {}). }}{14}}
 \newlabel{fig:predicted-curves}{{5}{14}}
-\citation{Broad2009}
 \citation{Sullivan2012}
 \citation{McNamara2013}
 \@writefile{toc}{\contentsline {subsection}{\numberline {3.3}Biological predictors and interpretation}{15}}
@@ -82,6 +81,7 @@
 \newlabel{fig:biol-effects-wnlm.Q}{{7}{17}}
 \citation{Fromer2016a}
 \@writefile{toc}{\contentsline {subsection}{\numberline {3.4}Limitations}{18}}
+\newlabel{sec:limitations}{{3.4}{18}}
 \citation{Ubeda2012}
 \citation{Wilkins2003}
 \citation{McNamara2013}
@@ -90,12 +90,16 @@
 \citation{Fromer2016a}
 \citation{McNamara2013}
 \citation{Crespi2008a}
+\citation{McNamara2013}
 \citation{Renfree2012}
 \citation{Varrault2006}
+\citation{Perez2015}
+\citation{DeVeale2012}
 \@writefile{toc}{\contentsline {section}{\numberline {4}Discussion}{19}}
 \citation{Hannon2016}
+\citation{Broad2009}
 \citation{Keverne2015}
-\citation{Law2014}
+\citation{Haig2014}
 \bibstyle{plain}
 \bibdata{monoall-ms}
 \bibcite{Bourke2007}{1}
@@ -104,16 +108,16 @@
 \bibcite{DeVeale2012}{4}
 \bibcite{Fromer2016a}{5}
 \bibcite{Gregg2010a}{6}
-\bibcite{Hannon2016}{7}
-\bibcite{Ingason2011}{8}
-\bibcite{Keverne2015}{9}
-\bibcite{Law2014}{10}
-\bibcite{McDonald2005}{11}
-\bibcite{McNamara2013}{12}
-\bibcite{Perez2015}{13}
-\bibcite{Peters2014}{14}
-\bibcite{Plasschaert2014}{15}
-\bibcite{Rees2014}{16}
+\bibcite{Haig2014}{7}
+\bibcite{Hannon2016}{8}
+\bibcite{Ingason2011}{9}
+\bibcite{Keverne2015}{10}
+\bibcite{Law2014}{11}
+\bibcite{McDonald2005}{12}
+\bibcite{McNamara2013}{13}
+\bibcite{Perez2015}{14}
+\bibcite{Peters2014}{15}
+\bibcite{Plasschaert2014}{16}
 \bibcite{Renfree2012}{17}
 \bibcite{Sullivan2012}{18}
 \bibcite{Ubeda2012}{19}

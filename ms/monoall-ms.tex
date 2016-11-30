@@ -29,19 +29,19 @@ growth, suckling, and maternal behavior~\cite{Plasschaert2014,Peters2014}.
 
 At the molecular genetic level imprints are DNA methylation marks that are
 specific to chromosomes and loci in the sense that those loci, called
-imprinting control regions (ICR), are methylated on either the maternal or the
+imprinting control regions, are methylated on either the maternal or the
 paternal chromosome, i.e.~the chromosome originating from the mother or
-father, respectively~\cite{Plasschaert2014}.  Each ICR controls typically a
+father, respectively~\cite{Plasschaert2014}.  Each region controls typically a
 cluster of imprinted genes within a few hundred kilobases such that expression
 of either the maternal or the paternal allele is repressed.  We refer to this
-form of expression as \emph{parental bias} to emphasize that the
-relative expression level of one allele of some gene, at least when averaged
-over multiple cells in a tissue, may take some intermediate value between 0
-and 1.  Thus imprinted genes are near 0 or 1 and so are biased or even
-monoallelic expressed, whereas most non-imprinted genes are near \(1/2\), that
-is, essentially unbiased.  Because phenotype is known to be rather sensitive
-to the dose of imprinted genes~\cite{McNamara2013}, parental bias appears
-as a form of fine regulator of overall expression level between full intensity
+form of expression as \emph{parental bias} to emphasize that the relative
+expression level of one allele of some gene, at least when averaged over
+multiple cells in a tissue, may take some intermediate value between 0 and 1.
+Thus imprinted genes are near 0 or 1 and so are biased or even monoallelic
+expressed, whereas most non-imprinted genes are near \(1/2\), that is,
+essentially unbiased.  Because phenotype is known to be rather sensitive to
+the dose of imprinted genes~\cite{McNamara2013}, parental bias appears as a
+form of fine regulator of overall expression level between full intensity
 (unbiased case) and half intensity (monoallelic case).
 
 Why natural selection favors parental bias for imprinted genes remains
@@ -710,8 +710,7 @@ above, indirect causation involving a latent variable is also possible.
 Table \ref{tab:signif-gene-effects} presents some known properties of all genes for which read count ratio was found
 to depend on at least one of the four biological terms. For some of these genes the dependence
 is consistent with prior information on the gene's physiological or pathological role (cf.~Discussion).
-For instance, association of PEG3 to gender is consistent with its role in morphological sexual
-differentiation in the brain and in sexual and maternal behavior \cite{Broad2009}. Similarly, association of
+For instance, association of
 UBE3A to schizophrenia is consistent with its suggested role as a risk factor for this and other
 psychiatric conditions based on variation of its gene dose and copy number variation of its broader
 locus 15q11q13 (PraderWilli/Angelman region) \cite{Sullivan2012, McNamara2013}.
@@ -772,6 +771,7 @@ the establishment and maintenance of imprinting and parental bias for all
 genes in a cluster.
 
 \subsection{Limitations}
+\label{sec:limitations}
 
 The previous section focussed mainly on the question of dependence or independence between a gene's read
 count ratio. As for the size of the effect, \(\hat\beta_{jg_1},
@@ -835,69 +835,91 @@ effects were often of opposite direction.
 
 \section{Discussion}
 
-We have presented above the first genome-wide characterization of parental
-bias in humans and, at the same time, the first genomics study that is
-focussed specifically on imprinted genes' association with some psychiatric
+We present above the first genome-wide characterization of parental
+bias in humans and, at the same time, the first human genomics study with a
+special focus on imprinted genes' association with some psychiatric
 disorder.  Our main finding, the association of several imprinted genes with aging
-and/or schizophrenia, supports the prediction from kinship theory that the
+and/or schizophrenia, supports the general prediction from kinship theory that the
 roles of imprinted genes may dynamically change even at later stages of life
-in order to mediate certain social interactions that require normal
-psychiatric condition~\cite{Ubeda2012,Wilkins2003}.  Conversely---and regardless
+in order to mediate certain social interactions dependent on 
+psychology and cognition~\cite{Ubeda2012,Wilkins2003}.  Conversely---and regardless
 the kinship theory---, our results suggest that perturbations to several
 imprinted genes are associated with, and maybe causal to, schizophrenia and
 possibly other psychiatric disorders.
 
 If we accept that the main effect of parental bias is on overall expression
-level, the finding that bias of UBE3A is negatively associated with
-schizophrenia implies that its overexpression increases risk for the disorder
-as it has been suggested based on copy number variation of 15q11-q13, the
-Prader-Willi region~\cite{McNamara2013}.  Moreover, we find that the also
-maternally biased RP11-909M7.3 is also negatively associated to schizophrenia
-while two paternally biased genes, MEST and PEG10, are both positively
-associated.  This is exactly the pattern that is predicted by kinship theory,
-more precisely by its special case, the imprinted brain
-theory~\cite{Crespi2008a}.
+level, our finding that the parental bias for UBE3A is negatively associated
+with schizophrenia implies that it is its overexpression that increases risk
+for the disorder.  This agrees with the previously observed effect of copy
+number variation of 15q11-q13, the Prader-Willi region~\cite{McNamara2013}.
+Moreover, we find that another maternally biased gene, RP11-909M7.3, is also
+negatively associated to schizophrenia, while two paternally biased genes,
+MEST and PEG10, are both positively associated.  This is exactly the pattern
+that is predicted by kinship theory, more precisely by its special case, the
+imprinted brain theory~\cite{Crespi2008a}.
 
-But if parental bias indeed gages overall expression, why did the
+But if parental bias indeed indicates overall expression level then why did
 preceding differential expression analysis~\cite{Fromer2016a} miss association
-to schizophrenia of three of the genes out of the four mentioned above?  It is
+to schizophrenia for three out of the four genes mentioned above?  It is
 possible, of course, that our work falsely discovered those three associations
-due to the limitations specific to our statistical models (see below).
-However, it must be emphasized that only the present ``read count ratio
-approach'' makes use of the available allele-specific information in RNA-seq
-reads, which might afford much improved sensitivity relative to the
-traditional ``overall expression approach'' used by~\cite{Fromer2016a}.  This
-sensitivity gain might be necessary for the study of imprinted genes if their
+due to the limitations specific to our statistical models.
+However, it must be emphasized that only the present approach, based on the read
+count ratio statistic, makes use of the available allele-specific information in RNA-seq
+reads, and this might afford much improved sensitivity relative to the
+traditional ``total read count'' approach used by~\cite{Fromer2016a}.  Such
+sensitivity gain might be necessary for any study of imprinted genes if their
 expression level is indeed so tightly linked to phenotype~\cite{McNamara2013}.
 
 Variation in a few imprinted genes, as we observe here, may seem inadequate
 for a highly polygenic condition like schizophrenia.  But several points
 indicate the opposite.  First, the psychological role of imprinted genes might
 be disproportionately more significant than that of non-imprinted
-ones~\cite{Crespi2008a} given that the complexity of placental mammalian brain
-evolved parallel with imprinting~\cite{Renfree2012} and that they were
-suggested to form functional networks with each other~\cite{Varrault2006},
-whose functional impact typical gene association tests, such as ours,
-underestimate since they assume independence of genes.  Second, our present
-work filtered out a large portion of ``noisy'' genes, including imprinted
-ones, several of which might be associated to schizophrenia and/or aging, etc.
-Third, only the DLPFC is studied here but other brain areas likely exhibit
-different patterns of imprinting and association to traits.
+ones~\cite{Crespi2008a}.  This is supported by the high risk associated with
+copy number variation of certain imprinted regions~\cite{McNamara2013}, by the
+coevolution of imprinting with increasing brain complexity in the placental
+lineage~\cite{Renfree2012}, and by the suggestion that imprinted genes form
+functional networks~\cite{Varrault2006}.  Second, our present work filtered
+out a large portion of ``noisy'' genes, including imprinted ones, several of
+which might be associated to schizophrenia and/or aging, etc.  Third, only the
+DLPFC is studied here but other brain areas are likely to exhibit different
+patterns of imprinting and association to traits given the context-dependence
+of imprinting~\cite{Perez2015,DeVeale2012}.  This last point is becoming
+testable as the CommonMind project extends its data sets to additional brain
+areas beyond the DLPFC.
 
-The interpretation of the association to gender and ancestry is less
-straight-forward than that to age and schizophrenia.
+The interpretation of our results on ancestry and gender is less
+straight-forward than that to age and schizophrenia.  What appears clear,
+though, is that association to ancestry indicates various effects of genetic
+polymorphisms.  One class of such effects, that involving methylation QTLs,
+might be particularly important because such QTLs at imprinting control
+regions can potentially regulate multiple imprinted genes within a cluster.
+What's more, methylation QTLs were found to be enriched in schizophrenia risk
+loci~\cite{Hannon2016}.  Therefore, it will be worth investigating the
+methylation link between polymorphisms and parental bias in combined genomic
+experiments.  Association to gender may indicate sex-dependent physiological
+and behavioral functions.  Our finding on PEG3 appears to be consistent with
+its observed involvement in sexual dimorphism in the brain and in sexual and
+maternal behavior \cite{Broad2009}.  The latter observations motivated the
+hypothesis that imprinting follows from mother-offspring
+coadaptation~\cite{Keverne2015}; that, however, has been questioned by
+proponents of the kinship theory~\cite{Haig2014}.
 
-\begin{itemize}
-\item molecular mechanisms of regulation; our finding on Ancestry.1 point to
-genetic effects; future work using methylation QTLs, supported by our findings
-on SCZ and~\cite{Hannon2016}
-\item bidirectional interactions: (1) children's growth and behavior
-(suckling) and (2) maternal behavior~\cite{Keverne2015}; consistent with our finding on gender
-\item further technical challenges: modeling similar to voom~\cite{Law2014}, RNA quality, our finding on RIN
-\item limitations of our study due to human subjects; future challenge: bring mouse studies in
-correspondence with human studies: modeling, evolutionary aspect
-(conservation/divergence wrt imprinting)
-\end{itemize}
+The above conclusions are contingent upon the correctness of our statistical
+approach.  Although we did perform data-driven model selection---based on
+model fit---, we found that even the best models have several limitations
+(Section~\ref{sec:limitations}).  To quantify their impact future simulation
+studies will be needed.  These combined the adoption of a hierarchical
+Bayesian framework (Fig.~\ref{fig:glm-vs-hierarch} right) would allow
+information sharing across genes, optimal treatment of uncertainty about
+genotyping and about haplotyping, drawing information from more predictors and
+accounting for their interactions.  All these features are expected to improve
+power and specificity and address further questions regarding e.g.~other
+psychiatric disorders and DNA methylation patterns.  Another modeling challenge
+concerns direct comparability between human genomic studies and designed mouse
+experiments.  Meeting that challenge would enable the discovery of putative
+human-specific signatures of imprinting, which in turn would help elucidate
+the (epi)genetics of normal and dysfunctional traits of human psychology and
+cognition.
 
 \bibliographystyle{plain}
 \bibliography{monoall-ms}
