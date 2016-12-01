@@ -12,9 +12,6 @@ The current work studies this by performing two main steps
 ## Data import and preparation
 
 
-```
-## Loading required package: RColorBrewer
-```
 
 Load data importer functions:
 
@@ -104,6 +101,7 @@ gs$score <- unlist(frac["1", ])
 
 Write results to file:
 
+
 ```r
 write.csv(gs, file = "../../results/gene-clusters.csv")
 ```
@@ -157,7 +155,7 @@ The plot below shows the genomic location of all 16026 genes in the filtered dat
 
 ```r
 xyplot(score ~ start | chr, data = gs, groups = imprinting.status,
-       auto.key = list(columns = 3, col = c("red", "darkgreen", "blue"), points = FALSE), layout = c(4, 6),
+       auto.key = list(text = rev(c("known imprinted", "unknown within 1 Mb", "unknown without 1 Mb")), columns = 3, col = c("red", "darkgreen", "blue"), points = FALSE), layout = c(4, 6),
        par.settings = list(superpose.symbol =
                            list(pch = c(20, 21, 21), alpha = c(0.3, 1, 1),
                                 fill = c("pink", "green", "lightblue"),

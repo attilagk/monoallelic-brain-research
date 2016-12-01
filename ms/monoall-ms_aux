@@ -25,22 +25,22 @@
 \citation{Peters2014}
 \citation{Ingason2011}
 \citation{Sullivan2012}
-\@writefile{toc}{\contentsline {section}{\numberline {1}Introduction}{2}}
 \citation{Sullivan2012}
 \citation{Fromer2016a}
 \citation{Perez2015}
 \citation{DeVeale2012}
 \citation{Gregg2010a}
+\@writefile{toc}{\contentsline {section}{\numberline {1}Introduction}{2}}
 \@writefile{toc}{\contentsline {section}{\numberline {2}Methods}{3}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {2.1}Study design}{3}}
 \newlabel{eq:S-definition}{{1}{3}}
-\@writefile{lot}{\contentsline {table}{\numberline {1}{\ignorespaces  \emph  {Left column:} predictors (explanatory variables) of read count ratio for the study of regulation and consequences of parental bias. \emph  {Right column:} levels of each factor valued (categorical) predictor. Square brackets \([...]\) surround the baseline level against which other levels are contrasted. \emph  {Abbreviations:} PMI: post-mortem interval; Dx: disease status; AFF: affective spectrum disorder; SCZ: schizophrenia; RIN: RNA integrity number; RIN2: the square of RIN; Ancestry.\(k\): the \(k\)-th eigenvalue from the decomposition of genotypes indicating population structure}}{4}}
+\@writefile{lot}{\contentsline {table}{\numberline {1}{\ignorespaces  \emph  {Left column:} predictors (explanatory variables) of read count ratio. \emph  {Right column:} levels of each factor-valued (i.e.\nobreakspace  {}categorical) predictor. Square brackets \([...]\) surround the baseline level against which other levels are contrasted. \emph  {Abbreviations:} PMI: post-mortem interval; Dx: disease status; AFF: affective spectrum disorder; SCZ: schizophrenia; RIN: RNA integrity number; Ancestry.\(k\): the \(k\)-th eigenvalue from the decomposition of genotypes indicating population structure.}}{4}}
 \newlabel{tab:predictors}{{1}{4}}
-\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces  Quantifying parental expression bias in human individuals using the read count ratio statistic \(S\). The bias towards the expression of the maternal (red) or paternal (blue) copy of some gene in individual is measured based on the count of RNA-seq reads carrying the reference allele (small closed circles) and the count of reads carrying an alternative allele (open squares) at all SNPs in that gene for which the individual is heterozygous. The differences in the unobserved parental expression bias between individual \(i_1\) and \(i_2\) arise only from biological differences such as their disease status (black and gray silhouettes), age, or gender. In addition to these, the differences in the observed read count ratio also reflect variation from technical sources like tissue preparation, or RNA sequencing. }}{5}}
+\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces  Quantifying parental bias of expression in human individuals using the read count ratio statistic \(S_{ig}\). The strength of bias towards the expression of the maternal (red) or paternal (blue) allele of a given gene \(g\) in individual \(i\) is gauged with the count of RNA-seq reads carrying the reference allele (small closed circles) and the count of reads carrying an alternative allele (open squares) at all SNPs for which the individual is heterozygous. The differences in the unobserved parental expression bias between individual \(i_1\) and \(i_2\) arise only from biological differences such as their disease status (black and gray silhouettes), age, or gender. In addition to these, the differences in the observed read count ratio also reflect variation from technical sources like tissue preparation, or RNA sequencing. Note the sampling bias towards older individuals in institution \(A\) relative to \(B\). }}{5}}
 \newlabel{fig:study-design}{{1}{5}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {2.2}Data}{6}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.2.1}Brain samples}{6}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.2.2}RNA-seq, mapping, SNP calling and filtering}{6}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.2.1}Brain samples, RNA-seq}{6}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.2.2}Mapping, SNP calling and filtering}{6}}
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {2.2.3}Genotyping and calibration of imputed SNPs}{6}}
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {2.2.4}Quality filtering}{7}}
 \newlabel{sec:filtering}{{2.2.4}{7}}
@@ -62,30 +62,31 @@
 \@writefile{toc}{\contentsline {subsection}{\numberline {3.1}Genome- and population-wide variation of parental bias}{9}}
 \@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces  Using the read count ratio statistic \(S\) to report on variation of parental bias across individuals and genes. \emph  {Upper half}, from top to bottom: (1) kernel density estimate; (2) the graph of the survival function 1 - ECDF, where ECDF means empirical cumulative distribution function; note color scale for heat map and green filled circles marking genes' score; (3) the heat map representation of the survival function. \emph  {Lower half}, main panels: heat map of the survival function for all 5307 analyzed genes ranked according to their score; right side panels: gene score. }}{10}}
 \newlabel{fig:ranking-genes}{{2}{10}}
-\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces }}{11}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces  The top 50 genes ranked by the gene score. The score of gene \(g\) is \(1 - \mathrm  {ECDF}_g(0.9)\), the fraction of individuals \(i\) for which \(S_{ig}>0.9\) and is indicated by the length of dark blue, dark green or dark red bars. Note that the same ranking and score is shown in the bottom half of Fig.\nobreakspace  {}2\hbox {}. The right border of the light blue, light green and light red bars is at \(1 - \mathrm  {ECDF}_g(0.8)\). The length of the black bars indicates the fraction of individuals passing the test of nearly unbiased expression (Eq.\nobreakspace  {}2\hbox {}). }}{11}}
 \newlabel{fig:top-genes}{{3}{11}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {3.2}Selection among predictive models of parental bias}{12}}
 \newlabel{sec:results-regression}{{3.2}{12}}
 \@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces }}{13}}
 \newlabel{fig:S-age-gender}{{4}{13}}
-\@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces Fitting four families of generalized linear models to the same data set. In each panel the horizontal axis is age and the vertical axis is the possibly transformed read count ratio. For all panels the green scatter represents the same data set (KCNK9 gene, cf.\nobreakspace  {}Fig4\hbox {}) except that in the bottom right panel the observed read count ratio is transformed according to Eq.\nobreakspace  {}8\hbox {}. Given each one of four model families the predicted read count ratio is represented by thick black curves. The probability mass or density of the sampling distribution is indicated by a cyan-to-magenta gradient and various prediction limits by gray lines. Note that for demonstration the depicted fitted models are all simple in the sense that they contain age as a sole predictor. Quantitative inference, however, was based on the corresponding multiple regression models including all predictors (Table\nobreakspace  {}1\hbox {}). }}{14}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces Fitting four families of generalized linear models to the same data set. In each panel the horizontal axis is age and the vertical axis is the possibly transformed read count ratio \(S\). For all panels the green scatter represents the same data set (KCNK9 gene, cf.\nobreakspace  {}Fig4\hbox {}) except that in the bottom right panel the observed read count ratio \(S\) is transformed to \(Q\) according to Eq.\nobreakspace  {}8\hbox {}. Given each one of four model families the predicted read count ratio is represented by thick black curves. The probability mass or density of the sampling distribution is indicated by a cyan-to-magenta gradient and various prediction limits by gray lines. Note that for demonstration the depicted fitted models are all simple in the sense that they contain age as a sole predictor. Quantitative inference, however, was based on the corresponding multiple regression models including all predictors (Table\nobreakspace  {}1\hbox {}). }}{14}}
 \newlabel{fig:predicted-curves}{{5}{14}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.3}Biological predictors and interpretation}{15}}
 \citation{Sullivan2012}
 \citation{McNamara2013}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.3}Biological predictors and interpretation}{15}}
 \@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces }}{16}}
 \newlabel{fig:pval-wnlm.Q}{{6}{16}}
-\@writefile{lot}{\contentsline {table}{\numberline {3}{\ignorespaces }}{16}}
-\newlabel{tab:signif-gene-effects}{{3}{16}}
-\@writefile{lof}{\contentsline {figure}{\numberline {7}{\ignorespaces Biological effects: estimate and $99\%$ confidence interval for each regression coefficient \(\beta _{jg}\) under the wnlm.Q model, where \(g\) corresponds to a gene and \(j\) to a biological covariate (Age, Ancestry.1) or a level of some biological factor (DxSCZ, GenderMale).}}{17}}
+\@writefile{lof}{\contentsline {figure}{\numberline {7}{\ignorespaces Biological effects: estimate and $99\%$ confidence interval for each regression coefficient \(\beta _{jg}\) under the wnlm.Q model, where \(g\) corresponds to a gene and \(j\) to a biological covariate (Age, Ancestry.1) or a ``treatment level'' of some biological factor (DxSCZ, GenderMale) contrasted to its ``control level'' (DxControl, GenderFemale, respectively).}}{17}}
 \newlabel{fig:biol-effects-wnlm.Q}{{7}{17}}
 \citation{Fromer2016a}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.4}Limitations}{18}}
+\@writefile{lot}{\contentsline {table}{\numberline {3}{\ignorespaces }}{18}}
+\newlabel{tab:signif-gene-effects}{{3}{18}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.4}Methodological limitations}{18}}
 \newlabel{sec:limitations}{{3.4}{18}}
 \citation{Ubeda2012}
 \citation{Wilkins2003}
 \citation{McNamara2013}
 \citation{Crespi2008a}
+\@writefile{toc}{\contentsline {section}{\numberline {4}Discussion}{19}}
 \citation{Fromer2016a}
 \citation{Fromer2016a}
 \citation{McNamara2013}
@@ -95,7 +96,6 @@
 \citation{Varrault2006}
 \citation{Perez2015}
 \citation{DeVeale2012}
-\@writefile{toc}{\contentsline {section}{\numberline {4}Discussion}{19}}
 \citation{Hannon2016}
 \citation{Broad2009}
 \citation{Keverne2015}
