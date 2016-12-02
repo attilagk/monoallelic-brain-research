@@ -573,7 +573,10 @@ clear.
 \begin{figure}
 \begin{center}
 \includegraphics[scale=0.6]{figures/2016-06-26-trellis-display-of-data/S-age-gender-1.png}
-\caption{}
+\caption{
+Variation of the read count ratio \(S_{ig}\) across hundreds of individuals
+\(i\) (dots) and 30 genes \(g\) that are imprinted in the DLPFC brain area.
+}
 \label{fig:S-age-gender}
 \end{center}
 \end{figure}
@@ -694,7 +697,18 @@ regulated by a third, latent, variable.
 \begin{center}
 \includegraphics[scale=0.6]{figures/2016-10-03-permutation-test/p-values-wnlm-Q-1.pdf}
 \end{center}
-\caption{}
+\caption{
+Significance of association between biological predictors and imprinted genes
+in the DLPFC.  Association was tested based on the p-value for the null
+hypothesis \(\beta_{jg}=0\), where the regression coefficient \(\beta_{jg}\)
+mediates the dependence of the read count ratio for gene \(g\) on
+predictor/``treatment'' \(j\) (Age,...)~in the wnlm.Q model
+(Fig.~\ref{fig:predicted-curves} bottom right).  Note that the p-values
+estimated parametrically (t-distribution) agree well with those estimated
+non-parametrically (random permutations).  The gray area shows the decision
+rule for rejecting the null hypothesis and thus contains significant
+associations.
+}
 \label{fig:pval-wnlm.Q}
 \end{figure}
 
@@ -717,7 +731,7 @@ marginal hypothesis \(\mathcal{H}^0_{jg}\) if the conditional hypotheses
 ``\(\mathcal{H}^0_{jg} |\text{non-parametric method}\)'' were both rejected at
 size \(\alpha = 0.05\) under the wnlm.Q model.
 
-For each of the four terms (Age,...) the hypothesis of independence was rejected for some genes
+For each of the four terms (Age,...)~the hypothesis of independence was rejected for some genes
 (Fig.~\ref{fig:pval-wnlm.Q}). This appears to suggest that aging, gender and ancestry-related genetic variation regulates
 parental bias of those genes whereas the risk of schizophrenia is regulated by it; but, as discussed
 above, indirect causation involving a latent variable is also possible.
@@ -742,11 +756,14 @@ McNamara2013}.  For another example, PEG3, see the Discussion.
 \begin{center}
 \includegraphics[scale=0.6]{figures/2016-08-08-imprinted-gene-clusters/segplot-wnlm-Q-99conf-1.pdf}
 \end{center}
-\caption{Biological effects: estimate and $99\%$ confidence interval for each
-regression coefficient \(\beta_{jg}\) under the wnlm.Q model, where \(g\)
-corresponds to a gene and \(j\) to a biological covariate (Age, Ancestry.1) or
-a ``treatment level'' of some biological factor (DxSCZ, GenderMale) contrasted
-to its ``control level'' (DxControl, GenderFemale, respectively).}
+\caption{ 
+%Estimate and $99\%$ confidence interval for each
+%regression coefficient \(\beta_{jg}\) under the wnlm.Q model.  The sign of an
+%estimate \(\hat{\beta}_{jg}\) reports on the direction The mechanistic
+%interpretation of depends on the nature of
+%the predictor associated with \(j\); for example if the predictor is causal to parental
+%bias then \(\hat{\beta}_{jg}\) is the effect size of the predictor.
+}
 \label{fig:biol-effects-wnlm.Q}
 \end{figure}
 
@@ -850,7 +867,7 @@ context of different institutions or genders the estimates for
 \(\hat\beta_\mathrm{Age}\) seen in Fig.~\ref{fig:biol-effects-wnlm.Q}
 and~\ref{fig:biol-effects-logi.S}.  This suggests that interactions are indeed
 present between age and some other predictors but the identity of these
-predictors is uncertain due to the associations among them.
+predictors is uncertain due to the unknown structure of dependencies among them.
 
 We also fitted model families (Fig.~\ref{fig:glm-vs-hierarch} middle) that
 assume that the effects of all predictors are \emph{not} gene specific and so
@@ -863,19 +880,19 @@ effects were often of opposite direction.
 
 \section{Discussion}
 
-We present above the first genome-wide characterization of parental
+We have presented the first genome-wide characterization of parental
 bias in humans and, at the same time, the first human genomics study with a
 special focus on imprinted genes' association with some psychiatric
 disorder.  Our main finding, the association of several imprinted genes with aging
 and/or schizophrenia, supports the general prediction from kinship theory that the
 roles of imprinted genes may dynamically change even at later stages of life
-in order to mediate certain social interactions dependent on 
+in order to mediate certain social interactions that are dependent on 
 psychology and cognition~\cite{Ubeda2012,Wilkins2003}.  Conversely---and regardless
 the kinship theory---, our results suggest that perturbations to several
 imprinted genes are associated with, and maybe causal to, schizophrenia and
 possibly other psychiatric disorders.
 
-If we accept that the main effect of parental bias is on overall expression
+If we accept that the main effect of parental bias is exerted on overall expression
 level, our finding that the parental bias for UBE3A is negatively associated
 with schizophrenia implies that it is its overexpression that increases risk
 for the disorder.  This agrees with the previously observed effect of copy
@@ -891,12 +908,12 @@ preceding differential expression analysis~\cite{Fromer2016a} miss association
 to schizophrenia for three out of the four genes mentioned above?  It is
 possible, of course, that our work falsely discovered those three associations
 due to the limitations specific to our statistical models.
-However, it must be emphasized that only the present approach, based on the read
-count ratio statistic, makes use of the available allele-specific information in RNA-seq
+However, it must be emphasized that only the present approach---which is based on the read
+count ratio statistic---makes use of the available allele-specific information in RNA-seq
 reads, and this might afford much improved sensitivity relative to the
 traditional ``total read count'' approach used by~\cite{Fromer2016a}.  Such
 sensitivity gain might be necessary for any study of imprinted genes if their
-expression level is indeed so tightly linked to phenotype~\cite{McNamara2013}.
+expression level is indeed as tightly linked to phenotype as it has been suggested~\cite{McNamara2013}.
 
 Variation in a few imprinted genes, as we observe here, may seem inadequate
 for a highly polygenic condition like schizophrenia.  But several points
@@ -907,47 +924,47 @@ copy number variation of certain imprinted regions~\cite{McNamara2013}, by the
 coevolution of imprinting with increasing brain complexity in the placental
 lineage~\cite{Renfree2012}, and by the suggestion that imprinted genes form
 functional networks~\cite{Varrault2006}.  Second, our present work filtered
-out a large portion of ``noisy'' genes, including imprinted ones, several of
-which might be associated to schizophrenia and/or aging, etc.  Third, only the
-DLPFC is studied here but other brain areas are likely to exhibit different
-patterns of imprinting and association to traits given the context-dependence
-of imprinting~\cite{Perez2015,DeVeale2012}.  This last point is becoming
-testable as the CommonMind project extends its data sets to additional brain
-areas beyond the DLPFC.
+out a large portion of imprinted genes with weak signal in the noisy RNA-seq
+data, several of which might be associated to schizophrenia and/or aging, etc.
+Third, only the DLPFC is studied here but other brain areas are likely to
+exhibit different patterns of imprinting and association to traits given the
+context-dependence of imprinting~\cite{Perez2015,DeVeale2012}.  This last
+point is becoming testable as the CommonMind project extends its data sets to
+additional brain areas beyond the DLPFC.
 
 The interpretation of our results on ancestry and gender is less
 straight-forward than that to age and schizophrenia.  What appears clear,
 though, is that association to ancestry indicates various effects of genetic
-polymorphisms.  One class of such effects, that involving methylation QTLs,
-might be particularly important because such QTLs at imprinting control
-regions can potentially regulate multiple imprinted genes within a cluster.
-What's more, methylation QTLs were found to be enriched in schizophrenia risk
-loci~\cite{Hannon2016}.  Therefore, it will be worth investigating the
-methylation link between polymorphisms and parental bias in combined genomic
-experiments.  Association to gender may indicate sex-dependent physiological
-and behavioral functions.  Our finding on PEG3 appears to be consistent with
-its observed involvement in sexual dimorphism in the brain and in sexual and
-maternal behavior \cite{Broad2009}.  The latter observations motivated the
-hypothesis that imprinting follows from mother-offspring
-coadaptation~\cite{Keverne2015}; that, however, has been questioned by
-proponents of the kinship theory~\cite{Haig2014}.
+polymorphisms.   Methylation QTLs represent one class of such effects and they
+might be particularly important because altering methylation at imprinting
+control regions can potentially regulate multiple imprinted genes within the
+same cluster.  What's more, methylation QTLs were found to be enriched in
+schizophrenia risk loci~\cite{Hannon2016}.  Therefore, it will be worth
+investigating the methylation link between polymorphisms and parental bias in
+combined genomic experiments.  Association to gender may indicate
+sex-dependent physiological and behavioral functions.  Our finding on PEG3
+appears to be consistent with its observed involvement in sexual dimorphism in
+the brain and in sexual and maternal behavior \cite{Broad2009}.  The latter
+observations motivated the hypothesis that imprinting follows from
+mother-offspring coadaptation~\cite{Keverne2015}; that, however, has been
+questioned by proponents of the kinship theory~\cite{Haig2014}.
 
-The above conclusions are contingent upon the correctness of our statistical
-approach.  Although we did perform data-driven model selection---based on
-model fit---, we found that even the best models have several limitations
-(Section~\ref{sec:limitations}).  To quantify their impact future simulation
-studies will be needed.  These combined the adoption of a hierarchical
-Bayesian framework (Fig.~\ref{fig:glm-vs-hierarch} right) would allow
-information sharing across genes, optimal treatment of uncertainty about
-genotyping and about haplotyping, drawing information from more predictors and
-accounting for their interactions.  All these features are expected to improve
-power and specificity and address further questions regarding e.g.~other
-psychiatric disorders, other brain regions, and DNA methylation patterns.
-Another modeling challenge concerns direct comparability between human genomic
-studies and designed mouse experiments.  Meeting that challenge would enable
-the discovery of putative human-specific signatures of imprinting, which in
-turn would help elucidate the (epi)genetics of normal and dysfunctional traits
-of human psychology and cognition.
+The above conclusions depend on the correctness of our statistical
+approach.  Although we did perform model selection based on model fit, we
+found that even the best fitting generalized linear models had several
+limitations (Section~\ref{sec:limitations}).  To quantify their impact future
+simulation studies will be needed.  Adopting a hierarchical Bayesian framework
+(Fig.~\ref{fig:glm-vs-hierarch} right) would help overcome the present
+limitations via information sharing across genes, via optimal treatment of
+uncertainty about genotyping and about haplotype, and via drawing
+information from more predictors and accounting for their interactions.  Such
+improvements would be critical for addressing the question of other
+psychiatric disorders such as affective spectrum, of other brain regions, and
+of DNA methylation patterns.  Another challenging aim is direct comparability
+between human genomic studies and designed mouse experiments, which would
+enable the discovery of putative human-specific signatures of imprinting.
+That, in turn, would help elucidate the (epi)genetics of normal and
+dysfunctional traits of human psychology and cognition.
 
 \bibliographystyle{plain}
 \bibliography{monoall-ms}

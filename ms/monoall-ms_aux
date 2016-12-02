@@ -66,27 +66,26 @@
 \newlabel{fig:top-genes}{{3}{11}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {3.2}Selection among predictive models of parental bias}{12}}
 \newlabel{sec:results-regression}{{3.2}{12}}
-\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces }}{13}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces  Variation of the read count ratio \(S_{ig}\) across hundreds of individuals \(i\) (dots) and 30 genes \(g\) that are imprinted in the DLPFC brain area. }}{13}}
 \newlabel{fig:S-age-gender}{{4}{13}}
 \@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces Fitting four families of generalized linear models to the same data set. In each panel the horizontal axis is age and the vertical axis is the possibly transformed read count ratio \(S\). For all panels the green scatter represents the same data set (KCNK9 gene, cf.\nobreakspace  {}Fig4\hbox {}) except that in the bottom right panel the observed read count ratio \(S\) is transformed to \(Q\) according to Eq.\nobreakspace  {}8\hbox {}. Given each one of four model families the predicted read count ratio is represented by thick black curves. The probability mass or density of the sampling distribution is indicated by a cyan-to-magenta gradient and various prediction limits by gray lines. Note that for demonstration the depicted fitted models are all simple in the sense that they contain age as a sole predictor. Quantitative inference, however, was based on the corresponding multiple regression models including all predictors (Table\nobreakspace  {}1\hbox {}). }}{14}}
 \newlabel{fig:predicted-curves}{{5}{14}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {3.3}Biological predictors and interpretation}{15}}
+\@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces  Significance of association between biological predictors and imprinted genes in the DLPFC. Association was tested based on the p-value for the null hypothesis \(\beta _{jg}=0\), where the regression coefficient \(\beta _{jg}\) mediates the dependence of the read count ratio for gene \(g\) on predictor/``treatment'' \(j\) (Age,...)\nobreakspace  {}in the wnlm.Q model (Fig.\nobreakspace  {}5\hbox {} bottom right). Note that the p-values estimated parametrically (t-distribution) agree well with those estimated non-parametrically (random permutations). The gray area shows the decision rule for rejecting the null hypothesis and thus contains significant associations. }}{16}}
+\newlabel{fig:pval-wnlm.Q}{{6}{16}}
 \citation{Sullivan2012}
 \citation{McNamara2013}
-\@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces }}{16}}
-\newlabel{fig:pval-wnlm.Q}{{6}{16}}
-\@writefile{lof}{\contentsline {figure}{\numberline {7}{\ignorespaces Biological effects: estimate and $99\%$ confidence interval for each regression coefficient \(\beta _{jg}\) under the wnlm.Q model, where \(g\) corresponds to a gene and \(j\) to a biological covariate (Age, Ancestry.1) or a ``treatment level'' of some biological factor (DxSCZ, GenderMale) contrasted to its ``control level'' (DxControl, GenderFemale, respectively).}}{17}}
-\newlabel{fig:biol-effects-wnlm.Q}{{7}{17}}
 \citation{Fromer2016a}
-\@writefile{lot}{\contentsline {table}{\numberline {3}{\ignorespaces }}{18}}
-\newlabel{tab:signif-gene-effects}{{3}{18}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.4}Methodological limitations}{18}}
-\newlabel{sec:limitations}{{3.4}{18}}
+\@writefile{lot}{\contentsline {table}{\numberline {3}{\ignorespaces }}{17}}
+\newlabel{tab:signif-gene-effects}{{3}{17}}
+\@writefile{lof}{\contentsline {figure}{\numberline {7}{\ignorespaces  }}{18}}
+\newlabel{fig:biol-effects-wnlm.Q}{{7}{18}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.4}Methodological limitations}{19}}
+\newlabel{sec:limitations}{{3.4}{19}}
 \citation{Ubeda2012}
 \citation{Wilkins2003}
 \citation{McNamara2013}
 \citation{Crespi2008a}
-\@writefile{toc}{\contentsline {section}{\numberline {4}Discussion}{19}}
 \citation{Fromer2016a}
 \citation{Fromer2016a}
 \citation{McNamara2013}
@@ -96,6 +95,7 @@
 \citation{Varrault2006}
 \citation{Perez2015}
 \citation{DeVeale2012}
+\@writefile{toc}{\contentsline {section}{\numberline {4}Discussion}{20}}
 \citation{Hannon2016}
 \citation{Broad2009}
 \citation{Keverne2015}
@@ -123,50 +123,50 @@
 \bibcite{Ubeda2012}{19}
 \bibcite{Varrault2006}{20}
 \bibcite{Wilkins2003}{21}
-\@writefile{toc}{\contentsline {section}{\numberline {5}Supplementary Material}{23}}
-\@writefile{lof}{\contentsline {figure}{\numberline {S1}{\ignorespaces }}{24}}
-\newlabel{fig:clusters}{{S1}{24}}
-\@writefile{lof}{\contentsline {figure}{\numberline {S2}{\ignorespaces }}{25}}
-\newlabel{fig:known-genes}{{S2}{25}}
-\@writefile{lof}{\contentsline {figure}{\numberline {S3}{\ignorespaces }}{26}}
-\newlabel{fig:predictor-associations}{{S3}{26}}
-\@writefile{lof}{\contentsline {figure}{\numberline {S4}{\ignorespaces }}{27}}
-\newlabel{fig:weight-of-evidence}{{S4}{27}}
-\@writefile{lof}{\contentsline {figure}{\numberline {S5}{\ignorespaces }}{28}}
-\newlabel{fig:qqnorm-wnlm.Q}{{S5}{28}}
-\@writefile{lof}{\contentsline {figure}{\numberline {S6}{\ignorespaces }}{29}}
-\newlabel{fig:qqnorm-logi.S}{{S6}{29}}
-\@writefile{lof}{\contentsline {figure}{\numberline {S7}{\ignorespaces }}{30}}
-\newlabel{fig:homoscedas-wnlm.Q}{{S7}{30}}
-\@writefile{lof}{\contentsline {figure}{\numberline {S8}{\ignorespaces }}{31}}
-\newlabel{fig:homoscedas-logi.S}{{S8}{31}}
-\@writefile{lof}{\contentsline {figure}{\numberline {S9}{\ignorespaces }}{32}}
-\newlabel{fig:influence-wnlm.Q}{{S9}{32}}
-\@writefile{lof}{\contentsline {figure}{\numberline {S10}{\ignorespaces }}{33}}
-\newlabel{fig:influence-logi.S}{{S10}{33}}
-\@writefile{lof}{\contentsline {figure}{\numberline {S11}{\ignorespaces }}{34}}
-\newlabel{fig:pval-tdist-vs-perm}{{S11}{34}}
-\@writefile{lof}{\contentsline {figure}{\numberline {S12}{\ignorespaces }}{35}}
-\newlabel{fig:pval}{{S12}{35}}
-\@writefile{lof}{\contentsline {figure}{\numberline {S13}{\ignorespaces Biological effects: estimates and $99\%$ confidence intervals under the logi.S model}}{36}}
-\newlabel{fig:biol-effects-logi.S}{{S13}{36}}
-\@writefile{lof}{\contentsline {figure}{\numberline {S14}{\ignorespaces }}{37}}
-\newlabel{fig:ll-surf-explain}{{S14}{37}}
-\@writefile{lof}{\contentsline {figure}{\numberline {S15}{\ignorespaces }}{38}}
-\newlabel{fig:logi.S-wnlm.Q-compare}{{S15}{38}}
-\@writefile{lof}{\contentsline {figure}{\numberline {S16}{\ignorespaces }}{38}}
-\newlabel{fig:glm-vs-hierarch}{{S16}{38}}
-\@writefile{lof}{\contentsline {figure}{\numberline {S17}{\ignorespaces }}{39}}
-\newlabel{fig:all-effects-wnlm.Q}{{S17}{39}}
-\@writefile{lof}{\contentsline {figure}{\numberline {S18}{\ignorespaces }}{40}}
-\newlabel{fig:all-effects-logi.S}{{S18}{40}}
-\@writefile{lof}{\contentsline {figure}{\numberline {S19}{\ignorespaces }}{41}}
-\newlabel{fig:ll-non-orthogonality}{{S19}{41}}
-\@writefile{lof}{\contentsline {figure}{\numberline {S20}{\ignorespaces }}{42}}
-\newlabel{fig:interaction-wnlm.Q}{{S20}{42}}
-\@writefile{lof}{\contentsline {figure}{\numberline {S21}{\ignorespaces }}{43}}
-\newlabel{fig:interaction-logi.S}{{S21}{43}}
-\@writefile{lof}{\contentsline {figure}{\numberline {S22}{\ignorespaces }}{44}}
-\newlabel{fig:anova}{{S22}{44}}
-\@writefile{lof}{\contentsline {figure}{\numberline {S23}{\ignorespaces }}{45}}
-\newlabel{fig:diff-exp-scz}{{S23}{45}}
+\@writefile{toc}{\contentsline {section}{\numberline {5}Supplementary Material}{24}}
+\@writefile{lof}{\contentsline {figure}{\numberline {S1}{\ignorespaces }}{25}}
+\newlabel{fig:clusters}{{S1}{25}}
+\@writefile{lof}{\contentsline {figure}{\numberline {S2}{\ignorespaces }}{26}}
+\newlabel{fig:known-genes}{{S2}{26}}
+\@writefile{lof}{\contentsline {figure}{\numberline {S3}{\ignorespaces }}{27}}
+\newlabel{fig:predictor-associations}{{S3}{27}}
+\@writefile{lof}{\contentsline {figure}{\numberline {S4}{\ignorespaces }}{28}}
+\newlabel{fig:weight-of-evidence}{{S4}{28}}
+\@writefile{lof}{\contentsline {figure}{\numberline {S5}{\ignorespaces }}{29}}
+\newlabel{fig:qqnorm-wnlm.Q}{{S5}{29}}
+\@writefile{lof}{\contentsline {figure}{\numberline {S6}{\ignorespaces }}{30}}
+\newlabel{fig:qqnorm-logi.S}{{S6}{30}}
+\@writefile{lof}{\contentsline {figure}{\numberline {S7}{\ignorespaces }}{31}}
+\newlabel{fig:homoscedas-wnlm.Q}{{S7}{31}}
+\@writefile{lof}{\contentsline {figure}{\numberline {S8}{\ignorespaces }}{32}}
+\newlabel{fig:homoscedas-logi.S}{{S8}{32}}
+\@writefile{lof}{\contentsline {figure}{\numberline {S9}{\ignorespaces }}{33}}
+\newlabel{fig:influence-wnlm.Q}{{S9}{33}}
+\@writefile{lof}{\contentsline {figure}{\numberline {S10}{\ignorespaces }}{34}}
+\newlabel{fig:influence-logi.S}{{S10}{34}}
+\@writefile{lof}{\contentsline {figure}{\numberline {S11}{\ignorespaces }}{35}}
+\newlabel{fig:pval-tdist-vs-perm}{{S11}{35}}
+\@writefile{lof}{\contentsline {figure}{\numberline {S12}{\ignorespaces }}{36}}
+\newlabel{fig:pval}{{S12}{36}}
+\@writefile{lof}{\contentsline {figure}{\numberline {S13}{\ignorespaces Biological effects: estimates and $99\%$ confidence intervals under the logi.S model}}{37}}
+\newlabel{fig:biol-effects-logi.S}{{S13}{37}}
+\@writefile{lof}{\contentsline {figure}{\numberline {S14}{\ignorespaces }}{38}}
+\newlabel{fig:ll-surf-explain}{{S14}{38}}
+\@writefile{lof}{\contentsline {figure}{\numberline {S15}{\ignorespaces }}{39}}
+\newlabel{fig:logi.S-wnlm.Q-compare}{{S15}{39}}
+\@writefile{lof}{\contentsline {figure}{\numberline {S16}{\ignorespaces }}{39}}
+\newlabel{fig:glm-vs-hierarch}{{S16}{39}}
+\@writefile{lof}{\contentsline {figure}{\numberline {S17}{\ignorespaces }}{40}}
+\newlabel{fig:all-effects-wnlm.Q}{{S17}{40}}
+\@writefile{lof}{\contentsline {figure}{\numberline {S18}{\ignorespaces }}{41}}
+\newlabel{fig:all-effects-logi.S}{{S18}{41}}
+\@writefile{lof}{\contentsline {figure}{\numberline {S19}{\ignorespaces }}{42}}
+\newlabel{fig:ll-non-orthogonality}{{S19}{42}}
+\@writefile{lof}{\contentsline {figure}{\numberline {S20}{\ignorespaces }}{43}}
+\newlabel{fig:interaction-wnlm.Q}{{S20}{43}}
+\@writefile{lof}{\contentsline {figure}{\numberline {S21}{\ignorespaces }}{44}}
+\newlabel{fig:interaction-logi.S}{{S21}{44}}
+\@writefile{lof}{\contentsline {figure}{\numberline {S22}{\ignorespaces }}{45}}
+\newlabel{fig:anova}{{S22}{45}}
+\@writefile{lof}{\contentsline {figure}{\numberline {S23}{\ignorespaces }}{46}}
+\newlabel{fig:diff-exp-scz}{{S23}{46}}
