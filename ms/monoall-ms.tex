@@ -3,7 +3,8 @@
 \usetikzlibrary{arrows.meta}
 \bibliographystyle{plain}
 
-\title{Regulators of Genomic Imprinting in the Human Brain and Links to Schizophrenia}
+\title{Regulators and Psychiatric Associates of Genomic Imprinting in the Human Brain}
+%\title{Regulators of Genomic Imprinting in the Human Brain and Links to Schizophrenia}
 \author{Attila Guly\'{a}s-Kov\'{a}cs\(^\ast\), Ifat Keydar\(^\ast\),
 ...,
 %\\
@@ -13,7 +14,6 @@ Andrew Chess}
 \date{Mount Sinai School of Medicine}
 
 \begin{document}
-\maketitle
 
 \maketitle
 
@@ -21,14 +21,14 @@ Andrew Chess}
 We present the first genome-wide analysis of human genomic imprinting based on
 RNA-seq measurements of the parental bias in allele-specific expression in the
 dorsolateral prefrontal cortex.  We find that the fraction of imprinted human
-genes is consistent with lower (\(\approx 0.5\%\)) but not with higher
+genes is consistent with lower (\(\approx 0.5\%\)) as opposed to higher
 (\(\approx 5\%\)) estimates in mice.  Our analysis reveals that age up or
 down-regulates parental bias of some imprinted genes even in later life and
-that gender and genetic variation also have regulatory roles.  Furthermore, we show that
-parental bias of some imprinted genes, like UBE3A in the Prader-Willi region,
-is linked to schizophrenia.  These results support the importance of imprinted
-genes in social interactions, which dynamically change in the life course and
-depend on neuropsychological function.
+that parental bias depends also on gender and genetic variation.  Furthermore,
+we show that parental bias of some imprinted genes, like UBE3A in the
+Prader-Willi region, is linked to schizophrenia.  These results support the
+hypothesized role of imprinted genes in social interactions, which dynamically
+change in the life course and depend on neuropsychological function.
 \end{abstract}
 
 \section{Introduction}
@@ -48,7 +48,7 @@ refer to this form of expression as \emph{parental bias} to emphasize that the
 relative expression level of one allele of some gene, at least when averaged
 over multiple cells in a tissue, may take some intermediate value between 0
 and 1.  Thus imprinted genes are near 0 or 1 and so are biased or even
-monoallelic expressed, whereas most non-imprinted genes are near \(1/2\), that
+monoallelic expressed, whereas most non-imprinted genes are near \(\frac{1}{2}\), that
 is, essentially unbiased.  Because phenotype is known to be rather sensitive
 to the dose of imprinted genes~\cite{McNamara2013}, parental bias appears as a
 form of fine regulator of overall expression level between full intensity
@@ -894,10 +894,21 @@ effects were often of opposite direction.
 
 \section{Discussion}
 
-We have presented the first genome-wide characterization of parental
-bias in humans and, at the same time, the first human genomics study with a
-special focus on imprinted genes' association with some psychiatric
-disorder.  Our main finding, the association of several imprinted genes with aging
+We have presented the first genome-wide characterization of genomic imprinting
+and parental bias in humans and, at the same time, the first human genomics
+study with a special focus on imprinted genes' association with some
+psychiatric disorder.  One must bear in mind that the biological
+interpretation of the results depends on the correctness of our statistical
+approach.  Although we did perform model selection based on model fit, we
+found that even the best fitting generalized linear models had several
+limitations (Section~\ref{sec:limitations}).  To quantify their precise impact
+extensive simulation studies will be needed.  Adopting a hierarchical Bayesian
+framework (Fig.~\ref{fig:glm-vs-hierarch} right) would help overcome the
+present limitations via information sharing across genes, via optimal
+treatment of uncertainty about genotyping and about haplotype, and via drawing
+information from more predictors and accounting for their interactions.  
+
+Our main finding, the association of several imprinted genes with aging
 and/or schizophrenia, supports the general prediction from kinship theory that the
 roles of imprinted genes may dynamically change even at later stages of life
 in order to mediate certain social interactions that are dependent on 
@@ -963,22 +974,14 @@ observations motivated the hypothesis that imprinting follows from
 mother-offspring coadaptation~\cite{Keverne2015}; that, however, has been
 questioned by proponents of the kinship theory~\cite{Haig2014}.
 
-The above conclusions depend on the correctness of our statistical
-approach.  Although we did perform model selection based on model fit, we
-found that even the best fitting generalized linear models had several
-limitations (Section~\ref{sec:limitations}).  To quantify their impact future
-simulation studies will be needed.  Adopting a hierarchical Bayesian framework
-(Fig.~\ref{fig:glm-vs-hierarch} right) would help overcome the present
-limitations via information sharing across genes, via optimal treatment of
-uncertainty about genotyping and about haplotype, and via drawing
-information from more predictors and accounting for their interactions.  Such
-improvements would be critical for addressing the question of other
-psychiatric disorders such as affective spectrum, of other brain regions, and
-of DNA methylation patterns.  Another challenging aim is direct comparability
-between human genomic studies and designed mouse experiments, which would
-enable the discovery of putative human-specific signatures of imprinting.
-That, in turn, would help elucidate the (epi)genetics of normal and
-dysfunctional traits of human psychology and cognition.
+With improved analytical tools and more human data it will be possible to
+address the question of other psychiatric disorders such as affective
+spectrum, of other brain regions, and of DNA methylation patterns.
+Improvements in terms of comparability between human genomic studies and
+designed mouse experiments would also be desirable since that would enable
+the discovery of putative human-specific signatures of imprinting.  That, in
+turn, would help elucidate the (epi)genetics of normal and dysfunctional
+traits of human psychology and cognition.
 
 \bibliographystyle{plain}
 \bibliography{monoall-ms}
