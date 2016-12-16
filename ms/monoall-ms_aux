@@ -4,7 +4,6 @@
 \citation{Plasschaert2014}
 \citation{Peters2014}
 \citation{Plasschaert2014}
-\citation{McNamara2013}
 \citation{Wilkins2003}
 \citation{McDonald2005}
 \citation{Keverne2015}
@@ -12,12 +11,12 @@
 \citation{Wilkins2003}
 \citation{Plasschaert2014}
 \citation{Peters2014}
-\@writefile{toc}{\contentsline {section}{\numberline {1}Introduction}{1}}
 \citation{Bourke2007}
 \citation{Plasschaert2014}
 \citation{Peters2014}
 \citation{Ubeda2012}
 \citation{Perez2015}
+\@writefile{toc}{\contentsline {section}{\numberline {1}Introduction}{1}}
 \citation{Ubeda2012}
 \citation{Wilkins2003}
 \citation{Plasschaert2014}
@@ -26,20 +25,16 @@
 \citation{Peters2014}
 \citation{Ingason2011}
 \citation{Sullivan2012}
-\citation{Sullivan2012}
 \citation{Fromer2016a}
-\citation{Perez2015}
-\citation{DeVeale2012}
-\citation{Gregg2010a}
 \@writefile{toc}{\contentsline {section}{\numberline {2}Methods}{2}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {2.1}Study design}{2}}
 \newlabel{eq:S-definition}{{1}{3}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.2}Data}{3}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.2.1}Brain samples, RNA-seq}{3}}
 \@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces  Quantifying parental bias of expression in human individuals using the read count ratio statistic \(S_{ig}\). The strength of bias towards the expression of the maternal (red) or paternal (blue) allele of a given gene \(g\) in individual \(i\) is gauged with the count of RNA-seq reads carrying the reference allele (small closed circles) and the count of reads carrying an alternative allele (open squares) at all SNPs for which the individual is heterozygous. The differences in the unobserved parental expression bias between individual \(i_1\) and \(i_2\) arise only from biological differences such as their disease status (black and gray silhouettes), age, or gender. In addition to these, the differences in the observed read count ratio also reflect variation from technical sources like tissue preparation, or RNA sequencing. Note the sampling bias towards older individuals in institution \(A\) relative to \(B\). }}{4}}
 \newlabel{fig:study-design}{{1}{4}}
 \@writefile{lot}{\contentsline {table}{\numberline {1}{\ignorespaces  \emph  {Left column:} predictors (explanatory variables) of read count ratio. \emph  {Right column:} levels of each factor-valued (i.e.\nobreakspace  {}categorical) predictor. Square brackets \([...]\) surround the baseline level against which other levels are contrasted. \emph  {Abbreviations:} PMI: post-mortem interval; Dx: disease status; AFF: affective spectrum disorder; SCZ: schizophrenia; RIN: RNA integrity number; Ancestry.\(k\): the \(k\)-th eigenvalue from the decomposition of genotypes indicating population structure.}}{5}}
 \newlabel{tab:predictors}{{1}{5}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.2}Data}{5}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.2.1}Brain samples, RNA-seq}{5}}
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {2.2.2}Mapping, SNP calling and filtering}{5}}
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {2.2.3}Genotyping and calibration of imputed SNPs}{6}}
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {2.2.4}Quality filtering}{6}}
@@ -47,17 +42,17 @@
 \@writefile{toc}{\contentsline {subsection}{\numberline {2.3}Statistical analysis}{6}}
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {2.3.1}Test for nearly unbiased expression}{6}}
 \newlabel{eq:unbiased-test}{{2}{6}}
+\@writefile{lot}{\contentsline {table}{\numberline {2}{\ignorespaces Specification and notation of normal linear models based on the weight \(w_{ig}\) on each observation and the transformation \(\tau \) applied to the set \(\{S_{ig} | g\}\) of read count ratios for a given gene \(g\).}}{7}}
+\newlabel{tab:nlm}{{2}{7}}
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {2.3.2}Regression models}{7}}
 \newlabel{sec:methods-regression}{{2.3.2}{7}}
 \newlabel{eq:unlm.S-matrix-form}{{4}{7}}
 \newlabel{eq:unlm.S-vector-form}{{6}{7}}
 \newlabel{eq:nlm-general}{{7}{7}}
 \newlabel{eq:Q}{{8}{7}}
-\newlabel{eq:logi-general}{{9}{7}}
-\newlabel{eq:glm-mean-predictor}{{10}{7}}
-\newlabel{eq:binom-error}{{11}{7}}
-\@writefile{lot}{\contentsline {table}{\numberline {2}{\ignorespaces Specification and notation of normal linear models based on the weight \(w_{ig}\) on each observation and the transformation \(\tau \) applied to the set \(\{S_{ig} | g\}\) of read count ratios for a given gene \(g\).}}{8}}
-\newlabel{tab:nlm}{{2}{8}}
+\newlabel{eq:logi-general}{{9}{8}}
+\newlabel{eq:glm-mean-predictor}{{10}{8}}
+\newlabel{eq:binom-error}{{11}{8}}
 \@writefile{toc}{\contentsline {section}{\numberline {3}Results}{8}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {3.1}Genome- and population-wide variation of parental bias}{8}}
 \@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces  Using the read count ratio statistic \(S\) to report on variation of parental bias across individuals and genes. \emph  {Upper half}, from top to bottom: (1) kernel density estimate; (2) the graph of the survival function 1 - ECDF, where ECDF means empirical cumulative distribution function; note color scale for heat map and green filled circles marking genes' score; (3) the heat map representation of the survival function. \emph  {Lower half}, main panels: heat map of the survival function for all 5307 analyzed genes ranked according to their score; right side panels: gene score. }}{9}}
@@ -68,18 +63,18 @@
 \newlabel{fig:top-genes}{{3}{11}}
 \@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces  Variation of the read count ratio \(S_{ig}\) across hundreds of individuals \(i\) (dots) and 30 genes \(g\) that have been called imprinted in the DLPFC brain area in this study. }}{12}}
 \newlabel{fig:S-age-gender}{{4}{12}}
-\@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces Fitting four families of generalized linear models to the same data set. In each panel the horizontal axis is age and the vertical axis is the possibly transformed read count ratio \(S\). For all panels the green scatter represents the same data set (KCNK9 gene, cf.\nobreakspace  {}Fig4\hbox {}) except that in the bottom right panel the observed read count ratio \(S\) is transformed to \(Q\) according to Eq.\nobreakspace  {}8\hbox {}. Given each one of four model families the predicted read count ratio is represented by thick black curves. The probability mass or density of the sampling distribution is indicated by a cyan-to-magenta gradient and various prediction limits by gray lines. Note that for demonstration the depicted fitted models are all simple in the sense that they contain age as a sole predictor. Quantitative inference, however, was based on the corresponding multiple regression models including all predictors (Table\nobreakspace  {}1\hbox {}). }}{14}}
-\newlabel{fig:predicted-curves}{{5}{14}}
-\@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces  Significance of association between biological predictors and imprinted genes in the DLPFC. Association was tested based on the p-value for the null hypothesis \(\beta _{jg}=0\), where the regression coefficient \(\beta _{jg}\) mediates the dependence of the read count ratio for gene \(g\) on predictor/``treatment'' \(j\) (Age,...)\nobreakspace  {}in the wnlm.Q model (Fig.\nobreakspace  {}5\hbox {} bottom right). Note that the p-values estimated parametrically (t-distribution) agree well with those estimated non-parametrically (random permutations). The gray area shows the decision rule for rejecting the null hypothesis and thus contains significant associations. }}{15}}
-\newlabel{fig:pval-wnlm.Q}{{6}{15}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.3}Biological predictors and interpretation}{15}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces Fitting four families of generalized linear models to the same data set. In each panel the horizontal axis is age and the vertical axis is the possibly transformed read count ratio \(S\). For all panels the green scatter represents the same data set (KCNK9 gene, cf.\nobreakspace  {}Fig4\hbox {}) except that in the bottom right panel the observed read count ratio \(S\) is transformed to \(Q\) according to Eq.\nobreakspace  {}8\hbox {}. Given each one of four model families the predicted read count ratio is represented by thick black curves. The probability mass or density of the sampling distribution is indicated by a cyan-to-magenta gradient and various prediction limits by gray lines. Note that for demonstration the depicted fitted models are all simple in the sense that they contain age as a sole predictor. Quantitative inference, however, was based on the corresponding multiple regression models including all predictors (Table\nobreakspace  {}1\hbox {}). }}{13}}
+\newlabel{fig:predicted-curves}{{5}{13}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.3}Biological predictors and interpretation}{14}}
 \citation{Sullivan2012}
 \citation{McNamara2013}
+\@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces  Significance of association between biological predictors and imprinted genes in the DLPFC. Association was tested based on the p-value for the null hypothesis \(\beta _{jg}=0\), where the regression coefficient \(\beta _{jg}\) mediates the dependence of the read count ratio for gene \(g\) on predictor/``treatment'' \(j\) (Age,...)\nobreakspace  {}in the wnlm.Q model (Fig.\nobreakspace  {}5\hbox {} bottom right). Note that the p-values estimated parametrically (t-distribution) agree well with those estimated non-parametrically (random permutations). The gray area shows the decision rule for rejecting the null hypothesis and thus contains significant associations. }}{15}}
+\newlabel{fig:pval-wnlm.Q}{{6}{15}}
+\citation{Fromer2016a}
 \@writefile{lot}{\contentsline {table}{\numberline {3}{\ignorespaces  Properties of genes with significance of association to one or more biological predictors. }}{16}}
 \newlabel{tab:signif-gene-effects}{{3}{16}}
 \@writefile{lof}{\contentsline {figure}{\numberline {7}{\ignorespaces  Dependence of parental bias for each imprinted gene \(g\) on each biological predictor/term \(j\) quantified by the regression coefficient \(\beta _{j\cdot } = 0\). The null hypothesis of no dependence is marked by the dashed vertical line at \(\beta _{jg}=0\). Each estimate \(\mathaccentV {hat}05E{\beta }_{jg}\) is represented by a filled symbol and each 99\% confidence interval by a horizontal bar. }}{17}}
 \newlabel{fig:biol-effects-wnlm.Q}{{7}{17}}
-\citation{Fromer2016a}
 \@writefile{toc}{\contentsline {subsection}{\numberline {3.4}Methodological limitations}{18}}
 \newlabel{sec:limitations}{{3.4}{18}}
 \citation{Ubeda2012}
@@ -89,13 +84,13 @@
 \citation{Fromer2016a}
 \citation{Fromer2016a}
 \citation{McNamara2013}
-\@writefile{toc}{\contentsline {section}{\numberline {4}Discussion}{19}}
 \citation{Crespi2008a}
 \citation{McNamara2013}
 \citation{Renfree2012}
 \citation{Varrault2006}
 \citation{Perez2015}
 \citation{DeVeale2012}
+\@writefile{toc}{\contentsline {section}{\numberline {4}Discussion}{19}}
 \citation{Hannon2016}
 \citation{Broad2009}
 \citation{Keverne2015}

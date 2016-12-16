@@ -33,26 +33,22 @@ change in the life course and depend on neuropsychological function.
 
 \section{Introduction}
 
-Genomic imprinting has reached its highest prevalence in humans and other
-placental organisms~\cite{Renfree2012} and, in line with this, well-known
-physiological functions of imprinted genes include embryonic and placental
-development, body growth, suckling, and maternal
-behavior~\cite{Plasschaert2014,Peters2014}.  Imprints are DNA methylation
-marks specific to chromosomes and loci in the sense that certain loci, called
-imprinting control regions, are methylated on either the maternal or the
-paternal chromosome, i.e.~on the chromosome originating from the mother or
-father, respectively~\cite{Plasschaert2014}.  Each such region controls
-typically a cluster of imprinted genes within a few hundred kilobases so that
-expression of either the maternal or the paternal allele is repressed.  We
-refer to this form of expression as \emph{parental bias} to emphasize that the
-relative expression level of one allele of some gene, at least when averaged
-over multiple cells in a tissue, may take some intermediate value between 0
-and 1.  Thus imprinted genes are near 0 or 1 and so are biased or even
-monoallelic expressed, whereas most non-imprinted genes are near \(\frac{1}{2}\), that
-is, essentially unbiased.  Because phenotype is known to be rather sensitive
-to the dose of imprinted genes~\cite{McNamara2013}, parental bias appears as a
-form of fine regulator of overall expression level between full intensity
-(unbiased biallelic case) and half intensity (monoallelic case).
+Genomic imprinting, leading to repression of either the maternal or paternal
+allele, has reached its highest prevalence in humans and other placental
+organisms~\cite{Renfree2012}.  In line with this, well-known physiological
+functions of imprinted genes include embryonic and placental development, body
+growth, suckling, and maternal behavior~\cite{Plasschaert2014,Peters2014}.
+Imprinted  regions  typically consist of a cluster of imprinted genes within a
+few hundred kilobases of a methylation mark called imprinting control region.
+Therein methylation is specific to either the maternal or the paternal
+chromosome, i.e.~on the chromosome originating from the mother or father,
+respectively~\cite{Plasschaert2014}.
+For non-imprinted genes expression is balanced such that the two alleles are
+roughly equally expressed. By contrast, for imprinted genes different levels
+of repression lead to corresponding, substantial, degrees of imbalance in the
+expression level of the two alleles.  We refer to the degree of expression
+imbalance as \emph{parental bias}; at its maximum expression is completely
+monoallelic.
 
 Why natural selection favors parental bias for imprinted genes remains
 debated~\cite{Wilkins2003,McDonald2005,Keverne2015} but the most mature of all
@@ -91,28 +87,24 @@ roles not only in growth but also in psychiatric functions~\cite{Crespi2008a},
 since overexpression of the former is associated with autistic while that of
 the latter with psychotic spectrum disorders.  For example, maternally derived
 microduplications at 15q11-q13 may not only cause the Prader-Willi
-syndrome~\cite{Peters2014}---whose symptoms include obesity and
-psychosis---but also enhance the risk for
-schizophrenia~\cite{Ingason2011,Sullivan2012}, which is perhaps the most
-devastating psychotic spectrum disorder.
+syndrome~\cite{Peters2014}---whose symptoms include obesity---but also highly
+penetrant for schizophrenia~\cite{Ingason2011,Sullivan2012}, which is perhaps
+the most devastating psychotic spectrum disorder.
 
-The link to schizophrenia is remarkable because 15q11-q13 is one of the very
-few regions whose copy number variation is highly penetrant, while an
-estimated thousands of SNPs exist, each of which confers only small risk
-on its own~\cite{Sullivan2012}.  Recently the CommonMind Consortium produced
-and shared\footnote{http://commonmind.org/} genome-wide data sets on genotype
-and gene
-expression in the dorsolateral prefrontal cortex (DLPFC) of hundreds of
-schizophrenic and control individuals, and identified some 650 differentially
-expressed genes~\cite{Fromer2016a}.  Our present work extends that analysis
-with a special focus on imprinted genes and characterizes the variation of
-parental bias across genes and individuals.  We find that \(\approx
-1\%\) of all genes are imprinted in humans, which agrees closely with the most
-recent mouse studies~\cite{Perez2015,DeVeale2012} but contradicts a
-controversial earlier
-report from mouse~\cite{Gregg2010a}.  We identify genes, such as UBE3A in 15q11-q13,
-whose bias varies with age and/or psychiatric condition.  We also observe
-variation with respect to gender and ancestry.
+Recently the CommonMind Consortium produced and shared1 genome-wide data sets
+on genotype and gene expression in the dorsolateral prefrontal cortex (DLPFC)
+of hundreds of schizophrenic and control individuals, and identified some 650
+differentially expressed genes~\cite{Fromer2016a}. Our present work extends
+that analysis with a focus on allele-specfic expression across the genome,
+allowing us to examine the extent of allele-specfic expression of genes known
+to be imprinted in the context of some tissue and/or species, which we refer
+to here as \emph{known imprinted genes}. We also identify novel candidate imprinted
+genes.  We find that, overall,  \(\approx 1\%\) of all genes are imprinted
+in the human DLPFC, and furthermore our data suggest variation in the extent
+of allele-specfic expression of known imprinted genes due to differences in
+age, schizophrenia diagnosis, gender and ancestry. For example, UBE3A in
+15q11-q13, appears to have allele-specific bias that varies with age and
+psychiatric condition. 
 
 \section{Methods}
 
@@ -131,16 +123,16 @@ alternative) is also relatively high.
 
 This intuition may be formalized by introducing \(p\), the fraction of
 transcripts from the parent towards which expression is biased.  \(p\) is
-interpretable as the strength of parental bias.  Note that \(1/2\le p\le 1\).  Let \(b\)
-identify the positively biased allele, i.e.~the allele with the higher number of
-transcripts.  Now let \(B\) denote the count of RNA-seq
-reads that map to the \(b\) allele at a SNP that distinguishes \(b\) from the
-other allele.  Similarly, let \(T\) denote the total read count at that SNP.
-Then, assuming that \(B\) is a binomial random variable with given expected
-relative frequency \(p\) and denominator \(T\), the probability that \(B\) is
-the higher of the two read counts, i.e.~\(B \ge T - B\), is \[\sum_{x:T/2\le
-x\le T} {x \choose T} p^x (1 - p)^{T-x}.\] The fact that this probability
-increases with \(p\)---as parental bias gets stronger---supports our intuition.
+interpretable as the strength of parental bias.  Note that \(1/2\le p\le 1\).
+Let \(b\) identify the positively biased allele, i.e.~the allele with the
+higher number of transcripts.  Now let \(B\) denote the count of RNA-seq reads
+that map to the \(b\) allele at a SNP that distinguishes \(b\) from the other
+allele.  Similarly, let \(T\) denote the total read count at that SNP.  Then,
+assuming that \(B\) is a binomial random variable with given denominator \(T\)
+and expected relative frequency \(p\), the probability that \(B\) is the
+higher of the two read counts, i.e.~\(B \ge T - B\), is \[\sum_{x:T/2\le x\le
+T} {T \choose x} p^x (1 - p)^{T-x}.\] The fact that this probability increases
+with \(p\)---as parental bias gets stronger---supports our intuition.
 
 These considerations motivated us to quantify parental bias using a statistic called
 \emph{read count ratio} \(S\), whose definition we
@@ -393,7 +385,8 @@ transformation and a quasi-log transformation \(\tau_Q\) defined as
 \right),
 \label{eq:Q}
 \end{equation}
-with pseudo read count \(c=1\) to avoid zero in the parenthesis since the \(\log\)
+where \(\log\) means natural logarithm (base \(e\)).  \(c\) is a pseudo read
+count set to \(1\) in order to avoid zero in the parenthesis since the \(\log\)
 function is undefined at \(0\).
 
 \begin{table}
@@ -480,11 +473,12 @@ their score; right side panels: gene score.
 \label{fig:ranking-genes}
 \end{figure}
 
-\(5307\) genes passed our filters designed to remove genes with scarce RNA-seq
-data reflecting low expression and/or low coverage of RNA-seq.  On these genes
-we performed exploratory statistical analysis based on the read count ratio
-statistic \(S_{ig}\), whose results (below) we interpreted in terms of the
-variation of parental bias both across genes \(g\) and across individuals \(i\).
+A total of \(5307\) genes passed our filters designed to remove genes with
+scarce RNA-seq data reflecting low expression and/or low coverage of RNA-seq.
+Examining these genes, we performed exploratory statistical analysis based on
+the read count ratio statistic \(S_{ig}\), whose results (below) we
+interpreted in terms of the variation of parental bias both across genes \(g\)
+and across individuals \(i\).
 
 Fig.~\ref{fig:ranking-genes} presents the conditional empirical distribution
 of \(S_{\cdot g}\) given each gene \(g\).  Each of the three plots of the
@@ -494,14 +488,15 @@ the most compact representation, the distributions based on all data (5307
 genes).  Two of the three genes in the upper half, PEG10 and ZNF331, are
 \emph{known imprinted} genes in the sense that they had previously been found
 imprinted in various tissue types, developmental stages and species.  The
-third, AFAP1, is referred to as \emph{unknown} as it lacks such evidence.  For
-all three genes \(S_{\cdot g}\) varies considerably within its theoretical
-range \([\frac{1}{2}, 1]\).  This suggests variation of parental bias across
-study individuals, although some component of the variation of \(S_{\cdot g}\)
-must originate from technical sources.  Later subsections present our modeling
-and detailed analysis of the across-individual variation on genes called
-imprinted in the context of adult human DLPFC.  The rest of the present
-subsection reports the calling of imprinted genes.
+third, AFAP1, is referred to as \emph{unknown} as it has not been reported to
+be imprinted.  For all three genes \(S_{\cdot g}\) varies considerably within
+its theoretical range \([\frac{1}{2}, 1]\).  This suggests variation of
+parental bias across study individuals, although some component of the
+variation of \(S_{\cdot g}\) must originate from technical sources.  Later
+subsections present our modeling and detailed analysis of the
+across-individual variation on genes called imprinted in the context of adult
+human DLPFC.  The rest of the present subsection reports the calling of
+imprinted genes.
 
 We called imprinted genes on two grounds: first, on a gene score that we
 interpret as the gene's tendency to parental bias and, second, on whether the
@@ -537,33 +532,45 @@ unbiased expression (Eq.~\ref{eq:unbiased-test}).
 \end{center}
 \end{figure}
 
-The set of top scoring 50 genes was highly enriched in genes known to be
-imprinted, marked by blue in Fig.~\ref{fig:top-genes}, or genes located near
-such known genes (green).  In the top 50 set 27 such genes were found; we
-called these and three more relatively high-scoring ``known'' genes (NLRP2,
+The set of top scoring 50 genes is highly enriched in known imprinted genes,
+marked by blue in Fig.~\ref{fig:top-genes}, or in genes within 1 Mb of
+known genes (green).  In the top 50 set 27 such genes were found; 19 known
+imprinted genes and eight candidate novel imprinted genes located nearby known
+imprinted genes.  We
+called these and three more relatively high-scoring known imprinted genes (NLRP2,
 IGF2, and UBE3A in Fig.~\ref{fig:known-genes}) imprinted in the context of
 human adult DLFPC.
 
-Our classification implies that the remaining 23 genes (red in
-Fig.~\ref{fig:top-genes}) in the top 50 set are not imprinted.  This was
-supported by two additional lines of evidence.  First we exploited our
-SNP-array data to identify genes for each individual that we had falsely
-called heterozygous based on the RNA-seq measurements.  We found such false
-calls to be frequent selectively in the red genes (unknown without 1 Mb, not
-shown).  Second, we looked at an aspect of the empirical distribution of
-\(S_{\cdot g}\) that is more complex than the gene score.  This meant testing
-the hypothesis for each gene \(g\) and individual \(i\) that allelic
-expression is (nearly) unbiased (Eq.~\ref{eq:unbiased-test}).  The fraction of
-individuals for which the test was \emph{not} rejected tended to be much
-higher for the ``red'' genes in the top 50 (black bars in
-Fig.~\ref{fig:top-genes}) consistent with our classification.
+The distant candidate genes (red in Fig.~\ref{fig:top-genes}) upon further
+examination are overwhelmingly likely not imprinted. The primary reason for
+this conclusion is that we performed a test to see if there is reference
+allele bias for all candidate genes. For any gene (known, or unknown to be
+imprinted) the expectation is that when allele-specific expression bias is
+detected, such bias should equally favor the reference or non-reference allele
+since for a given individual who is heterozygous at a given SNP in the genome
+it is reasonable to assume that the chances are equal that the mother or that
+the father has the reference allele. The known imprinted genes and the
+candidates nearby known imprinted genes display a reference/non-reference
+distribution consistent with a binomial distribution with a probability of 0.5
+for both the reference and non-reference alleles.  However, and in sharp
+distinction, the candidates further than 1 kb away from the known imprinted
+gene all have distributions of reference/non-reference that are not consistent
+with equal probability.  Indeed, most of them show a bias towards the
+reference allele strongly suggesting that mistaken genotyping, imputation or a
+mapping issue led to the presence of these red genes in the list of the top 50
+genes. One could argue that we should have left these genes out of
+Fig.~\ref{fig:top-genes}, but we thought it was important to show them and to
+indicate the reasons they are set aside.   Note also, that we also tested the
+hypothesis for each gene \(g\) and individual \(i\) that allelic expression is
+(nearly) unbiased (Eq.~\ref{eq:unbiased-test}).  The fraction of individuals
+for which the test was \emph{not} rejected tends to be much higher for the
+``red'' genes in the top 50 (black bars in Fig.~\ref{fig:top-genes}).
 
-More than a third of
-all previously known imprinted genes (within our 5307-sized gene set) had a low score
-based on \(S_{\cdot g}\) in the present context of human adult DLPFC.  This
-suggests that imprinting of these genes is context-dependent or that they are
-in fact imprinted in the present context but our method classified them
-falsely.
+More than a third of all previously known imprinted genes (present within our
+5307-sized gene set) have a low score.  This suggests that these genes do not
+display imprinted expression in the human adult DLPFC, consistent with many
+reports in the literature indicating that imprinted genes are often imprinted
+in some but not all tissues.
 
 \subsection{Selection among predictive models of parental bias}
 \label{sec:results-regression}
@@ -669,19 +676,20 @@ thereby prevented good fit of the normal linear model wnlm.S (bottom left
 panel of Fig.~\ref{fig:predicted-curves}).  This problem was overcome by a
 quasi-log transformation \(Q\) of \(S\) (Eq.~\ref{eq:Q}) that selectively abolished
 the dependence of the scale (bottom right panel of
-Fig.~\ref{fig:predicted-curves}).  The resulting good fit of the wnlm.Q model
-was characteristic to all genes, as evidenced by three distinct
+Fig.~\ref{fig:predicted-curves}).  The wnlm.Q model fitted well for all 30
+genes, as evidenced by three distinct
 diagnostics based on residuals
 (Fig.~\ref{fig:qqnorm-wnlm.Q},~\ref{fig:homoscedas-wnlm.Q},~\ref{fig:influence-wnlm.Q}).
 Rank transformation \(R\) and the fitting of wnlm.R lead to a much lesser
 improvement than \(Q\) and wnml.Q (not shown).
 
 The same model checking diagnostics for the logistic models suggested good
-fit under logi.S for 8 of the 30 genes
+fit under logi.S for eight of the 30 genes
 (Fig.~\ref{fig:qqnorm-logi.S},~\ref{fig:homoscedas-logi.S},~\ref{fig:influence-logi.S}).
 These genes are highlighted with bold font in the top of Fig.~\ref{fig:pval-wnlm.Q}.
-For subsequent analysis we selected both the logi.S model family for these 8
-genes and the wnlm.Q family for all 30 genes.
+For subsequent analysis we selected  the wnlm.Q model for all 30 genes, and
+additionally considered the logi.S model for the eight
+genes with good fit.
 
 \subsection{Biological predictors and interpretation}
 
