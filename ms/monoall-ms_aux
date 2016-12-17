@@ -11,12 +11,12 @@
 \citation{Wilkins2003}
 \citation{Plasschaert2014}
 \citation{Peters2014}
+\@writefile{toc}{\contentsline {section}{\numberline {1}Introduction}{1}}
 \citation{Bourke2007}
 \citation{Plasschaert2014}
 \citation{Peters2014}
 \citation{Ubeda2012}
 \citation{Perez2015}
-\@writefile{toc}{\contentsline {section}{\numberline {1}Introduction}{1}}
 \citation{Ubeda2012}
 \citation{Wilkins2003}
 \citation{Plasschaert2014}
@@ -57,39 +57,36 @@
 \@writefile{toc}{\contentsline {subsection}{\numberline {3.1}Genome- and population-wide variation of parental bias}{8}}
 \@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces  Using the read count ratio statistic \(S\) to report on variation of parental bias across individuals and genes. \emph  {Upper half}, from top to bottom: (1) kernel density estimate; (2) the graph of the survival function 1 - ECDF, where ECDF means empirical cumulative distribution function; note color scale for heat map and green filled circles marking genes' score; (3) the heat map representation of the survival function. \emph  {Lower half}, main panels: heat map of the survival function for all 5307 analyzed genes ranked according to their score; right side panels: gene score. }}{9}}
 \newlabel{fig:ranking-genes}{{2}{9}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.2}Selection among predictive models of parental bias}{10}}
-\newlabel{sec:results-regression}{{3.2}{10}}
+\citation{Zwemer2012}
+\citation{Bai2014a}
+\citation{Zheng2014}
 \@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces  The top 50 genes ranked by the gene score. The score of gene \(g\) is \(1 - \mathrm  {ECDF}_g(0.9)\), the fraction of individuals \(i\) for which \(S_{ig}>0.9\) and is indicated by the length of dark blue, dark green or dark red bars. Note that the same ranking and score is shown in the bottom half of Fig.\nobreakspace  {}2\hbox {}. The right border of the light blue, light green and light red bars is at \(1 - \mathrm  {ECDF}_g(0.8)\). The length of the black bars indicates the fraction of individuals passing the test of nearly unbiased expression (Eq.\nobreakspace  {}2\hbox {}). }}{11}}
 \newlabel{fig:top-genes}{{3}{11}}
 \@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces  Variation of the read count ratio \(S_{ig}\) across hundreds of individuals \(i\) (dots) and 30 genes \(g\) that have been called imprinted in the DLPFC brain area in this study. }}{12}}
 \newlabel{fig:S-age-gender}{{4}{12}}
-\@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces Fitting four families of generalized linear models to the same data set. In each panel the horizontal axis is age and the vertical axis is the possibly transformed read count ratio \(S\). For all panels the green scatter represents the same data set (KCNK9 gene, cf.\nobreakspace  {}Fig4\hbox {}) except that in the bottom right panel the observed read count ratio \(S\) is transformed to \(Q\) according to Eq.\nobreakspace  {}8\hbox {}. Given each one of four model families the predicted read count ratio is represented by thick black curves. The probability mass or density of the sampling distribution is indicated by a cyan-to-magenta gradient and various prediction limits by gray lines. Note that for demonstration the depicted fitted models are all simple in the sense that they contain age as a sole predictor. Quantitative inference, however, was based on the corresponding multiple regression models including all predictors (Table\nobreakspace  {}1\hbox {}). }}{13}}
-\newlabel{fig:predicted-curves}{{5}{13}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.3}Biological predictors and interpretation}{14}}
-\citation{Sullivan2012}
-\citation{McNamara2013}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.2}Selection among predictive models of parental bias}{12}}
+\newlabel{sec:results-regression}{{3.2}{12}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces Fitting four families of generalized linear models to the same data set. In each panel the horizontal axis is age and the vertical axis is the possibly transformed read count ratio \(S\). For all panels the green scatter represents the same data set (KCNK9 gene, cf.\nobreakspace  {}Fig4\hbox {}) except that in the bottom right panel the observed read count ratio \(S\) is transformed to \(Q\) according to Eq.\nobreakspace  {}8\hbox {}. Given each one of four model families the predicted read count ratio is represented by thick black curves. The probability mass or density of the sampling distribution is indicated by a cyan-to-magenta gradient and various prediction limits by gray lines. Note that for demonstration the depicted fitted models are all simple in the sense that they contain age as a sole predictor. Quantitative inference, however, was based on the corresponding multiple regression models including all predictors (Table\nobreakspace  {}1\hbox {}). }}{14}}
+\newlabel{fig:predicted-curves}{{5}{14}}
 \@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces  Significance of association between biological predictors and imprinted genes in the DLPFC. Association was tested based on the p-value for the null hypothesis \(\beta _{jg}=0\), where the regression coefficient \(\beta _{jg}\) mediates the dependence of the read count ratio for gene \(g\) on predictor/``treatment'' \(j\) (Age,...)\nobreakspace  {}in the wnlm.Q model (Fig.\nobreakspace  {}5\hbox {} bottom right). Note that the p-values estimated parametrically (t-distribution) agree well with those estimated non-parametrically (random permutations). The gray area shows the decision rule for rejecting the null hypothesis and thus contains significant associations. }}{15}}
 \newlabel{fig:pval-wnlm.Q}{{6}{15}}
-\citation{Fromer2016a}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.3}Biological predictors and interpretation}{15}}
+\citation{Sullivan2012}
+\citation{McNamara2013}
 \@writefile{lot}{\contentsline {table}{\numberline {3}{\ignorespaces  Properties of genes with significance of association to one or more biological predictors. }}{16}}
 \newlabel{tab:signif-gene-effects}{{3}{16}}
 \@writefile{lof}{\contentsline {figure}{\numberline {7}{\ignorespaces  Dependence of parental bias for each imprinted gene \(g\) on each biological predictor/term \(j\) quantified by the regression coefficient \(\beta _{j\cdot } = 0\). The null hypothesis of no dependence is marked by the dashed vertical line at \(\beta _{jg}=0\). Each estimate \(\mathaccentV {hat}05E{\beta }_{jg}\) is represented by a filled symbol and each 99\% confidence interval by a horizontal bar. }}{17}}
 \newlabel{fig:biol-effects-wnlm.Q}{{7}{17}}
+\citation{Fromer2016a}
 \@writefile{toc}{\contentsline {subsection}{\numberline {3.4}Methodological limitations}{18}}
 \newlabel{sec:limitations}{{3.4}{18}}
+\citation{DeVeale2012}
+\citation{Perez2015}
+\citation{Gregg2010a}
 \citation{Ubeda2012}
 \citation{Wilkins2003}
 \citation{McNamara2013}
 \citation{Crespi2008a}
-\citation{Fromer2016a}
-\citation{Fromer2016a}
-\citation{McNamara2013}
-\citation{Crespi2008a}
-\citation{McNamara2013}
-\citation{Renfree2012}
-\citation{Varrault2006}
-\citation{Perez2015}
-\citation{DeVeale2012}
 \@writefile{toc}{\contentsline {section}{\numberline {4}Discussion}{19}}
 \citation{Hannon2016}
 \citation{Broad2009}
@@ -97,17 +94,17 @@
 \citation{Haig2014}
 \bibstyle{plain}
 \bibdata{monoall-ms}
-\bibcite{Bourke2007}{1}
-\bibcite{Broad2009}{2}
-\bibcite{Crespi2008a}{3}
-\bibcite{DeVeale2012}{4}
-\bibcite{Fromer2016a}{5}
-\bibcite{Gregg2010a}{6}
-\bibcite{Haig2014}{7}
-\bibcite{Hannon2016}{8}
-\bibcite{Ingason2011}{9}
-\bibcite{Keverne2015}{10}
-\bibcite{Law2014}{11}
+\bibcite{Bai2014a}{1}
+\bibcite{Bourke2007}{2}
+\bibcite{Broad2009}{3}
+\bibcite{Crespi2008a}{4}
+\bibcite{DeVeale2012}{5}
+\bibcite{Fromer2016a}{6}
+\bibcite{Gregg2010a}{7}
+\bibcite{Haig2014}{8}
+\bibcite{Hannon2016}{9}
+\bibcite{Ingason2011}{10}
+\bibcite{Keverne2015}{11}
 \bibcite{McDonald2005}{12}
 \bibcite{McNamara2013}{13}
 \bibcite{Perez2015}{14}
@@ -118,6 +115,8 @@
 \bibcite{Ubeda2012}{19}
 \bibcite{Varrault2006}{20}
 \bibcite{Wilkins2003}{21}
+\bibcite{Zheng2014}{22}
+\bibcite{Zwemer2012}{23}
 \@writefile{toc}{\contentsline {section}{\numberline {5}Supplementary Material}{23}}
 \@writefile{lof}{\contentsline {figure}{\numberline {S1}{\ignorespaces  Clustering of top-scoring genes in the context of human DLPFC around genomic locations that had been previously described as imprinted gene clusters in other contexts. }}{24}}
 \newlabel{fig:clusters}{{S1}{24}}

@@ -38,17 +38,18 @@ allele, has reached its highest prevalence in humans and other placental
 organisms~\cite{Renfree2012}.  In line with this, well-known physiological
 functions of imprinted genes include embryonic and placental development, body
 growth, suckling, and maternal behavior~\cite{Plasschaert2014,Peters2014}.
-Imprinted  regions  typically consist of a cluster of imprinted genes within a
-few hundred kilobases of a methylation mark called imprinting control region.
-Therein methylation is specific to either the maternal or the paternal
-chromosome, i.e.~on the chromosome originating from the mother or father,
-respectively~\cite{Plasschaert2014}.
-For non-imprinted genes expression is balanced such that the two alleles are
-roughly equally expressed. By contrast, for imprinted genes different levels
-of repression lead to corresponding, substantial, degrees of imbalance in the
-expression level of the two alleles.  We refer to the degree of expression
-imbalance as \emph{parental bias}; at its maximum expression is completely
-monoallelic.
+Genomic imprinting requires the placement of different epigenetic marks, such
+as DNA methylation, at the respective alleles residing on the chromosomes
+originating from the mother or father~\cite{Plasschaert2014}.  Indeed,
+imprinted genes typically reside in clusters spanning hundreds of kilobases
+and allele-specific differential epigenetic marks are found near specific
+genes as well as in shared regulatory elements called imprinting control
+regions. For non-imprinted genes expression is balanced such that the two
+alleles are roughly equally expressed. By contrast, for imprinted genes
+different levels of repression lead to corresponding, substantial, degrees of
+imbalance in the expression level of the two alleles.  We refer to the degree
+of expression imbalance as \emph{parental bias}; at its maximum expression is
+completely monoallelic.
 
 Why natural selection favors parental bias for imprinted genes remains
 debated~\cite{Wilkins2003,McDonald2005,Keverne2015} but the most mature of all
@@ -88,23 +89,24 @@ since overexpression of the former is associated with autistic while that of
 the latter with psychotic spectrum disorders.  For example, maternally derived
 microduplications at 15q11-q13 may not only cause the Prader-Willi
 syndrome~\cite{Peters2014}---whose symptoms include obesity---but also highly
-penetrant for schizophrenia~\cite{Ingason2011,Sullivan2012}, which is perhaps
-the most devastating psychotic spectrum disorder.
+penetrant for schizophrenia (\(10^{12}\) relative
+risk)~\cite{Ingason2011,Sullivan2012}, which is perhaps the most devastating
+psychotic spectrum disorder.
 
 Recently the CommonMind Consortium produced and shared1 genome-wide data sets
 on genotype and gene expression in the dorsolateral prefrontal cortex (DLPFC)
 of hundreds of schizophrenic and control individuals, and identified some 650
 differentially expressed genes~\cite{Fromer2016a}. Our present work extends
 that analysis with a focus on allele-specfic expression across the genome,
-allowing us to examine the extent of allele-specfic expression of genes known
-to be imprinted in the context of some tissue and/or species, which we refer
-to here as \emph{known imprinted genes}. We also identify novel candidate imprinted
-genes.  We find that, overall,  \(\approx 1\%\) of all genes are imprinted
-in the human DLPFC, and furthermore our data suggest variation in the extent
-of allele-specfic expression of known imprinted genes due to differences in
-age, schizophrenia diagnosis, gender and ancestry. For example, UBE3A in
+allowing us to estimate parental bias for each gene.  Based on that, we find
+that \(\approx 0.6\%\) of all genes are imprinted in the human DLPFC, the
+majority of which had been known to be imprinted in the context of some tissue
+and/or species, while the remaining of the called imprinted genes are novel.
+Furthermore, our data suggest that for several imprinted genes the variation of
+parental bias across individuals is explained by differences in age,
+schizophrenia diagnosis, gender or ancestry.  For example, UBE3A in
 15q11-q13, appears to have allele-specific bias that varies with age and
-psychiatric condition. 
+psychiatric condition.
 
 \section{Methods}
 
@@ -487,10 +489,11 @@ based on data for three genes.  The main panels of the lower half present, in
 the most compact representation, the distributions based on all data (5307
 genes).  Two of the three genes in the upper half, PEG10 and ZNF331, are
 \emph{known imprinted} genes in the sense that they had previously been found
-imprinted in various tissue types, developmental stages and species.  The
-third, AFAP1, is referred to as \emph{unknown} as it has not been reported to
-be imprinted.  For all three genes \(S_{\cdot g}\) varies considerably within
-its theoretical range \([\frac{1}{2}, 1]\).  This suggests variation of
+imprinted in the context of some developmental stage, species, and tissue type
+other than the adult human DLPFC.  The third, AFAP1, is referred to as a
+\emph{candidate (imprinted)} gene as it has not been reported to be imprinted
+in any context.  For all three genes \(S_{\cdot g}\) varies considerably
+within its theoretical range \([\frac{1}{2}, 1]\).  This suggests variation of
 parental bias across study individuals, although some component of the
 variation of \(S_{\cdot g}\) must originate from technical sources.  Later
 subsections present our modeling and detailed analysis of the
@@ -499,20 +502,21 @@ human DLPFC.  The rest of the present subsection reports the calling of
 imprinted genes.
 
 We called imprinted genes on two grounds: first, on a gene score that we
-interpret as the gene's tendency to parental bias and, second, on whether the
-gene had been described previously as imprinted in some context or is located near (within 1
-megabase of) such known imprinted genes.  We defined gene score as the
-location statistic \(1 - \mathrm{ECDF}_g(0.9)\), the fraction of individuals
-\(i\) for which \(S_{ig}>0.9\).  This score is shown in side plots of the
-lower half of Fig.~\ref{fig:ranking-genes} as gray filled circles or, for the
-three genes mentioned above, as larger green circles (the latter are also
-present in the second from top graph).  Based on the score genes were ranked;
-the heat map of empirical distribution of \(S_{\cdot g}\) of ranked genes
-suggests that the top \(\approx 50\) genes, which constitute \(\approx 1\%\)
-of all genes in our analysis, are qualitatively different from the bottom
-\(\approx 99\%\) suggesting that most of them are imprinted.  Consistent with
-this, the top-scoring genes tended to cluster around genomic locations that
-had been previously described as imprinted gene clusters
+interpret as the gene's tendency to parental bias and, second, on a condition
+that is fulfilled when the tested gene is either ``known imprinted'' (as
+defined above) or a ``nearby candidate'', i.e.~a candidate gene located near
+(within 1 megabase of) some known imprinted gene.  We defined gene score as
+the location statistic \(1 - \mathrm{ECDF}_g(0.9)\), the fraction of
+individuals \(i\) for which \(S_{ig}>0.9\).  This score is shown in side plots
+of the lower half of Fig.~\ref{fig:ranking-genes} as gray filled circles or,
+for the three genes mentioned above, as larger green circles (the latter are
+also present in the second from top graph).  Based on the score genes were
+ranked; the heat map of empirical distribution of \(S_{\cdot g}\) of ranked
+genes suggests that the top \(\approx 50\) genes, which constitute \(\approx
+1\%\) of all genes in our analysis, are qualitatively different from the
+bottom \(\approx 99\%\) suggesting that most of them are imprinted.
+Consistent with this, the top-scoring genes tended to cluster around genomic
+locations that had been previously described as imprinted gene clusters
 (Fig.~\ref{fig:clusters}).
 
 \begin{figure}
@@ -533,29 +537,28 @@ unbiased expression (Eq.~\ref{eq:unbiased-test}).
 \end{figure}
 
 The set of top scoring 50 genes is highly enriched in known imprinted genes,
-marked by blue in Fig.~\ref{fig:top-genes}, or in genes within 1 Mb of
-known genes (green).  In the top 50 set 27 such genes were found; 19 known
-imprinted genes and eight candidate novel imprinted genes located nearby known
-imprinted genes.  We
-called these and three more relatively high-scoring known imprinted genes (NLRP2,
-IGF2, and UBE3A in Fig.~\ref{fig:known-genes}) imprinted in the context of
-human adult DLFPC.
+marked by blue in Fig.~\ref{fig:top-genes} and in nearby candidate genes
+(green).  In the top 50 set 27 such genes; 19 known imprinted genes and eight
+nearby candidates.  We called these and three more relatively high-scoring
+known imprinted genes (NLRP2, IGF2, and UBE3A in Fig.~\ref{fig:known-genes})
+imprinted in the context of human adult DLFPC.
 
-The distant candidate genes (red in Fig.~\ref{fig:top-genes}) upon further
-examination are overwhelmingly likely not imprinted. The primary reason for
+The remaining genes in the top 50 are separated by \(>1\) Mb from some known imprinted
+gene (red in Fig.~\ref{fig:top-genes}).  Upon further
+examination these ``distant candidate'' genes are overwhelmingly likely not imprinted. The primary reason for
 this conclusion is that we performed a test to see if there is reference
-allele bias for all candidate genes. For any gene (known, or unknown to be
-imprinted) the expectation is that when allele-specific expression bias is
-detected, such bias should equally favor the reference or non-reference allele
-since for a given individual who is heterozygous at a given SNP in the genome
-it is reasonable to assume that the chances are equal that the mother or that
-the father has the reference allele. The known imprinted genes and the
-candidates nearby known imprinted genes display a reference/non-reference
-distribution consistent with a binomial distribution with a probability of 0.5
-for both the reference and non-reference alleles.  However, and in sharp
-distinction, the candidates further than 1 kb away from the known imprinted
-gene all have distributions of reference/non-reference that are not consistent
-with equal probability.  Indeed, most of them show a bias towards the
+allele bias for all candidate genes. For any gene (known imprinted, or
+candidate) the expectation is that when some parental bias is detected, that
+should equally favor the reference or non-reference allele since for a given
+individual who is heterozygous at a given SNP in the genome it is reasonable
+to assume that the chances are equal that the mother or that the father has
+the reference allele. The known imprinted genes and the nearby candidates
+display a reference/non-reference distribution
+consistent with a binomial distribution with a probability of 0.5 for both the
+reference and non-reference alleles.  However, and in sharp distinction, the
+distant candidates all have
+distributions of reference/non-reference that are not consistent with equal
+probabilities.  Indeed, for most of them the distribution is shifted towards the
 reference allele strongly suggesting that mistaken genotyping, imputation or a
 mapping issue led to the presence of these red genes in the list of the top 50
 genes. One could argue that we should have left these genes out of
@@ -566,11 +569,24 @@ hypothesis for each gene \(g\) and individual \(i\) that allelic expression is
 for which the test was \emph{not} rejected tends to be much higher for the
 ``red'' genes in the top 50 (black bars in Fig.~\ref{fig:top-genes}).
 
-More than a third of all previously known imprinted genes (present within our
-5307-sized gene set) have a low score.  This suggests that these genes do not
-display imprinted expression in the human adult DLPFC, consistent with many
-reports in the literature indicating that imprinted genes are often imprinted
-in some but not all tissues.
+While the shifted distribution of reference/non-reference alleles leads us to
+discount the possibility of imprinting, random monoallelic expression is still
+a distinct possibility for these candidates as our studies of random
+monoallelic expression in mice suggested that a substantial fraction
+(\(40-80\%\)) of random monoallelically-expressed genes had a very strong bias
+towards monoallelic expression of one of the two alleles \cite{Zwemer2012}.
+Moreover, it is worth noting that three of these candidates are from the major
+histocompatibility locus (HLA), which is notable for extensive polymorphism
+and difficulties with allelic identification. For these three genes we also
+analyzed them more thoroughly with HLA-specific methods for determining
+haplotype based on RNA-seq \cite{Bai2014a} and genotype data \cite{Zheng2014}.
+The high observed read count ratios for HLA genes appear to be driven by
+eQTL-like effects, not by random monoallelic expression nor by imprinting
+(manuscript in preparation).  Examining all the assessable known imprinted
+genes, we find than \(\frac{1}{3}\)rd of them have a low gene score. This
+suggests that these genes do not display imprinted expression in the human
+adult DLPFC, consistent with many reports in the literature indicating that
+known imprinted genes are often imprinted in some but not all tissues.  
 
 \subsection{Selection among predictive models of parental bias}
 \label{sec:results-regression}
@@ -664,21 +680,20 @@ ability to utilize information in the observed total read count.
 
 We addressed model fit by using both Akaike Information Criterion (AIC) and
 diagnostic graphs based on standardized deviance residuals.  However, only the
-latter approach turned out conclusive because the estimate for AIC appeared
-more biased for certain GLM families than for others, which rendered
-comparison based on the information criterion unreliable for this problem.  In
+latter approach turned out conclusive because the estimate for AIC is more
+biased for certain GLM families than for others, which rendered comparison
+based on the information criterion unreliable for this problem.  In
 particular, the homoscedasticity (constant error variance) assumed by normal
-linear models was severely violated for wnlm.S because of the strong
+linear models is severely violated for wnlm.S because of the strong
 scale-location dependence of the read count ratio \(S\)
 (Fig.~\ref{fig:S-age-gender}).  As a consequence of that dependence, not only
 the location but also the scale of untransformed \(S\) depended on age, and
 thereby prevented good fit of the normal linear model wnlm.S (bottom left
 panel of Fig.~\ref{fig:predicted-curves}).  This problem was overcome by a
-quasi-log transformation \(Q\) of \(S\) (Eq.~\ref{eq:Q}) that selectively abolished
-the dependence of the scale (bottom right panel of
-Fig.~\ref{fig:predicted-curves}).  The wnlm.Q model fitted well for all 30
-genes, as evidenced by three distinct
-diagnostics based on residuals
+quasi-log transformation \(Q\) of \(S\) (Eq.~\ref{eq:Q}) that selectively
+abolished the dependence of the scale (bottom right panel of
+Fig.~\ref{fig:predicted-curves}).  The wnlm.Q model fits the data well for all
+30 genes, as evidenced by three distinct diagnostics based on residuals
 (Fig.~\ref{fig:qqnorm-wnlm.Q},~\ref{fig:homoscedas-wnlm.Q},~\ref{fig:influence-wnlm.Q}).
 Rank transformation \(R\) and the fitting of wnlm.R lead to a much lesser
 improvement than \(Q\) and wnml.Q (not shown).
@@ -736,8 +751,8 @@ Given a model family (wnlm.Q or possibly logi.S) each hypothesis was tested
 both parametrically and non-parametrically (see axes labeled with
 ``t-distribution'' and ``permutations'', respectively, on
 Fig.~\ref{fig:pval-wnlm.Q},~\ref{fig:pval} and~\ref{fig:pval-tdist-vs-perm}).
-The p-value estimates showed good agreement across estimation methods
-(parametric vs. non-parametric, Fig.~\ref{fig:pval}). This agreement could be
+The p-value estimates show good agreement across estimation methods
+(parametric vs. non-parametric, Fig.~\ref{fig:pval}). This agreement is
 expected from the regularity of the likelihood function
 (Fig.~\ref{fig:ll-surf-explain}), since that allows the parametric
 method---which is based on asymptotic properties of maximum likelihood
@@ -748,13 +763,15 @@ and/or more biased than that under wnlm.Q for most cases. Using a heuristic
 decision rule (gray area in Fig.~\ref{fig:pval-wnlm.Q}) we rejected the
 marginal hypothesis \(\mathcal{H}^0_{jg}\) if the conditional hypotheses
 ``\(\mathcal{H}^0_{jg} |\text{parametric method}\)'' and
-``\(\mathcal{H}^0_{jg} |\text{non-parametric method}\)'' were both rejected at
+``\(\mathcal{H}^0_{jg} |\text{non-parametric method}\)'' are both rejected at
 size \(\alpha = 0.05\) under the wnlm.Q model.
 
-For each of the four terms (Age,...)~the hypothesis of independence was rejected for some genes
-(Fig.~\ref{fig:pval-wnlm.Q}). This appears to suggest that aging, gender and ancestry-related genetic variation regulates
-parental bias of those genes whereas the risk of schizophrenia is regulated by it; but, as discussed
-above, indirect causation involving a latent variable is also possible.
+For each of the four terms (Age,...)~the hypothesis of independence is
+rejected for some genes (Fig.~\ref{fig:pval-wnlm.Q}). This appears to suggest
+that aging, gender and ancestry-related genetic variation regulates parental
+bias of those genes whereas the risk of schizophrenia is regulated by it; but,
+as discussed above, indirect causation involving a latent variable is also
+possible.
 
 \begin{table}
 \footnotesize
@@ -765,12 +782,13 @@ Properties of genes with significance of association to one or more biological p
 \label{tab:signif-gene-effects}
 \end{table}
 
-Table \ref{tab:signif-gene-effects} presents some known properties of all genes for which read count ratio was found
-to depend on at least one of the four biological terms. For some of these genes the dependence
-is consistent with the prior information on the gene's physiological or pathological role.
-For instance, association of
-UBE3A to schizophrenia is consistent with its suggested role as a risk factor for this and other
-psychiatric conditions based on variation of its gene dose and copy number variation of its broader
+Table \ref{tab:signif-gene-effects} presents some known properties of all
+genes for which read count ratio appears to depend on at least one of the four
+biological terms. For some of these genes the dependence is consistent with
+the prior information on the gene's physiological or pathological role.  For
+instance, association of UBE3A to schizophrenia is consistent with its
+suggested role as a risk factor for this and other psychiatric conditions
+based on variation of its gene dose and copy number variation of its broader
 locus 15q11q13 (PraderWilli/Angelman region) \cite{Sullivan2012,
 McNamara2013}.  For another example, PEG3, see the Discussion.
 
@@ -802,11 +820,11 @@ quantities the 99\% confidence intervals are also presented (horizontal bars
 in Fig.~\ref{fig:biol-effects-wnlm.Q} and~\ref{fig:biol-effects-logi.S}; see
 also Fig.~\ref{fig:ll-surf-explain} for the illustration of the link between
 confidence intervals and the geometry of the log-likelihood surface). For any
-given term we found significantly affected genes with both negative
+given term we observe statistically significantly affected genes with both negative
 (e.g.~INPP5F) and positive (e.g.~KNCK9) direction.  For instance, the read
 count ratio of INPP5F depended negatively on age, while that of KCNK9
-positively, suggesting that aging may both down- and up-regulate parental
-bias in general. Interestingly, we found that both genes for which the dependence on
+depends on age positively, suggesting that aging may both down- and up-regulate parental
+bias in general. Interestingly, we find that both genes for which the dependence on
 DxSCZ is negative (UBE3A and RP11-909M7.3/MEG8) had been previously
 established as maternally expressed, whereas both genes with positive
 dependence (PEG10, MEST) as paternally expressed.
@@ -822,12 +840,12 @@ The second extension in Fig.~\ref{fig:biol-effects-wnlm.Q}
 and~\ref{fig:biol-effects-logi.S} is the arrangement of genes according to
 their chromosomal location and containment in various imprinted gene clusters.
 We found clusters (e.g. clus 14 on chr 7, clus 27 on chr 14, and clus 28 on
-chr 15) within which some gene exhibited significant dependence on a given
+chr 15) within which some gene exhibit significant dependence on a given
 predictor while all other genes did not. For a presumably causal predictor such
 as age this result might mean that if the significant dependence indeed
 reflects true association between that gene and the predictor, then all other
 genes in the cluster are either independent or dependent only to a degree that
-could not be detected as significant change. However, we did not observe two
+could not be detected as significant change. However, we do not observe two
 significant dependencies of opposing direction in the same cluster, which was
 expected given the central role of of a single imprinting control region in
 the establishment and maintenance of imprinting and parental bias for all
@@ -902,79 +920,59 @@ effects were often of opposite direction.
 
 \section{Discussion}
 
-We have presented the first genome-wide characterization of genomic imprinting
-and parental bias in humans and, at the same time, the first human genomics
-study with a special focus on imprinted genes' association with some
-psychiatric disorder.  One must bear in mind that the biological
-interpretation of the results depends on the correctness of our statistical
-approach.  Although we did perform model selection based on model fit, we
-found that even the best fitting generalized linear models had several
-limitations (Section~\ref{sec:limitations}).  To quantify their precise impact
-extensive simulation studies will be needed.  Adopting a hierarchical Bayesian
-framework (Fig.~\ref{fig:glm-vs-hierarch} right) would help overcome the
-present limitations via information sharing across genes, via optimal
-treatment of uncertainty about genotyping and about haplotype, and via drawing
-information from more predictors and accounting for their interactions.  
+We present the first genome-wide characterization of parental expression bias
+and therefore genomic imprinting in humans and, at the same time, the first
+genome-scale study of the potential for imprinted genes' impact on a
+psychiatric disorder.  Important to mention first, but not surprising, is our
+finding that \(\approx \frac{2}{3}\)rd of known imprinted genes display
+imprinting in the adult human DLPFC. The fact that the remaining \(\approx
+\frac{1}{3}\)rd of known imprinted genes do not display imprinting is
+consistent with many other studies showing that imprinted genes often display
+imprinting in some but not all tissues. We also find evidence for eight novel
+imprinted genes, all of them are nearby known imprinted genes. It is also
+important to note that we called imprinted genes rather conservatively based
+on multiple sources of information beyond parental bias, With our method we
+estimate \(\approx 0.6\%\) of all genes to be imprinted, which agrees closely
+with the most recent mouse studies~\cite{DeVeale2012,Perez2015} but
+contradicts a controversial earlier estimate of \(\approx 5\%\) also from
+mouse~\cite{Gregg2010a}.
 
-Our main finding, the association of several imprinted genes with aging
-and/or schizophrenia, supports the general prediction from kinship theory that the
-roles of imprinted genes may dynamically change even at later stages of life
-in order to mediate certain social interactions that are dependent on 
-psychology and cognition~\cite{Ubeda2012,Wilkins2003}.  Conversely---and regardless
-the kinship theory---, our results suggest that perturbations to several
-imprinted genes are associated with, and maybe causal to, schizophrenia and
-possibly other psychiatric disorders.
+We also examined the dependence of parental bias on variables such as age,
+diagnosis, gender and ancestry. We comment on a number of intriguing findings
+with respect to the impact of these variables in the next few paragraphs.  One
+must bear in mind, however, that the biological interpretation of the findings
+depends on the correctness of our statistical approach.  Although we did
+perform model selection based on model fit, we found that even the best
+fitting generalized linear models had several limitations
+(Section~\ref{sec:limitations}).  Using an approach that conservatively
+combined parametric and non-parametric hypothesis testing, we find several
+imprinted genes for which parental bias is dependent on aging and/or
+schizophrenia. These findings are in line with the general prediction from
+kinship theory that the roles of imprinted genes may dynamically change even
+at later stages of life in order to mediate certain social interactions that
+are dependent on psychology and cognition~\cite{Ubeda2012,Wilkins2003}.
 
 If we accept that the main effect of parental bias is exerted on overall expression
-level, our finding that the parental bias for UBE3A is negatively associated
+level, our finding that the parental bias for UBE3A is negatively correlated
 with schizophrenia implies that it is its overexpression that increases risk
 for the disorder.  This agrees with the previously observed effect of copy
 number variation of 15q11-q13, the Prader-Willi region~\cite{McNamara2013}.
 Moreover, we find that another maternally biased gene, RP11-909M7.3, is also
-negatively associated to schizophrenia, while two paternally biased genes,
-MEST and PEG10, are both positively associated.  This is exactly the pattern
+negatively correlated with schizophrenia, while two paternally biased genes,
+MEST and PEG10, are both positively correlated.  This is exactly the pattern
 that is predicted by kinship theory, more precisely by its special case, the
 imprinted brain theory~\cite{Crespi2008a}.
 
-But if parental bias indeed indicates overall expression level then why did
-preceding differential expression analysis~\cite{Fromer2016a} miss association
-to schizophrenia for three out of the four genes mentioned above?  It is
-possible, of course, that our work falsely discovered those three associations
-due to the limitations specific to our statistical models.
-However, it must be emphasized that only the present approach---which is based on the read
-count ratio statistic---makes use of the available allele-specific information in RNA-seq
-reads, and this might afford much improved sensitivity relative to the
-traditional ``total read count'' approach used by~\cite{Fromer2016a}.  Such
-sensitivity gain might be necessary for any study of imprinted genes if their
-expression level is indeed as tightly linked to phenotype as it has been suggested~\cite{McNamara2013}.
-
-Variation in a few imprinted genes, as we observe here, may seem inadequate
-for a highly polygenic condition like schizophrenia.  But several points
-indicate the opposite.  First, the psychological role of imprinted genes might
-be disproportionately more significant than that of non-imprinted
-ones~\cite{Crespi2008a}.  This is supported by the high risk associated with
-copy number variation of certain imprinted regions~\cite{McNamara2013}, by the
-coevolution of imprinting with increasing brain complexity in the placental
-lineage~\cite{Renfree2012}, and by the suggestion that imprinted genes form
-functional networks~\cite{Varrault2006}.  Second, our present work filtered
-out a large portion of imprinted genes with weak signal in the noisy RNA-seq
-data, several of which might be associated to schizophrenia and/or aging, etc.
-Third, only the DLPFC is studied here but other brain areas are likely to
-exhibit different patterns of imprinting and association to traits given the
-context-dependence of imprinting~\cite{Perez2015,DeVeale2012}.  This last
-point is becoming testable as the CommonMind project extends its data sets to
-additional brain areas beyond the DLPFC.
-
 The interpretation of our results on ancestry and gender is less
 straight-forward than that to age and schizophrenia.  What appears clear,
-though, is that association to ancestry indicates various effects of genetic
+though, is that dependence on ancestry indicates various effects of genetic
 polymorphisms.   Methylation QTLs represent one class of such effects and they
 might be particularly important because altering methylation at imprinting
 control regions can potentially regulate multiple imprinted genes within the
 same cluster.  What's more, methylation QTLs were found to be enriched in
-schizophrenia risk loci~\cite{Hannon2016}.  Therefore, it will be worth
+schizophrenia risk loci~\cite{Hannon2016} even though imprinting can make it more difficult to find methylation QTLs.  Therefore, it will be worth
 investigating the methylation link between polymorphisms and parental bias in
-combined genomic experiments.  Association to gender may indicate
+combined genomic experiments.  Dependence on gender may indicate
 sex-dependent physiological and behavioral functions.  Our finding on PEG3
 appears to be consistent with its observed involvement in sexual dimorphism in
 the brain and in sexual and maternal behavior \cite{Broad2009}.  The latter
@@ -982,14 +980,16 @@ observations motivated the hypothesis that imprinting follows from
 mother-offspring coadaptation~\cite{Keverne2015}; that, however, has been
 questioned by proponents of the kinship theory~\cite{Haig2014}.
 
-With improved analytical tools and more human data it will be possible to
-address the question of other psychiatric disorders such as affective
-spectrum, of other brain regions, and of DNA methylation patterns.
-Improvements in terms of comparability between human genomic studies and
-designed mouse experiments would also be desirable since that would enable
-the discovery of putative human-specific signatures of imprinting.  That, in
-turn, would help elucidate the (epi)genetics of normal and dysfunctional
-traits of human psychology and cognition.
+In conclusion, our analyses of allele-specific expression in the human DLPFC
+reveal some new candidate imprinting genes, while supporting the emerging idea
+that the brain is similar to other tissues in terms of the overall genome-wide
+extent of imprinting.  We also find variation in parental expression bias
+across individuals for all analyzed imprinted genes, and our statistical
+inference suggests that for several genes that variation is explained with
+individuals’ age, psychiatric diagnosis, gender and ancestry. Further studies
+of other samples and brain regions will allow continued exploration of the
+impact of allele-specific gene regulation on normal and dysfunctional traits
+of human psychology and cognition.
 
 \bibliographystyle{plain}
 \bibliography{monoall-ms}
