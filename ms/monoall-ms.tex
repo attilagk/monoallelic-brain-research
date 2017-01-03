@@ -1,4 +1,5 @@
-\documentclass[letterpaper]{article}
+%\documentclass[letterpaper]{article}
+\documentclass[12pt,letterpaper]{article}
 \usepackage{amsmath, geometry, graphicx, tikz}
 \usetikzlibrary{arrows.meta}
 \bibliographystyle{plain}
@@ -12,6 +13,8 @@
 %Ravi Sachinanandam,
 Andrew Chess}
 \date{Mount Sinai School of Medicine}
+
+\linespread{1.2}
 
 \begin{document}
 
@@ -771,7 +774,16 @@ rejected for some genes (Fig.~\ref{fig:pval-wnlm.Q}). This appears to suggest
 that aging, gender and ancestry-related genetic variation regulates parental
 bias of those genes whereas the risk of schizophrenia is regulated by it; but,
 as discussed above, indirect causation involving a latent variable is also
-possible.
+possible.  For a given term, like Age or DxSCZ, the set of 30 genes give rise
+to 30 hypotheses that are related to each other in the sense that only some
+fixed fraction of them are true.  Were that fraction known, multiple testing
+could be corrected accordingly and, moreover, the fraction itself is of
+biological interest.  Although the fraction may be estimated from the
+empirical distribution of p-values, the error of the estimate only becomes
+sufficiently low with typically many more than 30
+hypotheses/genes~\cite{Storey:2003kx}.  Therefore, the fraction of genes whose
+parental bias truly depends on, say, DxSCZ will require future experimental
+studies.
 
 \begin{table}
 \footnotesize
