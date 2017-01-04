@@ -161,7 +161,11 @@ plot(barchart(padded.frac(fr = frac$min.reads.7[rev(row.names(genes.ifat))]),
 The same as the upper-right panel in the previous plot.
 
 ```{r top-ranking-genes, echo=FALSE, fig.width=3.5, fig.asp=2}
-update(b.charts$min.reads.15, main = "", auto.key = list(text = c("known imprinted", "nearby candidate", "distant candidate"), points = FALSE, col = c("blue", "darkgreen", "red"), columns = 1), scales = list(cex = 0.7))
+fr <- frac$min.reads.15[nrow(genes.ifat):1]
+annot <- c("*", "*", " ")
+update(b.charts$min.reads.15, main = "",
+       auto.key = list(text = c("known imprinted", "nearby candidate", "distant candidate"), points = FALSE, col = c("blue", "darkgreen", "red"), columns = 1),
+       scales = list(cex = 0.7, y = list(labels = paste(names(fr), annot))))
 ```
 
 #### Gene rankings with Ifat's ranking as reference
