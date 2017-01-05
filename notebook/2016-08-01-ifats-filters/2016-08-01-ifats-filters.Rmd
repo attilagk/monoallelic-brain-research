@@ -158,14 +158,30 @@ plot(barchart(padded.frac(fr = frac$min.reads.7[rev(row.names(genes.ifat))]),
 
 ### Figure for manuscript
 
-The same as the upper-right panel in the previous plot.
+The basis for the figure is the one in the upper-right panel in the previous plot, which is supplemented sith the outcome of the "reference/non-reference allele" test.
 
-```{r top-ranking-genes, echo=FALSE, fig.width=3.5, fig.asp=2}
+```{r top-ranking-genes, echo=FALSE, fig.width=7, fig.asp=1}
+# ECDF
 fr <- frac$min.reads.15[nrow(genes.ifat):1]
 annot <- c("*", "*", " ")
-update(b.charts$min.reads.15, main = "",
-       auto.key = list(text = c("known imprinted", "nearby candidate", "distant candidate"), points = FALSE, col = c("blue", "darkgreen", "red"), columns = 1),
-       scales = list(cex = 0.7, y = list(labels = paste(names(fr), annot))))
+par.set <- list(superpose.polygon = list(col = palette.ifat(detailed = FALSE, col2 = "gray")))
+fig.ms <- list(ecdf = barchart(padded.frac(fr = fr), par.settings = par.set, xlab = xlab))
+# tests
+y <- data.frame(t(fr['andys.test', ]))
+y$ref.nonref <- as.numeric(sub(" \\([[:digit:]]+\\/[[:digit:]]+\\)", "",
+                               as.character(gene.summary[ names(fr), "Biased.SNPs..binomial....." ])))
+y$gene <- factor(rownames(y), levels = rownames(y))
+y <- reshape(y, direction = "long", varying = c("ref.nonref", "andys.test"),
+             v.names = "fraction", timevar = "test", times = c("ref/nonref", "biallelic"))
+fig.ms$tests <- dotplot(gene ~ fraction | test, data = y, stack = TRUE, layout = c(2, 1), col = "black")
+# graphic adjustments
+fig.ms <- lapply(fig.ms,
+                 function(x) update(x, main = "", scales = list(cex = 0.7, x = list(alternating = 1))))
+fig.ms$ecdf <- update(fig.ms$ecdf, strip = strip.custom(factor.levels = "1 - ECDF"),
+                      scales = list(y = list(alternating = 1)))
+fig.ms$tests <- update(fig.ms$tests, scales = list(y = list(alternating = 2)))
+print(fig.ms$ecdf, position = c(0, 0, 0.55, 1), more = TRUE)
+print(fig.ms$tests, position = c(0.5, 0, 1, 1), more = FALSE)
 ```
 
 #### Gene rankings with Ifat's ranking as reference

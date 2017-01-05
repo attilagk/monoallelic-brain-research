@@ -61,9 +61,6 @@ such that $z_{p}$ is the $p$ quantile of the standard normal distribution and $n
 ### Genome-wide data import and preparation
 
 
-```
-## Loading required package: RColorBrewer
-```
 
 Load functions:
 
@@ -127,7 +124,7 @@ The plots show four gene rankings and the corresponding fractions of interest.  
 
 ### Figure for manuscript
 
-The same as the upper-right panel in the previous plot.
+The basis for the figure is the one in the upper-right panel in the previous plot, which is supplemented sith the outcome of the "reference/non-reference allele" test.
 
 <img src="figure/top-ranking-genes-1.png" title="plot of chunk top-ranking-genes" alt="plot of chunk top-ranking-genes" height="700px" />
 
@@ -328,14 +325,6 @@ The `VennDiagram` package implements scaled [Euler diagrams](https://en.wikipedi
 
 ```r
 library(VennDiagram)
-```
-
-```
-## Loading required package: grid
-```
-
-```
-## Loading required package: futile.logger
 ```
 
 The partitions induced by filtering and calling genes monoallelic (imprinted) are illustrated by the following Euler or Venn diagrams.  Note that, for an Euler diagram but not for a Venn diagram, the shapes (circles or ellipses) are proportional to the size of the set they represent and that topological relationship among shapes is such that there is no overlap if the intersection of the corresponding sets is the empty set $\{\}$.

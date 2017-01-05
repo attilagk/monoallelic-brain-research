@@ -22,12 +22,12 @@ padded.frac <- function(fr = frac$min.reads.15[51:1], imp.stat = gene.summary) {
 
 
 
-palette.ifat <- function(cols = c("blue", "darkgreen", "red"), detailed = FALSE) {
+palette.ifat <- function(cols = c("blue", "darkgreen", "red"), detailed = FALSE, col2 = "black") {
     foo <- function(col, detailed) {
         if(detailed)
-            colorRampPalette(c(col, "gray", "black"))(6)
+            colorRampPalette(c(col, "gray", col2))(6)
         else
-            c(colorRampPalette(c(col, "gray"))(3), "gray", "gray", "black")
+            c(colorRampPalette(c(col, "gray"))(3), "gray", "gray", col2)
     }
     c(sapply(cols, foo, detailed = detailed))
 }
