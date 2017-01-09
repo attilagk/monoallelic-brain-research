@@ -160,11 +160,11 @@ plot(barchart(padded.frac(fr = frac$min.reads.7[rev(row.names(genes.ifat))]),
 
 The basis for the figure is the one in the upper-right panel in the previous plot, which is supplemented sith the outcome of the "reference/non-reference allele" test.
 
-```{r top-ranking-genes, echo=FALSE, fig.width=7, fig.asp=1}
+```{r top-ranking-genes, echo=FALSE, fig.width=3.5, fig.asp=2}
 # ECDF
 fr <- frac$min.reads.15[nrow(genes.ifat):1]
 annot <- c("*", "*", " ")
-par.set <- list(superpose.polygon = list(col = palette.ifat(detailed = FALSE, col2 = "gray")))
+par.set <- list(superpose.polygon = list(col = palette.ifat(detailed = FALSE, col2 = "black")))
 fig.ms <- list(ecdf = barchart(padded.frac(fr = fr), par.settings = par.set, xlab = xlab))
 # tests
 y <- data.frame(t(fr['andys.test', ]))
@@ -179,9 +179,13 @@ fig.ms <- lapply(fig.ms,
                  function(x) update(x, main = "", scales = list(cex = 0.7, x = list(alternating = 1))))
 fig.ms$ecdf <- update(fig.ms$ecdf, strip = strip.custom(factor.levels = "1 - ECDF"),
                       scales = list(y = list(alternating = 1)))
+fig.ms$ecdf <- update(fig.ms$ecdf, scales = list(y = list(labels = paste(names(fr), annot))),
+                      auto.key = list(text = c("known imprinted", "nearby candidate", "distant candidate"),
+                                      points = FALSE, col = c("blue", "darkgreen", "red"), columns = 1))
 fig.ms$tests <- update(fig.ms$tests, scales = list(y = list(alternating = 2)))
-print(fig.ms$ecdf, position = c(0, 0, 0.55, 1), more = TRUE)
-print(fig.ms$tests, position = c(0.5, 0, 1, 1), more = FALSE)
+#print(fig.ms$ecdf, position = c(0, 0, 0.55, 1), more = TRUE)
+#print(fig.ms$tests, position = c(0.5, 0, 1, 1), more = FALSE)
+print(fig.ms$ecdf)
 ```
 
 #### Gene rankings with Ifat's ranking as reference
