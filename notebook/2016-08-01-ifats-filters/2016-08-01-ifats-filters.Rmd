@@ -83,7 +83,7 @@ rownames(gene.summary) <- gene.summary$Symbol
 gene.summary$file.size <-
     read.csv("../../data/readcount/fsize-genes.csv", row.names = 2)[rownames(gene.summary), , drop = TRUE]
 gene.ids <- with(gene.summary, as.character(Symbol)[ file.size > 0 ])
-Y <- get.readcounts(gene.ids, g.subsets = list(), sel.var = c("H", "N"))
+Y <- get.readcounts(gene.ids, g.subsets = list(), sel.var = c("H", "N"), rm.conflict = TRUE)
 S <- data.frame(lapply(gene.ids, function(g) Y[[g]]$H / Y[[g]]$N), check.names = FALSE)
 names(S) <- gene.ids
 N <- data.frame(lapply(Y, getElement, "N"), check.names = FALSE)
@@ -97,6 +97,7 @@ min(unlist(N), na.rm = TRUE)
 
 The following code
 
+1. applies "a filter giving priority to even a single SNP showing biallelic expression" (see Ifat's ms and her "1_conflict" annotation)
 1. applies the read count-based filter given a *sequence* of read count thresholds $t_\mathrm{rc}$
 1. applies the individual-based filter given $t_\mathrm{ind}$
 1. calculates the fractions of interest, which include the score $1-\hat{F}_g(0.9)$
@@ -158,12 +159,17 @@ plot(barchart(padded.frac(fr = frac$min.reads.7[rev(row.names(genes.ifat))]),
 
 ### Figure for manuscript
 
-The basis for the figure is the one in the upper-right panel in the previous plot, which is supplemented sith the outcome of the "reference/non-reference allele" test.
+The basis for the figure is the one in the upper-right panel in the previous plot, which is supplemented with the outcome of the "reference/non-reference allele bias" test.  The outcome was done via a subjective analysis by Andy and I, in which we sorted each of the top 51 genes into three categories: biased, unbiased, and indeterminate.  These are stored in `ref-nonref-test.csv` and correspond to `X`, ` ` (whitespace) and `0` in `ref.allele.bias`, respectively:
+
+```{r}
+ref.allele.bias <- read.csv("../../results/ref-nonref-test.csv")$ref.allele.bias
+names(ref.allele.bias) <- read.csv("../../results/ref-nonref-test.csv")$gene
+levels(ref.allele.bias) <- c("X", "0", " ")
+```
 
 ```{r top-ranking-genes, echo=FALSE, fig.width=3.5, fig.asp=2}
 # ECDF
 fr <- frac$min.reads.15[nrow(genes.ifat):1]
-annot <- c("*", "*", " ")
 par.set <- list(superpose.polygon = list(col = palette.ifat(detailed = FALSE, col2 = "black")))
 fig.ms <- list(ecdf = barchart(padded.frac(fr = fr), par.settings = par.set, xlab = xlab))
 # tests
@@ -179,7 +185,7 @@ fig.ms <- lapply(fig.ms,
                  function(x) update(x, main = "", scales = list(cex = 0.7, x = list(alternating = 1))))
 fig.ms$ecdf <- update(fig.ms$ecdf, strip = strip.custom(factor.levels = "1 - ECDF"),
                       scales = list(y = list(alternating = 1)))
-fig.ms$ecdf <- update(fig.ms$ecdf, scales = list(y = list(labels = paste(names(fr), annot))),
+fig.ms$ecdf <- update(fig.ms$ecdf, scales = list(y = list(labels = paste(names(fr), rev(ref.allele.bias)))),
                       auto.key = list(text = c("known imprinted", "nearby candidate", "distant candidate"),
                                       points = FALSE, col = c("blue", "darkgreen", "red"), columns = 1))
 fig.ms$tests <- update(fig.ms$tests, scales = list(y = list(alternating = 2)))

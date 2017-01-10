@@ -29,9 +29,6 @@ EOF
 ```
 
 
-```
-## Loading required package: RColorBrewer
-```
 
 ### Import read count data
 
@@ -57,7 +54,7 @@ gene.ids <- with(gene.summary, as.character(Symbol)[ file.size > 0 ])
 
 
 ```r
-Y <- get.readcounts(gene.ids, g.subsets = list(), sel.var = c("H", "N"))
+Y <- get.readcounts(gene.ids, g.subsets = list(), sel.var = c("H", "N"), rm.conflict = TRUE)
 S <- data.frame(lapply(gene.ids, function(g) Y[[g]]$H / Y[[g]]$N), check.names = FALSE)
 names(S) <- gene.ids
 N <- data.frame(lapply(Y, getElement, "N"), check.names = FALSE)
@@ -127,7 +124,7 @@ This figure is intended to:
 
 
 
-There are 5307 genes on this figure but before filtering there were 15584 genes.
+There are 5283 genes on this figure but before filtering there were 15584 genes.
 
 <img src="figure/complex-plot-1.png" title="plot of chunk complex-plot" alt="plot of chunk complex-plot" height="1000" />
 

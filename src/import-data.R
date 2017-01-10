@@ -46,6 +46,7 @@ adj.levels.predictors <- function(X) {
 # count.thrs: lower filtering threshold for the total readcount (summing over alleles and SNPs)
 # sel.obs: the RNA IDs of selected observations (normally those on predictors)
 # g.subsets: a named list of subsets of genes for aggregation over each subset using each of two methods: weighted and unweighted average
+# rm.conflict: "a filter giving priority to even a single SNP showing biallelic expression" (see Ifat's old ms)
 #
 # Value
 # a list of data frames, one data frame for each gene or "aggregate", whose
@@ -60,12 +61,21 @@ get.readcounts <- function(gene.ids,
                            count.thrs = 0,
                            sel.obs = row.names(get.predictors()),
                            g.subsets = list(A.8 = gene.ids[1:8], A = gene.ids),
+                           rm.conflict = FALSE,
                            sel.var = c("L", "H", "N", "S", "R", "Q")) {
     import.rc <- function(gene) {
         fpath <- paste0(data.dir, "/", gene, "/", gene, ".csv")
         # shell command to select 'Sample RNA ID', 'L' and 'H' columns using GNU's cut;
-        cmd <- "cut --delimiter=, --fields=1,7,8"
-        read.csv(pipe(paste(cmd, fpath)), row.names = 1)
+        cmd <- "cut --delimiter=, --fields=1,5,7,8"
+        cmds <- paste(cmd, fpath)
+        read.csv(pipe(cmds), row.names = 1)
+    }
+    conflict.rm <- function(counts) {
+        if(! rm.conflict) return(counts)
+        is.confl <- counts$Allelic.state == "1_conflict"
+        counts[ is.confl, "L" ] <- NA
+        counts[ is.confl, "H" ] <- NA
+        return(counts)
     }
     get.sel.obs <- function(counts) {
         y <- counts[ sel.obs, ]
@@ -108,8 +118,8 @@ get.readcounts <- function(gene.ids,
         row.names(z) <- sel.obs
         z
     }
-    # import and adjust set of observations
-    Y <- lapply(gene.ids, function(g) get.sel.obs(import.rc(g)))
+    # import, remove "1_conflict"s and adjust set of observations
+    Y <- lapply(gene.ids, function(g) get.sel.obs(conflict.rm(import.rc(g))))
     names(Y) <- gene.ids
     # 1st aggregation: take 'W'eighted average by summing up L and H over each gene subset
     Y.pre <- lapply(g.subsets, aggregator, Y, vars = c("L", "H"), fun = sum)

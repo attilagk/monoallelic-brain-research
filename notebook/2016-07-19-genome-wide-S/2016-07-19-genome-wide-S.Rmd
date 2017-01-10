@@ -52,7 +52,7 @@ gene.ids <- with(gene.summary, as.character(Symbol)[ file.size > 0 ])
 ```
 
 ```{r genomwide-data-import, cache=TRUE, warning=FALSE}
-Y <- get.readcounts(gene.ids, g.subsets = list(), sel.var = c("H", "N"))
+Y <- get.readcounts(gene.ids, g.subsets = list(), sel.var = c("H", "N"), rm.conflict = TRUE)
 S <- data.frame(lapply(gene.ids, function(g) Y[[g]]$H / Y[[g]]$N), check.names = FALSE)
 names(S) <- gene.ids
 N <- data.frame(lapply(Y, getElement, "N"), check.names = FALSE)
@@ -68,7 +68,7 @@ For more than half of even the genes $g$ with nonempty files the number $I_g$ of
 ```{r}
 min.n.obs <- 25
 ```
-```{r ecdf-n-obs, echo=FALSE, fig.width=7, fig.asp=2/3}
+```{r ecdf-n-obs, echo=FALSE}
 ecdfplot(sapply(S, function(y) sum(! is.na(y))), type = c("l", "g"),
          panel = function(...) {
              panel.ecdfplot(...)
@@ -130,7 +130,7 @@ Y <- get.readcounts(gene.ids, g.subsets = list(), sel.var = c("N"))
 
 There are `r length(S)` genes on this figure but before filtering there were `r length(Y)` genes.
 
-```{r complex-plot, echo=FALSE, fig.aspect=1.5, out.height=1000}
+```{r complex-plot, echo=FALSE, fig.asp=1.5, out.height=1000}
 sel.g <- c("PEG10", "ZNF331", "AFAP1")
 S.long <- reshape.Y(Y = S, sel.g = sel.g)
 plots <- list()

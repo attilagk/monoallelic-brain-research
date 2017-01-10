@@ -1,0 +1,52 @@
+gene,ref.allele.bias,conclusion,details,notes
+MAGEL2,unbiased,,,
+TMEM261P1,unbiased,,,
+SNHG14,unbiased,,,
+AL132709.5,unbiased,,,
+RP11-909M7.3,unbiased,,,
+ZIM2,unbiased,,,
+NAP1L5,unbiased,,,
+MEG3,unbiased,,,
+PEG3,unbiased,,,
+PWAR6,unbiased,,,
+FAM50B,unbiased,,,
+NDN,unbiased,,,
+SNURF,unbiased,,,
+PEG10,unbiased,,,
+SNRPN,unbiased,,,
+KCNQ1OT1,unbiased,,,
+ZDBF2,unbiased,,,
+GRB10,unbiased,,,
+SNORD116-20,unbiased,,,
+KCNK9,unbiased,,,
+INPP5F,unbiased,,,
+HLA-DRB5,biased,ref allele bias,clear reference bias,
+RP13-487P22.1,indeterminate,,,
+GSTM1,biased,most likely ref allele bias,2 snps total for which ref non-ref determined one is 0.87 and other is 0.14 but 7 individuals  ,
+MEST,unbiased,,,
+IL1RL1,indeterminate,indeterminate,"candidate in which 5 snps for which R, NR can be compared, 3 low data,one which points towards ref bias, 10R, 1NR p=0.006, and one which shows 20 individuals with -0.2 ",discrepancy with table saying 1/7 whereas we see only 5 total 
+ZNF331,unbiased,,,
+hsa-mir-335,unbiased,,,
+DIRAS3,indeterminate,,,
+MRPS34,indeterminate,,ref bias from 1 informative snp 0.73  22 individuals,discrepancy with table listing all genes which says 1/2 rather than 1/1
+PWRN1,biased,,,
+HLA-DQB1,biased,ref allele bias,"many snps analyzed, most show ref bias",
+PAX8-AS1,biased,ref allele bias,"2 snps with clear bias and 1 with only 2 individuals, so doesn’t contribute",discrepancy only 3 tests instead of 6
+HNRNPU,biased,ref allele bias,"2 snps with clear bias and 1 with only 2 individuals, so doesn’t contribute",discrepancy only 6 instead of 9
+GFRA2,indeterminate,"indeterminate, could be ref bias, too little data","some individuals amongst the 20 (13/7) are conflict individuals where there is another snp saying biallelic, so n probably closer too 10 with 8R, 2NR",discrepancy with table listing all genes which says 0/3 rather than 0/1 rejected
+TMIE,biased,"ref allele bias, 1 snp only assessable",1 snp biased,
+RP11-54F2.1,biased,"ref allele bias probably, 1 snp marginal",1 snp with marginal significance,
+HLA-DQA1,biased,ref allele bias,clear ref allele bias,discrepancy only 11 instead of 20
+SYT7,indeterminate,"indeterminate, could be ref bias, too little data","both low data, but 5/1 6/1 R/NR, so probably biased",discreapncy only 2 instead of 5
+NME1-NME2,biased,"ref allele bias, 1 snp only assessable","1 snp, 20NR, 7 R p ~0.01 biased",discrepancy only 1 test instead of 2
+RAD23A,indeterminate,,,
+RP11-215G15.5,biased,,,
+GPR75-ASB3,indeterminate,"indeterminate, could be ref bias, too little data",1 snp showing trend towards ref bias,"discrepancy, 1 instead of3"
+ANKRD18A,indeterminate,,,
+IL6ST,biased,,,
+AHNAK,biased,"ref allele bias, 1 snp only assessable","1 snp bias, other snp only 2 individuals (not informative)",discrepancy only 2 tests instead of 3
+SEPHS2,indeterminate,,,
+SYCE1,indeterminate,,,
+NLRP2,indeterminate,,,
+IGF2,indeterminate,,,
+ADAP1,indeterminate,,,

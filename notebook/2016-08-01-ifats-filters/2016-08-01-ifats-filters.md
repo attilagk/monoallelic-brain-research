@@ -61,6 +61,9 @@ such that $z_{p}$ is the $p$ quantile of the standard normal distribution and $n
 ### Genome-wide data import and preparation
 
 
+```
+## Loading required package: RColorBrewer
+```
 
 Load functions:
 
@@ -83,6 +86,7 @@ min(unlist(N), na.rm = TRUE)
 
 The following code
 
+1. applies "a filter giving priority to even a single SNP showing biallelic expression" (see Ifat's ms and her "1_conflict" annotation)
 1. applies the read count-based filter given a *sequence* of read count thresholds $t_\mathrm{rc}$
 1. applies the individual-based filter given $t_\mathrm{ind}$
 1. calculates the fractions of interest, which include the score $1-\hat{F}_g(0.9)$
@@ -124,7 +128,14 @@ The plots show four gene rankings and the corresponding fractions of interest.  
 
 ### Figure for manuscript
 
-The basis for the figure is the one in the upper-right panel in the previous plot, which is supplemented sith the outcome of the "reference/non-reference allele" test.
+The basis for the figure is the one in the upper-right panel in the previous plot, which is supplemented with the outcome of the "reference/non-reference allele bias" test.  The outcome was done via a subjective analysis by Andy and I, in which we sorted each of the top 51 genes into three categories: biased, unbiased, and indeterminate.  These are stored in `ref-nonref-test.csv` and correspond to `X`, ` ` (whitespace) and `0` in `ref.allele.bias`, respectively:
+
+
+```r
+ref.allele.bias <- read.csv("../../results/ref-nonref-test.csv")$ref.allele.bias
+names(ref.allele.bias) <- read.csv("../../results/ref-nonref-test.csv")$gene
+levels(ref.allele.bias) <- c("X", "0", " ")
+```
 
 <img src="figure/top-ranking-genes-1.png" title="plot of chunk top-ranking-genes" alt="plot of chunk top-ranking-genes" height="700px" />
 
@@ -142,8 +153,8 @@ The previous figures show that several genes in the top 51 according to $R_{7}, 
 ## RP11-909M7.3   nearby candidate      5   13    5    3
 ## NAP1L5          known imprinted      6   10    7    6
 ## ZIM2            known imprinted      7    2    6    5
-## MEG3            known imprinted      8    4    8    7
-## PEG3            known imprinted      9    5    9    8
+## MEG3            known imprinted      8    4    8    8
+## PEG3            known imprinted      9    5    9    7
 ## PWAR6          nearby candidate     10    7   10    9
 ## FAM50B          known imprinted     11   16   11   13
 ## NDN             known imprinted     12    8   12   10
@@ -154,38 +165,38 @@ The previous figures show that several genes in the top 51 according to $R_{7}, 
 ## ZDBF2           known imprinted     17   15   17   16
 ## GRB10           known imprinted     18   24   18   17
 ## SNORD116-20    nearby candidate     19   22   19   18
-## KCNK9           known imprinted     20   28   20   20
+## KCNK9           known imprinted     20   27   20   20
 ## INPP5F          known imprinted     21   25   21   19
-## HLA-DRB5      distant candidate     22   30   22   21
-## RP13-487P22.1  nearby candidate     23   39   23   22
-## GSTM1         distant candidate     24   32   24   24
-## MEST            known imprinted     25   38   26   23
-## hsa-mir-335    nearby candidate     26   56   31   NA
-## IL1RL1        distant candidate     27   49   28   NA
-## ZNF331          known imprinted     28   41   29   25
-## DIRAS3          known imprinted     29   44   32   NA
-## PWRN1          nearby candidate     30   43   33   29
-## HLA-DQB1      distant candidate     31   50   35   31
-## PAX8-AS1      distant candidate     32   52   37   33
-## HNRNPU        distant candidate     33   53   38   32
-## HLA-DQA1      distant candidate     34   65   44   47
-## RP11-54F2.1   distant candidate     35   83   48   40
-## SYT7          distant candidate     36   81   46   34
-## NME1-NME2     distant candidate     37   64   40   35
-## RAD23A        distant candidate     38   95   57   NA
-## NLRP2           known imprinted     NA  122   77   66
-## IGF2            known imprinted     NA   84   83   82
-## UBE3A           known imprinted     NA  132  112   79
-## NTM             known imprinted     NA  318  177  150
-## DGCR6           known imprinted     NA 1683 1310   NA
-## OSBPL5          known imprinted     NA 2479  946  659
-## NAA60           known imprinted     NA 1192 2251 2345
-## DGCR6L          known imprinted     NA 3483 2392 1890
-## BEGAIN          known imprinted     NA 5004 2448 2397
-## AIM1            known imprinted     NA 2028 4490   NA
-## DLGAP2          known imprinted     NA 3041 2382 2104
-## GNAS            known imprinted     NA 5529 3754 2997
-## ZFAT            known imprinted     NA 4714 5016 4399
+## HLA-DRB5      distant candidate     22   29   22   21
+## RP13-487P22.1  nearby candidate     23   32   23   22
+## GSTM1         distant candidate     24   30   24   24
+## MEST            known imprinted     25   34   25   23
+## hsa-mir-335    nearby candidate     26   48   28   NA
+## IL1RL1        distant candidate     27   41   26   NA
+## ZNF331          known imprinted     28   37   27   25
+## DIRAS3          known imprinted     29   40   29   NA
+## PWRN1          nearby candidate     30   39   31   27
+## HLA-DQB1      distant candidate     31   43   32   28
+## PAX8-AS1      distant candidate     32   42   33   29
+## HNRNPU        distant candidate     33   47   34   NA
+## HLA-DQA1      distant candidate     34   57   38   36
+## RP11-54F2.1   distant candidate     35   61   37   32
+## SYT7          distant candidate     36   65   39   30
+## NME1-NME2     distant candidate     37   63   40   34
+## RAD23A        distant candidate     38   69   41   NA
+## NLRP2           known imprinted     NA   89   49   44
+## IGF2            known imprinted     NA   64   50   48
+## UBE3A           known imprinted     NA   92   60   46
+## NTM             known imprinted     NA  335  138  106
+## DGCR6           known imprinted     NA 1306  646   NA
+## OSBPL5          known imprinted     NA 3652  987 1009
+## NAA60           known imprinted     NA  904 1238 1341
+## DGCR6L          known imprinted     NA 2809 1332 1030
+## BEGAIN          known imprinted     NA 4215 1378 1383
+## AIM1            known imprinted     NA 1534 3600   NA
+## DLGAP2          known imprinted     NA 3691 3526 3171
+## GNAS            known imprinted     NA 5816 4699 4148
+## ZFAT            known imprinted     NA 3924 4595 4044
 ```
 
 In fact, the two rankings agree for the top 24 genes (except that ranks 6 and 7 are swapped):
@@ -204,7 +215,7 @@ From this result we may conclude that Ifat's filter settings were $t_\mathrm{rc}
 
 Given the result that $R_{15}$ resembles the most to $R_\mathrm{ifat}$, we will use $R_{15}$ to call monoallelic genes.  We will compare called gene sets under different threshold for the score $1 - \hat{F}_g(0.9)$ and further compare these to the one presented in the previous [manuscript][ms].
 
-Notice that the lowest scoring gene in the "nearby candidate" category is *PWRN1* (green on [Fig 1][ifat fig 1]).  Its score is 0.5 and it ranks at 33 according to $R_{15}$ and at `genes.ifat.ranks["PWRN1", "R.ifat"]`.  We may define the classification threshold such that we only call genes monoallelic if their score $\ge0.5$:
+Notice that the lowest scoring gene in the "nearby candidate" category is *PWRN1* (green on [Fig 1][ifat fig 1]).  Its score is 0.4714286 and it ranks at 31 according to $R_{15}$ and at `genes.ifat.ranks["PWRN1", "R.ifat"]`.  We may define the classification threshold such that we only call genes monoallelic if their score $\ge0.5$:
 
 ```r
 (called.mono.0.5 <- names(frac$min.reads.15)[unlist(frac$min.reads.15[1, ]) >= 0.5])
@@ -217,9 +228,8 @@ Notice that the lowest scoring gene in the "nearby candidate" category is *PWRN1
 ## [13] "SNURF"         "PEG10"         "SNRPN"         "KCNQ1OT1"     
 ## [17] "ZDBF2"         "GRB10"         "SNORD116-20"   "KCNK9"        
 ## [21] "INPP5F"        "HLA-DRB5"      "RP13-487P22.1" "GSTM1"        
-## [25] "RPL23AP7"      "MEST"          "MRPL28"        "IL1RL1"       
-## [29] "ZNF331"        "MRPS34"        "hsa-mir-335"   "DIRAS3"       
-## [33] "PWRN1"         "GFRA2"
+## [25] "MEST"          "IL1RL1"        "ZNF331"        "hsa-mir-335"  
+## [29] "DIRAS3"
 ```
 
 If we further lower the classification threshold to $0.3$ then according to $R_{15}$ several more genes must also be called monoallelic.
@@ -230,7 +240,7 @@ length(setdiff(called.mono.0.3, called.mono.0.5))
 ```
 
 ```
-## [1] 23
+## [1] 12
 ```
 
 The upper right panel of the figure above indicates that most---if not all---of the genes between score 0.3 and 0.5 fall in the "distant candidate" category.  More on this in the next section.
@@ -264,7 +274,7 @@ all.equal(genes.not.cand.3, genes.not.cand.5)
 ```
 
 ```
-## [1] TRUE
+## [1] "Lengths (27, 26) differ (string compare on first 26)"
 ```
 
 To see which genes might be selected according to the second rule:
@@ -292,8 +302,8 @@ Then **the set of genes to carry out regression analysis**:
 ## [13] "SNURF"         "PEG10"         "SNRPN"         "KCNQ1OT1"     
 ## [17] "ZDBF2"         "GRB10"         "SNORD116-20"   "KCNK9"        
 ## [21] "INPP5F"        "RP13-487P22.1" "MEST"          "ZNF331"       
-## [25] "hsa-mir-335"   "DIRAS3"        "PWRN1"         "IGF2"         
-## [29] "NLRP2"         "UBE3A"
+## [25] "hsa-mir-335"   "DIRAS3"        "IGF2"          "NLRP2"        
+## [29] "UBE3A"
 ```
 
 ```r
@@ -307,7 +317,7 @@ setdiff(genes.regression.ifat, genes.regression.new) # what genes to remove?
 ```
 
 ```
-## character(0)
+## [1] "PWRN1"
 ```
 
 ```r
@@ -327,6 +337,14 @@ The `VennDiagram` package implements scaled [Euler diagrams](https://en.wikipedi
 library(VennDiagram)
 ```
 
+```
+## Loading required package: grid
+```
+
+```
+## Loading required package: futile.logger
+```
+
 The partitions induced by filtering and calling genes monoallelic (imprinted) are illustrated by the following Euler or Venn diagrams.  Note that, for an Euler diagram but not for a Venn diagram, the shapes (circles or ellipses) are proportional to the size of the set they represent and that topological relationship among shapes is such that there is no overlap if the intersection of the corresponding sets is the empty set $\{\}$.
 
 
@@ -337,9 +355,9 @@ sapply(g.sets, length)
 
 ```
 ##            in.dataset passed.initial.filter   passed.final.filter 
-##                 22254                 15584                  5307 
+##                 22254                 15584                  5283 
 ##      called.imprinted 
-##                    30
+##                    29
 ```
 
 
