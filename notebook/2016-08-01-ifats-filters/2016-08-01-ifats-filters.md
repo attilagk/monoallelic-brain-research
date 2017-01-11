@@ -132,8 +132,8 @@ The basis for the figure is the one in the upper-right panel in the previous plo
 
 
 ```r
-ref.allele.bias <- read.csv("../../results/ref-nonref-test.csv")$ref.allele.bias
-names(ref.allele.bias) <- read.csv("../../results/ref-nonref-test.csv")$gene
+ref.allele.bias <- read.csv("../../results/ref-nonref-test.csv")$ref.allele.bias[1:50]
+names(ref.allele.bias) <- read.csv("../../results/ref-nonref-test.csv")$gene[1:50]
 levels(ref.allele.bias) <- c("X", "0", " ")
 ```
 
