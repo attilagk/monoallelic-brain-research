@@ -80,6 +80,23 @@ plot(P$s.age.gender$lattice)
 #plot(P$s.age.gender$ggplot2)
 ```
 
+
+```r
+P$s.age$lattice <-
+    xyplot(S ~ Age | Gene, data = Y.long,
+           subset = Gene %in% gene.ids,
+           par.settings = list(add.text = list(cex = 0.8),
+                               strip.background = list(col = "gray90"),
+                               plot.symbol = list(pch = 21, cex = 0.5, col = "black", fill = "gray", alpha = 0.5)),
+           auto.key = list(title = "gender", columns = 2),
+           ylab = "read count ratio, S",
+           xlab = "age",
+           aspect = "fill", layout = c(6, 5))
+plot(P$s.age$lattice)
+```
+
+<img src="figure/S-age-1.png" title="plot of chunk S-age" alt="plot of chunk S-age" width="700px" />
+
 <img src="figure/R-age-gender-1.png" title="plot of chunk R-age-gender" alt="plot of chunk R-age-gender" width="700px" />
 
 <img src="figure/Q-age-gender-1.png" title="plot of chunk Q-age-gender" alt="plot of chunk Q-age-gender" width="700px" />

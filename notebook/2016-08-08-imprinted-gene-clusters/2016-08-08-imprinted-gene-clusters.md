@@ -38,7 +38,7 @@ names(genes2fit) <- genes2fit
 
 
 ```r
-Y <- get.readcounts(gene.ids, g.subsets = list(), sel.var = c("H", "N"))
+Y <- get.readcounts(gene.ids, g.subsets = list(), sel.var = c("H", "N"), rm.conflict = TRUE)
 S <- data.frame(lapply(gene.ids, function(g) Y[[g]]$H / Y[[g]]$N), check.names = FALSE)
 names(S) <- gene.ids
 N <- data.frame(lapply(Y, getElement, "N"), check.names = FALSE)
@@ -145,22 +145,27 @@ table(gs$imprinting.status)
 ```
 ## 
 ## distant candidate  nearby candidate   known imprinted 
-##              5005               266                36
+##              4981               266                36
 ```
 
 ### Genomic location
 
-The plot below shows the genomic location of all 16026 genes in the filtered data set and indicates their imprinting status with different colors.  Also shown is the gene score according to which genes have been ranked and called as monoallelically expressing or not.
+The plot below shows the genomic location of all 5283 genes in the filtered data set and indicates their imprinting status with different colors.  Also shown is the gene score according to which genes have been ranked and called as monoallelically expressing or not.
 
 
 ```r
-xyplot(score ~ start | chr, data = gs, groups = imprinting.status,
-       auto.key = list(text = rev(c("known imprinted", "unknown within 1 Mb", "unknown without 1 Mb")), columns = 3, col = c("red", "darkgreen", "blue"), points = FALSE), layout = c(4, 6),
+gs$imprinting.status.1 <- as.character(gs$imprinting.status)
+gs$imprinting.status.1[51:length(gs$imprinting.status.1)] <- "below top 50"
+gs$imprinting.status.1 <- factor(gs$imprinting.status.1, levels = c("below top 50", levels(gs$imprinting.status)))
+mycol <- c("gray", "red", "darkgreen", "blue")
+xyplot(score ~ start | chr, data = gs, groups = imprinting.status.1,
+       auto.key = list(text = rev(levels(gs$imprinting.status.1)), columns = 1, col = rev(mycol), points = FALSE),
+       layout = c(4, 6),
        par.settings = list(superpose.symbol =
-                           list(pch = c(20, 21, 21), alpha = c(0.3, 1, 1),
-                                fill = c("pink", "green", "lightblue"),
-                                cex = c(0.2, 0.5, 0.5),
-                                col = c("red", "darkgreen", "blue"))),
+                           list(pch = c(21, 21, 21, 21), alpha = c(1, 1, 1, 1),
+                                fill = c("white", "pink", "green", "lightblue"),
+                                cex = c(0.2, 0.5, 0.5, 0.5),
+                                col = mycol)),
        xlab = "genomic location", ylab = "gene score")
 ```
 

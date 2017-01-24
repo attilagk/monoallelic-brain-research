@@ -2,50 +2,50 @@ This is BibTeX, Version 0.99d (TeX Live 2015/Debian)
 Capacity: max_strings=35307, hash_size=35307, hash_prime=30011
 The top-level auxiliary file: monoall-ms.aux
 The style file: plain.bst
-Illegal, another \bibstyle command---line 96 of file monoall-ms.aux
+Illegal, another \bibstyle command---line 95 of file monoall-ms.aux
  : \bibstyle
  :          {plain}
 I'm skipping whatever remains of this command
 Database file #1: monoall-ms.bib
-You've used 23 entries,
+You've used 22 entries,
             2118 wiz_defined-function locations,
-            677 strings with 11185 characters,
-and the built_in function-call counts, 11830 in all, are:
-= -- 1057
-> -- 965
+            669 strings with 11026 characters,
+and the built_in function-call counts, 11477 in all, are:
+= -- 1020
+> -- 952
 < -- 0
-+ -- 383
-- -- 360
-* -- 1185
-:= -- 2079
-add.period$ -- 69
-call.type$ -- 23
-change.case$ -- 249
++ -- 378
+- -- 356
+* -- 1155
+:= -- 2022
+add.period$ -- 66
+call.type$ -- 22
+change.case$ -- 244
 chr.to.int$ -- 0
-cite$ -- 23
-duplicate$ -- 252
-empty$ -- 623
-format.name$ -- 360
-if$ -- 2224
+cite$ -- 22
+duplicate$ -- 241
+empty$ -- 594
+format.name$ -- 356
+if$ -- 2152
 int.to.chr$ -- 0
-int.to.str$ -- 23
-missing$ -- 23
-newline$ -- 118
-num.names$ -- 46
-pop$ -- 205
+int.to.str$ -- 22
+missing$ -- 22
+newline$ -- 113
+num.names$ -- 44
+pop$ -- 202
 preamble$ -- 1
-purify$ -- 226
+purify$ -- 222
 quote$ -- 0
-skip$ -- 166
+skip$ -- 158
 stack$ -- 0
-substring$ -- 689
-swap$ -- 23
+substring$ -- 653
+swap$ -- 22
 text.length$ -- 0
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 92
+type$ -- 88
 warning$ -- 0
-while$ -- 87
-width$ -- 25
-write$ -- 254
+while$ -- 83
+width$ -- 24
+write$ -- 243
 (There was 1 error message)
