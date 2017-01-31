@@ -1,6 +1,20 @@
 ## Preparations
 
 
+```
+## Loading required package: RColorBrewer
+```
+
+```
+## 
+## Attaching package: 'latticeExtra'
+```
+
+```
+## The following object is masked from 'package:ggplot2':
+## 
+##     layer
+```
 
 Load functions
 
