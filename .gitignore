@@ -1,5 +1,7 @@
 data
 test
+results
+
 .tmp
 *.log
 *._log
