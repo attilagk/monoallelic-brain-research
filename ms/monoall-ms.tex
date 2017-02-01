@@ -130,7 +130,7 @@ be maternal or paternal) is strong then it seems likely that the count of
 reads tagged by the corresponding SNP variant (which may be reference or
 alternative) is also relatively high.
 
-This intuition may be formalized by introducing \(p\), the fraction of
+this intuition may be formalized by introducing \(p\), the fraction of
 transcripts from the parent towards which expression is biased.  \(p\) is
 interpretable as the strength of allelic bias.  Note that \(1/2\le p\le 1\).
 Let \(b\) identify the positively biased allele, i.e.~the allele with the
@@ -405,7 +405,10 @@ scarce RNA-seq data reflecting low expression and/or low coverage of RNA-seq.
 Examining these genes, we performed exploratory statistical analysis based on
 the read count ratio statistic \(S_{ig}\), whose results (below) we
 interpreted in terms of the variation of allelic bias both across genes \(g\)
-and across individuals \(i\).
+and across individuals \(i\).  Note that our later analyses
+(Section~\ref{sec:results-regression} and below) used
+information not only in \(S_{ig}\) but also in the total read count as well as
+in data beyond RNA-seq.
 
 Fig.~\ref{fig:ranking-genes} presents the conditional empirical distribution
 of \(S_{\cdot g}\) given each gene \(g\).  Each of the three plots of the
@@ -440,12 +443,13 @@ locations that had been previously described as imprinted gene clusters
 (Fig.~\ref{fig:clusters}).
 
 The set of top scoring 50 genes is highly enriched in known imprinted genes,
-marked by blue in Fig.~\ref{fig:top-genes} and in \emph{nearby candidate} genes
-(green) defined as being within 1Mb of a known imprinted gene.
-Within the top 50, we find 29 such genes; 21 known imprinted genes
-and eight nearby candidates.  In subsequent analysis (below) we also consider UBE3A, which falls outside of
-the top 50 as demonstrating allelic bias consistent with imprinting in the
-context of human adult DLFPC (Fig.~\ref{fig:known-genes}).
+marked by blue in Fig.~\ref{fig:top-genes} and in \emph{nearby candidate}
+genes (green) defined as being within 1Mb of a known imprinted gene. Within
+the top 50, we find 29 such genes; 21 known imprinted genes and eight nearby
+candidates.  In subsequent analysis (below) we also consider UBE3A as
+demonstrating allelic bias consistent with imprinting in the context of human
+adult DLFPC as evidenced by Fig.~\ref{fig:known-genes} even though its rank
+falls outside of the top 50.
 
 The remaining 21 genes in the top 50 are separated by \(>1\) Mb from some
 known imprinted gene (termed \emph{distant candidates}, red in
@@ -857,22 +861,25 @@ Properties of genes with significance of association to one or more biological p
 
 \begin{figure}[h]
 \begin{center}
-\includegraphics[width=1.0\textwidth]{figures/by-me/commonmind-rna-seq/commonmind-rna-seq.pdf}
+\includegraphics[width=1.0\textwidth]{figures/by-me/commonmind-rna-seq-ms/commonmind-rna-seq-ms.pdf}
 \end{center}
 \caption{ Quantifying allelic bias of expression in human
-individuals using the read count ratio statistic \(S_{ig}\).  The strength of bias towards the
-expression of the maternal (red) or paternal (blue) allele of a given gene
-\(g\) in
-individual \(i\) is gauged with the count of RNA-seq reads carrying the
-reference allele (small closed circles) and the count of reads carrying an
-alternative allele (open squares) at all SNPs for which the
-individual is heterozygous.  The differences in the unobserved allelic
-bias between individual \(i_1\) and \(i_2\) arise only from
-biological differences such as their disease status (black and gray
-silhouettes), age, or gender.  In addition to these, the differences in the
-observed read count ratio also reflect variation from technical sources like
-tissue preparation, or RNA sequencing.  Note the sampling bias towards older
-individuals in institution \(A\) relative to \(B\). }
+individuals using the RNA-seq read count ratio statistic \(S_{ig}\).  The strength of
+bias towards the expression of the maternal (red) or paternal (blue) allele of
+a given gene \(g\) in individual \(i\) is gauged with the count of RNA-seq
+reads carrying the reference allele (small closed circles) and the count of
+reads carrying an alternative allele (open squares) at all SNPs for which the
+individual is heterozygous.  The allele with the higher read count tends to
+match the allele with higher expression but measurement errors may
+occasionally revert this tendency as for SNP \(s_3\) in gene \(g_1\) in
+individual \(i_2\).
+%The differences in the unobserved allelic bias
+%between individual \(i_1\) and \(i_2\) arise only from biological differences
+%such as their disease status (black and gray silhouettes), age, or gender.  In
+%addition to these, the differences in the observed read count ratio also
+%reflect variation from technical sources like tissue preparation, or RNA
+%sequencing. 
+}
 \label{fig:study-design}
 \end{figure}
 
