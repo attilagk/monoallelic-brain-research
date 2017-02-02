@@ -215,3 +215,47 @@ my.segplot2(beta.95$logi.S, layout = c(4, 1), xlim = list(4e-2*c(-1,1), 0.9*c(-1
 ```{r segplot-wnlm-Q-99conf-allcoef, fig.asp=1.7}
 my.segplot2(beta.99$wnlm.Q, layout = c(7, 3), sel.coefs = unlist(lapply(e.vars, function(v) predictor2coefs(M$wnlm.Q[[1]], v))))
 ```
+
+### Comparison to Baran et al 2015
+
+[Baran et al 2015][baran] identified 42 imprinted genes in various human tissues based on GTeX and other data.  Their Table S3 lists these genes along with the tissue in which they were found to be imprinted:
+
+```{r}
+baran <- read.csv("../../data/baran-2015-genome-res/table_s3.csv")
+levels(baran$name)
+```
+
+Establish consistency of gene names between Baran et al and our study and extract genes Baran et al found to be imprinted in the brain:
+
+```{r}
+levels(baran) <- sub("INPP5F_V2", "INPP5F", levels(baran$name))
+levels(baran) <- sub("MEG8", "RP11-909M7.3", levels(baran$name))
+baran$name <- sub("INPP5F_V2", "INPP5F", baran$name)
+baran$name <- sub("MEG8", "RP11-909M7.3", baran$name)
+baran.brain <- baran[ baran$tissue == "BRAIN", "name"]
+```
+
+Summarize genes called imprinted either by Baran et al or this study:
+
+```{r echo=FALSE}
+baran.vs.ourwork <- data.frame(gene = union(baran.brain, sel.genes),
+                               Baran.et.al = factor(NA, levels = imp.levs <- c("imprinted", "not imprinted or assessed")),
+                               this.work = factor(NA, levels = imp.levs <- c("imprinted", "not imprinted", "not assessed")))
+row.names(baran.vs.ourwork) <- baran.vs.ourwork$gene
+baran.vs.ourwork[ baran.brain, "Baran.et.al" ] <- "imprinted"
+baran.vs.ourwork[ setdiff(sel.genes, baran.brain), "Baran.et.al" ] <- "not imprinted or assessed"
+baran.vs.ourwork[ setdiff(baran.brain, gene.summary$Symbol), "this.work" ] <- "not assessed"
+baran.vs.ourwork[ sel.genes, "this.work" ] <- "imprinted"
+baran.vs.ourwork[ is.na(baran.vs.ourwork$this.work), "this.work" ] <- "not imprinted"
+baran.vs.ourwork$prior.status <- gene.summary[as.character(baran.vs.ourwork$gene), "imprinted"]
+with(baran.vs.ourwork, table(Baran.et.al, this.work))
+```
+
+Next, list each gene and write result to file.  It is noteworthy that the novel imprinted genes suggested by our study are `r with(baran.vs.ourwork, gene[ this.work == "imprinted" & prior.status == "1 M impr clstr"])` and among these only `r with(baran.vs.ourwork, gene[ this.work == "imprinted" & prior.status == "1 M impr clstr" & Baran.et.al == "imprinted" ])` is/are suggested by Baran et al.
+
+```{r}
+baran.vs.ourwork[ , -1]
+write.csv(baran.vs.ourwork, file = "../../results/baran-vs-ourwork.csv", row.names = FALSE)
+```
+
+[baran]: https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4484390/

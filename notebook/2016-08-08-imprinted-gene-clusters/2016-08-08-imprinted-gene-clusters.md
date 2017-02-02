@@ -187,11 +187,34 @@ Filter based on earlier decisions on the goodness of fit of logi.S, which is sto
 
 ```r
 logi.S.OK <- read.csv("../../results/model-checking.csv", row.names = "gene")["logi.S.fit.OK"]
+```
+
+```
+## Warning in file(file, "rt"): cannot open file '../../results/model-
+## checking.csv': No such file or directory
+```
+
+```
+## Error in file(file, "rt"): cannot open the connection
+```
+
+```r
 # set results to NA where logi.S fitted poorly
 beta.99$logi.S[beta.99$logi.S$Gene %in% rownames(logi.S.OK)[! logi.S.OK$logi.S.fit.OK],
                c("Estimate", "Lower.CL", "Upper.CL")] <- NA
+```
+
+```
+## Error in rownames(logi.S.OK): object 'logi.S.OK' not found
+```
+
+```r
 beta.95$logi.S[beta.95$logi.S$Gene %in% rownames(logi.S.OK)[! logi.S.OK$logi.S.fit.OK],
                c("Estimate", "Lower.CL", "Upper.CL")] <- NA
+```
+
+```
+## Error in rownames(logi.S.OK): object 'logi.S.OK' not found
 ```
 
 
@@ -224,3 +247,113 @@ my.segplot2(beta.99$wnlm.Q, layout = c(7, 3), sel.coefs = unlist(lapply(e.vars, 
 ```
 
 <img src="figure/segplot-wnlm-Q-99conf-allcoef-1.png" title="plot of chunk segplot-wnlm-Q-99conf-allcoef" alt="plot of chunk segplot-wnlm-Q-99conf-allcoef" width="700px" />
+
+### Comparison to Baran et al 2015
+
+[Baran et al 2015][baran] identified 42 imprinted genes in various human tissues based on GTeX and other data.  Their Table S3 lists these genes along with the tissue in which they were found to be imprinted:
+
+
+```r
+baran <- read.csv("../../data/baran-2015-genome-res/table_s3.csv")
+levels(baran$name)
+```
+
+```
+##  [1] "CPA4"        "CST1"        "DIRAS3"      "DLK1"        "FAM50B"     
+##  [6] "GRB10"       "H19"         "IGF2"        "IGF2-AS"     "INPP5F_V2"  
+## [11] "KCNQ1"       "KIF25"       "L3MBTL1"     "LPAR6"       "MAGEL2"     
+## [16] "MAGI2"       "MEG3"        "MEG8"        "MEG9"        "MEST"       
+## [21] "MKRN3"       "NAP1L5"      "NDN"         "NTM"         "PEG10"      
+## [26] "PEG3"        "PLAGL1"      "PPIEL"       "PRSS50"      "PWRN1"      
+## [31] "RP11-7F17.7" "SNHG14"      "SNRPN"       "SNURF"       "SYCE1"      
+## [36] "THEGL"       "UBE3A"       "UGT2B4"      "UTS2"        "ZDBF2"      
+## [41] "ZNF331"      "ZNF597"
+```
+
+Establish consistency of gene names between Baran et al and our study and extract genes Baran et al found to be imprinted in the brain:
+
+
+```r
+levels(baran) <- sub("INPP5F_V2", "INPP5F", levels(baran$name))
+levels(baran) <- sub("MEG8", "RP11-909M7.3", levels(baran$name))
+baran$name <- sub("INPP5F_V2", "INPP5F", baran$name)
+baran$name <- sub("MEG8", "RP11-909M7.3", baran$name)
+baran.brain <- baran[ baran$tissue == "BRAIN", "name"]
+```
+
+Summarize genes called imprinted either by Baran et al or this study:
+
+
+```
+##                            this.work
+## Baran.et.al                 imprinted not imprinted not assessed
+##   imprinted                        19            12            9
+##   not imprinted or assessed        10             0            0
+```
+
+Next, list each gene and write result to file.  It is noteworthy that the novel imprinted genes suggested by our study are RP11-909M7.3, TMEM261P1, AL132709.5, PWAR6, SNORD116-20, RP13-487P22.1, hsa-mir-335 and among these only RP11-909M7.3 is/are suggested by Baran et al.
+
+
+```r
+baran.vs.ourwork[ , -1]
+```
+
+```
+##                             Baran.et.al     this.work    prior.status
+## CPA4                          imprinted  not assessed            <NA>
+## DIRAS3                        imprinted     imprinted known_imprinted
+## DLK1                          imprinted  not assessed            <NA>
+## FAM50B                        imprinted     imprinted known_imprinted
+## GRB10                         imprinted     imprinted known_imprinted
+## H19                           imprinted not imprinted known_imprinted
+## IGF2                          imprinted     imprinted known_imprinted
+## IGF2-AS                       imprinted  not assessed            <NA>
+## INPP5F                        imprinted     imprinted known_imprinted
+## KCNQ1                         imprinted  not assessed known_imprinted
+## KIF25                         imprinted not imprinted               _
+## L3MBTL1                       imprinted not imprinted  1 M impr clstr
+## LPAR6                         imprinted not imprinted  1 M impr clstr
+## MAGEL2                        imprinted     imprinted known_imprinted
+## MAGI2                         imprinted not imprinted known_imprinted
+## MEG3                          imprinted     imprinted known_imprinted
+## RP11-909M7.3                  imprinted     imprinted  1 M impr clstr
+## MEG9                          imprinted not imprinted known_imprinted
+## MEST                          imprinted     imprinted known_imprinted
+## MKRN3                         imprinted not imprinted known_imprinted
+## NAP1L5                        imprinted     imprinted known_imprinted
+## NDN                           imprinted     imprinted known_imprinted
+## NTM                           imprinted not imprinted known_imprinted
+## PEG10                         imprinted     imprinted known_imprinted
+## PEG3                          imprinted     imprinted known_imprinted
+## PLAGL1                        imprinted not imprinted known_imprinted
+## PPIEL                         imprinted  not assessed            <NA>
+## PRSS50                        imprinted  not assessed            <NA>
+## PWRN1                         imprinted not imprinted  1 M impr clstr
+## RP11-7F17.7                   imprinted  not assessed            <NA>
+## SNHG14                        imprinted     imprinted known_imprinted
+## SNRPN                         imprinted     imprinted known_imprinted
+## SNURF                         imprinted     imprinted known_imprinted
+## SYCE1                         imprinted not imprinted               _
+## THEGL                         imprinted  not assessed            <NA>
+## UBE3A                         imprinted     imprinted known_imprinted
+## UTS2                          imprinted  not assessed            <NA>
+## ZDBF2                         imprinted     imprinted known_imprinted
+## ZNF331                        imprinted     imprinted known_imprinted
+## ZNF597                        imprinted not imprinted known_imprinted
+## TMEM261P1     not imprinted or assessed     imprinted  1 M impr clstr
+## AL132709.5    not imprinted or assessed     imprinted  1 M impr clstr
+## ZIM2          not imprinted or assessed     imprinted known_imprinted
+## PWAR6         not imprinted or assessed     imprinted  1 M impr clstr
+## KCNQ1OT1      not imprinted or assessed     imprinted known_imprinted
+## SNORD116-20   not imprinted or assessed     imprinted  1 M impr clstr
+## KCNK9         not imprinted or assessed     imprinted known_imprinted
+## RP13-487P22.1 not imprinted or assessed     imprinted  1 M impr clstr
+## hsa-mir-335   not imprinted or assessed     imprinted  1 M impr clstr
+## NLRP2         not imprinted or assessed     imprinted known_imprinted
+```
+
+```r
+write.csv(baran.vs.ourwork, file = "../../results/baran-vs-ourwork.csv", row.names = FALSE)
+```
+
+[baran]: https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4484390/
