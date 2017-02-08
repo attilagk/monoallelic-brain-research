@@ -218,15 +218,15 @@ From this result we may conclude that Ifat's filter settings were $t_\mathrm{rc}
 
 Given the result that $R_{15}$ resembles the most to $R_\mathrm{ifat}$, we will use $R_{15}$ to call monoallelic genes.  We will compare called gene sets under different threshold for the score $1 - \hat{F}_g(0.9)$ and further compare these to the one presented in the previous [manuscript][ms].
 
-Notice that the lowest scoring gene in the "nearby candidate" category is *PWRN1* (green on [Fig 1][ifat fig 1]).  Its score is `r 1 - ECDF$min.reads.15$PWRN1(0.9)` and it ranks at `r match("PWRN1", names(ECDF$min.reads.15))` according to $R_{15}$ and at `genes.ifat.ranks["PWRN1", "R.ifat"]`.  We may define the classification threshold such that we only call genes monoallelic if their score $\ge0.5$:
+Notice that the lowest scoring gene in the "nearby candidate" category is *PWRN1* (green on [Fig 1][ifat fig 1]).  Its score is `r 1 - ECDF$min.reads.15$PWRN1(0.9)` and it ranks at `r match("PWRN1", names(ECDF$min.reads.15))` according to $R_{15}$ and at `genes.ifat.ranks["PWRN1", "R.ifat"]`.  We may define the classification threshold such that we only call genes monoallelic if their score $\ge0.4$:
 ```{r}
-(called.mono.0.5 <- names(frac$min.reads.15)[unlist(frac$min.reads.15[1, ]) >= 0.5])
+(called.mono.0.4 <- names(frac$min.reads.15)[unlist(frac$min.reads.15[1, ]) >= 0.4])
 ```
 
 If we further lower the classification threshold to $0.3$ then according to $R_{15}$ several more genes must also be called monoallelic.
 ```{r}
 called.mono.0.3 <- names(frac$min.reads.15)[unlist(frac$min.reads.15[1, ]) >= 0.3]
-length(setdiff(called.mono.0.3, called.mono.0.5))
+length(setdiff(called.mono.0.3, called.mono.0.4))
 ```
 
 The upper right panel of the figure above indicates that most---if not all---of the genes between score 0.3 and 0.5 fall in the "distant candidate" category.  More on this in the next section.
@@ -248,13 +248,13 @@ These were selected based on two rules:
    * exceptions include *MAGEL2* and *ZIM2*---it is not clear why those were not selected initally or later so now they will become selected ones
 1. the highest scoring but not monoallelically called "known" imprinted genes; these were *IGF2*, *NLRP2* and *UBE3A*
 
-Given these rules and the called gene sets (at score threshold 0.5 or 0.3) what genes, if any, should I extend mylatest (already extended) regression analysis?
+Given these rules and the called gene sets (at score threshold 0.5 or 0.3) what genes, if any, should I extend my latest (already extended) regression analysis?
 
-I start with the first rule.  Excluding "distant candidate"s from the set of monoallelically called genes confirms the earlier suspicion that all genes scoring between 0.3 and 0.5 must be then excluded so for regression analysis it is immaterial which score is used as classfication threshold.
+I start with the first rule.  Excluding "distant candidate"s from the set of monoallelically called genes confirms the earlier suspicion that all genes scoring between 0.3 and 0.4 must be then excluded so for regression analysis it is immaterial which score is used as classfication threshold.
 ```{r}
-genes.not.cand.5 <- called.mono.0.5[gene.summary[called.mono.0.5, "imprinting.status"] != "distant candidate"]
+genes.not.cand.4 <- called.mono.0.4[gene.summary[called.mono.0.4, "imprinting.status"] != "distant candidate"]
 genes.not.cand.3 <- called.mono.0.3[gene.summary[called.mono.0.3, "imprinting.status"] != "distant candidate"]
-all.equal(genes.not.cand.3, genes.not.cand.5)
+all.equal(genes.not.cand.3, genes.not.cand.4)
 ```
 
 To see which genes might be selected according to the second rule:
@@ -268,7 +268,7 @@ So, it still seems reasonable to select *IGF2*, *NLRP2* and *UBE3A* based on the
 
 Then **the set of genes to carry out regression analysis**:
 ```{r}
-(genes.regression.new <- c(genes.not.cand.5, c("IGF2", "NLRP2", "UBE3A")))
+(genes.regression.new <- c(genes.not.cand.4, c("IGF2", "NLRP2", "UBE3A")))
 write.csv(data.frame(genes.regression.new), file = "../../data/genes.regression.new", row.names = FALSE)
 ```
 

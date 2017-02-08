@@ -61,9 +61,6 @@ such that $z_{p}$ is the $p$ quantile of the standard normal distribution and $n
 ### Genome-wide data import and preparation
 
 
-```
-## Loading required package: RColorBrewer
-```
 
 Load functions:
 
@@ -133,8 +130,41 @@ The basis for the figure is the one in the upper-right panel in the previous plo
 
 ```r
 ref.allele.bias <- read.csv("../../results/ref-nonref-test.csv")$ref.allele.bias[1:50]
+```
+
+```
+## Warning in file(file, "rt"): cannot open file '../../results/ref-nonref-
+## test.csv': No such file or directory
+```
+
+```
+## Error in file(file, "rt"): cannot open the connection
+```
+
+```r
 names(ref.allele.bias) <- read.csv("../../results/ref-nonref-test.csv")$gene[1:50]
+```
+
+```
+## Warning in file(file, "rt"): cannot open file '../../results/ref-nonref-
+## test.csv': No such file or directory
+```
+
+```
+## Error in file(file, "rt"): cannot open the connection
+```
+
+```r
 levels(ref.allele.bias) <- c("X", "0", " ")
+```
+
+```
+## Error in levels(ref.allele.bias) <- c("X", "0", " "): object 'ref.allele.bias' not found
+```
+
+
+```
+## Error in rev(ref.allele.bias): object 'ref.allele.bias' not found
 ```
 
 <img src="figure/top-ranking-genes-1.png" title="plot of chunk top-ranking-genes" alt="plot of chunk top-ranking-genes" height="700px" />
@@ -215,10 +245,10 @@ From this result we may conclude that Ifat's filter settings were $t_\mathrm{rc}
 
 Given the result that $R_{15}$ resembles the most to $R_\mathrm{ifat}$, we will use $R_{15}$ to call monoallelic genes.  We will compare called gene sets under different threshold for the score $1 - \hat{F}_g(0.9)$ and further compare these to the one presented in the previous [manuscript][ms].
 
-Notice that the lowest scoring gene in the "nearby candidate" category is *PWRN1* (green on [Fig 1][ifat fig 1]).  Its score is 0.4714286 and it ranks at 31 according to $R_{15}$ and at `genes.ifat.ranks["PWRN1", "R.ifat"]`.  We may define the classification threshold such that we only call genes monoallelic if their score $\ge0.5$:
+Notice that the lowest scoring gene in the "nearby candidate" category is *PWRN1* (green on [Fig 1][ifat fig 1]).  Its score is 0.4714286 and it ranks at 31 according to $R_{15}$ and at `genes.ifat.ranks["PWRN1", "R.ifat"]`.  We may define the classification threshold such that we only call genes monoallelic if their score $\ge0.4$:
 
 ```r
-(called.mono.0.5 <- names(frac$min.reads.15)[unlist(frac$min.reads.15[1, ]) >= 0.5])
+(called.mono.0.4 <- names(frac$min.reads.15)[unlist(frac$min.reads.15[1, ]) >= 0.4])
 ```
 
 ```
@@ -229,18 +259,19 @@ Notice that the lowest scoring gene in the "nearby candidate" category is *PWRN1
 ## [17] "ZDBF2"         "GRB10"         "SNORD116-20"   "KCNK9"        
 ## [21] "INPP5F"        "HLA-DRB5"      "RP13-487P22.1" "GSTM1"        
 ## [25] "MEST"          "IL1RL1"        "ZNF331"        "hsa-mir-335"  
-## [29] "DIRAS3"
+## [29] "DIRAS3"        "MRPS34"        "PWRN1"         "HLA-DQB1"     
+## [33] "PAX8-AS1"      "HNRNPU"
 ```
 
 If we further lower the classification threshold to $0.3$ then according to $R_{15}$ several more genes must also be called monoallelic.
 
 ```r
 called.mono.0.3 <- names(frac$min.reads.15)[unlist(frac$min.reads.15[1, ]) >= 0.3]
-length(setdiff(called.mono.0.3, called.mono.0.5))
+length(setdiff(called.mono.0.3, called.mono.0.4))
 ```
 
 ```
-## [1] 12
+## [1] 7
 ```
 
 The upper right panel of the figure above indicates that most---if not all---of the genes between score 0.3 and 0.5 fall in the "distant candidate" category.  More on this in the next section.
@@ -263,18 +294,18 @@ These were selected based on two rules:
    * exceptions include *MAGEL2* and *ZIM2*---it is not clear why those were not selected initally or later so now they will become selected ones
 1. the highest scoring but not monoallelically called "known" imprinted genes; these were *IGF2*, *NLRP2* and *UBE3A*
 
-Given these rules and the called gene sets (at score threshold 0.5 or 0.3) what genes, if any, should I extend mylatest (already extended) regression analysis?
+Given these rules and the called gene sets (at score threshold 0.5 or 0.3) what genes, if any, should I extend my latest (already extended) regression analysis?
 
-I start with the first rule.  Excluding "distant candidate"s from the set of monoallelically called genes confirms the earlier suspicion that all genes scoring between 0.3 and 0.5 must be then excluded so for regression analysis it is immaterial which score is used as classfication threshold.
+I start with the first rule.  Excluding "distant candidate"s from the set of monoallelically called genes confirms the earlier suspicion that all genes scoring between 0.3 and 0.4 must be then excluded so for regression analysis it is immaterial which score is used as classfication threshold.
 
 ```r
-genes.not.cand.5 <- called.mono.0.5[gene.summary[called.mono.0.5, "imprinting.status"] != "distant candidate"]
+genes.not.cand.4 <- called.mono.0.4[gene.summary[called.mono.0.4, "imprinting.status"] != "distant candidate"]
 genes.not.cand.3 <- called.mono.0.3[gene.summary[called.mono.0.3, "imprinting.status"] != "distant candidate"]
-all.equal(genes.not.cand.3, genes.not.cand.5)
+all.equal(genes.not.cand.3, genes.not.cand.4)
 ```
 
 ```
-## [1] "Lengths (27, 26) differ (string compare on first 26)"
+## [1] TRUE
 ```
 
 To see which genes might be selected according to the second rule:
@@ -292,7 +323,7 @@ So, it still seems reasonable to select *IGF2*, *NLRP2* and *UBE3A* based on the
 Then **the set of genes to carry out regression analysis**:
 
 ```r
-(genes.regression.new <- c(genes.not.cand.5, c("IGF2", "NLRP2", "UBE3A")))
+(genes.regression.new <- c(genes.not.cand.4, c("IGF2", "NLRP2", "UBE3A")))
 ```
 
 ```
@@ -302,8 +333,8 @@ Then **the set of genes to carry out regression analysis**:
 ## [13] "SNURF"         "PEG10"         "SNRPN"         "KCNQ1OT1"     
 ## [17] "ZDBF2"         "GRB10"         "SNORD116-20"   "KCNK9"        
 ## [21] "INPP5F"        "RP13-487P22.1" "MEST"          "ZNF331"       
-## [25] "hsa-mir-335"   "DIRAS3"        "IGF2"          "NLRP2"        
-## [29] "UBE3A"
+## [25] "hsa-mir-335"   "DIRAS3"        "PWRN1"         "IGF2"         
+## [29] "NLRP2"         "UBE3A"
 ```
 
 ```r
@@ -317,7 +348,7 @@ setdiff(genes.regression.ifat, genes.regression.new) # what genes to remove?
 ```
 
 ```
-## [1] "PWRN1"
+## character(0)
 ```
 
 ```r
@@ -337,14 +368,6 @@ The `VennDiagram` package implements scaled [Euler diagrams](https://en.wikipedi
 library(VennDiagram)
 ```
 
-```
-## Loading required package: grid
-```
-
-```
-## Loading required package: futile.logger
-```
-
 The partitions induced by filtering and calling genes monoallelic (imprinted) are illustrated by the following Euler or Venn diagrams.  Note that, for an Euler diagram but not for a Venn diagram, the shapes (circles or ellipses) are proportional to the size of the set they represent and that topological relationship among shapes is such that there is no overlap if the intersection of the corresponding sets is the empty set $\{\}$.
 
 
@@ -357,7 +380,7 @@ sapply(g.sets, length)
 ##            in.dataset passed.initial.filter   passed.final.filter 
 ##                 22254                 15584                  5283 
 ##      called.imprinted 
-##                    29
+##                    30
 ```
 
 
