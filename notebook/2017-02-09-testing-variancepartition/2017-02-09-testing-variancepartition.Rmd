@@ -1,0 +1,59 @@
+Load packages...
+
+```{r echo=FALSE}
+library(variancePartition)
+library(doParallel)
+opts_chunk$set(dpi = 144)
+opts_chunk$set(out.width = "700px")
+opts_chunk$set(dev = c("png", "pdf"))
+source("../../src/import-data.R")
+source("~/projects/monoallelic-brain/src/fit-glms.R")
+```
+
+Import data, define model formula:
+
+```{r}
+# selected set of genes
+gene.ids <- unlist(read.csv("../../data/genes.regression.new", as.is = TRUE))
+names(gene.ids) <- gene.ids
+# predictors
+names(e.vars) <- e.vars
+E <- get.predictors()[e.vars]
+# response: Q, quasi-log transformed read count ratio
+Y <- get.readcounts(gene.ids = gene.ids, count.thrs = 0)
+Q <- data.frame(sapply(Y[gene.ids], getElement, "Q"))
+# response: R, rank transformed read count ratio
+R <- data.frame(sapply(Y[gene.ids], getElement, "R"))
+# response: S, untransformed
+S <- data.frame(sapply(Y[gene.ids], getElement, "S"))
+# model formula
+form <- ~ Age + (1|Institution) + (1|Gender) + PMI + (1|Dx) + RIN +(1|RNA_batch) + Ancestry.1 + Ancestry.2 + Ancestry.3 + Ancestry.4 + Ancestry.5
+```
+
+Fitting the linear mixed model to various transformations:
+
+```{r}
+vp.Q <- fitExtractVarPartModel( t(Q), form, E )
+#vp.R <- fitExtractVarPartModel( t(R), form, E )
+vp.S <- fitExtractVarPartModel( t(S), form, E )
+```
+
+## Results
+
+```{r}
+main <- "Q: quasi-log transformation"
+plotVarPart(vp.Q, main = main)
+plotPercentBars(vp.Q)
+```
+
+```{r echo=FALSE, eval=FALSE}
+main <- "R: rank transformation"
+plotVarPart(vp.R, main = main)
+plotPercentBars(vp.R)
+```
+
+```{r}
+main <- "S: untransformed"
+plotVarPart(vp.S, main = main)
+plotPercentBars(vp.S)
+```

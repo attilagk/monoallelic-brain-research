@@ -5,7 +5,7 @@ tags: [ literature ]
 
 ## Introduction
 
-Based on the aggregation of various p-values from [a previous analysis]({{ site.baseurl }}{% post_url 2016-10-03-permutation-test %}), a list of those genes was collated, which are significantly affected by any of the four chosen coefficients (Age, GenderMale, DxSCZ, Ancestry.1) representing various biological variables (see [signif-gene-effects-either.csv]).  These genes were then queried against Ensemble Genes 86 database, Homo sapiens genes (GRCh38.p7) using BioMart with the following HGNC symbols as input external reference IDs:
+Based on the aggregation of various p-values from [a previous analysis]({{ site.baseurl }}{% post_url /monoallelic-brain/2016-10-03-permutation-test %}), a list of those genes was collated, which are significantly affected by any of the four chosen coefficients (Age, GenderMale, DxSCZ, Ancestry.1) representing various biological variables (see [signif-gene-effects-either.csv]).  These genes were then queried against Ensemble Genes 86 database, Homo sapiens genes (GRCh38.p7) using BioMart with the following HGNC symbols as input external reference IDs:
 
 MAGEL2,
 MIR668,
@@ -48,7 +48,7 @@ Deletion or duplication of some 15 loci has been reported to be associated with 
 
 ### Differential expression in SCZ
 
-[Our comparison]({{ site.baseurl }}{% post_url 2016-10-20-differential-expression-scz %}) to Differentially Expressed Genes in Schizophrenia ([Fromer2016a]) shows that out of the 15 genes that our study found to be significantly associated to some biological predictor in terms of allelic bias, only one, PEG10, was found to be differentially expressed.  Moreover, none of the genes in the SNRPN cluster (i.e. the Prader-Willi/Angelman region) were among the $$\approx 700$$ differentially expressed genes.  This discrepancy might be resolved if, as suggested ([McNamara2013]), the dose of imprinted genes is more tightly regulated than that of non-imprinted genes, because that would mean that subtle perturbations in the expression of imprinted genes would be sufficient to cause phenotypic changes but insufficient to be detected in noisy RNA-seq measurements.  This further suggests that the read count ratio is a more sensitive indicator of altered expression of imprinted genes than the total read count.
+[Our comparison]({{ site.baseurl }}{% post_url /monoallelic-brain/2016-10-20-differential-expression-scz %}) to Differentially Expressed Genes in Schizophrenia ([Fromer2016a]) shows that out of the 15 genes that our study found to be significantly associated to some biological predictor in terms of allelic bias, only one, PEG10, was found to be differentially expressed.  Moreover, none of the genes in the SNRPN cluster (i.e. the Prader-Willi/Angelman region) were among the $$\approx 700$$ differentially expressed genes.  This discrepancy might be resolved if, as suggested ([McNamara2013]), the dose of imprinted genes is more tightly regulated than that of non-imprinted genes, because that would mean that subtle perturbations in the expression of imprinted genes would be sufficient to cause phenotypic changes but insufficient to be detected in noisy RNA-seq measurements.  This further suggests that the read count ratio is a more sensitive indicator of altered expression of imprinted genes than the total read count.
 
 ## Specific genes
 

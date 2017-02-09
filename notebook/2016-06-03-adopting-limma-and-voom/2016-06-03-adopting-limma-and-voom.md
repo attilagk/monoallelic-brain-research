@@ -69,7 +69,7 @@ This table compares `limma` (potential stage 3 analysis) with two modeling appro
 | gene set testing | no | no | yes | 
 |--|-------|--------|--------------|
 
-[logi]: {{ site.baseurl }}{% post_url 2016-04-22-glm-for-s-statistic %}
+[logi]: {{ site.baseurl }}{% post_url /monoallelic-brain/2016-04-22-glm-for-s-statistic %}
 [limma]: http://nar.oxfordjournals.org/content/early/2015/01/20/nar.gkv007.long
 [limma F1]: http://nar.oxfordjournals.org/content/early/2015/01/20/nar.gkv007/F1.large.jpg
 [voom]: http://genomebiology.biomedcentral.com/articles/10.1186/gb-2014-15-2-r29

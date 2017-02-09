@@ -1,11 +1,13 @@
 This short workflow exports the data onto which various GLMs have been fitted: the read count ratio for 30 genes (as response variables) and 12 predictors across 579 samples.  The dataset (as a CSV file) was sent to Gabriel Hoffman for potential analysis.
 
-```{r}
+
+```r
 source("../../src/import-data.R")
 source("~/projects/monoallelic-brain/src/fit-glms.R")
 ```
 
-```{r}
+
+```r
 gene.ids <- unlist(read.csv("../../data/genes.regression.new", as.is = TRUE))
 names(gene.ids) <- gene.ids
 names(e.vars) <- e.vars
