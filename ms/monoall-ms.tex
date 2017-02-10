@@ -306,7 +306,8 @@ of \(n=5307\) genes that passed quality filtering.  Regression analysis
 involved a subset \(\mathcal{G}_1\subset\mathcal{G}\) of \(n_1=30\) genes
 called as imprinted.
 
-The basic model, unlm.S, is
+The basic model, unlm.S (see Table~\ref{tab:model-names}) for the semantics of
+model names in this study), is
 \begin{eqnarray}
 \mathbf{S} &=& \mathbf{X} \boldsymbol{\beta} + \boldsymbol{\varepsilon},
 \label{eq:unlm.S-matrix-form} \\
@@ -325,9 +326,9 @@ S_g = \mathbf{X} \beta_g + \varepsilon_g,
 where the vectors \(S_g, \beta_g, \varepsilon_g\)
 are single columns taken from their respective matrix counterparts.
 
-The unlm.S model was extended in several ways, yielding
+The unlm.S model was extended in several ways, yielding (Table~\ref{tab:model-names})
 \begin{enumerate}
-\item six normal linear models (Table~\ref{tab:nlm})
+\item six normal linear models
 \item two logistic models logi.S and logi2.S.
 \end{enumerate}
 
@@ -351,7 +352,7 @@ where \(\log\) means natural logarithm (base \(e\)).  \(c\) is a pseudo read
 count set to \(1\) in order to avoid zero in the parenthesis since the \(\log\)
 function is undefined at \(0\).
 
-The logistic models, logi.S or logi2.S, share the general form
+The logistic models, logi.S or logi2.S (Table~\ref{tab:model-names}), share the general form
 \begin{eqnarray}
 S_g &=& \mu_g + c\, \varepsilon_g
 \label{eq:logi-general}
@@ -383,7 +384,7 @@ fitted, for which \(\boldsymbol{\beta}\) was constrained such that \(\beta_1 =
 total read count \(T'_i = \sum_g T_{ig}\), redefining the read count ratio
 as \(S'_i = H'_i / T'_i\), and replacing \(S_g\) by \(S'=(S'_1,...,S'_m)\) in
 Eq.~\ref{eq:unlm.S-vector-form},~\ref{eq:nlm-general},~\ref{eq:logi-general}, and \(T_{ig}\) by \(T'_i\) in
-Table~\ref{tab:nlm} and Eq.~\ref{eq:binom-error}.  Note that such aggregation
+Eq.~\ref{eq:binom-error}.  Note that such aggregation
 simplifies the matrix variables in Eq.~\ref{eq:unlm.S-matrix-form} to the
 corresponding vector variables in Eq.~\ref{eq:unlm.S-vector-form}.  Because \(S'_i\) is a
 weighted average of \(\{S_{ig}\}_i\), results under these models are reported
@@ -547,9 +548,9 @@ read count \(T_{ig}\).  The remaining six fitted GLM families contain various
 normal linear models (see Fig.~\ref{fig:predicted-curves} bottom for two of
 these).  Although these are in general less suitable for count-type data, they
 are robust and easily interpretable. The families of normal linear models of
-this study are characterized by two features (Table~\ref{tab:nlm}):
-(i.)~whether or not they are weighted by \(T_{ig}\) and (ii.)~the
-transformation, if any, that had been applied to \(S_{ig}\) before the fit.
+this study are characterized by two features: (i.)~whether or not they are
+weighted by \(T_{ig}\) and (ii.)~the transformation, if any, that had been
+applied to \(S_{ig}\) before the fit (Table~\ref{tab:model-names}).
 Transformation proved critical (see below) but weighting had little impact
 either on model fit or parameter estimates (not shown) so we removed
 unweighted models (unlm.Q, unlm.R, unlm.S) reasoning that the mentioned small
@@ -785,16 +786,17 @@ kinship theory that the roles of imprinted genes may dynamically change even
 at later stages of life in order to mediate certain social interactions that
 are dependent on psychology and cognition~\cite{Ubeda2012,Wilkins2003}.
 
-If we accept that the main effect of allelic bias is exerted on overall expression
-level, our finding that the allelic bias for UBE3A is negatively correlated
-with schizophrenia implies that it is its overexpression that increases risk
-for the disorder.  This agrees with the previously observed effect of copy
-number variation of 15q11-q13, the Prader-Willi region~\cite{McNamara2013}.
-Moreover, we find that another maternally biased gene, RP11-909M7.3, is also
-negatively correlated with schizophrenia, while two paternally biased genes,
-MEST and PEG10, are both positively correlated.  This is exactly the pattern
-that is predicted by kinship theory, more precisely by its special case, the
-imprinted brain theory~\cite{Crespi2008a}.
+We found that the allelic bias for UBE3A is negatively correlated with
+schizophrenia.  If we accept that (i) the main effect of UBE3A's allelic bias
+is exerted on overall expression level and (ii) the bias of UBE3A is causal to
+schizophrenia, this finding implies that it is the overexpression of UBE3A
+that increases risk for the psychiatric disorder.  This agrees with the previously
+observed effect of copy number variation of 15q11-q13, the Prader-Willi
+region~\cite{McNamara2013}.  Moreover, we find that another maternally biased
+gene, RP11-909M7.3, is also negatively correlated with schizophrenia, while
+two paternally biased genes, MEST and PEG10, are both positively correlated.
+This is exactly the pattern that is predicted by kinship theory, more
+precisely by its special case, the imprinted brain theory~\cite{Crespi2008a}.
 
 The interpretation of our results on ancestry and gender is less
 straight-forward than that to age and schizophrenia.  What appears clear,
@@ -834,20 +836,50 @@ of human psychology and cognition.
 
 \begin{table}[h]
 \begin{center}
-\begin{tabular}{r|cc}
- & \multicolumn{2}{c}{weights \(w_{ig}\)} \\
- & 1 & \(T_{ig}\) \\
+\begin{tabular}{r|l}
+predictor & levels\\
 \hline
-no transformation & unlm.S & wnlm.S \\
-quasi-log transf. & unlm.Q & wnlm.Q \\
-rank transf. & unlm.R & wnlm.R \\
+Age &  \\
+Institution & [MSSM], Penn, Pitt\\
+Gender & [Female], Male\\
+PMI & \\
+Dx & [AFF], Control, SCZ\\
+RIN &  \\
+RNA\_batch & [A], B, C, D, E, F, G, H, 0\\
+Ancestry.1 & \\
+\vdots & \\
+Ancestry.5 &  \\
 \end{tabular}
+\caption{ \emph{Left column:} predictors (explanatory variables) of read count
+ratio.  \emph{Right column:} levels of each factor-valued (i.e.~categorical)
+predictor.  Square brackets \([...]\) surround the baseline level against
+which other levels are contrasted.  \emph{Abbreviations:} PMI: post-mortem
+interval; Dx: disease status; AFF: affective spectrum disorder; SCZ:
+schizophrenia; RIN: RNA integrity number;
+Ancestry.\(k\): the \(k\)-th eigenvalue from the decomposition of genotypes
+indicating population structure.}
+\label{tab:predictors}
 \end{center}
-\caption{Specification and notation of normal linear models based on the weight
-\(w_{ig}\) on each observation and the
-transformation \(\tau\) applied to the set \(\{S_{ig} | g\}\) of read count
-ratios for a given gene \(g\).}
-\label{tab:nlm}
+\end{table}
+
+\begin{table}
+\begin{tabular}{r|l}
+\multicolumn{2}{c}{read count ratio (response variable)} \\
+\hline
+\(S_{ig}\) & untransformed ratio \\
+\(Q_{ig}\) & \emph{q}uasi-log-transformed ratio \\
+\(R_{ig}\) & \emph{r}ank-transformed ratio \\
+\hline
+\multicolumn{2}{c}{regression models} \\
+\hline
+unlm.[S/Q/R] & \emph{u}nweighted \emph{n}ormal \emph{l}inear \emph{m}odel fitted to \(S_{ig}\)/\(Q_{ig}\)/\(R_{ig}\)\\
+wnlm.[S/Q/R] & \emph{w}eighted \emph{n}ormal \emph{l}inear \emph{m}odel fitted to \(S_{ig}\)/\(Q_{ig}\)/\(R_{ig}\)\\
+logi.S & standard \emph{logi}stic model fitted to \(S_{ig}\)\\
+logi2.S & \emph{logi}stic model with \(\frac{1}{2}\times\) down-scaled link function, fitted to \(S_{ig}\) \\
+\end{tabular}
+\caption{Explanation of the nomenclature for read count ratio variables and
+model names.}
+\label{tab:model-names}
 \end{table}
 
 \begin{table}[h]
@@ -994,34 +1026,6 @@ bar.
 \makeatletter 
 \renewcommand{\thetable}{S\@arabic\c@table}
 \makeatother
-
-\begin{table}[h]
-\begin{center}
-\begin{tabular}{r|l}
-predictor & levels\\
-\hline
-Age &  \\
-Institution & [MSSM], Penn, Pitt\\
-Gender & [Female], Male\\
-PMI & \\
-Dx & [AFF], Control, SCZ\\
-RIN &  \\
-RNA\_batch & [A], B, C, D, E, F, G, H, 0\\
-Ancestry.1 & \\
-\vdots & \\
-Ancestry.5 &  \\
-\end{tabular}
-\caption{ \emph{Left column:} predictors (explanatory variables) of read count
-ratio.  \emph{Right column:} levels of each factor-valued (i.e.~categorical)
-predictor.  Square brackets \([...]\) surround the baseline level against
-which other levels are contrasted.  \emph{Abbreviations:} PMI: post-mortem
-interval; Dx: disease status; AFF: affective spectrum disorder; SCZ:
-schizophrenia; RIN: RNA integrity number;
-Ancestry.\(k\): the \(k\)-th eigenvalue from the decomposition of genotypes
-indicating population structure.}
-\label{tab:predictors}
-\end{center}
-\end{table}
 
 \setcounter{figure}{0}
 \makeatletter 
