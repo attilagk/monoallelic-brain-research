@@ -1,0 +1,73 @@
+```{r echo=FALSE, warning=FALSE}
+library(variancePartition)
+library(doParallel)
+library(lattice)
+opts_chunk$set(dpi = 144)
+opts_chunk$set(out.width = "700px")
+opts_chunk$set(dev = c("png", "pdf"))
+source("../../src/import-data.R")
+source("~/projects/monoallelic-brain/src/fit-glms.R")
+```
+
+Import data
+
+```{r}
+# selected set of genes
+gene.ids <- unlist(read.csv("../../data/genes.regression.new", as.is = TRUE))
+names(gene.ids) <- gene.ids
+# predictors
+names(e.vars) <- e.vars
+E <- get.predictors()[e.vars]
+# response: Q, quasi-log transformed read count ratio
+Y <- get.readcounts(gene.ids = gene.ids, count.thrs = 0)
+Q <- data.frame(sapply(Y[gene.ids], getElement, "Q"), check.names = FALSE)
+# response: S, untransformed
+S <- data.frame(sapply(Y[gene.ids], getElement, "S"), check.names = FALSE)
+```
+
+Fixed effect models
+
+```{r, warning=FALSE}
+M <- do.all.fits(Z = Y[gene.ids], G = E)
+```
+
+Define model formula:
+
+```{r, warning=FALSE}
+(fchar <- as.character(formula(M$unlm.Q$MEST)))
+fm <- list()
+fm$fixed <- as.formula(paste(fchar[1], fchar[3]))
+fm$mixed.1 <- ~ Age + (1|Institution) + (1|Gender) + PMI + (1|Dx) + RIN +(1|RNA_batch) + Ancestry.1 + Ancestry.2 + Ancestry.3 + Ancestry.4 + Ancestry.5
+fm$mixed.2 <- ~ Age + (1|Institution) + Gender + PMI + Dx + RIN +(1|RNA_batch) + Ancestry.1 + Ancestry.2 + Ancestry.3 + Ancestry.4 + Ancestry.5
+```
+
+```{r, warning=FALSE}
+M$unlm.Q.varPart <- fitVarPartModel(t(Q), fm$fixed, E)
+M$mixed.1 <- fitVarPartModel(t(Q), fm$mixed.1, E)
+#M$mixed.2 <- fitVarPartModel(t(Q), fm$mixed.2, E)
+```
+
+Choose a gene randomly
+
+```{r}
+set.seed(1968)
+(gene <- sample(gene.ids, size = 1))
+```
+
+Comparison
+
+```{r}
+l <- lapply(M[c("unlm.Q", "unlm.Q.varPart")], function(l.m) coef(l.m[[gene]]))
+all.equal(l[[1]], l[[2]])
+```
+
+```{r}
+xyplot(y <- coef(M$unlm.Q.varPart[[gene]]) ~ coef(M$unlm.Q.varPart[[gene]]),
+                   xlab = "fixed effects (unlm.Q)", ylab = "fixed effects (calling fitVarPartModel",
+                   main = "Two implementations of fixed")
+y <- unlist(coef(M$mixed.1[[gene]])[[1]][1, , drop = TRUE])
+xyplot(y ~ coef(M$unlm.Q[[gene]])[names(y)], xlab = "fixed effects (unlm.Q)", ylab = "mixed effects (based on unlm.Q)",
+       main = "Mixed vs fixed")
+xyplot(y ~ coef(M$wnlm.Q[[gene]])[names(y)], xlab = "fixed effects (wnlm.Q)", ylab = "mixed effects (based on unlm.Q)",
+       main = "Mixed vs weighted fixed")
+```
