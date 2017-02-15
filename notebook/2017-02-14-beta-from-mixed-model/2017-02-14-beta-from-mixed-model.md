@@ -1,71 +1,33 @@
+## Motivation
 
-```
-## Loading required package: ggplot2
-```
+For certain genes $g$ allelic bias was found to depend on biological predictors (Age, Dx, Ancestry) in our previous analysis.  That analysis fitted various **fixed effects** multiple regression models (GLM family) using as response variable the read count ratio $S_{ig}$ or its quasi-log transformed version $Q_{ig}$.  After checking model fit, we primarily based our results to a weighted, normal linear model using $Q_{ig}$, which we called *wnlm.Q* (as opposed to its unweighted variation *unlm.Q*).  Significant dependence of the allelic bias of gene $g$ on (some level of) the predictor $p$ was assessed in terms of the estimated regression coefficient $\hat{\beta}_{pg}$.
 
-```
-## Loading required package: foreach
-```
+But decomposition of variance using `variancePartition` showed that a predictor that significantly affected allelic bias for a certain gene did not necessarily explain substantial fraction of variance.  This was the case in spite of using the same response and predictors in the **mixed effects** model for `variancePartition` as for fixed effects models like wnlm.Q.
 
-```
-## foreach: simple, scalable parallel programming from Revolution Analytics
-## Use Revolution R for scalability, fault tolerance and more.
-## http://www.revolutionanalytics.com
-```
+What is the reason for this discrepancy?
 
-```
-## Loading required package: Biobase
-```
+1. $\hat{\beta}_{pg}$ under the fixed effects model largely deviates from that under the mixed effects model because of
+    * differences between the two model frameworks
+    * programming bug
+1. $\hat{\beta}_{pg}$ under the fixed effects agrees with that under the mixed effects model
+    * in this case the discrepancy arises from the somewhat different questions that the two analyses address
 
-```
-## Loading required package: BiocGenerics
-```
+The analysis below supports the second case.
 
-```
-## Loading required package: parallel
-```
+## Calculations
 
-```
-## 
-## Attaching package: 'BiocGenerics'
-```
 
-```
-## The following objects are masked from 'package:parallel':
-## 
-##     clusterApply, clusterApplyLB, clusterCall, clusterEvalQ,
-##     clusterExport, clusterMap, parApply, parCapply, parLapply,
-##     parLapplyLB, parRapply, parSapply, parSapplyLB
-```
-
-```
-## The following objects are masked from 'package:stats':
-## 
-##     IQR, mad, xtabs
-```
-
-```
-## The following objects are masked from 'package:base':
-## 
-##     anyDuplicated, append, as.data.frame, cbind, colnames,
-##     do.call, duplicated, eval, evalq, Filter, Find, get, grep,
-##     grepl, intersect, is.unsorted, lapply, lengths, Map, mapply,
-##     match, mget, order, paste, pmax, pmax.int, pmin, pmin.int,
-##     Position, rank, rbind, Reduce, rownames, sapply, setdiff,
-##     sort, table, tapply, union, unique, unsplit, which, which.max,
-##     which.min
-```
-
-```
-## Welcome to Bioconductor
-## 
-##     Vignettes contain introductory material; view with
-##     'browseVignettes()'. To cite Bioconductor, see
-##     'citation("Biobase")', and for packages 'citation("pkgname")'.
-```
-
-```
-## Loading required package: iterators
+```r
+library(variancePartition)
+library(doParallel)
+library(lattice)
+lattice.options(default.args = list(as.table = TRUE))
+lattice.options(default.theme = "standard.theme")
+opts_chunk$set(dpi = 144)
+opts_chunk$set(out.width = "700px")
+opts_chunk$set(dev = c("png", "pdf"))
+source("../../src/import-data.R")
+source("~/projects/monoallelic-brain/src/fit-glms.R")
 ```
 
 Import data
@@ -85,14 +47,14 @@ Q <- data.frame(sapply(Y[gene.ids], getElement, "Q"), check.names = FALSE)
 S <- data.frame(sapply(Y[gene.ids], getElement, "S"), check.names = FALSE)
 ```
 
-Fixed effect models
+Fit various fixed effect models to data for 30 selected genes
 
 
 ```r
 M <- do.all.fits(Z = Y[gene.ids], G = E)
 ```
 
-Define model formula:
+Define model formula for fitting using the  `fitVarPartModel`
 
 
 ```r
@@ -112,6 +74,8 @@ fm$mixed.1 <- ~ Age + (1|Institution) + (1|Gender) + PMI + (1|Dx) + RIN +(1|RNA_
 fm$mixed.2 <- ~ Age + (1|Institution) + Gender + PMI + Dx + RIN +(1|RNA_batch) + Ancestry.1 + Ancestry.2 + Ancestry.3 + Ancestry.4 + Ancestry.5
 ```
 
+Fit fixed and mixed effects models using `variancePartition` 
+
 
 ```r
 M$unlm.Q.varPart <- fitVarPartModel(t(Q), fm$fixed, E)
@@ -120,7 +84,7 @@ M$mixed.1 <- fitVarPartModel(t(Q), fm$mixed.1, E)
 
 ```
 ## Projected memory usage: > 3.2 Mb 
-## Projected run time: ~ 0.02 min
+## Projected run time: ~ 0.03 min
 ```
 
 ```
@@ -131,51 +95,35 @@ M$mixed.1 <- fitVarPartModel(t(Q), fm$mixed.1, E)
 #M$mixed.2 <- fitVarPartModel(t(Q), fm$mixed.2, E)
 ```
 
-Choose a gene randomly
+Extract $\hat{\beta}_{pg}$ for each gene $g$ under each model:
 
 
 ```r
-set.seed(1968)
-(gene <- sample(gene.ids, size = 1))
+coef.names <- names(coef(M$unlm.Q[[1]]))
+cf <- data.frame(lapply(M[- length(M)],
+                        function(l.m)
+                            stack(lapply(l.m,
+                                         function(m)
+                                             coef(m)[ coef.names ]))$values))
+cf$mixed.1 <-
+    stack(lapply(M$mixed.1,
+                 function(m)
+                     unlist(coef(m)[[1]][1, , drop = TRUE])[ coef.names ]))$values
+#cf$coefficient <- rep(coef.names, length(gene.ids))
+cf$coefficient <- factor(rep(coef.names, length(gene.ids)), ordered = TRUE, levels = coef.names)
+cf$gene <- factor(rep(gene.ids, each = length(coef.names)), ordered = TRUE, levels = gene.ids)
 ```
 
-```
-##   RP11-909M7.3 
-## "RP11-909M7.3"
-```
+## Results: estimated coefficients
 
-Comparison
+To test various implementations of the same fixed effects model:
 
+<img src="figure/fixed-fixed-1.png" title="plot of chunk fixed-fixed" alt="plot of chunk fixed-fixed" width="700px" /><img src="figure/fixed-fixed-2.png" title="plot of chunk fixed-fixed" alt="plot of chunk fixed-fixed" width="700px" />
 
-```r
-l <- lapply(M[c("unlm.Q", "unlm.Q.varPart")], function(l.m) coef(l.m[[gene]]))
-all.equal(l[[1]], l[[2]])
-```
+Compare the mixed effects model to the fixed effects model unml.Q; note that both are unweighted
 
-```
-## [1] TRUE
-```
+<img src="figure/mixed-1-fixed-1.png" title="plot of chunk mixed-1-fixed" alt="plot of chunk mixed-1-fixed" width="700px" /><img src="figure/mixed-1-fixed-2.png" title="plot of chunk mixed-1-fixed" alt="plot of chunk mixed-1-fixed" width="700px" />
 
+Compare the *unweighted* mixed effects model to *weighted* the fixed effects model wnml.Q
 
-```r
-xyplot(y <- coef(M$unlm.Q.varPart[[gene]]) ~ coef(M$unlm.Q.varPart[[gene]]),
-                   xlab = "fixed effects (unlm.Q)", ylab = "fixed effects (calling fitVarPartModel",
-                   main = "Two implementations of fixed")
-```
-
-<img src="figure/unnamed-chunk-8-1.png" title="plot of chunk unnamed-chunk-8" alt="plot of chunk unnamed-chunk-8" width="700px" />
-
-```r
-y <- unlist(coef(M$mixed.1[[gene]])[[1]][1, , drop = TRUE])
-xyplot(y ~ coef(M$unlm.Q[[gene]])[names(y)], xlab = "fixed effects (unlm.Q)", ylab = "mixed effects (based on unlm.Q)",
-       main = "Mixed vs fixed")
-```
-
-<img src="figure/unnamed-chunk-8-2.png" title="plot of chunk unnamed-chunk-8" alt="plot of chunk unnamed-chunk-8" width="700px" />
-
-```r
-xyplot(y ~ coef(M$wnlm.Q[[gene]])[names(y)], xlab = "fixed effects (wnlm.Q)", ylab = "mixed effects (based on unlm.Q)",
-       main = "Mixed vs weighted fixed")
-```
-
-<img src="figure/unnamed-chunk-8-3.png" title="plot of chunk unnamed-chunk-8" alt="plot of chunk unnamed-chunk-8" width="700px" />
+<img src="figure/mixed-1-fixed-weighted-1.png" title="plot of chunk mixed-1-fixed-weighted" alt="plot of chunk mixed-1-fixed-weighted" width="700px" /><img src="figure/mixed-1-fixed-weighted-2.png" title="plot of chunk mixed-1-fixed-weighted" alt="plot of chunk mixed-1-fixed-weighted" width="700px" />
