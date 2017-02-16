@@ -12,7 +12,7 @@ What is the reason for this discrepancy?
 1. $\hat{\beta}_{pg}$ under the fixed effects agrees with that under the mixed effects model
     * in this case the discrepancy arises from the somewhat different questions that the two analyses address
 
-The analysis below supports the second case.
+The analysis below appears to support the second case rather than the first.
 
 ## Calculations
 
@@ -119,6 +119,17 @@ cf$gene <- factor(rep(gene.ids, each = length(coef.names)), ordered = TRUE, leve
 To test various implementations of the same fixed effects model:
 
 <img src="figure/fixed-fixed-1.png" title="plot of chunk fixed-fixed" alt="plot of chunk fixed-fixed" width="700px" /><img src="figure/fixed-fixed-2.png" title="plot of chunk fixed-fixed" alt="plot of chunk fixed-fixed" width="700px" />
+
+Consistent with the above graphs, the coefficients from one implementation are precisely equal to those from the other implementation:
+
+
+```r
+with(cf, all.equal(unlm.Q, unlm.Q.varPart))
+```
+
+```
+## [1] TRUE
+```
 
 Compare the mixed effects model to the fixed effects model unml.Q; note that both are unweighted
 

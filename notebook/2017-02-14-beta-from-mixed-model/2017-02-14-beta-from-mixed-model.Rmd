@@ -12,7 +12,7 @@ What is the reason for this discrepancy?
 1. $\hat{\beta}_{pg}$ under the fixed effects agrees with that under the mixed effects model
     * in this case the discrepancy arises from the somewhat different questions that the two analyses address
 
-The analysis below supports the second case.
+The analysis below appears to support the second case rather than the first.
 
 ## Calculations
 
@@ -92,24 +92,56 @@ cf$gene <- factor(rep(gene.ids, each = length(coef.names)), ordered = TRUE, leve
 To test various implementations of the same fixed effects model:
 
 ```{r fixed-fixed, echo=FALSE}
-my.panel <- function(...) { panel.abline(a = 0, b = 1, lty = "dotted", col = "gray"); panel.xyplot(...) }
+# annotation keys
+my.key <-
+    list(coefficient =
+             list(columns = 5, text = list(paste0("(", seq_along(levels(cf$coefficient)), ") ", levels(cf$coefficient)), cex = 0.7)),
+         gene =
+             list(columns = 5, text = list(paste0("(", seq_along(levels(cf$gene)), ") ", levels(cf$gene)), cex = 0.7)))
+
+# high level plotting function
+my.plot <- function(fm = formula(unlm.Q.varPart ~ unlm.Q | gene), lbl.type = "coefficient", ...) {
+    my.panel <- function(..., lbl) {
+        panel.abline(a = 0, b = 1, lty = "dotted", col = "gray")
+        lbl <-
+            if(lbl.type == "coefficient") cf$coefficient
+            else cf$gene
+        panel.text(..., pch = lbl, cex = 0.7)
+    }
+    xyplot(fm, data = cf, panel = my.panel,
+           scales = list(relation = ifelse(lbl.type == "coefficient", "same", "free")),
+           key = my.key[[lbl.type]], ...)
+}
+my.lim = c(-5, 5)
 my.main <- "Fixed effects w/o variancePartition"
-xyplot(unlm.Q.varPart ~ unlm.Q | gene, data = cf, panel = my.panel, main = my.main)
-xyplot(unlm.Q.varPart ~ unlm.Q | coefficient, data = cf, panel = my.panel, scales = list(relation = "free"), main = my.main)
+lbl.type <- "coefficient"
+my.plot(fm = formula(unlm.Q.varPart ~ unlm.Q | gene), lbl.type = "coefficient", main = my.main, xlim = my.lim, ylim = my.lim)
+lbl.type <- "gene"
+my.plot(fm = formula(unlm.Q.varPart ~ unlm.Q | coefficient), lbl.type = "gene", main = my.main)
+```
+
+Consistent with the above graphs, the coefficients from one implementation are precisely equal to those from the other implementation:
+
+```{r}
+with(cf, all.equal(unlm.Q, unlm.Q.varPart))
 ```
 
 Compare the mixed effects model to the fixed effects model unml.Q; note that both are unweighted
 
 ```{r mixed-1-fixed, echo=FALSE}
 my.main <- "Mixed vs fixed effects"
-xyplot(mixed.1 ~ unlm.Q | gene, data = cf, panel = my.panel, main = my.main)
-xyplot(mixed.1 ~ unlm.Q | coefficient, data = cf, panel = my.panel, scales = list(relation = "free"), main = my.main)
+lbl.type <- "coefficient"
+my.plot(fm = formula(mixed.1 ~ unlm.Q | gene), lbl.type = "coefficient", main = my.main, xlim = my.lim, ylim = my.lim)
+lbl.type <- "gene"
+my.plot(fm = formula(mixed.1 ~ unlm.Q | coefficient), lbl.type = "gene", main = my.main)
 ```
 
 Compare the *unweighted* mixed effects model to *weighted* the fixed effects model wnml.Q
 
 ```{r mixed-1-fixed-weighted, echo=FALSE}
 my.main <- "Unweighted mixed vs weighted fixed effects"
-xyplot(mixed.1 ~ wnlm.Q | gene, data = cf, panel = my.panel, main = my.main)
-xyplot(mixed.1 ~ wnlm.Q | coefficient, data = cf, panel = my.panel, scales = list(relation = "free"), main = my.main)
+lbl.type <- "coefficient"
+my.plot(fm = formula(mixed.1 ~ wnlm.Q | gene), lbl.type = "coefficient", main = my.main, xlim = my.lim, ylim = my.lim)
+lbl.type <- "gene"
+my.plot(fm = formula(mixed.1 ~ wnlm.Q | coefficient), lbl.type = "gene", main = my.main)
 ```
