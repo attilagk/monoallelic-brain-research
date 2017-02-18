@@ -23,11 +23,40 @@ my.plot <- function(x = "unlm.Q", y = "fixed.1", group.by = "gene", lbl.type = "
            key = my.key[[lbl.type]], ...)
 }
 
-reshape.x.y.y.hat <- function(m, e.v = e.vars) {
-    XY.obs <- reshape(m$model, varying = e.v, v.names = "X", timevar = "predictor",
-                      ids = row.names(df), times = e.v, direction = "long")
-    Y.hat <- reshape(df <- data.frame(predict(m, type = "terms", se.fit = FALSE)),
-                     varying = e.v, v.names = "Y.hat", timevar = "predictor",
-                     ids = row.names(df), times = e.v, direction = "long")
-    cbind(XY.obs[ c("id", "predictor", "X", "Y") ], Y.hat[ "Y.hat" ])
+# Expand "predictors"-length vector x to "coefficients"-length.
+# When the components of vector x are named according to predictors, expand
+# (repeat) each component to match the number of corresponding coefficients
+expand.x.preds2coefs <- function(x, m) {
+    helper <- function(e.v) {
+        cf <- predictor2coefs(m, e.v)
+        xx <- rep_len(x[e.v], length(cf))
+        names(xx) <- cf
+        return(xx)
+    }
+    unlist(lapply(names(x), helper))
+}
+
+tval.vp.1gene <- function(gene, m.type, vp, llm = M, e.v = e.vars) {
+    lm <- llm[[m.type]]
+    data.frame(t.value = tv <- summary(lm[[gene]])$coefficients[ -1, "t value"],
+               var.part = expand.x.preds2coefs(unlist(vp[[m.type]][gene, e.v]), lm[[gene]]),
+               predictor = factor(expand.x.preds2coefs(e.v, lm[[gene]]), ordered = TRUE, levels = e.v),
+               gene = gene, coefficient = factor(names(tv), ordered = TRUE, levels = names(tv)))
+}
+
+tval.vp <- function(m.type = "fixed.1", llm = M) {
+    df <- Reduce(rbind, lapply(names(llm[[ m.type ]]), tval.vp.1gene, m.type, vp, llm))
+    df$model <- m.type
+    return(df)
+}
+
+tval.vp.plot <- function(df, ...) {
+    xyplot(abs(t.value) ~ var.part | gene, data = df,
+           panel = function(..., pch, col) {
+               pch <- as.character(df$coefficient)
+               col <- rainbow(length(levels(df$predictor)))[df$predictor]
+               panel.text(..., pch = pch, cex = 0.7, col = col)
+           },
+           scales = "free",
+           ...)
 }
