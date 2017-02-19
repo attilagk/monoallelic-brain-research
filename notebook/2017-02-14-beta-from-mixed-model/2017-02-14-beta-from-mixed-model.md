@@ -11,7 +11,7 @@ What is the reason for this discrepancy?  This question can be approached based 
     * weighting, which was used for the fixed effects model wnlm.Q but not for the mixed effects model
     * programming bug
 1. $\hat{\beta}_{pg}$ under the fixed effects agrees with that under the mixed effects model
-    * in this case the discrepancy arises from the somewhat different questions that the two analyses address
+    * in this case the discrepancy arises from the related but different quantities of the two analyses: significance of $\beta_{pg}\neq 0$ is established using a $T_{pg}$-statistic whereas variance partitioning operates with the fractional variance explained $\hat{\sigma}^2_{pg} / \hat{\sigma}^2_\mathrm{total}$ (more details below)
 
 The analysis below excludes programming bug and appears to suggest that the discrepancy is due to a mixture of the remaining three explanations.
 
@@ -89,7 +89,7 @@ M$mixed.1 <- fitVarPartModel(t(Q), fm$mixed.1, E)
 
 ```
 ## Projected memory usage: > 3.2 Mb 
-## Projected run time: ~ 0.03 min
+## Projected run time: ~ 0.05 min
 ```
 
 ```r
@@ -99,7 +99,7 @@ M$mixed.1.w <- fitVarPartModel(t(Q), fm$mixed.1, E, weightsMatrix = t(N))
 
 ```
 ## Projected memory usage: > 3.2 Mb 
-## Projected run time: ~ 0.08 min
+## Projected run time: ~ 0.09 min
 ```
 
 ```
@@ -112,7 +112,7 @@ M$mixed.2 <- fitVarPartModel(t(Q), fm$mixed.2, E)
 
 ```
 ## Projected memory usage: > 3 Mb 
-## Projected run time: ~ 0.01 min
+## Projected run time: ~ 0.02 min
 ```
 
 ```
@@ -188,6 +188,8 @@ my.segplot(beta.hat.CI$unlm.Q, main = expression(paste("99 % CI for ", beta, " u
 
 ### Variance partitioning
 
+The next plot shows the fractional variance $\hat{\sigma}^2_{vg} / \hat{\sigma}^2_\mathrm{total}$ explained by each predictor $v$ for each gene $g$ under the fixed effects model unlm.Q.
+
 
 ```r
 tp <- trellis.par.get()
@@ -204,23 +206,33 @@ barchart(gene ~ fractional.variance, data = vpll, groups = predictor, stack = TR
 
 Let $v$ be a predictor and $g$ a gene; the goal is to compare the set of regression the coefficient(s) $\{\beta_{pg} | p \text{ corresponds to } v\}$ to the fractional variance $\hat{\sigma}^2_{vg} / \hat{\sigma}^2_\mathrm{total}$ explained by $v$.  Note that the set of coefficients has only one member if predictor $v$ is a continuous variable or a factor with only one treatment level, in which case $\sigma^2_{vg} = \mathrm{Var}(X\hat{\beta_{pg}})$.  In contrast, the set of coefficients has multiple members for factors with multiple treatment levels.  Depending on the nature of predictor, the corresponding estimated coefficient(s) $\hat{\beta}_{pg}$ are on a particular scale.  For this reason I use the t-statistic $T_{pg} = \hat{\beta}_{pg} / \sqrt{\mathrm{Var}(\hat{\beta}_{pg})}$, which normalizes the coefficients across all predictors not only in the sense of placing them onto the same scale but also in the sense that the if $T_{p_1g} = T_{p_2g}$ then the corresponding p-values are also equal.
 
+The plot indicates an expected positive correlation between $T_{pg}$ and $\hat{\sigma}^2_{vg} / \hat{\sigma}^2_\mathrm{total}$ but the correlation is weakened by certain coefficients $p$.  Such coefficients are the 7 treatment levels (RNA\_batchB,..., RNA\_batch0) of the factor RNA\_batch; each level has in itself relatively weak impact (small $T_{pg}$ and hence weak significance) but together they explain relatively much variation.  Another example for an outlier coefficient is that for Age, which again tends to have relatively small $T_{\mathrm{Age}g}$ but large $\hat{\sigma}^2_{\mathrm{Age}g} / \hat{\sigma}^2_\mathrm{total}$.
+
 
 ```r
-my.main <- "Comparing two quantities of the same effect"
+my.main <- "Quantities of effect size: fixed model (unlm.Q)"
 my.xlab <- expression(paste(hat(sigma)[vg], " / ", hat(sigma)[tot], ", fractional variance explained"))
 my.ylab <- expression(paste(t[pg], ", normalized coefficient ", hat(beta)[pg]))
-tval.vp.plot(tval.vp(m.type = "fixed.1", llm = M), layout = c(4, 4), par.settings = list(background = list(col = "gray")), main = my.main, xlab = my.xlab, ylab = my.ylab)
+tval.vp.plot(tval.vp.data <- tval.vp(m.type = "fixed.1", llm = M), main = my.main, xlab = my.xlab, ylab = my.ylab)
 ```
 
-<img src="figure/tval-varpart-1.png" title="plot of chunk tval-varpart" alt="plot of chunk tval-varpart" width="700px" /><img src="figure/tval-varpart-2.png" title="plot of chunk tval-varpart" alt="plot of chunk tval-varpart" width="700px" />
+<img src="figure/tval-varpart-fixed-1.png" title="plot of chunk tval-varpart-fixed" alt="plot of chunk tval-varpart-fixed" width="700px" /><img src="figure/tval-varpart-fixed-2.png" title="plot of chunk tval-varpart-fixed" alt="plot of chunk tval-varpart-fixed" width="700px" />
 
 ### Introducing random effects
 
-The above results were obtained under unlm.Q, a fixed effects model.  Turning all categorical (factor-type) predictors from fixed into random effects results in the *mixed.1* mixed effects model. 
+The above results were obtained under unlm.Q, a fixed effects model.  Turning all categorical (factor-type) predictors from fixed into random effects results in the *mixed.1* mixed effects model.  The next plot compares t-statistics to fractional variance under this model.  Similar trend emerges as for the fixed effects model above but the positive correlation between $T_{pg}$ and $\hat{\sigma}^2_{vg} / \hat{\sigma}^2_\mathrm{total}$ is stronger.  This is partly due to removing multilevel factors, like RNA\_batch, from the comparison (since their effects are modeled here as random) and partly to Age following more closely the trend displayed by other covariates.  Subsequent plots will explore this in more detail.
+
+
+```r
+my.main <- "Quantities of effect size: mixed model (mixed.1)"
+tval.vp.plot(tval.vp.mixed.1 <- tval.vp(m.type = "mixed.1", llm = M), main = my.main, xlab = my.xlab, ylab = my.ylab)
+```
+
+<img src="figure/tval-varpart-mixed-1.png" title="plot of chunk tval-varpart-mixed" alt="plot of chunk tval-varpart-mixed" width="700px" /><img src="figure/tval-varpart-mixed-2.png" title="plot of chunk tval-varpart-mixed" alt="plot of chunk tval-varpart-mixed" width="700px" />
 
 #### Impact on variance partitioning
 
-The next plot illustrates how this changes variance partitioning in terms of fractional variance explained 
+The next plot illustrates how introducing random effects changes variance partitioning in terms of fractional variance explained.  Some predictors, like Age, PMI, Dx, or RNA\_batch, explain less variation in the mixed effects model, while the residuals increase.  This phenomenologically explains the stronger correlation between $T_{pg}$ and $\hat{\sigma}^2_{vg} / \hat{\sigma}^2_\mathrm{total}$ seen above.
 
 
 ```r
@@ -243,11 +255,17 @@ update(my.plot(x = "fixed.1", y = "mixed.1", group.by = "gene", lbl.type = "pred
 
 #### Impact on regression coefficients
 
+The impact of introducing random effects on $T_{pg}$ statistics (normalized $\hat{\beta}_{pg}$) is rather small:
+
+<img src="figure/mixed-1-fixed-tval-1.png" title="plot of chunk mixed-1-fixed-tval" alt="plot of chunk mixed-1-fixed-tval" width="700px" />
+
+The result is similar for unnormalized $\hat{\beta}_{pg}$:
+
 <img src="figure/mixed-1-fixed-1.png" title="plot of chunk mixed-1-fixed" alt="plot of chunk mixed-1-fixed" width="700px" />
 
 <img src="figure/mixed-1-fixed-coef-1.png" title="plot of chunk mixed-1-fixed-coef" alt="plot of chunk mixed-1-fixed-coef" width="700px" />
 
-These differences are not due to software bug because the two different implementations of the fitting of the same fixed effects model (unlm.Q) gives identical results:
+These differences really reflect the introduction of random effects and are not due to software bug because the two different implementations of the fitting of the same fixed effects model (unlm.Q) gives identical results:
 
 
 ```r
