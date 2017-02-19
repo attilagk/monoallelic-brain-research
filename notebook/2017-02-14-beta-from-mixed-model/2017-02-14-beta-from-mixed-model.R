@@ -1,12 +1,3 @@
-# annotation keys
-my.key <-
-    list(coefficient =
-             list(columns = 5, text = list(paste0("(", seq_along(levels(cf$coefficient)), ") ", levels(cf$coefficient)), cex = 0.7)),
-         predictor =
-             list(columns = 4, text = list(paste0("(", seq_along(e.vars), ") ", e.vars), cex = 0.7)),
-         gene =
-             list(columns = 5, text = list(paste0("(", seq_along(levels(cf$gene)), ") ", levels(cf$gene)), cex = 0.7)))
-
 # high level plotting function
 my.plot <- function(x = "unlm.Q", y = "fixed.1", group.by = "gene", lbl.type = "coefficient", dt = cf, ...) {
     my.panel <- function(..., lbl) {
@@ -58,5 +49,21 @@ tval.vp.plot <- function(df, ...) {
                panel.text(..., pch = pch, cex = 0.7, col = col)
            },
            scales = "free",
+           key = my.key$coefficient.1,
            ...)
 }
+
+rnb <- rainbow(length(e.vars))
+names(rnb) <- e.vars
+
+# annotation keys
+my.key <-
+    list(coefficient =
+             list(columns = 5, text = list(paste0("(", seq_along(levels(cf$coefficient)), ") ", levels(cf$coefficient)), cex = 0.7)),
+         coefficient.1 =
+             list(columns = 4, text = list(paste0("(", seq_along(levels(cf$coefficient[-1])), ") ", levels(cf$coefficient)[-1]), cex = 0.7, col = expand.x.preds2coefs(rnb, M[[1]][[1]]))),
+         predictor =
+             list(columns = 4, text = list(paste0("(", seq_along(e.vars), ") ", e.vars), cex = 0.7)),
+         gene =
+             list(columns = 5, text = list(paste0("(", seq_along(levels(cf$gene)), ") ", levels(cf$gene)), cex = 0.7)))
+

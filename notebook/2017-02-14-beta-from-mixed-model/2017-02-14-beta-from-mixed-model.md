@@ -131,7 +131,7 @@ vpl <- data.frame(lapply(vp, function(v) stack(v[ , c(e.vars, "Residuals")])$val
 vpl$predictor <- factor(rep(c(e.vars, "Residuals"), each = length(gene.ids)), ordered = TRUE, levels = c(e.vars, "Residuals"))
 vpl$gene <- factor(rep(gene.ids, length(c(e.vars, "Residuals"))), ordered = TRUE, levels = gene.ids)
 vpl <- cbind(vpl[c("predictor", "gene")], vpl[- grep("predictor|gene", names(vpl))])
-vpll <- reshape(vpl, varying = c("fixed.1", "mixed.1"), v.names = "relative.variance",
+vpll <- reshape(vpl, varying = c("fixed.1", "mixed.1"), v.names = "fractional.variance",
                 timevar = "model.type", times = c("fixed.1", " mixed.1"), direction = "long")
 ```
 
@@ -171,11 +171,13 @@ source("2017-02-14-beta-from-mixed-model.R")
 
 ## Results
 
-### Coefficients $\hat{\beta}_{pg}$ compared to variance partitions
+### Recapitulation: regression coefficients $\beta_{pg}$
 
-Compare the estimated regression coefficients $\{\hat{\beta}_{pg}\}$ to the corresponding (estimated) variance partitions.  Note that the 99% confidence interval for a $\beta_{pg}$ relates to how significantly the response depends on predictor $p$ for gene $g$ in case of continuous predictors (covariates).  For discrete predictors $p$ is a level of the predictor compared to some other level chosen as baseline.
+The plot below shows for each coefficient $p$ and gene $g$ the estimated regression coefficients $\{\hat{\beta}_{pg}\}$ and 99% confidence intervals (CI) for a $\beta_{pg}$ under the wnlm.Q model.  Note that these same results are presented in the current manuscript.  Recall the close relationship between the CI and the p-value for rejecting the null hypothesis $\beta_{pg}=0$.
 
-Begin with the "basic" fixed effects model *unlm.Q*, also called *fixed.1* in this document:
+<img src="figure/wnlm-Q-CI-1.png" title="plot of chunk wnlm-Q-CI" alt="plot of chunk wnlm-Q-CI" width="700px" />
+
+In the preceding calculations variance partitioning was based on not the wnlm.Q but the unlm.Q model, however.  Therefore, a similar plot for the unlm.Q model comes next showing that weighting slightly changes $\{\hat{\beta}_{pg}\}$ and the CIs.
 
 
 ```r
@@ -184,55 +186,68 @@ my.segplot(beta.hat.CI$unlm.Q, main = expression(paste("99 % CI for ", beta, " u
 
 <img src="figure/unlm-Q-CI-1.png" title="plot of chunk unlm-Q-CI" alt="plot of chunk unlm-Q-CI" width="700px" />
 
-Now plot variance partitions for *fixed.1* and contrast this with *mixed.1* the mixed effects model derived from unlm.Q by turning all discrete predictors from fixed to random effects:
+### Variance partitioning
 
 
 ```r
 tp <- trellis.par.get()
 my.col <- c(rainbow(length(e.vars))[ c(seq(1, length(e.vars), by = 3), seq(2, length(e.vars), by = 3), seq(3, length(e.vars), by = 3)) ], "gray")
 trellis.par.set(superpose.polygon = list(alpha = 1, col = my.col, border = "black", lty = 1, lwd = 0.5))
-barchart(gene ~ relative.variance | model.type, data = vpll, groups = predictor, stack = TRUE, auto.key = list(columns = 3), xlim = c(0, 0.6), layout = c(2, 1))
+my.main <- "Variance partitioning: fixed effects model (unlm.Q)"
+my.xlab <- "fractional variance"
+barchart(gene ~ fractional.variance, data = vpll, groups = predictor, stack = TRUE, auto.key = list(columns = 3), xlim = c(0, 0.6), subset = model.type == "fixed.1", main = my.main)
 ```
 
 <img src="figure/fixed-varpart-1.png" title="plot of chunk fixed-varpart" alt="plot of chunk fixed-varpart" width="700px" />
 
-The next plot illustrates more directly the differences between the fixed and mixed model with respect to variance partitions:
+### Comparing coefficients to variance explained
+
+Let $v$ be a predictor and $g$ a gene; the goal is to compare the set of regression the coefficient(s) $\{\beta_{pg} | p \text{ corresponds to } v\}$ to the fractional variance $\hat{\sigma}^2_{vg} / \hat{\sigma}^2_\mathrm{total}$ explained by $v$.  Note that the set of coefficients has only one member if predictor $v$ is a continuous variable or a factor with only one treatment level, in which case $\sigma^2_{vg} = \mathrm{Var}(X\hat{\beta_{pg}})$.  In contrast, the set of coefficients has multiple members for factors with multiple treatment levels.  Depending on the nature of predictor, the corresponding estimated coefficient(s) $\hat{\beta}_{pg}$ are on a particular scale.  For this reason I use the t-statistic $T_{pg} = \hat{\beta}_{pg} / \sqrt{\mathrm{Var}(\hat{\beta}_{pg})}$, which normalizes the coefficients across all predictors not only in the sense of placing them onto the same scale but also in the sense that the if $T_{p_1g} = T_{p_2g}$ then the corresponding p-values are also equal.
 
 
 ```r
-my.main <- "Variance partitions: mixed vs fixed effects model"
-my.xlab <- "fixed effects: unlm.Q (fixed.1)"
-my.ylab <- "mixed effects: mixed.1"
+my.main <- "Comparing two quantities of the same effect"
+my.xlab <- expression(paste(hat(sigma)[vg], " / ", hat(sigma)[tot], ", fractional variance explained"))
+my.ylab <- expression(paste(t[pg], ", normalized coefficient ", hat(beta)[pg]))
+tval.vp.plot(tval.vp(m.type = "fixed.1", llm = M), layout = c(4, 4), par.settings = list(background = list(col = "gray")), main = my.main, xlab = my.xlab, ylab = my.ylab)
+```
+
+<img src="figure/tval-varpart-1.png" title="plot of chunk tval-varpart" alt="plot of chunk tval-varpart" width="700px" /><img src="figure/tval-varpart-2.png" title="plot of chunk tval-varpart" alt="plot of chunk tval-varpart" width="700px" />
+
+### Introducing random effects
+
+The above results were obtained under unlm.Q, a fixed effects model.  Turning all categorical (factor-type) predictors from fixed into random effects results in the *mixed.1* mixed effects model. 
+
+#### Impact on variance partitioning
+
+The next plot illustrates how this changes variance partitioning in terms of fractional variance explained 
+
+
+```r
+my.main <- "Variance partitioning: mixed vs fixed effects model"
+my.xlab <- "fractional variance: fixed effects (unlm.Q)"
+my.ylab <- "fractional variance: mixed effects (mixed.1)"
 my.plot(x = "fixed.1", y = "mixed.1", group.by = "predictor", lbl.type = "gene", dt = vpl, main = my.main, xlab = my.xlab, ylab = my.ylab)
 ```
 
 <img src="figure/fixed-mixed-varpart-1.png" title="plot of chunk fixed-mixed-varpart" alt="plot of chunk fixed-mixed-varpart" width="700px" />
 
-The same results grouped by genes:
+Another view on the same results: grouping by genes
 
 
 ```r
-update(my.plot(x = "fixed.1", y = "mixed.1", group.by = "gene", lbl.type = "predictor", dt = vpl, subset = vpl$predictor != "Residuals", main = my.main, xlab = my.xlab, ylab = my.ylab), scales = list(relation = "free"))
+update(my.plot(x = "fixed.1", y = "mixed.1", group.by = "gene", lbl.type = "predictor", dt = vpl, subset = vpl$predictor != "Residuals", main = my.main, xlab = my.xlab, ylab = my.ylab), scales = list(relation = "free"), layout = c(4, 4))
 ```
 
-<img src="figure/fixed-mixed-varpart-genes-1.png" title="plot of chunk fixed-mixed-varpart-genes" alt="plot of chunk fixed-mixed-varpart-genes" width="700px" />
+<img src="figure/fixed-mixed-varpart-genes-1.png" title="plot of chunk fixed-mixed-varpart-genes" alt="plot of chunk fixed-mixed-varpart-genes" width="700px" /><img src="figure/fixed-mixed-varpart-genes-2.png" title="plot of chunk fixed-mixed-varpart-genes" alt="plot of chunk fixed-mixed-varpart-genes" width="700px" />
 
-Next, return to estimates and confidence intervals for $\beta_{pg}$, but this time under our preferred (based on fit quality) fixed effects model *wnlm.Q*.  The same results are reported in the manuscript.
+#### Impact on regression coefficients
 
-<img src="figure/wnlm-Q-CI-1.png" title="plot of chunk wnlm-Q-CI" alt="plot of chunk wnlm-Q-CI" width="700px" />
+<img src="figure/mixed-1-fixed-1.png" title="plot of chunk mixed-1-fixed" alt="plot of chunk mixed-1-fixed" width="700px" />
 
-### Fixed vs mixed effects models in terms of $\hat{\beta}$ 
+<img src="figure/mixed-1-fixed-coef-1.png" title="plot of chunk mixed-1-fixed-coef" alt="plot of chunk mixed-1-fixed-coef" width="700px" />
 
-The next set of plots present estimated coefficients $\{\hat{\beta}_{pg}\}$ under fixed effects models fitted with my own scripts and compare those to the corresponding $\{\hat{\beta}_{pg}\}$ under fixed or mixed effects models fitted with  the `variancePartition` package.
-
-#### Fixed effects w/o `variancePartition`
-
-The first tests does not involve any random effects.  Rather it checks various implementations of the same fixed effects model (unlm.Q):
-
-<img src="figure/fixed-fixed-1.png" title="plot of chunk fixed-fixed" alt="plot of chunk fixed-fixed" width="700px" />
-<img src="figure/fixed-fixed-coef-1.png" title="plot of chunk fixed-fixed-coef" alt="plot of chunk fixed-fixed-coef" width="700px" />
-
-Consistent with the above graphs, the coefficients from one implementation are precisely equal to those from the other implementation:
+These differences are not due to software bug because the two different implementations of the fitting of the same fixed effects model (unlm.Q) gives identical results:
 
 
 ```r
@@ -243,25 +258,9 @@ with(cf, all.equal(unlm.Q, fixed.1))
 ## [1] TRUE
 ```
 
-#### Mixed vs fixed effects
+### Introducing weighting
 
-Compare the mixed effects model *mixed.1* (based on unlm.Q) to the fixed effects model unml.Q; note that both mixed.1 and unlm.Q are unweighted
-
-<img src="figure/mixed-1-fixed-1.png" title="plot of chunk mixed-1-fixed" alt="plot of chunk mixed-1-fixed" width="700px" />
-
-<img src="figure/mixed-1-fixed-coef-1.png" title="plot of chunk mixed-1-fixed-coef" alt="plot of chunk mixed-1-fixed-coef" width="700px" />
-
-#### wlnm.Q: weighted fixed effects model
-
-Compare the (unweighted) mixed effects model mixed.1 to the *weighted* fixed effects model wnml.Q.  Weighting increases the deviation between the two sets of $\hat{\beta}_{pg}$.
-
-<img src="figure/mixed-1-fixed-weighted-1.png" title="plot of chunk mixed-1-fixed-weighted" alt="plot of chunk mixed-1-fixed-weighted" width="700px" />
-<img src="figure/mixed-1-fixed-weighted-coef-1.png" title="plot of chunk mixed-1-fixed-weighted-coef" alt="plot of chunk mixed-1-fixed-weighted-coef" width="700px" />
-
-#### Weighted vs unweighted fixed effects
-
-To isolate the impact of weighting:
+Because fitting weighted models using `variancePartition` failed (see Calculations above), the impact of weighting is only studied in terms of regression coefficients:
 
 <img src="figure/fixed-unweighted-weighted-1.png" title="plot of chunk fixed-unweighted-weighted" alt="plot of chunk fixed-unweighted-weighted" width="700px" />
 <img src="figure/fixed-unweighted-weighted-coef-1.png" title="plot of chunk fixed-unweighted-weighted-coef" alt="plot of chunk fixed-unweighted-weighted-coef" width="700px" />
-
