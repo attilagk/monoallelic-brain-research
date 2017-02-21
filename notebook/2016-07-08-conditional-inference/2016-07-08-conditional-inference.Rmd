@@ -133,6 +133,12 @@ The same results plotted with different style
 my.segplot2(Betas$wnlm.Q, main = expression(paste("Estimate and 99 % CI for ", beta[age] , " under wnlm.Q")))
 ```
 
+#### For presentations
+
+```{r beta-age-cond-wnlm-Q-2-present, warning=FALSE, echo=FALSE, message=FALSE, fig.asp=0.7}
+update(my.segplot2(Betas$wnlm.Q, main = expression(paste("Estimate and 99 % CI for ", beta[age] , " under wnlm.Q")))[c(5:8, 21:24)], layout = c(4, 2), scales = list(relation = "free", x = list(draw = TRUE)), main = "")
+```
+
 ```{r beta-age-cond-logi-S-2, warning=FALSE, echo=FALSE, message=FALSE}
 my.segplot2(Betas$logi.S, skip = skip, main = expression(paste("Estimate and 99 % CI for ", beta[age] , " under logi.S")))
 ```

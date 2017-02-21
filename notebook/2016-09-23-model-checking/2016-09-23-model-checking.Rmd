@@ -53,7 +53,7 @@ Start by fitting all models:
 ```{r cache=FALSE, warning=FALSE, message=FALSE}
 # exclude unweighed aggregates UA.8 and UA from fitting
 to.fit.ids <- grep("^UA(.8)?$", names(Y), value = TRUE, invert = TRUE)
-sel.models <- c("logi.S", "logi2.S", "wnlm.Q", "wnlm.R", "wnlm.S"); names(sel.models) <- sel.models
+sel.models <- c("logi.S", "logi2.S", "unlm.Q", "wnlm.Q", "wnlm.R", "wnlm.S"); names(sel.models) <- sel.models
 #sel.models <- NULL
 M <- do.all.fits(Y[to.fit.ids], G = E, preds = e.vars, sel.models = sel.models)
 ```
@@ -90,6 +90,10 @@ myqqnorm <- function(mtype, skip = FALSE, ...)
 myqqnorm("wnlm.S")
 ```
 
+```{r qqnorm-unlm-Q, echo=FALSE}
+myqqnorm("unlm.Q")
+```
+
 ```{r qqnorm-wnlm-Q, echo=FALSE}
 myqqnorm("wnlm.Q")
 ```
@@ -109,6 +113,22 @@ myqqnorm("logi.S", skip = skip)
 ```{r qqnorm-logi2-S, echo=FALSE}
 skip2 <- ! sapply(M$logi2.S, `[[`, "converged")[1:30]
 myqqnorm("logi2.S", skip = skip2)
+```
+
+#### Figure for presentation
+
+```{r qqnorm-ZNF331}
+myqqnorm.demo <- function(g = "ZNF331") {
+    qqmath(~ res.std.dev | model.type, data = diagnostics, subset = gene == g & model.type != "wnlm.R",
+               ylim = c(-4, 4), abline = c(0, 1), pch = "+",
+               main = g, xlab = "normal quantiles", ylab = "standardized residual",
+           )[c(1:2, 5, 4)]
+}
+myqqnorm.demo("ZNF331")
+```
+
+```{r qqnorm-PEG3}
+myqqnorm.demo("PEG3")
 ```
 
 ### Homogeneity of error (homoscedasticity)
@@ -139,6 +159,10 @@ myhomoscedas("wnlm.S")
 #myhomoscedas("unlm.R")
 ```
 
+```{r homoscedas-unlm-Q, echo=FALSE}
+myhomoscedas("unlm.Q")
+```
+
 ```{r homoscedas-wnlm-Q, echo=FALSE}
 myhomoscedas("wnlm.Q")
 ```
@@ -153,6 +177,25 @@ myhomoscedas("logi.S", skip = skip)
 
 ```{r homoscedas-logi2-S, echo=FALSE, warning=FALSE}
 myhomoscedas("logi2.S", skip = skip2)
+```
+
+#### Figure for presentation
+
+```{r homoscedas-ZNF331}
+myhomoscedas.demo <- function(g) {
+    xyplot(sqrt(abs(res.std.dev)) ~ fitted | model.type, data = diagnostics,
+           panel = function(...) {
+               panel.xyplot(...)
+               panel.smoother(..., method = "loess", col = "black", se = FALSE)
+           }, subset = gene == g & model.type != "wnlm.R", pch = "+",
+           scales = list(x = list(relation = "free", draw = TRUE)),
+           xlab = "fitted value", ylab = expression(sqrt(std.deviance.resid)), main = g)[c(1:2, 5, 4)]
+}
+myhomoscedas.demo("ZNF331")
+```
+
+```{r homoscedas-PEG3}
+myhomoscedas.demo("PEG3")
 ```
 
 ### Influence of individual cases
@@ -186,6 +229,10 @@ myinfluence("wnlm.S")
 #myinfluence("unlm.R")
 ```
 
+```{r influence-unlm-Q, echo=FALSE}
+myinfluence("unlm.Q")
+```
+
 ```{r influence-wnlm-Q, echo=FALSE}
 myinfluence("wnlm.Q")
 ```
@@ -200,6 +247,20 @@ myinfluence("logi.S", skip = skip)
 
 ```{r influence-logi2-S, echo=FALSE}
 myinfluence("logi2.S", skip = skip2)
+```
+
+#### Figure for presentation
+
+```{r influence-ZNF331}
+myinfluence.demo <- function(g) {
+    xyplot(cooks.dist ~ leverage / (1 - leverage) | model.type, data = diagnostics,
+           subset = gene == g & model.type != "wnlm.R", ylab = "Cook's distance", main = g)[c(1:2, 5, 4)]
+}
+myinfluence.demo("ZNF331")
+```
+
+```{r influence-PEG3}
+myinfluence.demo("PEG3")
 ```
 
 ### Identifying outliers

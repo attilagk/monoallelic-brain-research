@@ -219,35 +219,111 @@ cortex}?
 
 \begin{column}{0.6\textwidth}
 
-\includegraphics[width=1.0\columnwidth]{figures/2016-06-26-trellis-display-of-data/S-age-tot-read-count-1.png}
+\includegraphics[width=1.0\columnwidth]{figures/2016-06-26-trellis-display-of-data/S-age-gender-2}
 \end{column}
 \end{columns}
 \end{frame}
 
-\begin{frame}{First challenge: ``shape'' of distribution}
-\begin{center}
-\includegraphics[width=0.7\textwidth]{figures/2016-08-23-glm-sampling-distributions/ZNF331-1.png}
-\end{center}
-\end{frame}
-
-\begin{frame}{Model selection}
-
-\end{frame}
-
-\begin{frame}{Second challenge: multiple interdependent of predictors}
+\begin{frame}{Multiple interdependent predictors}
 \begin{center}
 \includegraphics[width=0.8\textheight]{figures/2016-06-26-trellis-display-of-data/evar-scatterplot-matrix-1.png}
 \end{center}
 \end{frame}
 
-\begin{frame}{Multiple regression}
+\begin{frame}[t]{Inferring dependence using regression models}
+\begin{columns}[t]
+\begin{column}{0.4\textwidth}
+
+generalized linear models
+
+\begin{eqnarray*}
+\mathrm{E}[y_g] &=& \mu_g = h^{-1}(X\beta_g) \\
+y &=& \mu_g + \varepsilon_{\mu_g}
+\end{eqnarray*}
+\end{column}
+
+\begin{column}{0.6\textwidth}
+
+\visible<2->{inference for gene \(g\) (PEG3)}
+
+\includegraphics<2>[width=1.1\columnwidth]{figures/2016-08-21-likelihood-surface/explain-rll-wireframe-1.png}
+\includegraphics<3>[width=\columnwidth]{figures/2016-08-21-likelihood-surface/explain-rll-levelplot-B-1.png}
+\end{column}
+\end{columns}
 
 \end{frame}
 
-\begin{frame}{Third challenge: multiple levels of variation}
+\begin{frame}[t]{Selection among several models}
+\begin{columns}[t]
+\begin{column}{0.5\textwidth}
+predictive distributions
+
+\tiny{(simple regression)}
+
+\includegraphics[width=1.1\columnwidth]{figures/2016-08-23-glm-sampling-distributions/PEG3-1.png}
+\end{column}
+
+\begin{column}{0.5\textwidth}
+\only<2>{normality of residuals}
+\only<3>{homogeneity of error}
+\only<4>{influence of outliers}
+
+\only<2->{\tiny{(multiple regression)}}
+
+\includegraphics<2>[width=1.1\columnwidth]{figures/2016-09-23-model-checking/qqnorm-PEG3-1.png}
+\includegraphics<3>[width=1.1\columnwidth]{figures/2016-09-23-model-checking/homoscedas-PEG3-1.png}
+\includegraphics<4>[width=1.1\columnwidth]{figures/2016-09-23-model-checking/influence-PEG3-1.png}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Explained variation of read count ratio}
+
+\includegraphics[width=0.9\textwidth]{figures/2017-02-14-beta-from-mixed-model/tval-varpart-fixed-present-1.png}
+\end{frame}
+
+\begin{frame}[label=signif-genes]{Genes \(g\) affected by one or more predictors \(p\)
+(\(\beta_{pg}\neq 0\))}
+%{Test: parametric + non-parametric (permutations)}
+\tiny
+\input{../../results/signif-gene-effects-either-manual-annot.tex}
+\end{frame}
+
+\begin{frame}{Different results under similarly well-fitting models}
+
+\includegraphics[height=0.8\textheight]{figures/2016-06-22-extending-anova/unlm-Q-wnlm-Q-compare-1.pdf}
+\end{frame}
+
+% two predictors interact when the effect of one predictor (X1) depends on the value (a or b) of another (X2) 
+% this is distinct from correlation/non-orthogonality of predictors
+% e.g. if X2=a then X1 has no dependence on Y (beta1=0) but if X2=b then it does % (beta1>0)
+% we found that effect of Age on S depended on both Institution and Gender at various degrees for different genes
+% we didn't model interactions to avoid extra parameters and decrease in power => our conclusions on beta are too simplistic
+\begin{frame}[label=interaction]{Effects appear interdependent}
+
+\includegraphics[width=\columnwidth]{figures/2016-07-08-conditional-inference/beta-age-cond-wnlm-Q-2-present-1.pdf}
+\end{frame}
+
+\begin{frame}{Multiple levels of variation}
 \begin{center}
 \includegraphics[height=0.75\textheight]{figures/by-me/commonmind-rna-seq/commonmind-rna-seq.pdf}
 \end{center}
+\end{frame}
+
+\begin{frame}
+\begin{columns}[t]
+\begin{column}{0.5\textwidth}
+regression model
+
+\includegraphics[scale=\platefigscale]{figures/by-me/monoall-dependencies-2/obs-simple-general/obs-simple-general.pdf}
+\end{column}
+
+\begin{column}{0.5\textwidth}
+hierarchical Bayesian model
+
+\includegraphics[scale=\platefigscale]{figures/by-me/monoall-dependencies-2/obs-bayesian/obs-bayesian.pdf}
+\end{column}
+\end{columns}
 \end{frame}
 
 \subsection{Future work}

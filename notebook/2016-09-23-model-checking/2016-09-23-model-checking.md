@@ -54,7 +54,7 @@ Start by fitting all models:
 ```r
 # exclude unweighed aggregates UA.8 and UA from fitting
 to.fit.ids <- grep("^UA(.8)?$", names(Y), value = TRUE, invert = TRUE)
-sel.models <- c("logi.S", "logi2.S", "wnlm.Q", "wnlm.R", "wnlm.S"); names(sel.models) <- sel.models
+sel.models <- c("logi.S", "logi2.S", "unlm.Q", "wnlm.Q", "wnlm.R", "wnlm.S"); names(sel.models) <- sel.models
 #sel.models <- NULL
 M <- do.all.fits(Y[to.fit.ids], G = E, preds = e.vars, sel.models = sel.models)
 ```
@@ -91,6 +91,8 @@ myqqnorm <- function(mtype, skip = FALSE, ...)
 
 <img src="figure/qqnorm-wnlm-S-1.png" title="plot of chunk qqnorm-wnlm-S" alt="plot of chunk qqnorm-wnlm-S" width="700px" />
 
+<img src="figure/qqnorm-unlm-Q-1.png" title="plot of chunk qqnorm-unlm-Q" alt="plot of chunk qqnorm-unlm-Q" width="700px" />
+
 <img src="figure/qqnorm-wnlm-Q-1.png" title="plot of chunk qqnorm-wnlm-Q" alt="plot of chunk qqnorm-wnlm-Q" width="700px" />
 
 
@@ -100,6 +102,28 @@ myqqnorm <- function(mtype, skip = FALSE, ...)
 <img src="figure/qqnorm-logi-S-1.png" title="plot of chunk qqnorm-logi-S" alt="plot of chunk qqnorm-logi-S" width="700px" />
 
 <img src="figure/qqnorm-logi2-S-1.png" title="plot of chunk qqnorm-logi2-S" alt="plot of chunk qqnorm-logi2-S" width="700px" />
+
+#### Figure for presentation
+
+
+```r
+myqqnorm.demo <- function(g = "ZNF331") {
+    qqmath(~ res.std.dev | model.type, data = diagnostics, subset = gene == g & model.type != "wnlm.R",
+               ylim = c(-4, 4), abline = c(0, 1), pch = "+",
+               main = g, xlab = "normal quantiles", ylab = "standardized residual",
+           )[c(1:2, 5, 4)]
+}
+myqqnorm.demo("ZNF331")
+```
+
+<img src="figure/qqnorm-ZNF331-1.png" title="plot of chunk qqnorm-ZNF331" alt="plot of chunk qqnorm-ZNF331" width="700px" />
+
+
+```r
+myqqnorm.demo("PEG3")
+```
+
+<img src="figure/qqnorm-PEG3-1.png" title="plot of chunk qqnorm-PEG3" alt="plot of chunk qqnorm-PEG3" width="700px" />
 
 ### Homogeneity of error (homoscedasticity)
 
@@ -126,6 +150,8 @@ myhomoscedas <- function(mtype, skip = FALSE)
 
 
 
+<img src="figure/homoscedas-unlm-Q-1.png" title="plot of chunk homoscedas-unlm-Q" alt="plot of chunk homoscedas-unlm-Q" width="700px" />
+
 <img src="figure/homoscedas-wnlm-Q-1.png" title="plot of chunk homoscedas-wnlm-Q" alt="plot of chunk homoscedas-wnlm-Q" width="700px" />
 
 <img src="figure/homoscedas-wnlm-R-1.png" title="plot of chunk homoscedas-wnlm-R" alt="plot of chunk homoscedas-wnlm-R" width="700px" />
@@ -133,6 +159,31 @@ myhomoscedas <- function(mtype, skip = FALSE)
 <img src="figure/homoscedas-logi-S-1.png" title="plot of chunk homoscedas-logi-S" alt="plot of chunk homoscedas-logi-S" width="700px" />
 
 <img src="figure/homoscedas-logi2-S-1.png" title="plot of chunk homoscedas-logi2-S" alt="plot of chunk homoscedas-logi2-S" width="700px" />
+
+#### Figure for presentation
+
+
+```r
+myhomoscedas.demo <- function(g) {
+    xyplot(sqrt(abs(res.std.dev)) ~ fitted | model.type, data = diagnostics,
+           panel = function(...) {
+               panel.xyplot(...)
+               panel.smoother(..., method = "loess", col = "black", se = FALSE)
+           }, subset = gene == g & model.type != "wnlm.R", pch = "+",
+           scales = list(x = list(relation = "free", draw = TRUE)),
+           xlab = "fitted value", ylab = expression(sqrt(std.deviance.resid)), main = g)[c(1:2, 5, 4)]
+}
+myhomoscedas.demo("ZNF331")
+```
+
+<img src="figure/homoscedas-ZNF331-1.png" title="plot of chunk homoscedas-ZNF331" alt="plot of chunk homoscedas-ZNF331" width="700px" />
+
+
+```r
+myhomoscedas.demo("PEG3")
+```
+
+<img src="figure/homoscedas-PEG3-1.png" title="plot of chunk homoscedas-PEG3" alt="plot of chunk homoscedas-PEG3" width="700px" />
 
 ### Influence of individual cases
 
@@ -162,6 +213,8 @@ myinfluence <- function(mtype, xlim = c(-0.2, 4), ylim = c(-0.04, 0.8), skip = F
 
 
 
+<img src="figure/influence-unlm-Q-1.png" title="plot of chunk influence-unlm-Q" alt="plot of chunk influence-unlm-Q" width="700px" />
+
 <img src="figure/influence-wnlm-Q-1.png" title="plot of chunk influence-wnlm-Q" alt="plot of chunk influence-wnlm-Q" width="700px" />
 
 <img src="figure/influence-wnlm-R-1.png" title="plot of chunk influence-wnlm-R" alt="plot of chunk influence-wnlm-R" width="700px" />
@@ -169,6 +222,26 @@ myinfluence <- function(mtype, xlim = c(-0.2, 4), ylim = c(-0.04, 0.8), skip = F
 <img src="figure/influence-logi-S-1.png" title="plot of chunk influence-logi-S" alt="plot of chunk influence-logi-S" width="700px" />
 
 <img src="figure/influence-logi2-S-1.png" title="plot of chunk influence-logi2-S" alt="plot of chunk influence-logi2-S" width="700px" />
+
+#### Figure for presentation
+
+
+```r
+myinfluence.demo <- function(g) {
+    xyplot(cooks.dist ~ leverage / (1 - leverage) | model.type, data = diagnostics,
+           subset = gene == g & model.type != "wnlm.R", ylab = "Cook's distance", main = g)[c(1:2, 5, 4)]
+}
+myinfluence.demo("ZNF331")
+```
+
+<img src="figure/influence-ZNF331-1.png" title="plot of chunk influence-ZNF331" alt="plot of chunk influence-ZNF331" width="700px" />
+
+
+```r
+myinfluence.demo("PEG3")
+```
+
+<img src="figure/influence-PEG3-1.png" title="plot of chunk influence-PEG3" alt="plot of chunk influence-PEG3" width="700px" />
 
 ### Identifying outliers
 
@@ -202,37 +275,12 @@ read.csv("../../results/model-checking.csv", row.names = "gene")[-4]
 ```
 
 ```
-##               residuals.normal homoscedasticity influence logi.S.fit.OK
-## MAGEL2                     0.0              0.0         1         FALSE
-## TMEM261P1                  0.0              0.0         0         FALSE
-## SNHG14                     0.0              0.5         0         FALSE
-## AL132709.5                 0.5              0.5         1         FALSE
-## RP11-909M7.3               0.0              0.0         1         FALSE
-## ZIM2                       0.0              0.5         1         FALSE
-## NAP1L5                     0.5              1.0         0         FALSE
-## MEG3                       0.0              0.5         0         FALSE
-## PEG3                       0.0              1.0         0         FALSE
-## PWAR6                      0.0              0.5         0         FALSE
-## FAM50B                     0.5              0.5         1         FALSE
-## NDN                        0.5              0.5         1         FALSE
-## SNURF                      0.0              0.5         0         FALSE
-## PEG10                      0.0              0.5         1         FALSE
-## SNRPN                      0.0              0.5         0         FALSE
-## KCNQ1OT1                   1.0              1.0         1          TRUE
-## ZDBF2                      0.0              0.5         0         FALSE
-## GRB10                      1.0              1.0         1          TRUE
-## SNORD116-20                0.0              1.0         0         FALSE
-## KCNK9                      1.0              1.0         1          TRUE
-## INPP5F                     0.0              0.5         0         FALSE
-## RP13-487P22.1              1.0              1.0         0         FALSE
-## MEST                       1.0              1.0         1          TRUE
-## ZNF331                     0.5              1.0         1         FALSE
-## hsa-mir-335                1.0              1.0         1          TRUE
-## DIRAS3                     1.0              1.0         0         FALSE
-## PWRN1                      1.0              1.0         1          TRUE
-## IGF2                       1.0              1.0         1          TRUE
-## NLRP2                      0.5              1.0         1         FALSE
-## UBE3A                      1.0              1.0         1          TRUE
+## Warning in file(file, "rt"): cannot open file '../../results/model-
+## checking.csv': No such file or directory
+```
+
+```
+## Error in file(file, "rt"): cannot open the connection
 ```
 
 As can be seen, all three criteria (normality of residuals, homoscedasticity, balanced influence of cases) had to be met for acceptable fit.

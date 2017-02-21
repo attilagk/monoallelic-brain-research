@@ -96,20 +96,36 @@
 \@writefile{nav}{\headcommand {\beamer@framepages {17}{17}}}
 \@writefile{nav}{\headcommand {\slideentry {2}{1}{3}{18/18}{Explaining variation of allelic bias}{0}}}
 \@writefile{nav}{\headcommand {\beamer@framepages {18}{18}}}
-\@writefile{nav}{\headcommand {\slideentry {2}{1}{4}{19/19}{Explaining variation of allelic bias}{0}}}
-\@writefile{nav}{\headcommand {\beamer@framepages {19}{19}}}
-\@writefile{nav}{\headcommand {\slideentry {2}{1}{5}{20/20}{Explaining variation of allelic bias}{0}}}
-\@writefile{nav}{\headcommand {\beamer@framepages {20}{20}}}
-\@writefile{nav}{\headcommand {\slideentry {2}{1}{6}{21/21}{Explaining variation of allelic bias}{0}}}
-\@writefile{nav}{\headcommand {\beamer@framepages {21}{21}}}
-\@writefile{nav}{\headcommand {\slideentry {2}{1}{7}{22/22}{Explaining variation of allelic bias}{0}}}
-\@writefile{nav}{\headcommand {\beamer@framepages {22}{22}}}
-\@writefile{toc}{\beamer@subsectionintoc {2}{2}{Future work}{23}{0}{2}}
-\@writefile{nav}{\headcommand {\beamer@subsectionentry {0}{2}{2}{23}{Future work}}\headcommand {\beamer@subsectionpages {16}{22}}}
-\@writefile{nav}{\headcommand {\slideentry {2}{2}{1}{23/23}{Future work}{0}}}
-\@writefile{nav}{\headcommand {\beamer@framepages {23}{23}}}
-\@writefile{nav}{\headcommand {\beamer@partpages {1}{23}}}
-\@writefile{nav}{\headcommand {\beamer@subsectionpages {23}{23}}}
-\@writefile{nav}{\headcommand {\beamer@sectionpages {16}{23}}}
-\@writefile{nav}{\headcommand {\beamer@documentpages {23}}}
-\@writefile{nav}{\headcommand {\def \inserttotalframenumber {23}}}
+\@writefile{nav}{\headcommand {\slideentry {2}{1}{4}{19/21}{Explaining variation of allelic bias}{0}}}
+\@writefile{nav}{\headcommand {\beamer@framepages {19}{21}}}
+\@writefile{nav}{\headcommand {\slideentry {2}{1}{5}{22/25}{Explaining variation of allelic bias}{0}}}
+\@writefile{nav}{\headcommand {\beamer@framepages {22}{25}}}
+\@writefile{nav}{\headcommand {\slideentry {2}{1}{6}{26/26}{Explaining variation of allelic bias}{0}}}
+\@writefile{nav}{\headcommand {\beamer@framepages {26}{26}}}
+\newlabel{signif-genes<1>}{{22}{27}{Explaining variation of allelic bias}{Doc-Start}{}}
+\@writefile{snm}{\beamer@slide {signif-genes<1>}{27}}
+\newlabel{signif-genes}{{22}{27}{Explaining variation of allelic bias}{Doc-Start}{}}
+\@writefile{snm}{\beamer@slide {signif-genes}{27}}
+\@writefile{nav}{\headcommand {\slideentry {2}{1}{7}{27/27}{Explaining variation of allelic bias}{0}}}
+\@writefile{nav}{\headcommand {\beamer@framepages {27}{27}}}
+\@writefile{nav}{\headcommand {\slideentry {2}{1}{8}{28/28}{Explaining variation of allelic bias}{0}}}
+\@writefile{nav}{\headcommand {\beamer@framepages {28}{28}}}
+\newlabel{interaction<1>}{{24}{29}{Explaining variation of allelic bias}{Doc-Start}{}}
+\@writefile{snm}{\beamer@slide {interaction<1>}{29}}
+\newlabel{interaction}{{24}{29}{Explaining variation of allelic bias}{Doc-Start}{}}
+\@writefile{snm}{\beamer@slide {interaction}{29}}
+\@writefile{nav}{\headcommand {\slideentry {2}{1}{9}{29/29}{Explaining variation of allelic bias}{0}}}
+\@writefile{nav}{\headcommand {\beamer@framepages {29}{29}}}
+\@writefile{nav}{\headcommand {\slideentry {2}{1}{10}{30/30}{Explaining variation of allelic bias}{0}}}
+\@writefile{nav}{\headcommand {\beamer@framepages {30}{30}}}
+\@writefile{nav}{\headcommand {\slideentry {2}{1}{11}{31/31}{Explaining variation of allelic bias}{0}}}
+\@writefile{nav}{\headcommand {\beamer@framepages {31}{31}}}
+\@writefile{toc}{\beamer@subsectionintoc {2}{2}{Future work}{32}{0}{2}}
+\@writefile{nav}{\headcommand {\beamer@subsectionentry {0}{2}{2}{32}{Future work}}\headcommand {\beamer@subsectionpages {16}{31}}}
+\@writefile{nav}{\headcommand {\slideentry {2}{2}{1}{32/32}{Future work}{0}}}
+\@writefile{nav}{\headcommand {\beamer@framepages {32}{32}}}
+\@writefile{nav}{\headcommand {\beamer@partpages {1}{32}}}
+\@writefile{nav}{\headcommand {\beamer@subsectionpages {32}{32}}}
+\@writefile{nav}{\headcommand {\beamer@sectionpages {16}{32}}}
+\@writefile{nav}{\headcommand {\beamer@documentpages {32}}}
+\@writefile{nav}{\headcommand {\def \inserttotalframenumber {27}}}

@@ -69,11 +69,18 @@ The same results plotted with different style
 
 <img src="figure/beta-age-cond-wnlm-Q-2-1.png" title="plot of chunk beta-age-cond-wnlm-Q-2" alt="plot of chunk beta-age-cond-wnlm-Q-2" height="700px" />
 
+#### For presentations
+
+<img src="figure/beta-age-cond-wnlm-Q-2-present-1.png" title="plot of chunk beta-age-cond-wnlm-Q-2-present" alt="plot of chunk beta-age-cond-wnlm-Q-2-present" height="700px" />
+
 <img src="figure/beta-age-cond-logi-S-2-1.png" title="plot of chunk beta-age-cond-logi-S-2" alt="plot of chunk beta-age-cond-logi-S-2" height="700px" />
 
 Exclude those genes for which the fit was deemed insufficient.  Requires the file `model-checking.csv`, which was generated in a subsequent analysis.
 
-<img src="figure/beta-age-cond-logi-S-2-skip-1.png" title="plot of chunk beta-age-cond-logi-S-2-skip" alt="plot of chunk beta-age-cond-logi-S-2-skip" height="700px" />
+
+```
+## Error in file(file, "rt"): cannot open the connection
+```
 
 ## Conclusion
 

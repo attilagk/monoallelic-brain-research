@@ -212,11 +212,21 @@ The plot indicates an expected positive correlation between $T_{pg}$ and $\hat{\
 ```r
 my.main <- "Quantities of effect size: fixed model (unlm.Q)"
 my.xlab <- expression(paste(hat(sigma)[vg], " / ", hat(sigma)[tot], ", fractional variance explained"))
-my.ylab <- expression(paste(t[pg], ", normalized coefficient ", hat(beta)[pg]))
+my.ylab <- expression(paste("|", t[pg], "|, normalized coefficient ", hat(beta)[pg]))
 tval.vp.plot(tval.vp.data <- tval.vp(m.type = "fixed.1", llm = M), main = my.main, xlab = my.xlab, ylab = my.ylab)
 ```
 
 <img src="figure/tval-varpart-fixed-1.png" title="plot of chunk tval-varpart-fixed" alt="plot of chunk tval-varpart-fixed" width="700px" /><img src="figure/tval-varpart-fixed-2.png" title="plot of chunk tval-varpart-fixed" alt="plot of chunk tval-varpart-fixed" width="700px" />
+
+#### For presentation
+
+
+
+```r
+update(tval.vp.plot(tval.vp.data <- tval.vp(m.type = "fixed.1", llm = M), xlab = my.xlab, ylab = my.ylab)[c(5:8, 21:24)], layout = c(4, 2))
+```
+
+<img src="figure/tval-varpart-fixed-present-1.png" title="plot of chunk tval-varpart-fixed-present" alt="plot of chunk tval-varpart-fixed-present" width="700px" />
 
 ### Introducing random effects
 

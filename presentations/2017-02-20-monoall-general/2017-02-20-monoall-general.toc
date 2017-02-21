@@ -4,4 +4,4 @@
 \beamer@subsectionintoc {1}{2}{Imprinted genes in the DLPFC}{10}{0}{1}
 \beamer@sectionintoc {2}{Second part}{16}{0}{2}
 \beamer@subsectionintoc {2}{1}{Explaining variation of allelic bias}{16}{0}{2}
-\beamer@subsectionintoc {2}{2}{Future work}{23}{0}{2}
+\beamer@subsectionintoc {2}{2}{Future work}{32}{0}{2}
