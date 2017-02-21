@@ -267,6 +267,15 @@ plot.all <- function(plots) {
 }
 
 
+plot.all.b <- function(plots) {
+    print(plots$density, position = c(0.0, 0.85, 0.8, 1.0), panel.height = list(0.9, "npc"), more = TRUE)
+    print(plots$ecdf, position = c(0.0, 0.7, 0.8, 0.85), panel.height = list(0.9, "npc"), more = TRUE)
+    print(plots$level.sel.g, position = c(0.0, 0.58, 0.8, 0.73), more = TRUE)
+    print(plots$rank, position = c(0.8, 0.0, 1.0, 0.65), more = TRUE)
+    print(plots$level, position = c(0.0, 0.0, 0.8, 0.65), more = FALSE)
+}
+
+
 # Prepare data Y to ECDF bar plot
 ecdf.bar.prep <- function(Y) {
     E <- lapply(Y, ecdf)

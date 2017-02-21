@@ -128,5 +128,7 @@ There are 5283 genes on this figure but before filtering there were 15584 genes.
 
 <img src="figure/complex-plot-1.png" title="plot of chunk complex-plot" alt="plot of chunk complex-plot" height="1000" />
 
+<img src="figure/complex-plot-b-1.png" title="plot of chunk complex-plot-b" alt="plot of chunk complex-plot-b" height="700px" />
+
 [ifat]: http://katahdin.mssm.edu/ifat/web/cm/home
 [Fig 1]: https://docs.google.com/presentation/d/1YvpA1AJ-zzir1Iw0F25tO9x8gkSAzqaO4fjB7K3zBhE/edit#slide=id.p4
