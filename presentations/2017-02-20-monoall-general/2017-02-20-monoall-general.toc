@@ -1,0 +1,7 @@
+\beamer@endinputifotherversion {3.36pt}
+\beamer@sectionintoc {1}{First part}{2}{0}{1}
+\beamer@subsectionintoc {1}{1}{Imprinting and allelic bias}{2}{0}{1}
+\beamer@subsectionintoc {1}{2}{Imprinted genes in the DLPFC}{10}{0}{1}
+\beamer@sectionintoc {2}{Second part}{16}{0}{2}
+\beamer@subsectionintoc {2}{1}{Explaining variation of allelic bias}{16}{0}{2}
+\beamer@subsectionintoc {2}{2}{Future work}{23}{0}{2}
