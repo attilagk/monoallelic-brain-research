@@ -130,41 +130,8 @@ The basis for the figure is the one in the upper-right panel in the previous plo
 
 ```r
 ref.allele.bias <- read.csv("../../results/ref-nonref-test.csv")$ref.allele.bias[1:50]
-```
-
-```
-## Warning in file(file, "rt"): cannot open file '../../results/ref-nonref-
-## test.csv': No such file or directory
-```
-
-```
-## Error in file(file, "rt"): cannot open the connection
-```
-
-```r
 names(ref.allele.bias) <- read.csv("../../results/ref-nonref-test.csv")$gene[1:50]
-```
-
-```
-## Warning in file(file, "rt"): cannot open file '../../results/ref-nonref-
-## test.csv': No such file or directory
-```
-
-```
-## Error in file(file, "rt"): cannot open the connection
-```
-
-```r
 levels(ref.allele.bias) <- c("X", "0", " ")
-```
-
-```
-## Error in levels(ref.allele.bias) <- c("X", "0", " "): object 'ref.allele.bias' not found
-```
-
-
-```
-## Error in rev(ref.allele.bias): object 'ref.allele.bias' not found
 ```
 
 <img src="figure/top-ranking-genes-1.png" title="plot of chunk top-ranking-genes" alt="plot of chunk top-ranking-genes" height="700px" />

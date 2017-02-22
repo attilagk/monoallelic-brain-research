@@ -1,5 +1,5 @@
-\documentclass{beamer}
-%\documentclass[handout]{beamer}
+\documentclass{beamer} %\documentclass[handout]{beamer}
+
 
 %\includeonlyframes{bsm,title,toc,imprint-mouse-devel,igf2-imprint-evol,sister-disorders,previous-age-studies,our-study,cmc,toc-current,filtering-calling,fitting-models,ll-surface,all-betas,orthogonality,identifiability,anova,betas-cluster,signif-genes,cf-overall-expression,summary,improving-model,p-val,imprinted-brain,chess-lab}
 
@@ -58,7 +58,7 @@
 \begin{frame}{Imprinting and allelic bias}
 \begin{enumerate}
 \item epigenetic mechanism
-\item variation across time and tissue
+\item variation across age and tissue
 \item biological function 
 \end{enumerate}
 \includegraphics[width=0.6\textwidth]{figures/from-others/renfree-2012-fig2.jpg}
@@ -68,13 +68,15 @@
 \end{frame}
 
 \begin{frame}{Increasing evolutionary prevalence}{}
-How many imprinted genes?
-
-\(\approx 100 \; \leftrightarrow \; \approx 1300\) \footnote{Gregg et al 2010}
+{\tiny Smits et al 2008 Nat Genet}
 
 \includegraphics[width=0.7\textwidth]{figures/from-others/smits-et-al-2008-fig5.jpg}
 
-{\tiny Smits et al 2008 Nat Genet}
+\begin{flushright}
+How many imprinted genes?
+
+\(\approx 100 \; \leftrightarrow \; \approx 1300\) \footnote{Gregg et al 2010}
+\end{flushright}
 \end{frame}
 
 % shift away from normal allelic bias in two possible directions => sister disorders
@@ -87,24 +89,24 @@ How many imprinted genes?
 {\tiny Peters 2014}
 \begin{columns}[t]
 \begin{column}{0.5\textwidth}
-{\footnotesize Angelman syndrome}
+{\tiny Angelman syndrome. Boy with a puppet}
 
 \includegraphics<1>[width=0.60\columnwidth]{figures/from-others/boy-with-a-puppet-Giovanni-Francesco-Caroto.jpg}
 
-{\tiny Boy with a Puppet}
+%{\tiny Boy with a Puppet}
 \end{column}
 \begin{column}{0.5\textwidth}
-{\footnotesize Prader-Willi syndrome}
+{\tiny Prader-Willi syndr.  Eugenia ``La Monstrua''}
 
-\includegraphics<1>[width=0.60\columnwidth]{figures/from-others/Eugenia-Martínez-Vallejo-clothed-cropped.jpg}
+\includegraphics<1>[width=0.70\columnwidth]{figures/from-others/Eugenia-Martínez-Vallejo-clothed-cropped.jpg}
 
-{\tiny Eugenia Mart\'{i}nez Vallejo}
+%{\tiny Eugenia Mart\'{i}nez Vallejo}
 \end{column}
 \end{columns}
 
 \end{frame}
 
-\begin{frame}{Dysfunction: psychiatry}{Angelman/Prader-Willi region implicated
+\begin{frame}{Dysfunction: psychology}{Angelman/Prader-Willi region implicated
 in schizophrenia}
 \includegraphics[width=1.0\textwidth]{figures/from-others/sullivan-natrevgenet-2012-fig1b.jpg}
 
@@ -163,7 +165,7 @@ gender
 \end{enumerate}
 \end{frame}
 
-\subsection{Imprinted genes in the DLPFC}
+\subsection{Imprinted genes in the brain}
 
 \begin{frame}{The read count ratio approach}
 
@@ -189,26 +191,17 @@ gender
 \includegraphics[height=0.75\textheight]{figures/by-me/commonmind-rna-seq/commonmind-rna-seq.pdf}
 \end{frame}
 
-\begin{frame}[t]{Distribution across individuals and genes}
-\begin{center}
-\includegraphics[height=0.8\textheight]{figures/2016-07-19-genome-wide-S/complex-plot-b-1.png}
-\end{center}
-\end{frame}
-
-% based on read count and S we filtered genes and called imprinted genes
-% we used the eCDF of S (shades of color) as well as a simple test for biallelic expr (black)
-% 30 genes called imprinted, most previously known, few novel
-\begin{frame}[label=filtering-calling]{Called imprinted genes}
-%{Consistent with \(\approx100\) imprinted genes genome-wide}
+\begin{frame}[t]{\only<1>{Distribution across individuals and genes}\only<2-3>{Called imprinted genes}}
 \begin{columns}[t]
-\begin{column}{0.4\textwidth}
+\begin{column}{0.65\textwidth}
 
-\includegraphics[height=0.85\textheight]{figures/2016-08-01-ifats-filters/top-ranking-genes-2.pdf}
+\includegraphics<1-2>[height=0.8\textheight]{figures/2016-07-19-genome-wide-S/complex-plot-b-1.png}
+\includegraphics<3>[height=0.8\textheight]{figures/2016-08-01-ifats-filters/venn-total-finalf-called-1.pdf}
 \end{column}
 
-\begin{column}{0.6\textwidth}
+\begin{column}{0.35\textwidth}
 
-\includegraphics[height=0.8\textheight]{figures/2016-08-01-ifats-filters/venn-total-finalf-called-1.pdf}
+\includegraphics<2-3>[height=0.80\textheight]{figures/2016-08-01-ifats-filters/top-ranking-genes-1.pdf}
 \end{column}
 \end{columns}
 \end{frame}
@@ -360,7 +353,7 @@ Is it worth? If yes...
 \begin{itemize}
 \visible<2>{\item improve QC: RNA-seq + genotyping}
 \end{itemize}
-\item find better model
+\item find a better model
 \begin{itemize}
 \visible<2>{\item implement inference, validate}
 \end{itemize}
@@ -378,12 +371,12 @@ Is it worth? If yes...
 
 \begin{column}{0.4\textwidth}
 challenges with somatic variants:
-\begin{itemize}
+\begin{enumerate}
 \item detection\\
 {\footnotesize allelic fraction}
 \item prioritization\\{\footnotesize multiple info}
 \item integration\\{\footnotesize germline vars.}
-\end{itemize}
+\end{enumerate}
 \end{column}
 \end{columns}
 \end{frame}

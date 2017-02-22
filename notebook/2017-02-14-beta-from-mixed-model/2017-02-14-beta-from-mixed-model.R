@@ -57,7 +57,7 @@ tval.vp.plot <- function(df, lm = M$fixed.1, ...) {
                panel.abline(h = qt(c(5e-2, 1e-2) / 2, df = d.f, lower.tail = FALSE), lty = 2, lwd = 0.5, col = c("white", "black"))
                panel.text(..., pch = pch, cex = 0.7, col = col)
            },
-           scales = "free", layout = c(4, 4), par.settings = list(background = list(col = "gray")),
+           scales = "free", layout = c(4, 4), par.settings = list(background = list(col = "#909090")),
            key = my.key$coefficient.1,
            ...)
 }
