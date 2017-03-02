@@ -1,0 +1,36 @@
+Hello, World!
+
+```{r}
+library(lme4)
+library(lattice)
+lattice.options(default.args = list(as.table = TRUE))
+lattice.options(default.theme = "standard.theme")
+opts_chunk$set(dpi = 144)
+opts_chunk$set(out.width = "700px")
+opts_chunk$set(dev = c("png", "pdf"))
+```
+
+```{r}
+xyplot(Reaction ~ Days | Subject, data = sleepstudy, layout = c(6, 3))
+```
+
+```{r}
+fm1 <- lmer(Reaction ~ Days + (Days | Subject), sleepstudy)
+fm3 <- lmer(Reaction ~ Days + (1 | Subject), sleepstudy)
+```
+
+The magenta lines represent the fitted line under `fm1`, the green lines under `fm3` (the observed data remain cyan).
+
+```{r}
+df <- cbind(sleepstudy, data.frame(yhat.fm1 = predict(fm1), yhat.fm3 = predict(fm3)))
+xyplot(Reaction + yhat.fm1 + yhat.fm3 ~ Days | Subject, data = df, type = "l", ylab = "Reaction", layout = c(6, 3),
+       auto.key = list(text = c("observed", "predicted by fm1", "predicted by fm3"), points = FALSE, lines = TRUE))
+```
+
+Likelihood ratio test comparing the `fm1` model to its constrained version `fm3`:
+
+```{r}
+anova(fm1, fm3)
+```
+
+Thus the data supports `fm1` highly significantly better than `fm3`.  Based on this we can conclude that the dependence of `Reaction` on `Days` is heterogeneous across `Subject`s.  In other words: the effect of `Days` depends on the `Subject`.
