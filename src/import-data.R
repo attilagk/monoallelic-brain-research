@@ -32,6 +32,7 @@ get.predictors <- function(f.predictors = "~/projects/monoallelic-brain/data/pre
 # Value
 # The adjusted X
 adj.levels.predictors <- function(X) {
+    # an alternative implementation would set contrasts instead of reordering factor levels
     X$Dx <- factor(X$Dx, levels = c("Control", "SCZ", "AFF"))
     X$RNA_batch <- factor(X$RNA_batch, levels = c(LETTERS[1:8], "0"))
     return(X)

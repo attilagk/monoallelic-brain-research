@@ -16,11 +16,6 @@ These shortcomings are corrected here and the corresponding changes in results a
 
 
 ```
-## Stackoverflow is a great place to get help:
-## http://stackoverflow.com/tags/ggplot2.
-```
-
-```
 ## Loading required package: RColorBrewer
 ```
 
