@@ -1,7 +1,5 @@
-Hello, World!
-
 ```{r echo=FALSE}
-library(ggplot2)
+library(lme4)
 library(lattice)
 #library(latticeExtra)
 opts_chunk$set(dpi = 144)
@@ -13,12 +11,115 @@ source("../../src/import-data.R")
 source("../../src/fit-glms.R")
 ```
 
+Selected genes (inferred to be imprinted)
+
 ```{r}
 gene.ids <- unlist(read.csv("../../data/genes.regression.new", as.is = TRUE))
 names(gene.ids) <- gene.ids
-E <- get.predictors()[e.vars]
-Y <- get.readcounts(gene.ids)[gene.ids]
-dat <- do.call(rbind,
-               lapply(gene.ids,
-                      function(g) cbind(y <- Y[[g]], data.frame(Indiv = rownames(y), Gene = g), E)))
+```
+
+Prepare data frame including all `r length(gene.ids)` selected genes
+
+```{r cache=FALSE}
+dat <- merge.data(gene.ids = gene.ids)
+```
+
+## Model selection
+
+The strategy is to start from a model $M1$ that includes the strongest predictor terms based on previous analysis using separately modeling genes, then confirm the significant effect of these terms.  After this, single---mainly technical---terms are added separately (not yet accumulatively) to $M1$ to asses the effect of these.  The terms that improve the fit according to some criterion will be jointly added to $M1$ resulting in $M2$
+
+### Starting model $M1$
+
+```{r cache=FALSE}
+fo <- Q ~ scale(RIN) + (1 | RNA_batch) + (1 | Institution) + (1 | Institution:Individual) + (scale(Age) | Gene)
+(M1 <- lmer(fo, data = dat))
+```
+
+```{r cache=TRUE, message=FALSE, warning=FALSE, echo=TRUE}
+av <- list()
+av$RIN <- anova(update(M1, . ~ . - RIN), M1)
+av$RNA_batch <- anova(update(M1, . ~ . - (1 | RNA_batch)), M1)
+av$Institution <- anova(update(M1, . ~ . - (1 | Institution)), M1)
+av$Individual <- anova(update(M1, . ~ . - (1 | Institution:Individual)), M1)
+av$Age.Gene <- anova(update(M1, . ~ . - (scale(Age) | Gene) + (1 | Gene)), M1)
+av$Gene <- anova(update(M1, . ~ . - (scale(Age) | Gene)), update(M1, . ~ . - (scale(Age) | Gene) + (1 | Gene)))
+```
+
+```{r}
+summarize.anova <- function(av)
+    do.call(rbind, lapply(av, function(x)
+                          data.frame(Delta.AIC = diff(x$AIC),
+                                     Delta.BIC = diff(x$BIC),
+                                     Chisq = x$Chisq[2],
+                                     df = x[["Chi Df"]][2],
+                                     p.Chi = x[["Pr(>Chisq)"]][2])))
+summarize.anova(av)
+```
+
+### Extending $M1$ to $M2$ with technical terms
+
+```{r cache=TRUE, message=FALSE, warning=FALSE, echo=TRUE}
+av.1 <- list()
+# interactions between random-effect factors
+av.1$Gene.Instit <- anova(M1, update(M1, . ~ . + (1 | Gene:Institution)))
+av.1$Gene.RNA_batch <- anova(M1, update(M1, . ~ . + (1 | Gene:RNA_batch)))
+av.1$RNA_batch.Instit <- anova(M1, update(M1, . ~ . + (1 | RNA_batch:Institution)))
+# interactions between random-effect covariates and factors
+# RIN
+av.1$RIN.Instit <- anova(M1, update(M1, . ~ . - (1 | Institution) + (scale(RIN) | Institution)))
+av.1$RIN.RNA_batch <- anova(M1, update(M1, . ~ . - (1 | RNA_batch) + (scale(RIN) | RNA_batch)))
+av.1$RIN.Gene <- anova(M1, update(M1, . ~ . - (1 | Gene) + (scale(RIN) | Gene)))
+# PMI
+av.1$PMI.Instit <- anova(M1, update(M1, . ~ . - (1 | Institution) + (scale(PMI) | Institution)))
+av.1$PMI.RNA_batch <- anova(M1, update(M1, . ~ . - (1 | RNA_batch) + (scale(PMI) | RNA_batch)))
+av.1$PMI.Gene <- anova(M1, update(M1, . ~ . - (1 | Gene) + (scale(PMI) | Gene)))
+av.1$PMI <- anova(M1, update(M1, . ~ . + scale(PMI)))
+# Age revisited
+av.1$Age.Instit <- anova(M1, update(M1, . ~ . - (1 | Institution) + (scale(Age) | Institution)))
+av.1$Age.RNA_batch <- anova(M1, update(M1, . ~ . - (1 | RNA_batch) + (scale(Age) | RNA_batch)))
+av.1$Age <- anova(M1, update(M1, . ~ . + scale(Age)))
+```
+
+```{r}
+summarize.anova(av.1)
+```
+
+### Extending $M2$ with biological terms
+
+```{r cache=TRUE}
+M1b <- update(M1, . ~ . + (1 | Gene:Institution) - (scale(Age) | Gene))
+(M2 <- update(M1b, . ~ . + (scale(Age) + scale(RIN) | Gene)))
+```
+
+```{r cache=TRUE, message=FALSE, warning=FALSE, echo=TRUE}
+av.2 <- list()
+# Ancestry
+av.2$Ances1 <- anova(M2, update(M2, . ~ . + scale(Ancestry.1)))
+av.2$Ances2 <- anova(M2, update(M2, . ~ . + scale(Ancestry.2)))
+av.2$Ances3 <- anova(M2, update(M2, . ~ . + scale(Ancestry.3)))
+av.2$Ances4 <- anova(M2, update(M2, . ~ . + scale(Ancestry.4)))
+av.2$Ances5 <- anova(M2, update(M2, . ~ . + scale(Ancestry.5)))
+av.2$Ances1.Gene <- anova(M2, update(M1b, . ~ . + (scale(Age) + scale(RIN) + scale(Ancestry.1) | Gene)))
+av.2$Ances2.Gene <- anova(M2, update(M1b, . ~ . + (scale(Age) + scale(RIN) + scale(Ancestry.2) | Gene)))
+av.2$Ances3.Gene <- anova(M2, update(M1b, . ~ . + (scale(Age) + scale(RIN) + scale(Ancestry.3) | Gene)))
+av.2$Ances4.Gene <- anova(M2, update(M1b, . ~ . + (scale(Age) + scale(RIN) + scale(Ancestry.4) | Gene)))
+av.2$Ances5.Gene <- anova(M2, update(M1b, . ~ . + (scale(Age) + scale(RIN) + scale(Ancestry.5) | Gene)))
+```
+
+```{r}
+summarize.anova(av.2)
+```
+
+```{r eval=FALSE, cache=TRUE, message=FALSE, warning=FALSE, echo=TRUE}
+av.3 <- list()
+# Gender
+av.3$Gender <- anova(M2, update(M2, . ~ . + Gender))
+av.3$Gender.Gene <- anova(M2, update(M2, . ~ . + (Gender + scale(Age) + scale(RIN) + scale(Ancestry.5) | Gene)))
+# Dx
+av.3$Dx <- anova(M2, update(M2, . ~ . + Dx))
+av.3$Dx.Gene <- anova(M2, update(M1b, . ~ . + (Dx + scale(Age) + scale(RIN) + scale(Ancestry.5) | Gene)))
+```
+
+```{r}
+summarize.anova(av.3)
 ```

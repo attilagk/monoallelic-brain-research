@@ -146,6 +146,15 @@ gene.ids <- c("PEG3", "INPP5F", "SNRPN", "PWAR6", "ZDBF2", "MEG3", "ZNF331", "GR
              "TMEM261P1", "AL132709.5", "RP11-909M7.3", "SNORD116-20", "RP13-487P22.1", "hsa-mir-335", "PWRN1")
 
 
+merge.data <- function(gene.ids = unlist(read.csv("../../data/genes.regression.new", as.is = TRUE)),
+                       Y = get.readcounts(gene.ids)[gene.ids],
+                       E = get.predictors()[scan(file = "../../data/e.vars", what = "character")]) {
+    l <- lapply(gene.ids, function(g)
+                cbind(y <- Y[[g]], data.frame(Individual = rownames(y), Gene = g), E))
+    do.call(rbind, l)
+}
+
+
 # reshape data on (transformed) read counts and predictors to long format
 #
 # Arguments
