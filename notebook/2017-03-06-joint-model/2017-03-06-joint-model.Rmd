@@ -26,18 +26,18 @@ dat <- merge.data(gene.ids = gene.ids)
 
 ## Model selection
 
-The strategy is to start from a model $M1$ that includes the strongest predictor terms based on previous analysis using separately modeling genes, then confirm the significant effect of these terms.  After this, single---mainly technical---terms are added separately (not yet accumulatively) to $M1$ to asses the effect of these.  The terms that improve the fit according to some criterion will be jointly added to $M1$ resulting in $M2$
+The strategy is to start from a model $M1$ that includes the strongest predictor terms based on previous analysis using separately modeling genes, then confirm the significant effect of these terms.  After this, single---mainly technical---terms are added separately (not yet accumulatively) to $M1$ to asses the effect of these.  The terms that improve the fit according to some criterion will be jointly added to $M1$ resulting in $M2$.  A similar procedure involving two sets of biological terms takes model selection further resulting in $M3$ and $M4$.
 
-### Starting model $M1$
+### Starting with model $M1$
 
 ```{r cache=FALSE}
 fo <- Q ~ scale(RIN) + (1 | RNA_batch) + (1 | Institution) + (1 | Institution:Individual) + (scale(Age) | Gene)
 (M1 <- lmer(fo, data = dat))
 ```
 
-```{r cache=TRUE, message=FALSE, warning=FALSE, echo=TRUE}
+```{r cache=TRUE, message=FALSE, warning=TRUE, echo=TRUE}
 av <- list()
-av$RIN <- anova(update(M1, . ~ . - RIN), M1)
+av$RIN <- anova(update(M1, . ~ . - scale(RIN)), M1)
 av$RNA_batch <- anova(update(M1, . ~ . - (1 | RNA_batch)), M1)
 av$Institution <- anova(update(M1, . ~ . - (1 | Institution)), M1)
 av$Individual <- anova(update(M1, . ~ . - (1 | Institution:Individual)), M1)
@@ -56,9 +56,15 @@ summarize.anova <- function(av)
 summarize.anova(av)
 ```
 
+#### Notable results
+
+* every term improves model fit by all three criteria (AIC, BIC, $\chi^2$ test)
+* in particular, *Age* conditioned on *Gene* leads to the 3rd largest improvement (behind *Gene* and *Individual*)
+    * however, this result needs to be confirmed in the context of a more general model 
+
 ### Extending $M1$ to $M2$ with technical terms
 
-```{r cache=TRUE, message=FALSE, warning=FALSE, echo=TRUE}
+```{r cache=TRUE, message=FALSE, warning=TRUE, echo=TRUE}
 av.1 <- list()
 # interactions between random-effect factors
 av.1$Gene.Instit <- anova(M1, update(M1, . ~ . + (1 | Gene:Institution)))
@@ -84,14 +90,22 @@ av.1$Age <- anova(M1, update(M1, . ~ . + scale(Age)))
 summarize.anova(av.1)
 ```
 
+#### Notable results
+
+* interaction of *Gene* with certain other predictors leads to large improvement in fit
+    * this is not surprising since *Gene* has by far the largest impact among other main effects (see above)
+    * but the fact that the improvement is due to accounting for interaction between a biological predictor (*Age*) and some technical predictor (*RIN*, *Insitution*, or *PMI*) is difficult to explain mechanistically
+* *Age* shows essentially no interaction with *Institution* or *RNA_batch*
+    * this is expected: the effect of *Age* should not depend on e.g. the *Institution*; so the result shows the advantage of joint modeling because previous results with separate, gene-based, modeling suggested strong interaction between *Age* and *Institution*
+
 ### Extending $M2$ with biological terms
 
 ```{r cache=TRUE}
 M1b <- update(M1, . ~ . + (1 | Gene:Institution) - (scale(Age) | Gene))
-(M2 <- update(M1b, . ~ . + (scale(Age) + scale(RIN) | Gene)))
+(M2 <- update(M1b, . ~ . + (scale(Age) + scale(RIN) + scale(PMI) | Gene)))
 ```
 
-```{r cache=TRUE, message=FALSE, warning=FALSE, echo=TRUE}
+```{r cache=TRUE, message=FALSE, warning=TRUE, echo=TRUE}
 av.2 <- list()
 # Ancestry
 av.2$Ances1 <- anova(M2, update(M2, . ~ . + scale(Ancestry.1)))
@@ -99,25 +113,50 @@ av.2$Ances2 <- anova(M2, update(M2, . ~ . + scale(Ancestry.2)))
 av.2$Ances3 <- anova(M2, update(M2, . ~ . + scale(Ancestry.3)))
 av.2$Ances4 <- anova(M2, update(M2, . ~ . + scale(Ancestry.4)))
 av.2$Ances5 <- anova(M2, update(M2, . ~ . + scale(Ancestry.5)))
-av.2$Ances1.Gene <- anova(M2, update(M1b, . ~ . + (scale(Age) + scale(RIN) + scale(Ancestry.1) | Gene)))
-av.2$Ances2.Gene <- anova(M2, update(M1b, . ~ . + (scale(Age) + scale(RIN) + scale(Ancestry.2) | Gene)))
-av.2$Ances3.Gene <- anova(M2, update(M1b, . ~ . + (scale(Age) + scale(RIN) + scale(Ancestry.3) | Gene)))
-av.2$Ances4.Gene <- anova(M2, update(M1b, . ~ . + (scale(Age) + scale(RIN) + scale(Ancestry.4) | Gene)))
-av.2$Ances5.Gene <- anova(M2, update(M1b, . ~ . + (scale(Age) + scale(RIN) + scale(Ancestry.5) | Gene)))
+av.2$Ances1.Gene <- anova(M2, update(M1b, . ~ . + (scale(Age) + scale(RIN) + scale(PMI) + scale(Ancestry.1) | Gene)))
+av.2$Ances2.Gene <- anova(M2, update(M1b, . ~ . + (scale(Age) + scale(RIN) + scale(PMI) + scale(Ancestry.2) | Gene)))
+av.2$Ances3.Gene <- anova(M2, update(M1b, . ~ . + (scale(Age) + scale(RIN) + scale(PMI) + scale(Ancestry.3) | Gene)))
+av.2$Ances4.Gene <- anova(M2, update(M1b, . ~ . + (scale(Age) + scale(RIN) + scale(PMI) + scale(Ancestry.4) | Gene)))
+av.2$Ances5.Gene <- anova(M2, update(M1b, . ~ . + (scale(Age) + scale(RIN) + scale(PMI) + scale(Ancestry.5) | Gene)))
 ```
 
 ```{r}
 summarize.anova(av.2)
 ```
 
-```{r eval=FALSE, cache=TRUE, message=FALSE, warning=FALSE, echo=TRUE}
+#### Notable results
+
+* ancestry components are not equally important: only *Ancestry.1* and *Ancestry.3* appears to matter
+* their main effect is weaker than their interaction with *Gene*
+    * this is expected: the effect of *Age* should not depend on e.g. the *Institution*; so the result shows the advantage of joint modeling because previous results with separate, gene-based, modeling suggested strong interaction between *Age* and *Institution*
+
+### Adding more biological terms
+
+Based on the above findings the linear predictor for models $M3$ and $M4$ is defined as below, and $M3$ and $M4$ are fitted:
+
+```{r cache=TRUE}
+(M3 <- update(M1b, . ~ . + (scale(Age) + scale(RIN) + scale(Ancestry.1) | Gene)))
+M4 <- update(M1b, . ~ . + (scale(Age) + scale(RIN) + scale(PMI) +
+                           scale(Ancestry.1) + scale(Ancestry.3) | Gene) +
+             scale(Ancestry.1))
+```
+
+Now add *Gender* and *Dx* either as fixed effect, a random effect (both as main effect and as an interaction term with *Gene*)
+
+```{r eval=TRUE, cache=TRUE, message=FALSE, warning=TRUE, echo=TRUE}
 av.3 <- list()
 # Gender
-av.3$Gender <- anova(M2, update(M2, . ~ . + Gender))
-av.3$Gender.Gene <- anova(M2, update(M2, . ~ . + (Gender + scale(Age) + scale(RIN) + scale(Ancestry.5) | Gene)))
+av.3$Gender.fix <- anova(M3, update(M3, . ~ . + Gender))
+av.3$Gender.ran <- anova(M3, m <- update(M3, . ~ . + (1 | Gender)))
+av.3$Gender.Gene <- anova(m, update(m, . ~ . + (1 | Gender:Gene))
+#av.3$Gender.Gene.slope <- # factor playing the role of slope doesn't make much sense
+#    anova(M3, update(M1b, . ~ . + (Gender + scale(Age) + scale(RIN) + scale(Ancestry.1) | Gene)))
 # Dx
-av.3$Dx <- anova(M2, update(M2, . ~ . + Dx))
-av.3$Dx.Gene <- anova(M2, update(M1b, . ~ . + (Dx + scale(Age) + scale(RIN) + scale(Ancestry.5) | Gene)))
+av.3$Dx.fix <- anova(M3, update(M3, . ~ . + Dx))
+av.3$Dx.ran <- anova(M3, m <- update(M3, . ~ . + (1 | Dx)))
+av.3$Dx.Gene <- anova(m, update(m, . ~ . + (1 | Dx:Gene))
+#av.3$Dx.Gene.slope <- # factor playing the role of slope doesn't make much sense
+#    anova(M3, update(M1b, . ~ . + (Dx + scale(Age) + scale(RIN) + scale(Ancestry.1) | Gene)))
 ```
 
 ```{r}

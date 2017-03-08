@@ -1,0 +1,53 @@
+Hello, World!
+
+```{r echo=FALSE}
+library(lme4)
+library(lattice)
+#library(latticeExtra)
+opts_chunk$set(dpi = 144)
+opts_chunk$set(out.width = "700px")
+opts_chunk$set(dev = c("png", "pdf"))
+lattice.options(default.args = list(as.table = TRUE))
+lattice.options(default.theme = "standard.theme")
+source("../../src/import-data.R")
+source("../../src/fit-glms.R")
+```
+
+```{r}
+gene.ids <- unlist(read.csv("../../data/genes.regression.new", as.is = TRUE))
+names(gene.ids) <- gene.ids
+```
+
+Prepare data frame including all `r length(gene.ids)` selected genes
+
+```{r cache=FALSE}
+dat <- merge.data(gene.ids = gene.ids)
+```
+
+```{r}
+fm.1 <- Q ~ scale(RIN) + (1 | RNA_batch) + (1 | Institution) + (1 | Institution:Individual) + (scale(Age) | Gene)
+fm.3 <- Q ~ scale(RIN) + (1 | RNA_batch) + (1 | Institution) + (1 | Institution:Individual) + (1 | Gene:Institution) + (scale(Age) + scale(RIN) + scale(PMI) + scale(Ancestry.1) + scale(Ancestry.3) | Gene) + Ancestry.1
+```
+
+```{r cache=TRUE}
+M1 <- list()
+M1$unlm.Q <- lmer(fm.1, data = dat)
+M1$wnlm.Q <- lmer(fm.1, data = dat, weights = N)
+M1$unlm.S <- lmer(reformulate(as.character(fm.1)[3], response = "S"), data = dat)
+M1$logi.S <- glmer(reformulate(as.character(fm.1)[3], response = "H.N"), data = dat, family = binomial)
+```
+
+```{r}
+get.diagnostic.data <- function(lM, sel.col = 2:6) {
+    helper <- function(x)
+        cbind(data.frame(Residual = residuals(m <- lM[[x]], type = "deviance"), Fitted.value = predict(m), Family = x),
+              model.frame(m)[sel.col])
+    l <- lapply(names(lM), helper)
+    do.call(rbind, l)
+}
+```
+
+```{r}
+diag.M1 <- get.diagnostic.data(M1)
+qqmath(~ Residual | Family, data = diag.M1) 
+```

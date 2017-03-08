@@ -146,12 +146,22 @@ gene.ids <- c("PEG3", "INPP5F", "SNRPN", "PWAR6", "ZDBF2", "MEG3", "ZNF331", "GR
              "TMEM261P1", "AL132709.5", "RP11-909M7.3", "SNORD116-20", "RP13-487P22.1", "hsa-mir-335", "PWRN1")
 
 
+# merge read counts with data on predictors into a data frame for fitting
+#
+# Arguments
+# gene.ids: the ids for selected genes
+# Y: read count data
+# E: the wide format predictor data resulted from a call to the get.predictors function
+#
+# Value: a data frame, which contains also the 2 column matrix element H.N for
+# fitting a logistic regression model
 merge.data <- function(gene.ids = unlist(read.csv("../../data/genes.regression.new", as.is = TRUE)),
                        Y = get.readcounts(gene.ids)[gene.ids],
                        E = get.predictors()[scan(file = "../../data/e.vars", what = "character")]) {
     l <- lapply(gene.ids, function(g)
                 cbind(y <- Y[[g]], data.frame(Individual = rownames(y), Gene = g), E))
-    do.call(rbind, l)
+    df <- do.call(rbind, l)
+    cbind(data.frame(H.N = I(with(df, matrix(c(H, N), ncol = 2)))), df)
 }
 
 
