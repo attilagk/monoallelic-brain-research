@@ -130,9 +130,9 @@ summarize.anova(av.2)
 * their main effect is weaker than their interaction with *Gene*
     * this is expected: the effect of *Age* should not depend on e.g. the *Institution*; so the result shows the advantage of joint modeling because previous results with separate, gene-based, modeling suggested strong interaction between *Age* and *Institution*
 
-### Adding more biological terms
+### Model $M3$ and $M4$
 
-Based on the above findings the linear predictor for models $M3$ and $M4$ is defined as below, and $M3$ and $M4$ are fitted:
+Based on the above findings the linear predictor for model $M3$ and $M4$ is defined as below, and $M3$ and $M4$ are fitted:
 
 ```{r cache=TRUE}
 (M3 <- update(M1b, . ~ . + (scale(Age) + scale(RIN) + scale(Ancestry.1) | Gene)))
@@ -141,6 +141,10 @@ M4 <- update(M1b, . ~ . + (scale(Age) + scale(RIN) + scale(PMI) +
              scale(Ancestry.1))
 ```
 
+While the fitting of the more simple model $M3$ converges that of the more complex $M4$ does not.  Therefore $M3$ will be used for subsequent analysis.
+
+### Adding more biological terms
+
 Now add *Gender* and *Dx* either as fixed effect, a random effect (both as main effect and as an interaction term with *Gene*)
 
 ```{r eval=TRUE, cache=TRUE, message=FALSE, warning=TRUE, echo=TRUE}
@@ -148,17 +152,43 @@ av.3 <- list()
 # Gender
 av.3$Gender.fix <- anova(M3, update(M3, . ~ . + Gender))
 av.3$Gender.ran <- anova(M3, m <- update(M3, . ~ . + (1 | Gender)))
-av.3$Gender.Gene <- anova(m, update(m, . ~ . + (1 | Gender:Gene))
-#av.3$Gender.Gene.slope <- # factor playing the role of slope doesn't make much sense
-#    anova(M3, update(M1b, . ~ . + (Gender + scale(Age) + scale(RIN) + scale(Ancestry.1) | Gene)))
+av.3$Gender.Gene <- anova(m, update(m, . ~ . + (1 | Gender:Gene)))
 # Dx
 av.3$Dx.fix <- anova(M3, update(M3, . ~ . + Dx))
 av.3$Dx.ran <- anova(M3, m <- update(M3, . ~ . + (1 | Dx)))
-av.3$Dx.Gene <- anova(m, update(m, . ~ . + (1 | Dx:Gene))
-#av.3$Dx.Gene.slope <- # factor playing the role of slope doesn't make much sense
-#    anova(M3, update(M1b, . ~ . + (Dx + scale(Age) + scale(RIN) + scale(Ancestry.1) | Gene)))
+av.3$Dx.Gene <- anova(m, update(m, . ~ . + (1 | Dx:Gene)))
 ```
+
+Note that adding *Gender* and *Dx* in the following way is not the proper way because they are factors.  Moreover, the fit does not converge.
+
+```{r eval=TRUE, cache=TRUE, message=FALSE, warning=TRUE, echo=TRUE}
+# factor playing the role of slope doesn't make much sense
+invisible(update(M1b, . ~ . + (Gender + scale(Age) + scale(RIN) + scale(Ancestry.1) | Gene)))
+```
+
+#### Results
 
 ```{r}
 summarize.anova(av.3)
 ```
+
+Only *Gender*---but not *Dx*---improves the fit a little and only in interaction with *Gene*
+
+### An important result
+
+```{r cache=TRUE}
+av.4 <- anova(update(M1b, . ~ . + (scale(RIN) + scale(Ancestry.1) | Gene)),
+              update(M1b, . ~ . + (scale(Age) + scale(RIN) + scale(Ancestry.1) | Gene)))
+summarize.anova(list(av.4))
+```
+
+### Saving model formulas
+
+Save all model formulas in the `results` directory
+
+```{r}
+write.csv(data.frame(lapply(list(M1 = M1, M1b = M1b, M2 = M2, M3 = M3, M4 = M4),
+                            function(x) as.character(formula(x)))),
+          file = "../../results/M-formulas.csv", row.names = FALSE)
+```
+

@@ -1,4 +1,7 @@
 
+```
+## Loading required package: Matrix
+```
 
 Selected genes (inferred to be imprinted)
 
@@ -240,26 +243,45 @@ summarize.anova(av.2)
 * their main effect is weaker than their interaction with *Gene*
     * this is expected: the effect of *Age* should not depend on e.g. the *Institution*; so the result shows the advantage of joint modeling because previous results with separate, gene-based, modeling suggested strong interaction between *Age* and *Institution*
 
+### Model $M3$ and $M4$
+
+Based on the above findings the linear predictor for model $M3$ and $M4$ is defined as below, and $M3$ and $M4$ are fitted:
+
 
 ```r
-M3 <- update(M1b, . ~ . + (scale(Age) + scale(RIN) + scale(PMI) +
+(M3 <- update(M1b, . ~ . + (scale(Age) + scale(RIN) + scale(Ancestry.1) | Gene)))
+```
+
+```
+## Linear mixed model fit by REML ['lmerMod']
+## Formula: 
+## Q ~ scale(RIN) + (1 | RNA_batch) + (1 | Institution) + (1 | Institution:Individual) +  
+##     (1 | Gene:Institution) + (scale(Age) + scale(RIN) + scale(Ancestry.1) |  
+##     Gene)
+##    Data: dat
+## REML criterion at convergence: 19956.89
+## Random effects:
+##  Groups                 Name              Std.Dev. Corr             
+##  Institution:Individual (Intercept)       0.32862                   
+##  Gene:Institution       (Intercept)       0.19890                   
+##  Gene                   (Intercept)       1.22187                   
+##                         scale(Age)        0.06926  -0.44            
+##                         scale(RIN)        0.17915   0.20 -0.75      
+##                         scale(Ancestry.1) 0.08387   0.24  0.04  0.10
+##  RNA_batch              (Intercept)       0.16599                   
+##  Institution            (Intercept)       0.21712                   
+##  Residual                                 0.75881                   
+## Number of obs: 8213, groups:  
+## Institution:Individual, 579; Gene:Institution, 90; Gene, 30; RNA_batch, 9; Institution, 3
+## Fixed Effects:
+## (Intercept)   scale(RIN)  
+##     3.14180      0.05632
+```
+
+```r
+M4 <- update(M1b, . ~ . + (scale(Age) + scale(RIN) + scale(PMI) +
                            scale(Ancestry.1) + scale(Ancestry.3) | Gene) +
-             Ancestry.1)
-```
-
-
-```r
-av.3 <- list()
-# Gender
-av.3$Gender <- anova(M3, update(M3, . ~ . + Gender))
-av.3$Gender.Gene <-
-    anova(M3, update(M1b, . ~ . + (Gender + scale(Age) + scale(RIN) + scale(PMI) +
-                                   scale(Ancestry.1) + scale(Ancestry.3) | Gene) + Ancestry.1))
-```
-
-```
-## Warning in commonArgs(par, fn, control, environment()): maxfun < 10 *
-## length(par)^2 is not recommended.
+             scale(Ancestry.1))
 ```
 
 ```
@@ -273,46 +295,45 @@ av.3$Gender.Gene <-
 ## eigenvalues
 ```
 
-```
-## Warning in commonArgs(par, fn, control, environment()): maxfun < 10 *
-## length(par)^2 is not recommended.
-```
+While the fitting of the more simple model $M3$ converges that of the more complex $M4$ does not.  Therefore $M3$ will be used for subsequent analysis.
+
+### Adding more biological terms
+
+Now add *Gender* and *Dx* either as fixed effect, a random effect (both as main effect and as an interaction term with *Gene*)
+
 
 ```r
+av.3 <- list()
+# Gender
+av.3$Gender.fix <- anova(M3, update(M3, . ~ . + Gender))
+av.3$Gender.ran <- anova(M3, m <- update(M3, . ~ . + (1 | Gender)))
+av.3$Gender.Gene <- anova(m, update(m, . ~ . + (1 | Gender:Gene)))
 # Dx
-av.3$Dx <- anova(M3, update(M3, . ~ . + Dx))
-av.3$Dx.Gene <-
-    anova(M3, update(M1b, . ~ . + (Dx + scale(Age) + scale(RIN) + scale(PMI) +
-                                   scale(Ancestry.1) + scale(Ancestry.3) | Gene) + Ancestry.1))
+av.3$Dx.fix <- anova(M3, update(M3, . ~ . + Dx))
+av.3$Dx.ran <- anova(M3, m <- update(M3, . ~ . + (1 | Dx)))
+av.3$Dx.Gene <- anova(m, update(m, . ~ . + (1 | Dx:Gene)))
 ```
 
-```
-## Warning in commonArgs(par, fn, control, environment()): maxfun < 10 *
-## length(par)^2 is not recommended.
-```
+Note that adding *Gender* and *Dx* in the following way is not the proper way because they are factors.  Moreover, the fit does not converge.
 
-```
-## Warning in optwrap(optimizer, devfun, getStart(start, rho$lower, rho$pp), :
-## convergence code 1 from bobyqa: bobyqa -- maximum number of function
-## evaluations exceeded
+
+```r
+# factor playing the role of slope doesn't make much sense
+invisible(update(M1b, . ~ . + (Gender + scale(Age) + scale(RIN) + scale(Ancestry.1) | Gene)))
 ```
 
 ```
 ## Warning in checkConv(attr(opt, "derivs"), opt$par, ctrl = control
-## $checkConv, : Model failed to converge with max|grad| = 0.012066 (tol =
-## 0.002, component 1)
+## $checkConv, : unable to evaluate scaled gradient
 ```
 
 ```
-## Warning in commonArgs(par, fn, control, environment()): maxfun < 10 *
-## length(par)^2 is not recommended.
+## Warning in checkConv(attr(opt, "derivs"), opt$par, ctrl = control
+## $checkConv, : Model failed to converge: degenerate Hessian with 1 negative
+## eigenvalues
 ```
 
-```
-## Warning in optwrap(optimizer, devfun, x@theta, lower = x@lower, calc.derivs
-## = TRUE, : convergence code 1 from bobyqa: bobyqa -- maximum number of
-## function evaluations exceeded
-```
+#### Results
 
 
 ```r
@@ -320,9 +341,46 @@ summarize.anova(av.3)
 ```
 
 ```
-##              Delta.AIC  Delta.BIC      Chisq df      p.Chi
-## Gender       0.9596084   7.973082  1.0403916  1 0.30773042
-## Gender.Gene -1.9494366  47.144878 15.9494366  7 0.02558235
-## Dx           3.8394762  17.866423  0.1605238  2 0.92287461
-## Dx.Gene     17.6465272 122.848630 12.3534728 15 0.65210083
+##              Delta.AIC Delta.BIC        Chisq df       p.Chi
+## Gender.fix   1.0152936  8.028767 9.847064e-01  1 0.321039630
+## Gender.ran   2.0000000  9.013474 7.494236e-10  1 0.999978157
+## Gender.Gene -5.7961247  1.217349 7.796125e+00  1 0.005235841
+## Dx.fix       3.8933639 17.920311 1.066361e-01  2 0.948078426
+## Dx.ran       2.0000000  9.013474 1.189619e-09  1 0.999972480
+## Dx.Gene      0.4529866  7.466460 1.547013e+00  1 0.213576883
 ```
+
+Only *Gender*---but not *Dx*---improves the fit a little and only in interaction with *Gene*
+
+### An important result
+
+
+```r
+av.4 <- anova(update(M1b, . ~ . + (scale(RIN) + scale(Ancestry.1) | Gene)),
+              update(M1b, . ~ . + (scale(Age) + scale(RIN) + scale(Ancestry.1) | Gene)))
+```
+
+```
+## refitting model(s) with ML (instead of REML)
+```
+
+```r
+summarize.anova(list(av.4))
+```
+
+```
+##   Delta.AIC Delta.BIC   Chisq df        p.Chi
+## 1  -23.4036  4.650299 31.4036  4 2.532556e-06
+```
+
+### Saving model formulas
+
+Save all model formulas in the `results` directory
+
+
+```r
+write.csv(data.frame(lapply(list(M1 = M1, M1b = M1b, M2 = M2, M3 = M3, M4 = M4),
+                            function(x) as.character(formula(x)))),
+          file = "../../results/M-formulas.csv", row.names = FALSE)
+```
+
