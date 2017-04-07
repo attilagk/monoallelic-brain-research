@@ -71,6 +71,8 @@ my.key <-
              list(columns = 5, text = list(paste0("(", seq_along(levels(cf$coefficient)), ") ", levels(cf$coefficient)), cex = 0.7)),
          coefficient.1 =
              list(columns = 4, text = list(c(paste0("(", seq_along(levels(cf$coefficient)[-1]), ") ", levels(cf$coefficient)[-1]), "signif.level 0.05", "signif.level 0.01"), cex = 0.7, col = c(expand.x.preds2coefs(rnb, M[[1]][[1]]), "white", "black"))),
+         coefficient.2 =
+             list(columns = 3, text = list(c(paste0("(", seq_along(levels(cf$coefficient)[-1]), ") ", levels(cf$coefficient)[-1]), "signif.level 0.05", "signif.level 0.01"), cex = 0.7, col = c(expand.x.preds2coefs(rnb, M[[1]][[1]]), "white", "black"))),
          predictor =
              list(columns = 4, text = list(paste0("(", seq_along(e.vars), ") ", e.vars), cex = 0.7)),
          gene =

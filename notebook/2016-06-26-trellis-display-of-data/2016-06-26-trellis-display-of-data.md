@@ -97,6 +97,13 @@ plot(P$s.age$lattice)
 
 <img src="figure/S-age-1.png" title="plot of chunk S-age" alt="plot of chunk S-age" width="700px" />
 
+
+```r
+update(P$s.age$lattice, layout = c(5, 6))
+```
+
+<img src="figure/S-age-b-1.png" title="plot of chunk S-age-b" alt="plot of chunk S-age-b" width="700px" />
+
 <img src="figure/R-age-gender-1.png" title="plot of chunk R-age-gender" alt="plot of chunk R-age-gender" width="700px" />
 
 <img src="figure/Q-age-gender-1.png" title="plot of chunk Q-age-gender" alt="plot of chunk Q-age-gender" width="700px" />

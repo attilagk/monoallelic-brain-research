@@ -228,6 +228,13 @@ update(tval.vp.plot(tval.vp.data <- tval.vp(m.type = "fixed.1", llm = M), xlab =
 
 <img src="figure/tval-varpart-fixed-present-1.png" title="plot of chunk tval-varpart-fixed-present" alt="plot of chunk tval-varpart-fixed-present" width="700px" />
 
+
+```r
+update(tval.vp.plot(tval.vp.data <- tval.vp(m.type = "fixed.1", llm = M), xlab = my.xlab, ylab = my.ylab)[c(3, 6, 14, 15, 24, 30)], layout = c(3, 2), key = my.key$coefficient.2)
+```
+
+<img src="figure/tval-varpart-fixed-present-b-1.png" title="plot of chunk tval-varpart-fixed-present-b" alt="plot of chunk tval-varpart-fixed-present-b" width="700px" />
+
 ### Introducing random effects
 
 The above results were obtained under unlm.Q, a fixed effects model.  Turning all categorical (factor-type) predictors from fixed into random effects results in the *mixed.1* mixed effects model.  The next plot compares t-statistics to fractional variance under this model.  Similar trend emerges as for the fixed effects model above but the positive correlation between $T_{pg}$ and $\hat{\sigma}^2_{vg} / \hat{\sigma}^2_\mathrm{total}$ is stronger.  This is partly due to removing multilevel factors, like RNA\_batch, from the comparison (since their effects are modeled here as random) and partly to Age following more closely the trend displayed by other covariates.  Subsequent plots will explore this in more detail.
