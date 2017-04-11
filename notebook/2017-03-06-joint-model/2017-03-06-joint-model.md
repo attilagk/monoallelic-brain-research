@@ -72,17 +72,17 @@ summarize.anova <- function(av)
                                      Chisq = x$Chisq[2],
                                      df = x[["Chi Df"]][2],
                                      p.Chi = x[["Pr(>Chisq)"]][2])))
-summarize.anova(av)
+signif(summarize.anova(av), digits = 3)
 ```
 
 ```
-##               Delta.AIC    Delta.BIC      Chisq df         p.Chi
-## RIN            -8.03994    -1.026466   10.03994  1  1.531822e-03
-## RNA_batch     -25.69463   -18.681158   27.69463  1  1.420564e-07
-## Institution   -61.18655   -54.173078   63.18655  1  1.880277e-15
-## Individual   -453.77916  -446.765691  455.77916  1 3.984989e-101
-## Age.Gene     -192.22905  -178.202103  196.22905  2  2.451338e-43
-## Gene        -8700.32456 -8693.311084 8702.32456  1  0.000000e+00
+##             Delta.AIC Delta.BIC  Chisq df     p.Chi
+## RIN             -8.04     -1.03   10.0  1  1.53e-03
+## RNA_batch      -25.70    -18.70   27.7  1  1.42e-07
+## Institution    -61.20    -54.20   63.2  1  1.88e-15
+## Individual    -454.00   -447.00  456.0  1 3.98e-101
+## Age.Gene      -192.00   -178.00  196.0  2  2.45e-43
+## Gene         -8700.00  -8690.00 8700.0  1  0.00e+00
 ```
 
 #### Notable results
@@ -126,24 +126,24 @@ av.1$Age <- anova(M1, update(M1, . ~ . + scale(Age)))
 
 
 ```r
-summarize.anova(av.1)
+signif(summarize.anova(av.1), digits = 3)
 ```
 
 ```
-##                     Delta.AIC   Delta.BIC        Chisq df        p.Chi
-## Gene.Instit      -136.4699800 -129.456506 138.46997998  1 5.751836e-32
-## Gene.RNA_batch      0.2955551    7.309029   1.70444492  1 1.917077e-01
-## RNA_batch.Instit    2.0000000    9.013474   0.00000000  1 1.000000e+00
-## RIN.Instit          2.0907634   16.117711   1.90923656  2 3.849591e-01
-## RIN.RNA_batch       3.3818324   17.408780   0.61816755  2 7.341193e-01
-## RIN.Gene         -326.0009803 -304.960560 332.00098032  3 1.176834e-71
-## PMI.Instit          3.6657565   17.692704   0.33424348  2 8.460966e-01
-## PMI.RNA_batch       1.9699532   15.996900   2.03004677  2 3.623940e-01
-## PMI.Gene          -11.3562482    9.684172  17.35624821  3 5.969749e-04
-## PMI                 1.9095940    8.923068   0.09040597  1 7.636617e-01
-## Age.Instit          1.1806642   15.207611   2.81933578  2 2.442244e-01
-## Age.RNA_batch       2.3483136   16.375261   1.65168640  2 4.378656e-01
-## Age                 1.7975291    8.811003   0.20247091  1 6.527338e-01
+##                  Delta.AIC Delta.BIC    Chisq df    p.Chi
+## Gene.Instit       -136.000   -129.00 138.0000  1 5.75e-32
+## Gene.RNA_batch       0.296      7.31   1.7000  1 1.92e-01
+## RNA_batch.Instit     2.000      9.01   0.0000  1 1.00e+00
+## RIN.Instit           2.090     16.10   1.9100  2 3.85e-01
+## RIN.RNA_batch        3.380     17.40   0.6180  2 7.34e-01
+## RIN.Gene          -326.000   -305.00 332.0000  3 1.18e-71
+## PMI.Instit           3.670     17.70   0.3340  2 8.46e-01
+## PMI.RNA_batch        1.970     16.00   2.0300  2 3.62e-01
+## PMI.Gene           -11.400      9.68  17.4000  3 5.97e-04
+## PMI                  1.910      8.92   0.0904  1 7.64e-01
+## Age.Instit           1.180     15.20   2.8200  2 2.44e-01
+## Age.RNA_batch        2.350     16.40   1.6500  2 4.38e-01
+## Age                  1.800      8.81   0.2020  1 6.53e-01
 ```
 
 #### Notable results
@@ -220,21 +220,21 @@ av.2$Ances5.Gene <- anova(M2, update(M1b, . ~ . + (scale(Age) + scale(RIN) + sca
 
 
 ```r
-summarize.anova(av.2)
+signif(summarize.anova(av.2), digits = 3)
 ```
 
 ```
-##               Delta.AIC  Delta.BIC       Chisq df        p.Chi
-## Ances1       -0.2462851   6.767188  2.24628508  1 1.339356e-01
-## Ances2        1.6684863   8.681960  0.33151372  1 5.647691e-01
-## Ances3        1.9168282   8.930302  0.08317178  1 7.730443e-01
-## Ances4        0.8643438   7.877817  1.13565620  1 2.865721e-01
-## Ances5        1.9590356   8.972509  0.04096436  1 8.396067e-01
-## Ances1.Gene -56.7626802 -21.695312 66.76268018  5 4.826726e-13
-## Ances2.Gene   5.0936690  40.161037  4.90633097  5 4.274184e-01
-## Ances3.Gene  -3.7489132  31.318455 13.74891321  5 1.728553e-02
-## Ances4.Gene   7.8501326  42.917500  2.14986743  5 8.280435e-01
-## Ances5.Gene   9.0735245  44.140892  0.92647551  5 9.682754e-01
+##             Delta.AIC Delta.BIC   Chisq df    p.Chi
+## Ances1         -0.246      6.77  2.2500  1 1.34e-01
+## Ances2          1.670      8.68  0.3320  1 5.65e-01
+## Ances3          1.920      8.93  0.0832  1 7.73e-01
+## Ances4          0.864      7.88  1.1400  1 2.87e-01
+## Ances5          1.960      8.97  0.0410  1 8.40e-01
+## Ances1.Gene   -56.800    -21.70 66.8000  5 4.83e-13
+## Ances2.Gene     5.090     40.20  4.9100  5 4.27e-01
+## Ances3.Gene    -3.750     31.30 13.7000  5 1.73e-02
+## Ances4.Gene     7.850     42.90  2.1500  5 8.28e-01
+## Ances5.Gene     9.070     44.10  0.9260  5 9.68e-01
 ```
 
 #### Notable results
@@ -337,17 +337,17 @@ invisible(update(M1b, . ~ . + (Gender + scale(Age) + scale(RIN) + scale(Ancestry
 
 
 ```r
-summarize.anova(av.3)
+signif(summarize.anova(av.3), digits = 3)
 ```
 
 ```
-##              Delta.AIC Delta.BIC        Chisq df       p.Chi
-## Gender.fix   1.0152936  8.028767 9.847064e-01  1 0.321039630
-## Gender.ran   2.0000000  9.013474 7.494236e-10  1 0.999978157
-## Gender.Gene -5.7961247  1.217349 7.796125e+00  1 0.005235841
-## Dx.fix       3.8933639 17.920311 1.066361e-01  2 0.948078426
-## Dx.ran       2.0000000  9.013474 1.189619e-09  1 0.999972480
-## Dx.Gene      0.4529866  7.466460 1.547013e+00  1 0.213576883
+##             Delta.AIC Delta.BIC    Chisq df   p.Chi
+## Gender.fix      1.020      8.03 9.85e-01  1 0.32100
+## Gender.ran      2.000      9.01 7.49e-10  1 1.00000
+## Gender.Gene    -5.800      1.22 7.80e+00  1 0.00524
+## Dx.fix          3.890     17.90 1.07e-01  2 0.94800
+## Dx.ran          2.000      9.01 1.19e-09  1 1.00000
+## Dx.Gene         0.453      7.47 1.55e+00  1 0.21400
 ```
 
 Only *Gender*---but not *Dx*---improves the fit a little and only in interaction with *Gene*
@@ -365,12 +365,12 @@ av.4 <- anova(update(M1b, . ~ . + (scale(RIN) + scale(Ancestry.1) | Gene)),
 ```
 
 ```r
-summarize.anova(list(av.4))
+signif(summarize.anova(list(av.4)), digits = 3)
 ```
 
 ```
-##   Delta.AIC Delta.BIC   Chisq df        p.Chi
-## 1  -23.4036  4.650299 31.4036  4 2.532556e-06
+##   Delta.AIC Delta.BIC Chisq df    p.Chi
+## 1     -23.4      4.65  31.4  4 2.53e-06
 ```
 
 ### Saving model formulas

@@ -1,0 +1,208 @@
+\documentclass[17pt,a1paper]{tikzposter} %Options for format can be included here
+\usepackage{multicol}
+
+\title{Genomic Imprinting in the Human Brain}
+\author{Attila Guly\'{a}s-Kov\'{a}cs, Ifat Keydar and Andy Chess}
+\institute{Departments of~Developmental~\& Regenerative Biology and ~Genetics \& Genomic Sciences}
+%\institute{Department of~Developmental~\& Regenerative Biology; Department of~Genetics \& Genomic Sciences}
+\titlegraphic{\includegraphics{figures/mount-sinai-logo.png}}
+
+ %Choose Layout
+\usetheme{Board}
+
+\begin{document}
+
+ % Title block with title, author, logo, etc.
+\maketitle
+
+\begin{columns}
+\column{0.5}
+\block{The allelic bias of imprinted genes}{
+\large
+\begin{multicols}{2}
+\begin{tikzfigure}[Renfree et al 2012 Philos Trans R Soc Lond B]
+\includegraphics[width=\columnwidth]{figures/renfree-2012-fig2.jpg}
+\end{tikzfigure}
+
+Imprinting is thought to concern some 100 or more genes expressed in various tissues and
+ages, notably much of the embryo, the placenta, and the adult brain.
+Comprehensive mapping between imprinted genes, tissues and ages has
+just begun.  Although the neuro-psychiatric function of imprinted genes is
+unclear, they likely play some role in psychotic spectrum conditions.
+
+Imprinted genes express their maternal and paternal allele asymmetrically; we
+call this \emph{allelic bias}.  Our study infers allelic bias from RNA-seq
+\emph{read count ratio} based on the CommonMind Consortium's data.
+
+We aim at...
+\begin{enumerate}
+\item the number and identity of imprinted genes in the human dorsolateral
+prefrontal cortex
+\item the identification of predictors of allelic bias among age, ancestry, diagnosis of
+schizophrenia or affective spectrum disorder, etc.
+\end{enumerate}
+
+\end{multicols}
+}
+
+\column{0.5}
+\block{RNA-seq read count ratio reports on allelic bias}{
+\includegraphics[width=0.9\colwidth]{figures/commonmind-rna-seq.pdf}
+}
+\end{columns}
+
+\begin{columns}
+\column{0.65}
+\block{Allelic bias across individuals and genes}{
+\begin{multicols}{2}
+\innerblock{across all genes}{
+\begin{center}
+\includegraphics[width=0.95\columnwidth]{figures/complex-plot-c-1.png}
+\end{center}
+The figure shows, for any gene, a large inter-individual variation of
+read count ratio, which originates partly from variation of allelic bias and 
+partly from technical noise.  We scored and ranked genes based on their
+inter-individual distribution function ECDF and inferred genes with highest
+score---among other criteria---to be imprinted.
+}
+\innerblock{across imprinted genes}{
+\begin{center}
+\includegraphics[width=0.95\columnwidth]{figures/S-age-b-1.png}
+\end{center}
+Shown are joint distributions of read count ratio and age for the 30 genes
+we called imprinted, ordered according to gene score.  These distributions
+appear to suggest that allelic bias decreases (e.g.~ZNF331) or increases
+(e.g.~KCNK9) with age or is independent of age (MEST).  However, the 
+interdependence of age and other predictors calls for model-based inference.
+}
+\end{multicols}
+}
+
+\begin{subcolumns}
+\subcolumn{0.7}
+\block{Summary \& conclusions}{
+\large
+\begin{itemize}
+\item at most 100 imprinted genes in the brain, several previously not
+described 
+\item technical noise substantially masks biological predictors of allelic bias
+\item powerful mixed models suggest allelic bias depends on ancestry and age, but not
+schizophrenia; these dependencies, however, vary across genes
+\end{itemize}
+}
+
+\subcolumn{0.3}
+\block{Thanks to...}{
+Chaggai Rosenbluh\\
+Doug Ruderfer\\
+Eva Xia\\
+Gabriel Hoffman\\
+Menachem Fromer\\
+Ravi Sachinanandam
+}
+\end{subcolumns}
+
+\column{0.35}
+\block{Predictors of allelic bias}{
+Illustration of the \emph{fixed effects (left)} and the \emph{mixed (right)}
+regression model
+based on which we inferred which predictor(s) \(\{X_i\}\) the read count ratio
+\(Y\) depends on significantly.
+
+\begin{center}
+\includegraphics[scale=1.5]{figures/obs-simple-general.pdf}
+\includegraphics[scale=1.5]{figures/obs-bayesian.pdf}
+\end{center}
+
+\innerblock{fixed effects model: weak significance}{
+\begin{center}
+\includegraphics[width=0.85\colwidth]{figures/tval-varpart-fixed-present-b-1.pdf}
+\end{center}
+}
+\innerblock{mixed model: age \& ancestry effect}{
+
+\begin{center}
+\normalsize
+\begin{tabular}{ccc}
+term        &   Delta.AIC &        p.Chi \\
+\hline
+\hline
+Age         &   1.80 &  0.653 \\
+\hline
+\textbf{Age.Gene}    & \textbf{-23.4}    &  \textbf{2.53-06} \\
+\hline
+Ances1      &  -0.246 &  0.134 \\
+\textbf{Ances1.Gene} & \textbf{-56.800} &  \textbf{4.83e-13} \\
+\hline
+Gender.fix  &   1.020 &  0.32100 \\
+Gender.ran  &   2.000 &  1.00000 \\
+\textbf{Gender.Gene} &  \textbf{-5.800} &  \textbf{0.00524} \\
+Dx.fix      &   3.890 &  0.94800 \\
+Dx.ran      &   2.000 &  1.00000  \\
+Dx.Gene     &   0.453 &  0.21400 \\
+\hline
+\end{tabular}
+\end{center}
+}
+}
+\end{columns}
+
+\end{document}
+
+
+
+\block{Basic Block}{
+Lorem ipsum dolor sit \coloredbox{amet, consectetur adipiscing elit, sed do
+eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
+veniam,} quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
+commodo consequat. Duis aute irure dolor in reprehenderit in
+\innerblock{voluptate velit}{ esse cillum dolore eu fugiat nulla pariatur.
+Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia
+deserunt mollit anim id est} laborum.}
+\begin{columns}
+
+ % FIRST column
+\column{0.6}% Width set relative to text width
+
+\block{Large Column}{Text\\Text\\Text Text Text}
+\note{Note with default behavior}
+\note[targetoffsetx=12cm, targetoffsety=-1cm, angle=20, rotate=25]
+{Note \\ offset and rotated}
+
+ % First column - second block
+\block{Block titles with enough text will automatically obey spacing requirements }
+{Text\\Text}
+
+ % First column - third block
+\block{Sample Block 4}{T\\E\\S\\T}
+
+ % SECOND column
+\column{0.4}
+ %Second column with first block's top edge aligned with with previous column's top.
+
+ % Second column - first block
+\block[titleleft]{Smaller Column}{Test}
+
+ % Second column - second block
+\block[titlewidthscale=0.6, bodywidthscale=0.8]
+{Variable width title}{Block with smaller width.}
+
+ % Second column - third block
+\block{}{Block with no title}
+
+ % Second column - A collection of blocks in subcolumn environment.
+\begin{subcolumns}
+    \subcolumn{0.27} \block{1}{First block.} \block{2}{Second block}
+    \subcolumn{0.4} \block{Sub-columns}{Sample subblocks\\Second subcolumn}
+    \subcolumn{0.33} \block{4}{Fourth} \block{}{Final Subcolumn block}
+\end{subcolumns}
+
+ % Bottomblock
+\block{Final Block in column}{
+    Sample block.
+}
+\end{columns}
+\block[titleleft, titleoffsetx=2em, titleoffsety=1em, bodyoffsetx=2em,%
+ bodyoffsety=-2cm, roundedcorners=10, linewidth=0mm, titlewidthscale=0.7,%
+ bodywidthscale=0.9, bodyverticalshift=2cm, titleright]
+{Block outside of Columns}{Along with several options enabled}

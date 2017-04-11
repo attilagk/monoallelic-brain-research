@@ -12,6 +12,7 @@ results
 *project.vim
 *.out
 *.png
+*.jpg
 *.pdf
 *.html
 
