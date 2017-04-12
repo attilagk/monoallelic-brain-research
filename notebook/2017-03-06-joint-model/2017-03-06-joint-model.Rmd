@@ -9,6 +9,7 @@ lattice.options(default.args = list(as.table = TRUE))
 lattice.options(default.theme = "standard.theme")
 source("../../src/import-data.R")
 source("../../src/fit-glms.R")
+source("2017-03-06-joint-model.R")
 ```
 
 Selected genes (inferred to be imprinted)
@@ -53,7 +54,7 @@ summarize.anova <- function(av)
                                      Chisq = x$Chisq[2],
                                      df = x[["Chi Df"]][2],
                                      p.Chi = x[["Pr(>Chisq)"]][2])))
-signif(summarize.anova(av), digits = 3)
+print.av(summarize.anova(av))
 ```
 
 #### Notable results
@@ -87,7 +88,7 @@ av.1$Age <- anova(M1, update(M1, . ~ . + scale(Age)))
 ```
 
 ```{r}
-signif(summarize.anova(av.1), digits = 3)
+print.av(summarize.anova(av.1))
 ```
 
 #### Notable results
@@ -121,7 +122,7 @@ av.2$Ances5.Gene <- anova(M2, update(M1b, . ~ . + (scale(Age) + scale(RIN) + sca
 ```
 
 ```{r}
-signif(summarize.anova(av.2), digits = 3)
+print.av(summarize.anova(av.2))
 ```
 
 #### Notable results
@@ -169,7 +170,7 @@ invisible(update(M1b, . ~ . + (Gender + scale(Age) + scale(RIN) + scale(Ancestry
 #### Results
 
 ```{r}
-signif(summarize.anova(av.3), digits = 3)
+print.av(summarize.anova(av.3))
 ```
 
 Only *Gender*---but not *Dx*---improves the fit a little and only in interaction with *Gene*
@@ -179,7 +180,10 @@ Only *Gender*---but not *Dx*---improves the fit a little and only in interaction
 ```{r cache=TRUE}
 av.4 <- anova(update(M1b, . ~ . + (scale(RIN) + scale(Ancestry.1) | Gene)),
               update(M1b, . ~ . + (scale(Age) + scale(RIN) + scale(Ancestry.1) | Gene)))
-signif(summarize.anova(list(av.4)), digits = 3)
+```
+
+```{r}
+print.av(summarize.anova(list(av.4)))
 ```
 
 ### Saving model formulas
