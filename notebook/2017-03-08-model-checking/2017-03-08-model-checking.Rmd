@@ -1,3 +1,8 @@
+---
+layout: default
+tags: [regression, model-checking ]
+---
+
 ```{r echo=FALSE}
 library(lme4)
 library(lattice)
@@ -16,14 +21,14 @@ gene.ids <- unlist(read.csv("../../data/genes.regression.new", as.is = TRUE))
 names(gene.ids) <- gene.ids
 ```
 
-Prepare data frame including all `r length(gene.ids)` selected genes and read formulas (linear predictors) for models like the relatively simple $M1$ and the more complex $M3$:
+Prepare data frame including all `r length(gene.ids)` selected genes and read formulas (linear predictors) for models like the relatively simple $$M1$$ and the more complex $$M3$$:
 
 ```{r cache=FALSE}
 dat <- merge.data(gene.ids = gene.ids)
 fm <- read.csv(file = "../../results/M-formulas.csv", stringsAsFactors = FALSE)
 ```
 
-### Results under $M3$
+### Results under $$M3$$
 
 Fit models; note messages warning problems with convergence (slow convergence) for *wnlm.Q* and *logi.S*
 
@@ -74,9 +79,9 @@ xyplot(sqrt(abs(Residual)) ~ Fitted.value | Family, data = diag.M3, scales = lis
 xyplot(sqrt(abs(Residual)) ~ Fitted.value | Gene, data = diag.M3, subset = Family == "unlm.Q", scales = list(x = list(relation = "free", draw = FALSE)), xlab = arg$xlab, ylab = arg$ylab, main = paste(arg$main, ": unlm.Q"), pch = arg$pch)
 ```
 
-### Results under a simpler model, $M1$
+### Results under a simpler model, $$M1$$
 
-Very similar patterns are seen under $M1$ to those under $M3$.  The fitting of the respective models from the *wnlm.Q* and *logi.S* families again converges with problems.
+Very similar patterns are seen under $$M1$$ to those under $$M3$$.  The fitting of the respective models from the *wnlm.Q* and *logi.S* families again converges with problems.
 
 ```{r cache=TRUE, echo=TRUE}
 M1 <- list()

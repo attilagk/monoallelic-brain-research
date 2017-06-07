@@ -1,0 +1,44 @@
+---
+layout: default
+tags: [ andy, modeling, discussion ]
+---
+
+## Notation
+
+$$S_{ig}$$: the $$S$$ statistic for individual (tissue sample) $$i$$ and gene $$g$$
+
+## Aims
+
+1. dissect technical variation/noise?
+    * yes: hierarchical model (parameters above $$S_{ig}$$)
+    * no: use $$S_{ig}$$
+
+1. remove confounding effects (of institution, RNA quality, population structure)?
+    * yes: multiple regression of $$S_{ig}$$ for **every** gene, not only the known imprinted ones ([fig S3])
+    * no: regression is not necessary
+
+1. allow unexplained variation across individuals within each gene?
+    * yes: add latent variables and/or use hierarchical model
+    * no: use only observed explanatory variables
+
+1. variation across genes in the effect of age and other variables?
+    * yes: hierarchical model
+    * no: only regression
+
+1. number/genome-wide extent of monoallelic expression interesting?
+    * yes: hierarchical model with parameter $$\pi_0$$
+    * no: presumed mono and biallelically expressing genes analyzed separately
+
+1. $$S_{ig}$$ is a biased estimator of the expected fraction of maternal/paternal transcripts; is bias a concern?
+    * yes: directly model read counts at each heterozyg SNP
+    * no: adhere to $$S_{ig}$$
+
+## References
+
+[ms text][ms]
+
+[ms figures][figs]
+
+[ms]: https://docs.google.com/document/d/1cWd4UH98SJR5lihDihC0ZO-C_A1-8MQ5COcixxCLzHE/edit
+[figs]: https://docs.google.com/presentation/d/1YvpA1AJ-zzir1Iw0F25tO9x8gkSAzqaO4fjB7K3zBhE/edit#slide=id.p4
+[fig S3]: https://docs.google.com/presentation/d/1YvpA1AJ-zzir1Iw0F25tO9x8gkSAzqaO4fjB7K3zBhE/edit#slide=id.p18

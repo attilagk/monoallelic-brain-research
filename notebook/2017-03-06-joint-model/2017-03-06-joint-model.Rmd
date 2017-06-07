@@ -1,3 +1,8 @@
+---
+layout: default
+tags: [regression, anova ]
+---
+
 ```{r echo=FALSE}
 library(lme4)
 library(lattice)
@@ -27,9 +32,9 @@ dat <- merge.data(gene.ids = gene.ids)
 
 ## Model selection
 
-The strategy is to start from a model $M1$ that includes the strongest predictor terms based on previous analysis using separately modeling genes, then confirm the significant effect of these terms.  After this, single---mainly technical---terms are added separately (not yet accumulatively) to $M1$ to asses the effect of these.  The terms that improve the fit according to some criterion will be jointly added to $M1$ resulting in $M2$.  A similar procedure involving two sets of biological terms takes model selection further resulting in $M3$ and $M4$.
+The strategy is to start from a model $$M1$$ that includes the strongest predictor terms based on previous analysis using separately modeling genes, then confirm the significant effect of these terms.  After this, single---mainly technical---terms are added separately (not yet accumulatively) to $$M1$$ to asses the effect of these.  The terms that improve the fit according to some criterion will be jointly added to $$M1$$ resulting in $$M2$$.  A similar procedure involving two sets of biological terms takes model selection further resulting in $$M3$$ and $$M4$$.
 
-### Starting with model $M1$
+### Starting with model $$M1$$
 
 ```{r cache=FALSE}
 fo <- Q ~ scale(RIN) + (1 | RNA_batch) + (1 | Institution) + (1 | Institution:Individual) + (scale(Age) | Gene)
@@ -59,11 +64,11 @@ print.av(summarize.anova(av))
 
 #### Notable results
 
-* every term improves model fit by all three criteria (AIC, BIC, $\chi^2$ test)
+* every term improves model fit by all three criteria (AIC, BIC, $$\chi^2$$ test)
 * in particular, *Age* conditioned on *Gene* leads to the 3rd largest improvement (behind *Gene* and *Individual*)
     * however, this result needs to be confirmed in the context of a more general model 
 
-### Extending $M1$ to $M2$ with technical terms
+### Extending $$M1$$ to $$M2$$ with technical terms
 
 ```{r cache=TRUE, message=FALSE, warning=TRUE, echo=TRUE}
 av.1 <- list()
@@ -99,7 +104,7 @@ print.av(summarize.anova(av.1))
 * *Age* shows essentially no interaction with *Institution* or *RNA_batch*
     * this is expected: the effect of *Age* should not depend on e.g. the *Institution*; so the result shows the advantage of joint modeling because previous results with separate, gene-based, modeling suggested strong interaction between *Age* and *Institution*
 
-### Extending $M2$ with biological terms
+### Extending $$M2$$ with biological terms
 
 ```{r cache=TRUE}
 M1b <- update(M1, . ~ . + (1 | Gene:Institution) - (scale(Age) | Gene))
@@ -131,9 +136,9 @@ print.av(summarize.anova(av.2))
 * their main effect is weaker than their interaction with *Gene*
     * this is expected: the effect of *Age* should not depend on e.g. the *Institution*; so the result shows the advantage of joint modeling because previous results with separate, gene-based, modeling suggested strong interaction between *Age* and *Institution*
 
-### Model $M3$ and $M4$
+### Model $$M3$$ and $$M4$$
 
-Based on the above findings the linear predictor for model $M3$ and $M4$ is defined as below, and $M3$ and $M4$ are fitted:
+Based on the above findings the linear predictor for model $$M3$$ and $$M4$$ is defined as below, and $$M3$$ and $$M4$$ are fitted:
 
 ```{r cache=TRUE}
 (M3 <- update(M1b, . ~ . + (scale(Age) + scale(RIN) + scale(Ancestry.1) | Gene)))
@@ -142,7 +147,7 @@ M4 <- update(M1b, . ~ . + (scale(Age) + scale(RIN) + scale(PMI) +
              scale(Ancestry.1))
 ```
 
-While the fitting of the more simple model $M3$ converges that of the more complex $M4$ does not.  Therefore $M3$ will be used for subsequent analysis.
+While the fitting of the more simple model $$M3$$ converges that of the more complex $$M4$$ does not.  Therefore $$M3$$ will be used for subsequent analysis.
 
 ### Adding more biological terms
 

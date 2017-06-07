@@ -1,3 +1,12 @@
+---
+layout: default
+tags: [ regression, model-checking ]
+---
+
+Click [model-checking.csv][model-checking] to download the saved csv files reporting which genes were excluded under the logi.S model.
+
+
+[model-checking]: {{ site.baseurl }}/assets/projects/monoallelic-brain/model-checking.csv
 ```{r echo=FALSE}
 library(ggplot2)
 library(lattice)
@@ -69,10 +78,10 @@ diagnostics <- do.call(rbind, diagnostics)
 
 Two kind of standardized residual is plotted against the quantiles of the standard normal distribution:
 
-1. standardized **d**eviance residual, $r_{\mathrm{d}i}$
-1. a combination $r^\ast_i$ of the standardized deviance and **P**earson residuals (the latter denoted as $r_{\mathrm{p}i}$)
+1. standardized **d**eviance residual, $$r_{\mathrm{d}i}$$
+1. a combination $$r^\ast_i$$ of the standardized deviance and **P**earson residuals (the latter denoted as $$r_{\mathrm{p}i}$$)
 
-The combination is defined as in Statistical Models (A.C. Davison), p477: $r^\ast_i = r_{\mathrm{d}i} + r_{\mathrm{d}i}^{-1} \log (r_{\mathrm{p}i} / r_{\mathrm{d}i})$.  Note that $r_{\mathrm{d}i}$, $r_{\mathrm{d}i}$ and $r^\ast_i$ differ for generalized linear models such as logi.S and logi2.S but for linear models they all equal the usual definition of residual i.e. the observed minus fitted value $y_i - \bar{y}_i$.
+The combination is defined as in Statistical Models (A.C. Davison), p477: $$r^\ast_i = r_{\mathrm{d}i} + r_{\mathrm{d}i}^{-1} \log (r_{\mathrm{p}i} / r_{\mathrm{d}i})$$.  Note that $$r_{\mathrm{d}i}$$, $$r_{\mathrm{d}i}$$ and $$r^\ast_i$$ differ for generalized linear models such as logi.S and logi2.S but for linear models they all equal the usual definition of residual i.e. the observed minus fitted value $$y_i - \bar{y}_i$$.
 
 ```{r qqnorm-unlm-S}
 skip <- ! sapply(M$logi.S, `[[`, "converged")[1:30]
@@ -133,7 +142,7 @@ myqqnorm.demo("PEG3")
 
 ### Homogeneity of error (homoscedasticity)
 
-$\sqrt{r_{\mathrm{d}i}}$ is plotted against the fitted value $\bar{y}_i$.  The black lines correspond to the data passed through a LOESS filter.  All models assume homogeneous error that is no systematic variation with the fitted value. 
+$$\sqrt{r_{\mathrm{d}i}}$$ is plotted against the fitted value $$\bar{y}_i$$.  The black lines correspond to the data passed through a LOESS filter.  All models assume homogeneous error that is no systematic variation with the fitted value. 
 
 ```{r homoscedas-unlm-S}
 myhomoscedas <- function(mtype, skip = FALSE)
@@ -200,16 +209,16 @@ myhomoscedas.demo("PEG3")
 
 ### Influence of individual cases
 
-Here Cook's distance $C_i$ is plotted against $h_{ii} / (1 - h_{ii})$, where the leverage $h_{ii}$ of case (individual) $i$ is the $i$-th element of the diagonal of the (weighted) projection matrix $H$.  The definition is
+Here Cook's distance $$C_i$$ is plotted against $$h_{ii} / (1 - h_{ii})$$, where the leverage $$h_{ii}$$ of case (individual) $$i$$ is the $$i$$-th element of the diagonal of the (weighted) projection matrix $$H$$.  The definition is
 
 $$
 \begin{equation}
 C_i = r_{\mathrm{p}i}^2 \frac{h_{ii}}{p (1 - h_{ii})}
 \end{equation}
 $$
-where $p$ is the number of parameters (see Statistical Models, p477).
+where $$p$$ is the number of parameters (see Statistical Models, p477).
 
-So Cook's distance combines the influence of case $i$ based on both the response (i.e. the residual $r_{\mathrm{p}i}$) and  the predictors (more precisely the leverage $h_{ii}$, which for lm only depends on the predictors and for glm depends also on the response to some degree).  Good fit is indicated by equally low $C_i$ (and $h_{ii}$) for all cases implying that all cases carry equal amount of information on the regression parameters $\beta$.
+So Cook's distance combines the influence of case $$i$$ based on both the response (i.e. the residual $$r_{\mathrm{p}i}$$) and  the predictors (more precisely the leverage $$h_{ii}$$, which for lm only depends on the predictors and for glm depends also on the response to some degree).  Good fit is indicated by equally low $$C_i$$ (and $$h_{ii}$$) for all cases implying that all cases carry equal amount of information on the regression parameters $$\beta$$.
 
 ```{r influence-unlm-S}
 myinfluence <- function(mtype, xlim = c(-0.2, 4), ylim = c(-0.04, 0.8), skip = FALSE, ...)
@@ -265,7 +274,7 @@ myinfluence.demo("PEG3")
 
 ### Identifying outliers
 
-Here the median Cook's distance $C_i$ taken across all 30 genes (with possibly missing values) for any given case/individual $i$ is used to quantify the overall impact of that case.  The top 20 cases are shown under each model. CMC_MSSM_DLPC231 tops the list both under logi.S and wnlm.Q but there are several other cases which rank within the top 20 under both models. Exclusion of some of these might substantially improve model fit for some genes.
+Here the median Cook's distance $$C_i$$ taken across all 30 genes (with possibly missing values) for any given case/individual $$i$$ is used to quantify the overall impact of that case.  The top 20 cases are shown under each model. CMC_MSSM_DLPC231 tops the list both under logi.S and wnlm.Q but there are several other cases which rank within the top 20 under both models. Exclusion of some of these might substantially improve model fit for some genes.
 
 ```{r cooks-dist-logi-S, fig.asp=2/3}
 cooks.d <- lapply(M, function(m)

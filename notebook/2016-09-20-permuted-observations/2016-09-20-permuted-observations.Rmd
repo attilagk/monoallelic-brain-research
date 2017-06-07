@@ -1,8 +1,15 @@
+---
+layout: default
+tags: [ andy, ]
+---
+
+The present analysis investigates more thoroughly the significance of effect on read count ratio of various predictors for various genes.  This is done by random permutations of the observed values of any given predictor and fitting the same models to both observed (unpermuted) and permuted data.  This approach is thought to provide more accurate p-values and confidence intervals (CIs) than deriving those from only the observed data using the standard way based on normal distribution theory (see ch8.3, p371 in A.C Davison: Statistical Models), which is very sensitive to the quality of model fit.  Indeed, a general finding from this analysis is that some genes show more unexpected distribution of CI than others and that variability is explained by diagnostics of model fit for the corresponding genes.  See [model checking]({{ site.baseurl }}{% post_url /projects/monoallelic-brain/2016-09-23-model-checking %}) for details.
+
 ## Introduction
 
-There are several limitations of the (generalized) linear models (e.g. wnlm.R, logi.S) of read count ratio $S$ regressed on predictors such as Age, Institution, etc.  These limitations might lead to bias in the estimation of regression coefficients $\beta_j$, on which some of the main conclusions from this study are based.  In particular, a nonzero $\beta_j$ associated with some predictor indicates either significant effect, or bias.  These are only the basic cases; typically we expect to deal with some combination of the two.
+There are several limitations of the (generalized) linear models (e.g. wnlm.R, logi.S) of read count ratio $$S$$ regressed on predictors such as Age, Institution, etc.  These limitations might lead to bias in the estimation of regression coefficients $$\beta_j$$, on which some of the main conclusions from this study are based.  In particular, a nonzero $$\beta_j$$ associated with some predictor indicates either significant effect, or bias.  These are only the basic cases; typically we expect to deal with some combination of the two.
 
-The analysis herein aims to distinguish between the two basic cases.  This done by randomly re-permuting observations for each predictor (in other words individuals are randomly relabeled for each predictor).  Any significant result associated with the permuted predictor must either come from bias or occur "by chance" with probability 1 less the chosen confidence level for $\beta_j$.
+The analysis herein aims to distinguish between the two basic cases.  This done by randomly re-permuting observations for each predictor (in other words individuals are randomly relabeled for each predictor).  Any significant result associated with the permuted predictor must either come from bias or occur "by chance" with probability 1 less the chosen confidence level for $$\beta_j$$.
 
 ## Calculations
 
@@ -85,7 +92,7 @@ Betas <- aggregate.CI.permut2(perms = perms, gene.ids = gene.ids, e.vars = e.var
 
 ### Single permutation
 
-Both the *unpermuted* and *permuted* data was fit by the models `r sel.models`.  Given the poor fit for wnlm.S and the relatively low power of wnlm.R only wnlm.Q and logi.S associated results are presented in the following four plots. These results are the estimates and CI for $\beta$ at confidence level of $99\%$.  The following observations and conclusions may be noted:
+Both the *unpermuted* and *permuted* data was fit by the models `r sel.models`.  Given the poor fit for wnlm.S and the relatively low power of wnlm.R only wnlm.Q and logi.S associated results are presented in the following four plots. These results are the estimates and CI for $$\beta$$ at confidence level of $$99\%$$.  The following observations and conclusions may be noted:
 
 Under wnlm.Q there are `r sum(is.signif(Betas.Unpermuted$wnlm.Q), na.rm = TRUE)` significant coefficients before and `r sum(is.signif(Betas.Permuted$wnlm.Q), na.rm = TRUE)` after permutation.  In contrast, under logi.S there are `r sum(is.signif(Betas.Unpermuted$logi.S), na.rm = TRUE)` and `r sum(is.signif(Betas.Permuted$logi.S), na.rm = TRUE)` (before and after).  But taking only those coefficients that are significant under *both* models yields `r sum(is.signif(Betas.Unpermuted$logi.S) & is.signif(Betas.Unpermuted$wnlm.Q), na.rm = TRUE)` and `r sum(is.signif(Betas.Permuted$logi.S) & is.signif(Betas.Permuted$wnlm.Q), na.rm = TRUE)` (before and after, respectively).
 
@@ -109,7 +116,7 @@ my.segplot(data = Betas.Permuted$wnlm.Q, main = "Permuted under wnlm.Q")
 
 ### Repeated permutations
 
-The above analysis is extended now in two ways: presenting CI for several, though not all, $\beta_j$ with
+The above analysis is extended now in two ways: presenting CI for several, though not all, $$\beta_j$$ with
 
 1. 20 random permutations
 1. under all selected models `r sel.models`
@@ -119,7 +126,7 @@ Note that genes (panels) are skipped for which the fit did not converge.  In the
 The following general results emerge from the following plots
 
 * in general the distribution of permuted CI tends to be wider than expected
-  * at 99 % confidence level only $20 / 100 = 1/5$ CI per gene per model is expected to fall out side the zero line but the observations show a greater number of such CIs
+  * at 99 % confidence level only $$20 / 100 = 1/5$$ CI per gene per model is expected to fall out side the zero line but the observations show a greater number of such CIs
 * the distribution of permuted CI varies greatly both across models and genes
 * under wnlm.Q and wnlm.R the distributions of CI are somewhat closer to the expected ones than under logi.S
 * the various models tend to agree qualitatively

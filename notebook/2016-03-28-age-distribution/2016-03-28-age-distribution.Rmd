@@ -1,3 +1,7 @@
+---
+layout: default
+---
+
 This is an explanatory, qualitative, analysis on the distribution of the age of death among the studied individuals  from the [CommonMind Consortium](http://commonmind.org/WP/).  The conclusion is that biological variables such as gender and psychiatric state do seem to affect age of death but such qualitative analysis is insufficient to confidently disentangle these biological variables from psychological, social, institutional, and other biomedical variables.
 
 ## Age of death and other variables

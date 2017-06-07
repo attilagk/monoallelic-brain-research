@@ -1,3 +1,35 @@
+---
+layout: default
+tags: [ permutation, p-value, hypothesis-test ]
+---
+
+This analysis extends [permuted observations]({{ site.baseurl }}{% post_url /projects/monoallelic-brain/2016-09-20-permuted-observations %}) to testing hypotheses $$\beta_j=0, \; j=1,...,p$$ for any gene.  This is done by random permutation tests, which provide only approximate p-values in contrast with exact permutation tests (which are unpractical in the present case due to the large number $$n!$$ of all permutations of $$n\approx 500$$ cases).  These approximations more or less agree with the "theoretical" p-values, which are based on the hypothesis that the Studentized $$\hat{\beta}_j$$ follows a t-distribution on $$n - p$$ degrees of freedom (see ch8.3, p371 in A.C Davison: Statistical Models):
+
+$$
+\begin{equation}
+\frac{\hat{\beta}_j - \beta_j}{\sqrt{S^2 \left[ (X^\top X)^{-1} \right]_{jj}}} \sim t_{n - p},
+\end{equation}
+$$
+
+where $$S^2$$ is the unbiased estimate of the error variance (based on the residual sum of squares), and $$X$$ is the design matrix.
+
+The t-distribution comes from the second order assumptions on the error $$\epsilon_i$$ and on their normality; from these the normality of the residuals $$e_i$$ follows.  Thus normality of $$e_i$$ is a prerequisite for deriving p-values using the above theoretical approach.  In agreement with this comparison to the [model checking]({{ site.baseurl }}{% post_url /projects/monoallelic-brain/2016-09-23-model-checking %}) results, in particular the normal Q-Q plots of residuals, reveals that the two approaches to p-value calculation agree as long as the model fits the data well.  Otherwise the t-distribution based approach tends to produce much lower p-values and therefore exaggerate the significance that $$\beta_j\neq 0$$, as seen for several "poorly-fit" genes under the logistic model logi.S.
+
+Click [regr-coefs.csv][regr-coefs.csv] (long format) and [regr-coefs-w.csv][regr-coefs-w.csv] (wide format, annotated with stars) to download the saved csv files reporting both p-values and the estimate for all regression coefficients.  Click
+[signif-gene-effects-wnlm.Q.csv][signif-gene-effects-wnlm.Q.csv], [signif-gene-effects-logi.S.csv][signif-gene-effects-logi.S.csv], [signif-gene-effects-either.csv][signif-gene-effects-either.csv], or [signif-gene-effects-both.csv][signif-gene-effects-both.csv] for a gene-centric list of significant coefficient--gene associations mediating various biological effects, where each list corresponds to a rule of aggregation of p-values across the wnlm.Q and logi.S model types.  For the corresponding coefficient centric lists see
+[signif-effect-genes-wnlm.Q.csv][signif-effect-genes-wnlm.Q.csv], [signif-effect-genes-logi.S.csv][signif-effect-genes-logi.S.csv], [signif-effect-genes-either.csv][signif-effect-genes-either.csv], or [signif-effect-genes-both.csv][signif-effect-genes-both.csv].
+
+
+[regr-coefs.csv]: {{ site.baseurl }}/assets/projects/monoallelic-brain/regr-coefs.csv
+[regr-coefs-w.csv]: {{ site.baseurl }}/assets/projects/monoallelic-brain/regr-coefs-w.csv
+[signif-gene-effects-wnlm.Q.csv]: {{ site.baseurl }}/assets/projects/monoallelic-brain/signif-gene-effects-wnlm.Q.csv
+[signif-gene-effects-logi.S.csv]: {{ site.baseurl }}/assets/projects/monoallelic-brain/signif-gene-effects-logi.S.csv
+[signif-gene-effects-either.csv]: {{ site.baseurl }}/assets/projects/monoallelic-brain/signif-gene-effects-either.csv
+[signif-gene-effects-both.csv]: {{ site.baseurl }}/assets/projects/monoallelic-brain/signif-gene-effects-both.csv
+[signif-effect-genes-wnlm.Q.csv]: {{ site.baseurl }}/assets/projects/monoallelic-brain/signif-effect-genes-wnlm.Q.csv
+[signif-effect-genes-logi.S.csv]: {{ site.baseurl }}/assets/projects/monoallelic-brain/signif-effect-genes-logi.S.csv
+[signif-effect-genes-either.csv]: {{ site.baseurl }}/assets/projects/monoallelic-brain/signif-effect-genes-either.csv
+[signif-effect-genes-both.csv]: {{ site.baseurl }}/assets/projects/monoallelic-brain/signif-effect-genes-both.csv
 ## Preparations
 
 ```{r echo=FALSE, warnings=FALSE}
@@ -43,7 +75,7 @@ system.time(Betas <- aggregate.CI.permut2(perms = perms, gene.ids = gene.ids, e.
 
 ## Results
 
-The expressions above obtain the null distribution of regression coefficients for the selected predictor(s) `r sel.vars` under the selected model(s) `r sel.models` based on `r n.perm` permutations.  Each panel within a plot shows a red vertical zero line of the null hypothesis $\beta_j = 0$, the null distribution as probability density (solid blue line) based on the permutations, and the corresponding p-value (dotted blue line and number on the bottom).
+The expressions above obtain the null distribution of regression coefficients for the selected predictor(s) `r sel.vars` under the selected model(s) `r sel.models` based on `r n.perm` permutations.  Each panel within a plot shows a red vertical zero line of the null hypothesis $$\beta_j = 0$$, the null distribution as probability density (solid blue line) based on the permutations, and the corresponding p-value (dotted blue line and number on the bottom).
 
 ### Under wnlm.Q
 
@@ -91,7 +123,7 @@ beta0densityplot("Ancestry.1", mtype = "logi.S")
 
 ## Comparison to p-values from t-distribution
 
-The calculations and the plot below compare the p-values from the permutations to those based on the theoretical t-distribution of the statistic.  Comparing these results to those from model checking reveals that the two approaches to p-value calculation agree (fall near the gray diagonal on the plots) as long as the model fits the data well.  Otherwise the t-distribution based approach tends to produce much lower p-values and therefore exaggerate the significance that $\beta_j\neq 0$.
+The calculations and the plot below compare the p-values from the permutations to those based on the theoretical t-distribution of the statistic.  Comparing these results to those from model checking reveals that the two approaches to p-value calculation agree (fall near the gray diagonal on the plots) as long as the model fits the data well.  Otherwise the t-distribution based approach tends to produce much lower p-values and therefore exaggerate the significance that $$\beta_j\neq 0$$.
 
 ```{r}
 source("2016-10-03-permutation-test.R")
@@ -205,14 +237,14 @@ both.p.val.w <- cbind(both.p.val.w[2:1], stars, both.p.val.w[-1 * 2:1])
 
 ### Aggregation
 
-Aggregating significant findings over all four combinations of p-value calculation methods $v \in \{\mathrm{t.dist}, \mathrm{perm}\}$ and model types $y \in \{\mathrm{wnlm.Q}, \mathrm{logi.S}\}$ using the following rules
+Aggregating significant findings over all four combinations of p-value calculation methods $$v \in \{\mathrm{t.dist}, \mathrm{perm}\}$$ and model types $$y \in \{\mathrm{wnlm.Q}, \mathrm{logi.S}\}$$ using the following rules
 
-1. under a given model type $y$ take parameter--gene pairs $(j,g) \, | \, y$ for which $p_{jg}^{\mathrm{t.dist}, y} < 0.05 \; \mathrm{AND} \;p_{gj}^{\mathrm{perm}, y} < 0.05$
-1. take $(j,g)$ if in the previous step
-   * either $(j,g) \, | \, \mathrm{wnlm.Q}$ or $(j,g) \, | \, \mathrm{logi.S}$ was taken
-   * both $(j,g) \, | \, \mathrm{wnlm.Q}$ and $(j,g) \, | \, \mathrm{logi.S}$ were taken
+1. under a given model type $$y$$ take parameter--gene pairs $$(j,g) \, \mid \, y$$ for which $$p_{jg}^{\mathrm{t.dist}, y} < 0.05 \; \mathrm{AND} \;p_{gj}^{\mathrm{perm}, y} < 0.05$$
+1. take $$(j,g)$$ if in the previous step
+   * either $$(j,g) \, \mid \, \mathrm{wnlm.Q}$$ or $$(j,g) \, \mid \, \mathrm{logi.S}$$ was taken
+   * both $$(j,g) \, \mid \, \mathrm{wnlm.Q}$$ and $$(j,g) \, \mid \, \mathrm{logi.S}$$ were taken
 
-This means that we have the rules *either* and *both*, which correspond to a less and more stringent condition, respectively.  These result in two corresponding sets of pairs, $\{(j,g) \, | \, \mathrm{either}\} \supseteq \{(j,g) \, | \, \mathrm{both}\}$.  (We also have the rules *wnlm.Q* and *logi.S*, which do not use aggregation over model types, and cannot be ordered in terms of stringency.  Also, $\{(j,g) \, | \, \mathrm{wnlm.Q}\} \nsupseteq \{(j,g) \, | \, \mathrm{logi.S}\}$ and $\{(j,g) \, | \, \mathrm{wnlm.Q}\} \nsubseteq \{(j,g) \, | \, \mathrm{logi.S}\}$ in general).
+This means that we have the rules *either* and *both*, which correspond to a less and more stringent condition, respectively.  These result in two corresponding sets of pairs, $$\{(j,g) \, \mid \, \mathrm{either}\} \supseteq \{(j,g) \, \mid \, \mathrm{both}\}$$.  (We also have the rules *wnlm.Q* and *logi.S*, which do not use aggregation over model types, and cannot be ordered in terms of stringency.  Also, $$\{(j,g) \, \mid \, \mathrm{wnlm.Q}\} \nsupseteq \{(j,g) \, \mid \, \mathrm{logi.S}\}$$ and $$\{(j,g) \, \mid \, \mathrm{wnlm.Q}\} \nsubseteq \{(j,g) \, \mid \, \mathrm{logi.S}\}$$ in general).
 
 The following code implements these rules.
 
@@ -228,7 +260,7 @@ is.signif$either <- with(is.signif, wnlm.Q | logi.S)
 is.signif$both <- with(is.signif, wnlm.Q & logi.S)
 ```
 
-The pairs $\{(j,g) \, | \, x\}$ (where $x \in \{\mathrm{wnlm.Q}, \mathrm{logi.S}, \mathrm{either}, \mathrm{both}\}$) can be presented in two sensible ways: a **gene-centric** and a **coefficient-centric** way.
+The pairs $$\{(j,g) \, \mid \, x\}$$ (where $$x \in \{\mathrm{wnlm.Q}, \mathrm{logi.S}, \mathrm{either}, \mathrm{both}\}$$) can be presented in two sensible ways: a **gene-centric** and a **coefficient-centric** way.
 
 The gene-centric way lists, for each gene, all the significantly associated coefficients:
 

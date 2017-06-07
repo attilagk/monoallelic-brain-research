@@ -1,9 +1,14 @@
+---
+layout: default
+tags: [ regression, experimental-design ]
+---
+
 ## Motivation
 
-Previous analysis used a design matrix $X$ with the following shortcomings
+Previous analysis used a design matrix $$X$$ with the following shortcomings
 
-1. the baseline level of certain factors in $X$ was automatically set; in particular for Dx the baseline level was AFF instead of Control
-1. $X$ contained a pair of nearly collinear predictors RIN and RIN2 (squared)
+1. the baseline level of certain factors in $$X$$ was automatically set; in particular for Dx the baseline level was AFF instead of Control
+1. $$X$$ contained a pair of nearly collinear predictors RIN and RIN2 (squared)
 
 These shortcomings are corrected here and the corresponding changes in results are studied.  The results show that the corrections afford minor improvements:
 

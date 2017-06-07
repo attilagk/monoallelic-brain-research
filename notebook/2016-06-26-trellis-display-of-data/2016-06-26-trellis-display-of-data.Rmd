@@ -1,3 +1,13 @@
+---
+layout: default
+title: "Trellis Display of Data"
+tag: [ multivariate ]
+---
+
+## Goal
+
+Improved graphical overview of data and results pertaining to the recently extended [regression analysis]({{ site.baseurl }}{% post_url /projects/monoallelic-brain/2016-06-17-extending-regression-analysis %}) and [ANOVA]({{ site.baseurl }}{% post_url /projects/monoallelic-brain/2016-06-22-extending-anova %})
+
 ## Prepare data
 
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
@@ -21,7 +31,7 @@ names(gene.ids) <- gene.ids
 Y.long <- reshape.Y2long(gene.ids)
 ```
 
-## Dependence of $S$ on certain variables
+## Dependence of $$S$$ on certain variables
 
 ### Dependence on gene, age, and institution
 
@@ -135,7 +145,7 @@ xyplot(Q ~ Age | Gene, data = Y.long, groups = Gender,
        aspect = "fill", layout = c(6, 5))
 ```
 
-### Dependence on gene, age, and total read count $N$
+### Dependence on gene, age, and total read count $$N$$
 
 ```{r S-age-tot-read-count, dev=c("png", "pdf"), warning=FALSE, echo=FALSE}
 # easy lattice implementation

@@ -1,3 +1,17 @@
+---
+layout: default
+---
+
+## Introduction
+
+This article illustrates some of the properties of the various regression models (logi.S, logi2.S, wnlm.S, wnlm.R, unlm.S, unlm.R) used to fit the Common Mind data as well as the properties of the data themselves
+
+* link function: linear (wnlm.S, wnlm.R, unlm.S, unlm.R) and logit (logi.S, logi2.S)
+* error distribution: normal (wnlm.S, wnlm.R, unlm.S, unlm.R) and binomial (logi.S, logi2.S)
+* heteroscedasticity in data
+
+See also [2016-04-22-glm-for-s-statistic]({{ site.baseurl }}{% post_url /projects/monoallelic-brain/2016-04-22-glm-for-s-statistic %}).
+
 ## Data preparation
 
 ```{r echo=FALSE}
@@ -47,7 +61,7 @@ f.ids$simple[c("WA.8", "WA"), ] <- FALSE # gene aggregates are not needed here
 
 ## Results
 
-The plots below show the first 4 of the 6 combinations (logi.S, logi2.S, wnlm.S, wnlm.R, unlm.S, unlm.R) of some model family and some response variable ($S$ or $R$) that were used to fit data.  unlm.S and unlm.R are not shown because they are so similar to wnlm.S and wnlm.R, respectively.
+The plots below show the first 4 of the 6 combinations (logi.S, logi2.S, wnlm.S, wnlm.R, unlm.S, unlm.R) of some model family and some response variable ($$S$$ or $$R$$) that were used to fit data.  unlm.S and unlm.R are not shown because they are so similar to wnlm.S and wnlm.R, respectively.
 
 For all predicted points of logistic models the total read count (used as the denominator of the binomial error function) was set to be the average of the observed total read counts (given the gene in question).
 

@@ -1,3 +1,9 @@
+---
+layout: default
+tags: [regression, anova ]
+title: Mixed Model Demo Using the lme4 Package
+---
+
 ```{r}
 library(lme4)
 library(lattice)
@@ -22,11 +28,11 @@ Plotting the average reaction time against the test day for each subject...
 xyplot(Reaction ~ Days | Subject, data = sleepstudy, layout = c(6, 3))
 ```
 
-We see that subjects appear to differ in terms of the average reaction time across all days; they also seem to differ in terms of how reaction time depends on the day.  But subjects also share certain characteristics: for most subjects reaction time increases with days, and taken all days together, the average reaction time is somewhere around $300 ms$.  We want to model both the shared characteristics as well as the heterogeneity among subjects.
+We see that subjects appear to differ in terms of the average reaction time across all days; they also seem to differ in terms of how reaction time depends on the day.  But subjects also share certain characteristics: for most subjects reaction time increases with days, and taken all days together, the average reaction time is somewhere around $$300 ms$$.  We want to model both the shared characteristics as well as the heterogeneity among subjects.
 
 ### Models
 
-We consider two models, $M1$ and $M2$.  These are nested: $M1 \supset M2$, meaning that $M1$ is more general while $M2$ is a constrained version of $M1$.  Both models account for two shared characteristics among subjects: the increasing tendency of reaction time with days, captured by parameter $\beta$, as well as the roughly $300ms$ day- and subject-averaged reaction time, $\mu$.  Moreover, both models also account for the subject-specific variation about $\mu$ by including a separate day-averaged reaction time parameter $\delta_g$ for each subject $g = 1,...,G$.  However, only $M1$ allows for subject-specific dependence of reaction time on days, which is expressed by parameters $\gamma_1\neq...\neq\gamma_G$.  In contrast, $M2$ assumes that subjects are identical in that respect so $\gamma_1=...=\gamma_G$.
+We consider two models, $$M1$$ and $$M2$$.  These are nested: $$M1 \supset M2$$, meaning that $$M1$$ is more general while $$M2$$ is a constrained version of $$M1$$.  Both models account for two shared characteristics among subjects: the increasing tendency of reaction time with days, captured by parameter $$\beta$$, as well as the roughly $$300ms$$ day- and subject-averaged reaction time, $$\mu$$.  Moreover, both models also account for the subject-specific variation about $$\mu$$ by including a separate day-averaged reaction time parameter $$\delta_g$$ for each subject $$g = 1,...,G$$.  However, only $$M1$$ allows for subject-specific dependence of reaction time on days, which is expressed by parameters $$\gamma_1\neq...\neq\gamma_G$$.  In contrast, $$M2$$ assumes that subjects are identical in that respect so $$\gamma_1=...=\gamma_G$$.
 
 After the above qualitative description we specify the models qualitatively.  Both models share the following form and properties:
 $$
@@ -36,9 +42,9 @@ y_{gi} &=& \mu + x_i (\beta + \gamma_g) + \delta_g + \varepsilon_{gi} \\\\
 \varepsilon_{gi} &\sim& \mathcal{N}(0, \sigma^2).
 \end{eqnarray*}
 $$
-In addition, $\beta$ is an unknown fixed parameter both in $M1$ and $M2$.
+In addition, $$\beta$$ is an unknown fixed parameter both in $$M1$$ and $$M2$$.
 
-The only difference between $M1$ and $M2$ is $\gamma \equiv (\gamma_1, ..., \gamma_G)$; in $M1$ it is allowed to vary randomly while in $M2$ it is constrained to be 0:
+The only difference between $$M1$$ and $$M2$$ is $$\gamma \equiv (\gamma_1, ..., \gamma_G)$$; in $$M1$$ it is allowed to vary randomly while in $$M2$$ it is constrained to be 0:
 $$
 \begin{eqnarray*}
 M1: \; \gamma &\sim& \mathcal{N}(0, \Omega_\gamma) \\\\
@@ -64,17 +70,17 @@ xyplot(Reaction + yhat.M1 + yhat.M2 ~ Days | Subject, data = df, type = "l", yla
 Does the dependence on days really vary across subjects or are subjects identical with respect to the dependence?  We take the latter possibility as the null hypothesis
 $$
 \begin{equation*}
-H_0 : \; $\gamma_1\neq...\neq\gamma_G$.  
+H_0 : \; \gamma_1\neq...\neq\gamma_G.
 \end{equation*}
 $$
 
-The most powerful test for $H_0$ is the likelihood ratio test comparing the `M1` model to its constrained version `M2`:
+The most powerful test for $$H_0$$ is the likelihood ratio test comparing the `M1` model to its constrained version `M2`:
 
 ```{r}
 anova(M1, M2)
 ```
 
-Thus we may reject $H_0$ at significance level $<10^{-9}$ and conclude that the data supports overwhelmingly better the alternative hypothesis that the dependence of `Reaction` on `Days` varies across `Subject`s.
+Thus we may reject $$H_0$$ at significance level $$<10^{-9}$$ and conclude that the data supports overwhelmingly better the alternative hypothesis that the dependence of `Reaction` on `Days` varies across `Subject`s.
 
 ## Implications to our study
 

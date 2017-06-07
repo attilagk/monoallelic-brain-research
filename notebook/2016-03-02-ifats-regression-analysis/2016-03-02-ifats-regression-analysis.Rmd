@@ -1,3 +1,9 @@
+---
+layout: default
+tags: [ regression, reproducible-research ]
+title: Repeating Ifat's Regression Analysis with 5 More Genes
+---
+
 ```{r echo=FALSE}
 options(width=106)
 ```
@@ -14,7 +20,7 @@ genes13 <- c("PEG3", "INPP5F", "SNRPN", "PWAR6", "ZDBF2", "MEG3", "ZNF331",
            "GRB10", "PEG10", "SNHG14", "NAP1L5", "KCNQ1OT1", "MEST" )
 ```
 
-The question is the **sensitivity** of the results of regression analysis to the gene set $G$.
+The question is the **sensitivity** of the results of regression analysis to the gene set $$G$$.
 
 ## Ifat's script
 
@@ -25,13 +31,13 @@ source("2016-03-02-ifats-regression-analysis.R")
 
 ### Input files
 
-Here I denote the test statitic for monoallelic expression as $S_{ig}$ for individual $i$ and gene $g$.  The corresponding matrix is $S = [ S_{ig}  ]$.  Based on Ifat's code, a data transformation (explained below) on $S$ gives rise to $\mathrm{LOI\_R}$.  $\mathrm{LOI\_R}$ plays the role of the response variable in the regression analysis.  The explanatory variables are arranged in the design matrix $X = [ x_{ij} ]$ for all individuals $i$ and variable type $j$.
+Here I denote the test statitic for monoallelic expression as $$S_{ig}$$ for individual $$i$$ and gene $$g$$.  The corresponding matrix is $$S = [ S_{ig}  ]$$.  Based on Ifat's code, a data transformation (explained below) on $$S$$ gives rise to $$\mathrm{LOI\_R}$$.  $$\mathrm{LOI\_R}$$ plays the role of the response variable in the regression analysis.  The explanatory variables are arranged in the design matrix $$X = [ x_{ij} ]$$ for all individuals $$i$$ and variable type $$j$$.
 
 |     content                                |       file                         |
 |:-------------------------------------------|:-----------------------------------|
-|   $S$                                      |   `pop_skew_3June15.txt`           |
-| subject info, part of $X$                  |   `samples.csv`                    |
-|  ???, part of $X$    |`DLPFC.ensembl.KNOWN_AND_SVA.ADJUST.SAMPLE_COVARIATES.tsv`|         
+|   $$S$$                                      |   `pop_skew_3June15.txt`           |
+| subject info, part of $$X$$                  |   `samples.csv`                    |
+|  ???, part of $$X$$    |`DLPFC.ensembl.KNOWN_AND_SVA.ADJUST.SAMPLE_COVARIATES.tsv`|         
 
 
 ### Mathematical formulation
@@ -45,10 +51,10 @@ which corresponds to the normal linear model
 $$
 \begin{equation} \mathrm{LOI\_R} = X \beta + \epsilon \end{equation}
 $$
-where $\epsilon$ is a vector of independent normal variables each with mean 0 and variance $\sigma^2$.
+where $$\epsilon$$ is a vector of independent normal variables each with mean 0 and variance $$\sigma^2$$.
 
-How is $S$ transformed into $\mathrm{LOI\_R}$?
-Let's inspect Ifat's code, in which the `S2` matrix variable corresponds to the matrix $S$ of response variables, as above.
+How is $$S$$ transformed into $$\mathrm{LOI\_R}$$?
+Let's inspect Ifat's code, in which the `S2` matrix variable corresponds to the matrix $$S$$ of response variables, as above.
 ```{r eval=FALSE}
 # rank individuals for each gene
 for (g in seq_along(genes)){
@@ -69,37 +75,38 @@ for (s in 1:579){
 }
 ```
 
-Let $m$ be the number of individuals and $G$ the set of selected genes.  Then
-the above code chunk means the definition $\mathrm{LOI\_R}=100 \times m^{-1} \times (\bar{R}_1,...,\bar{R}_m)$, where
+Let $$m$$ be the number of individuals and $$G$$ the set of selected genes.  Then
+the above code chunk means the definition $$\mathrm{LOI\_R}=100 \times m^{-1} \times (\bar{R}_1,...,\bar{R}_m)$$, where
+
 $$
 \begin{eqnarray}
-\bar{R}_i &=& |G|^{-1} \sum_{g\in{G}} R_{ig}
+\bar{R}_i &=&  \mid G \mid ^{-1} \sum_{g\in{G}} R_{ig}
 \end{eqnarray}
 $$
 
 ### Consequence on confidence intervals
 
-Let  $\beta_j$ denote a regression parameter of interest for some explanatory variable $x_j$, say for the age of death. Let $\hat{\beta}_j$ be the least squares (i.e. maximum likelihood) *estimate* of $\beta_j$.  We want to test the null hypothesis that $\beta_j=0$, which we interpret as no influence of age on allelic exclusion. To test that hypothesis at significance level $\alpha$, we need to calculate $\mathrm{CI}_{1-\alpha}$, the $1-\alpha$ confidence interval for $\beta_j$ and see if $0\in\mathrm{CI}_{1-\alpha}$, in which case the null hypothesis is supported. The [calculation][CI-wiki] of $\mathrm{CI}_{1-\alpha}$ follows from normal distribution theory and [weighted linear least squares][weighted], which together imply that the statistic
+Let  $$\beta_j$$ denote a regression parameter of interest for some explanatory variable $$x_j$$, say for the age of death. Let $$\hat{\beta}_j$$ be the least squares (i.e. maximum likelihood) *estimate* of $$\beta_j$$.  We want to test the null hypothesis that $$\beta_j=0$$, which we interpret as no influence of age on allelic exclusion. To test that hypothesis at significance level $$\alpha$$, we need to calculate $$\mathrm{CI}_{1-\alpha}$$, the $$1-\alpha$$ confidence interval for $$\beta_j$$ and see if $$0\in\mathrm{CI}_{1-\alpha}$$, in which case the null hypothesis is supported. The [calculation][CI-wiki] of $$\mathrm{CI}_{1-\alpha}$$ follows from normal distribution theory and [weighted linear least squares][weighted], which together imply that the statistic
 $$
 \begin{equation}
 T = \frac{\hat{\beta}_j - \beta_j}{\sqrt{w^{-1}S^2(X^\top X)^{-1}_{jj}}}
 \end{equation}
 $$
-has Student's t-distribution with $m - p$ degrees of freedom, where $m$ is the number of individuals and $p$ is the number of parameters (one more than the number of explanatory variables).  The denominator is the *standard error* for $\hat{\beta}_j$ and includes the following terms:
+has Student's t-distribution with $$m - p$$ degrees of freedom, where $$m$$ is the number of individuals and $$p$$ is the number of parameters (one more than the number of explanatory variables).  The denominator is the *standard error* for $$\hat{\beta}_j$$ and includes the following terms:
 
-* $w$, a uniform weight on each of the $m$ observations
-* $S^2$, the residual sum of squares divided by $m-p$, which is an unbiased estimator for $\sigma^2$
-* the inverse covariance matrix based on the design matrix $X$
+* $$w$$, a uniform weight on each of the $$m$$ observations
+* $$S^2$$, the residual sum of squares divided by $$m-p$$, which is an unbiased estimator for $$\sigma^2$$
+* the inverse covariance matrix based on the design matrix $$X$$
 
-Weight $w$ is central here.  Since for each individual $i$ the average rank $\bar{R}_i$ is the average of $|G|$ number of genes, all $m$ rank observations receive weight $w=|G|$.
+Weight $$w$$ is central here.  Since for each individual $$i$$ the average rank $$\bar{R}_i$$ is the average of $$ \mid G \mid $$ number of genes, all $$m$$ rank observations receive weight $$w= \mid G \mid $$.
 
-With observed $S^2=s^2$ the confidence interval is $\mathrm{CI}_{1-\alpha} = \hat{\beta}_j \pm  t(\alpha/2) \sqrt{|G|^{-1}s^2(X^\top X)^{-1}_{jj}}$, where $t(q)$ is the $q$ quantile of the t-distribution with $m - p$ degrees of freedom.  Thus, averaging across all genes in the selected set $G$ shrinks the standard error by a factor of $|G|^{-1/2}$ and consequently shrinks the $1-\alpha$ confidence interval by the same factor, which is about 0.35 for the 8 gene set and 0.28 for the 13 gene set.  The shrinkage in turn leads to more significant p-values.
+With observed $$S^2=s^2$$ the confidence interval is $$\mathrm{CI}_{1-\alpha} = \hat{\beta}_j \pm  t(\alpha/2) \sqrt{ \mid G \mid ^{-1}s^2(X^\top X)^{-1}_{jj}}$$, where $$t(q)$$ is the $$q$$ quantile of the t-distribution with $$m - p$$ degrees of freedom.  Thus, averaging across all genes in the selected set $$G$$ shrinks the standard error by a factor of $$ \mid G \mid ^{-1/2}$$ and consequently shrinks the $$1-\alpha$$ confidence interval by the same factor, which is about 0.35 for the 8 gene set and 0.28 for the 13 gene set.  The shrinkage in turn leads to more significant p-values.
 
-But the `R` code chunk for linear regression (above) shows that the default $w=1$ was used mistakenly instead of $w=|G|$ and thus the shrinkage effect of averaging $|G|$ genes was ignored.  Consequently, the mistake has lead to a $\sqrt{|G|}$-fold **overestimation** of the standard error and of the $1-\alpha$ confidence interval, and ultimately to a **less significant** p-value.
+But the `R` code chunk for linear regression (above) shows that the default $$w=1$$ was used mistakenly instead of $$w= \mid G \mid $$ and thus the shrinkage effect of averaging $$ \mid G \mid $$ genes was ignored.  Consequently, the mistake has lead to a $$\sqrt{ \mid G \mid }$$-fold **overestimation** of the standard error and of the $$1-\alpha$$ confidence interval, and ultimately to a **less significant** p-value.
 
 ## Reanalysis
 
-The design matrix $X$ has actually two versions: one where age is a continuous variable and another one where age is a binary variable indicating whether an individual deceased before or after a threshold (set to 70 years).  The following commands carry out the regression for both versions of $X$ and
+The design matrix $$X$$ has actually two versions: one where age is a continuous variable and another one where age is a binary variable indicating whether an individual deceased before or after a threshold (set to 70 years).  The following commands carry out the regression for both versions of $$X$$ and
 both gene sets (the set of 8 and that of 13 genes):
 
 ```{r cache=TRUE}

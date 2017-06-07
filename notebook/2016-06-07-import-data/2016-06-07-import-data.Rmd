@@ -1,3 +1,8 @@
+---
+layout: default
+tags: [ reproducible-research ]
+---
+
 ## Preparing data for analysis in `R`
 
 ### Read counts from Ifat's website
@@ -56,11 +61,11 @@ file $OUTDIR/*
 
 ### Observed predictors and read counts
 
-We will generate a data frame `E` representing matrix $E$ such that each column holds the observed values of some predictor (explanatory variable).  During the fitting of some regression model `R` will automatically construct the design matrix $X$ from $E$ (or a submatrix of $E$ if we omit some predictors) by making contrasts for categorical predictors (i.e. factors).
+We will generate a data frame `E` representing matrix $$E$$ such that each column holds the observed values of some predictor (explanatory variable).  During the fitting of some regression model `R` will automatically construct the design matrix $$X$$ from $$E$$ (or a submatrix of $$E$$ if we omit some predictors) by making contrasts for categorical predictors (i.e. factors).
 
-To get as set of responses for regression, we will also generate a list `Y` of data frames representing the set of matrices $Y = \{ Y_g : g\in\mathcal{G} \}$ so that each matrix $Y_g$ corresponds to gene $g$ in a selected set $\mathcal{G}$.  The columns of $Y_g$ are either the observed values $H_g$ (or $L_g$) of the "higher" (or "lower") read counts for $g$, respectively, or the observed values of derived statistics.  These derived statistics are the total read count $N_g = L_g + H_g$, the ratio $S_g = H_g / N_g$, whose rank-transformation yields $R_g$.  For all matrices $E, Y_{g_1}, Y_{g_2},...$ the rows correspond to $n$ observations, that is $n$ RNA samples, each from a different individual.
+To get as set of responses for regression, we will also generate a list `Y` of data frames representing the set of matrices $$Y = \{ Y_g \mid g\in\mathcal{G} \}$$ so that each matrix $$Y_g$$ corresponds to gene $$g$$ in a selected set $$\mathcal{G}$$.  The columns of $$Y_g$$ are either the observed values $$H_g$$ (or $$L_g$$) of the "higher" (or "lower") read counts for $$g$$, respectively, or the observed values of derived statistics.  These derived statistics are the total read count $$N_g = L_g + H_g$$, the ratio $$S_g = H_g / N_g$$, whose rank-transformation yields $$R_g$$.  For all matrices $$E, Y_{g_1}, Y_{g_2},...$$ the rows correspond to $$n$$ observations, that is $$n$$ RNA samples, each from a different individual.
 
-$\mathcal{G}$ is defined by the `gene.ids` below:
+$$\mathcal{G}$$ is defined by the `gene.ids` below:
 ```{r eval=FALSE}
              # 8 genes analyzed by Ifat
 gene.ids <- c("PEG3", "INPP5F", "SNRPN", "PWAR6", "ZDBF2", "MEG3", "ZNF331", "GRB10",
@@ -74,11 +79,11 @@ gene.ids <- c("PEG3", "INPP5F", "SNRPN", "PWAR6", "ZDBF2", "MEG3", "ZNF331", "GR
 
 ### Aggregations
 
-We will redefine $Y$ after appending (horizontally concatenating) to it the set of matrices $\{Y_{a_k\mathcal{G}_l} : k=1,2 \;;\; l=1,2,... \}$, indexed by combinations of an aggregation method $a_l$ and a gene subset $\mathcal{G}_l\subset\mathcal{G}$.  $a_1$ is aggregation of $\{S_g : g\in\mathcal{G}_l\}$ (or the corresponding $\{R_g\}$) by weighted average (`WA`) using total read count weights $\{N_g\}$, whereas $a_2$ is unweighted average (`UA`).  Ifat's original analysis combined `UA` with the subset given by `gene.ids[1:8]`.  Thus, for observation $i$ the we have $\bar{S}_{i;k\mathcal{G}_j} = \left( \sum_{g\in\mathcal{G}_l} W_{ig} \right)^{-1} \sum_{g\in\mathcal{G}_l} W_{ig} S_{ig}$, where $W_{ig}=N_{ig}$ if $k=1$ (`WA`) and $W_{ig}=1$ if $k=2$ (`UA`).  Rank transformation of $\bar{S}_{i;k\mathcal{G}_j}$ yields $\bar{R}_{i;k\mathcal{G}_j}$.
+We will redefine $$Y$$ after appending (horizontally concatenating) to it the set of matrices $$\{Y_{a_k\mathcal{G}_l} \mid k=1,2 \;;\; l=1,2,... \}$$, indexed by combinations of an aggregation method $$a_l$$ and a gene subset $$\mathcal{G}_l\subset\mathcal{G}$$.  $$a_1$$ is aggregation of $$\{S_g \mid g\in\mathcal{G}_l\}$$ (or the corresponding $$\{R_g\}$$) by weighted average (`WA`) using total read count weights $$\{N_g\}$$, whereas $$a_2$$ is unweighted average (`UA`).  Ifat's original analysis combined `UA` with the subset given by `gene.ids[1:8]`.  Thus, for observation $$i$$ the we have $$\bar{S}_{i;k\mathcal{G}_j} = \left( \sum_{g\in\mathcal{G}_l} W_{ig} \right)^{-1} \sum_{g\in\mathcal{G}_l} W_{ig} S_{ig}$$, where $$W_{ig}=N_{ig}$$ if $$k=1$$ (`WA`) and $$W_{ig}=1$$ if $$k=2$$ (`UA`).  Rank transformation of $$\bar{S}_{i;k\mathcal{G}_j}$$ yields $$\bar{R}_{i;k\mathcal{G}_j}$$.
 
 ### Filtering
 
-Given threshold $t$ (`count.thrs`) and gene $g$, an observation $i$ is filtered out whenever $N_{ig}\le t$.  For weighted average over a subset $\mathcal{G}_l$ the filtering rule is $\sum_{g\in\mathcal{G}_l} N_{ig}\le t$; consequently for observation $i$ the statistic $S_{ig}$ may be filtered out from some individual genes $g\in\mathcal{G}_l$ but may still contribute to the weighted average $\bar{S}_{i;k\mathcal{G}_j}$.  This is not the case for unweighted averages, which are derived from gene-wise statistics only *after* those have been filtered.
+Given threshold $$t$$ (`count.thrs`) and gene $$g$$, an observation $$i$$ is filtered out whenever $$N_{ig}\le t$$.  For weighted average over a subset $$\mathcal{G}_l$$ the filtering rule is $$\sum_{g\in\mathcal{G}_l} N_{ig}\le t$$; consequently for observation $$i$$ the statistic $$S_{ig}$$ may be filtered out from some individual genes $$g\in\mathcal{G}_l$$ but may still contribute to the weighted average $$\bar{S}_{i;k\mathcal{G}_j}$$.  This is not the case for unweighted averages, which are derived from gene-wise statistics only *after* those have been filtered.
 
 ### Results
 

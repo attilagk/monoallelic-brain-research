@@ -1,8 +1,21 @@
+---
+layout: default
+tags: [ regression, anova ]
+title: Extending ANOVA
+---
+
+The analysis presented here follows up on the [previous ANOVA]({{ site.baseurl }}{% post_url /projects/monoallelic-brain/2016-04-22-glm-for-s-statistic %}) and extends it in two ways:
+
+1. terms, corresponding to predictors, are added in various sequences
+2. more genes (see the [preceding post]({{ site.baseurl }}{% post_url /projects/monoallelic-brain/2016-06-17-extending-regression-analysis %}))
+
+The present analysis has been extended several times over the time.  In particular, it depends on the model checking results presented in a subsequent post (see [Model Checking]({{ site.baseurl }}{% post_url /projects/monoallelic-brain/2016-09-23-model-checking %})).
+
 ## Introduction
 
 ANOVA and effects were used before...TODO
 
-The least square estimates are given by $\hat{\beta} = (X^T X)^{-1} X^T y$.  Permuting the coefficients is equivalent to permuting the bases of the linear transformation $(X^T X)^{-1} X^T$ or, equivalently, permuting the *rows* of the corresponding matrix or, equivalently again, permuting the *columns* of the design matrix.  Therefore, when explanatory variables are reordered and the columns of the design matrix are permuted accordingly then the least square estimates still remain the same up to their relative order.
+The least square estimates are given by $$\hat{\beta} = (X^T X)^{-1} X^T y$$.  Permuting the coefficients is equivalent to permuting the bases of the linear transformation $$(X^T X)^{-1} X^T$$ or, equivalently, permuting the *rows* of the corresponding matrix or, equivalently again, permuting the *columns* of the design matrix.  Therefore, when explanatory variables are reordered and the columns of the design matrix are permuted accordingly then the least square estimates still remain the same up to their relative order.
 
 Take two permutations of explanatory variables:
 
@@ -60,9 +73,9 @@ grep("TRUE", sapply(to.fit.ids, function(g) all.equal(coef(M$logi.S$forward[[g]]
 
 ## Components of variation
 
-ANOVA allows *direct* comparison of predictors (explanatory variables) by partitioning all explained/systematic variation in the response ($S$ or $R$) among them.  Similarly, the directly comparable effect of each of the $p$ regression coefficients on the response (an $n$-vector) can be obtained from QR decomposition of the response into a set of $n$ orthogonal vectors, in which a subset of $p$ vectors corresponds to the coefficients. 
+ANOVA allows *direct* comparison of predictors (explanatory variables) by partitioning all explained/systematic variation in the response ($$S$$ or $$R$$) among them.  Similarly, the directly comparable effect of each of the $$p$$ regression coefficients on the response (an $$n$$-vector) can be obtained from QR decomposition of the response into a set of $$n$$ orthogonal vectors, in which a subset of $$p$$ vectors corresponds to the coefficients. 
 
-In the above sentences "directly comparable" means that the effects are on a uniform scale for all predictors/coefficients for a given gene as that scale is closely related to the one on which the response varies.  But the total variation of the response $S$ itself shows variation across genes, which leaves two options in gene-gene comparisons: compare components of variation with or without correction for across gene variation of the total variance.  The first one will be referred below as **genes on uniform scale** and the second as **genes on relative scale**.
+In the above sentences "directly comparable" means that the effects are on a uniform scale for all predictors/coefficients for a given gene as that scale is closely related to the one on which the response varies.  But the total variation of the response $$S$$ itself shows variation across genes, which leaves two options in gene-gene comparisons: compare components of variation with or without correction for across gene variation of the total variance.  The first one will be referred below as **genes on uniform scale** and the second as **genes on relative scale**.
 
 ### Comparing predictors with genes on uniform scale
 
@@ -222,7 +235,7 @@ update(my.dotplot(fm = Gene ~ Effect | Coefficient, data = Ef.long$unlm.R, main 
 
 ## Estimate and CI for regression coefficients
 
-This and the next section do not deal with analysis of variance specifically but rather with the estimated regression coefficient $\beta_{jg}$ for each column $X_j$ of the design matrix and for each gene $g$.  But because of computational convenience these are presented here.
+This and the next section do not deal with analysis of variance specifically but rather with the estimated regression coefficient $$\beta_{jg}$$ for each column $$X_j$$ of the design matrix and for each gene $$g$$.  But because of computational convenience these are presented here.
 
 ```{r cache=TRUE, warning=FALSE, message=FALSE, fig.asp=1}
 Betas <- lapply(M, function(m) { x <- get.estimate.CI(m$forward); x <- x[ ! x$Coefficient %in% "(Intercept)", ] })
@@ -271,14 +284,14 @@ my.segplot(data = B.logi.S.f, xlim = my.xlim)
 
 ## Comparison of models
 
-The pairwise model comparisons in terms of $\hat{\beta}$ under either of two selected models are meant to assess sensitivity of the results to various aspects of modeling:
+The pairwise model comparisons in terms of $$\hat{\beta}$$ under either of two selected models are meant to assess sensitivity of the results to various aspects of modeling:
 
 * logistic vs normal linear model
 * scaling of the logit link function
-* data transformations for the normal linear model: $Q$ vs $R$ statistic
+* data transformations for the normal linear model: $$Q$$ vs $$R$$ statistic
 * weighting for the normal linear model
 
-Each panel in the plot shows the theoretical zero line $\beta_{jg}=0$ under each of the two models (horizontal and vertical dashed lines).  The plotting symbols are color coded according to gene rank (rainbow, red to violet); the last "rank" #`r length(levels(Betas[[1]]$Gene))` (violet) corresponds to the weighted average `WA` of read count ratio over genes.  The plotting symbols also display the rank with numbers, see the key on the top.  Genes acceptably fitted by both models are distinguished with a diamond symbol and **bold font** from those that could be fitted only by wnlm.Q.
+Each panel in the plot shows the theoretical zero line $$\beta_{jg}=0$$ under each of the two models (horizontal and vertical dashed lines).  The plotting symbols are color coded according to gene rank (rainbow, red to violet); the last "rank" #`r length(levels(Betas[[1]]$Gene))` (violet) corresponds to the weighted average `WA` of read count ratio over genes.  The plotting symbols also display the rank with numbers, see the key on the top.  Genes acceptably fitted by both models are distinguished with a diamond symbol and **bold font** from those that could be fitted only by wnlm.Q.
 
 ```{r echo=FALSE}
 source("2016-06-22-extending-anova.R")
@@ -308,7 +321,7 @@ mtype.compare.plot(mtypeA = "logi.S", mtypeB = "wnlm.Q", dt = Betas.l.f, do.key 
 
 ### Scaling of the logit link function
 
-There is very little impact on the $2\times$ difference in scaling of the logit link function because most of the observed cases are near the upper bound of the link function (which is 1), where the scaling has the smallest effect on the predictions.
+There is very little impact on the $$2\times$$ difference in scaling of the logit link function because most of the observed cases are near the upper bound of the link function (which is 1), where the scaling has the smallest effect on the predictions.
 
 Without filtering genes with poor fit by logi.S
 
@@ -322,7 +335,7 @@ With filtering
 mtype.compare.plot(mtypeA = "logi.S", mtypeB = "logi2.S", dt = Betas.l.f) 
 ```
 
-### Data transformations for the normal linear model: $Q$ vs $R$
+### Data transformations for the normal linear model: $$Q$$ vs $$R$$
 
 Overall good agreement.
 

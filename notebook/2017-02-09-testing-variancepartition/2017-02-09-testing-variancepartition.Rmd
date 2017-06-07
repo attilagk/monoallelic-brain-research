@@ -1,3 +1,9 @@
+---
+title: Testing variancePartition
+layout: default
+tags: [ regression, anova, ]
+---
+
 Load packages...
 
 ```{r echo=FALSE}

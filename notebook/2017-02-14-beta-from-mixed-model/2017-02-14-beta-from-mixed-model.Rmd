@@ -1,17 +1,22 @@
+---
+layout: default
+tags: [regression, anova ]
+---
+
 ## Motivation
 
-For certain genes $g$ allelic bias was found to depend on biological predictors (Age, Dx, Ancestry) in our previous analysis.  That analysis fitted various **fixed effects** multiple regression models (GLM family) using as response variable the read count ratio $S_{ig}$ or its quasi-log transformed version $Q_{ig}$.  After checking model fit, we primarily based our results to a weighted, normal linear model using $Q_{ig}$, which we called *wnlm.Q* (as opposed to its unweighted variation *unlm.Q*).  Significant dependence of the allelic bias of gene $g$ on (some level of) the predictor $p$ was assessed in terms of the estimated regression coefficient $\hat{\beta}_{pg}$.
+For certain genes $$g$$ allelic bias was found to depend on biological predictors (Age, Dx, Ancestry) in our previous analysis.  That analysis fitted various **fixed effects** multiple regression models (GLM family) using as response variable the read count ratio $$S_{ig}$$ or its quasi-log transformed version $$Q_{ig}$$.  After checking model fit, we primarily based our results to a weighted, normal linear model using $$Q_{ig}$$, which we called *wnlm.Q* (as opposed to its unweighted variation *unlm.Q*).  Significant dependence of the allelic bias of gene $$g$$ on (some level of) the predictor $$p$$ was assessed in terms of the estimated regression coefficient $$\hat{\beta}_{pg}$$.
 
 But decomposition of variance using `variancePartition` showed that a predictor that significantly affected allelic bias for a certain gene did not necessarily explain substantial fraction of variance.  This was the case in spite of using the same response and predictors in the **mixed effects** model for `variancePartition` as for fixed effects models like wnlm.Q.  A notable difference is that the mixed effects model was based on the unweighted unlm.Q rather than the weighted wnlm.Q.
 
 What is the reason for this discrepancy?  This question can be approached based on two cases giving altogether four explanations:
 
-1. $\hat{\beta}_{pg}$ under the fixed effects model largely deviates from that under the mixed effects model because of
-    * treating certain predictors' effect random instead of fixed impacts $\hat{\beta}_{pg}$ for other predictors
+1. $$\hat{\beta}_{pg}$$ under the fixed effects model largely deviates from that under the mixed effects model because of
+    * treating certain predictors' effect random instead of fixed impacts $$\hat{\beta}_{pg}$$ for other predictors
     * weighting, which was used for the fixed effects model wnlm.Q but not for the mixed effects model
     * programming bug
-1. $\hat{\beta}_{pg}$ under the fixed effects agrees with that under the mixed effects model
-    * in this case the discrepancy arises from the related but different quantities of the two analyses: significance of $\beta_{pg}\neq 0$ is established using a $T_{pg}$-statistic whereas variance partitioning operates with the fractional variance explained $\hat{\sigma}^2_{pg} / \hat{\sigma}^2_\mathrm{total}$ (more details below)
+1. $$\hat{\beta}_{pg}$$ under the fixed effects agrees with that under the mixed effects model
+    * in this case the discrepancy arises from the related but different quantities of the two analyses: significance of $$\beta_{pg}\neq 0$$ is established using a $$T_{pg}$$-statistic whereas variance partitioning operates with the fractional variance explained $$\hat{\sigma}^2_{pg} / \hat{\sigma}^2_\mathrm{total}$$ (more details below)
 
 The analysis below excludes programming bug and appears to suggest that the discrepancy is due to a mixture of the remaining three explanations.
 
@@ -90,7 +95,7 @@ vpll <- reshape(vpl, varying = c("fixed.1", "mixed.1"), v.names = "fractional.va
                 timevar = "model.type", times = c("fixed.1", " mixed.1"), direction = "long")
 ```
 
-Extract $\hat{\beta}_{pg}$ for each gene $g$ under each model:
+Extract $$\hat{\beta}_{pg}$$ for each gene $$g$$ under each model:
 
 ```{r}
 coef.names <- names(coef(M$unlm.Q[[1]]))
@@ -109,7 +114,7 @@ cf$gene <- factor(rep(gene.ids, each = length(coef.names)), ordered = TRUE, leve
 cf <- cbind(cf[c("coefficient", "gene")], cf[- grep("coefficient|gene", names(cf))])
 ```
 
-Calculate 99% confidence intervals for each $\beta_{pg}$ (also extracts $\hat{\beta}_{pg}$):
+Calculate 99% confidence intervals for each $$\beta_{pg}$$ (also extracts $$\hat{\beta}_{pg}$$):
 
 ```{r cache = TRUE, warning=FALSE, message=FALSE}
 beta.hat.CI <- lapply(M[c("unlm.Q", "wnlm.Q")], get.estimate.CI)
@@ -123,15 +128,15 @@ source("2017-02-14-beta-from-mixed-model.R")
 
 ## Results
 
-### Recapitulation: regression coefficients $\beta_{pg}$
+### Recapitulation: regression coefficients $$\beta_{pg}$$
 
-The plot below shows for each coefficient $p$ and gene $g$ the estimated regression coefficients $\{\hat{\beta}_{pg}\}$ and 99% confidence intervals (CI) for a $\beta_{pg}$ under the wnlm.Q model.  Note that these same results are presented in the current manuscript.  Recall the close relationship between the CI and the p-value for rejecting the null hypothesis $\beta_{pg}=0$.
+The plot below shows for each coefficient $$p$$ and gene $$g$$ the estimated regression coefficients $$\{\hat{\beta}_{pg}\}$$ and 99% confidence intervals (CI) for a $$\beta_{pg}$$ under the wnlm.Q model.  Note that these same results are presented in the current manuscript.  Recall the close relationship between the CI and the p-value for rejecting the null hypothesis $$\beta_{pg}=0$$.
 
 ```{r wnlm-Q-CI, echo=TRUE, fig.asp=1.7, echo=FALSE}
 my.segplot(beta.hat.CI$wnlm.Q, main = expression(paste("99 % CI for ", beta, " under wnlm.Q")))
 ```
 
-In the preceding calculations variance partitioning was based on not the wnlm.Q but the unlm.Q model, however.  Therefore, a similar plot for the unlm.Q model comes next showing that weighting slightly changes $\{\hat{\beta}_{pg}\}$ and the CIs.
+In the preceding calculations variance partitioning was based on not the wnlm.Q but the unlm.Q model, however.  Therefore, a similar plot for the unlm.Q model comes next showing that weighting slightly changes $$\{\hat{\beta}_{pg}\}$$ and the CIs.
 
 ```{r unlm-Q-CI, echo=TRUE, fig.asp=1.7}
 my.segplot(beta.hat.CI$unlm.Q, main = expression(paste("99 % CI for ", beta, " under unlm.Q")))
@@ -139,7 +144,7 @@ my.segplot(beta.hat.CI$unlm.Q, main = expression(paste("99 % CI for ", beta, " u
 
 ### Variance partitioning
 
-The next plot shows the fractional variance $\hat{\sigma}^2_{vg} / \hat{\sigma}^2_\mathrm{total}$ explained by each predictor $v$ for each gene $g$ under the fixed effects model unlm.Q.
+The next plot shows the fractional variance $$\hat{\sigma}^2_{vg} / \hat{\sigma}^2_\mathrm{total}$$ explained by each predictor $$v$$ for each gene $$g$$ under the fixed effects model unlm.Q.
 
 ```{r fixed-varpart, echo=TRUE, warning=FALSE, message=FALSE, fig.asp=1.0}
 tp <- trellis.par.get()
@@ -152,9 +157,9 @@ barchart(gene ~ fractional.variance, data = vpll, groups = predictor, stack = TR
 
 ### Comparing coefficients to variance explained
 
-Let $v$ be a predictor and $g$ a gene; the goal is to compare the set of regression the coefficient(s) $\{\beta_{pg} | p \text{ corresponds to } v\}$ to the fractional variance $\hat{\sigma}^2_{vg} / \hat{\sigma}^2_\mathrm{total}$ explained by $v$.  Note that the set of coefficients has only one member if predictor $v$ is a continuous variable or a factor with only one treatment level, in which case $\sigma^2_{vg} = \mathrm{Var}(X\hat{\beta_{pg}})$.  In contrast, the set of coefficients has multiple members for factors with multiple treatment levels.  Depending on the nature of predictor, the corresponding estimated coefficient(s) $\hat{\beta}_{pg}$ are on a particular scale.  For this reason I use the t-statistic $T_{pg} = \hat{\beta}_{pg} / \sqrt{\mathrm{Var}(\hat{\beta}_{pg})}$, which normalizes the coefficients across all predictors not only in the sense of placing them onto the same scale but also in the sense that the if $T_{p_1g} = T_{p_2g}$ then the corresponding p-values are also equal.
+Let $$v$$ be a predictor and $$g$$ a gene; the goal is to compare the set of regression the coefficient(s) $$\{\beta_{pg} \mid  p \text{ corresponds to } v\}$$ to the fractional variance $$\hat{\sigma}^2_{vg} / \hat{\sigma}^2_\mathrm{total}$$ explained by $$v$$.  Note that the set of coefficients has only one member if predictor $$v$$ is a continuous variable or a factor with only one treatment level, in which case $$\sigma^2_{vg} = \mathrm{Var}(X\hat{\beta_{pg}})$$.  In contrast, the set of coefficients has multiple members for factors with multiple treatment levels.  Depending on the nature of predictor, the corresponding estimated coefficient(s) $$\hat{\beta}_{pg}$$ are on a particular scale.  For this reason I use the t-statistic $$T_{pg} = \hat{\beta}_{pg} / \sqrt{\mathrm{Var}(\hat{\beta}_{pg})}$$, which normalizes the coefficients across all predictors not only in the sense of placing them onto the same scale but also in the sense that the if $$T_{p_1g} = T_{p_2g}$$ then the corresponding p-values are also equal.
 
-The plot indicates an expected positive correlation between $T_{pg}$ and $\hat{\sigma}^2_{vg} / \hat{\sigma}^2_\mathrm{total}$ but the correlation is weakened by certain coefficients $p$.  Such coefficients are the 7 treatment levels (RNA\_batchB,..., RNA\_batch0) of the factor RNA\_batch; each level has in itself relatively weak impact (small $T_{pg}$ and hence weak significance) but together they explain relatively much variation.  Another example for an outlier coefficient is that for Age, which again tends to have relatively small $T_{\mathrm{Age}g}$ but large $\hat{\sigma}^2_{\mathrm{Age}g} / \hat{\sigma}^2_\mathrm{total}$.
+The plot indicates an expected positive correlation between $$T_{pg}$$ and $$\hat{\sigma}^2_{vg} / \hat{\sigma}^2_\mathrm{total}$$ but the correlation is weakened by certain coefficients $$p$$.  Such coefficients are the 7 treatment levels (RNA\_batchB,..., RNA\_batch0) of the factor RNA\_batch; each level has in itself relatively weak impact (small $$T_{pg}$$ and hence weak significance) but together they explain relatively much variation.  Another example for an outlier coefficient is that for Age, which again tends to have relatively small $$T_{\mathrm{Age}g}$$ but large $$\hat{\sigma}^2_{\mathrm{Age}g} / \hat{\sigma}^2_\mathrm{total}$$.
 
 ```{r tval-varpart-fixed, echo=TRUE, warning=FALSE, message=FALSE, fig.asp=1.2}
 my.main <- "Quantities of effect size: fixed model (unlm.Q)"
@@ -176,7 +181,7 @@ update(tval.vp.plot(tval.vp.data <- tval.vp(m.type = "fixed.1", llm = M), xlab =
 
 ### Introducing random effects
 
-The above results were obtained under unlm.Q, a fixed effects model.  Turning all categorical (factor-type) predictors from fixed into random effects results in the *mixed.1* mixed effects model.  The next plot compares t-statistics to fractional variance under this model.  Similar trend emerges as for the fixed effects model above but the positive correlation between $T_{pg}$ and $\hat{\sigma}^2_{vg} / \hat{\sigma}^2_\mathrm{total}$ is stronger.  This is partly due to removing multilevel factors, like RNA\_batch, from the comparison (since their effects are modeled here as random) and partly to Age following more closely the trend displayed by other covariates.  Subsequent plots will explore this in more detail.
+The above results were obtained under unlm.Q, a fixed effects model.  Turning all categorical (factor-type) predictors from fixed into random effects results in the *mixed.1* mixed effects model.  The next plot compares t-statistics to fractional variance under this model.  Similar trend emerges as for the fixed effects model above but the positive correlation between $$T_{pg}$$ and $$\hat{\sigma}^2_{vg} / \hat{\sigma}^2_\mathrm{total}$$ is stronger.  This is partly due to removing multilevel factors, like RNA\_batch, from the comparison (since their effects are modeled here as random) and partly to Age following more closely the trend displayed by other covariates.  Subsequent plots will explore this in more detail.
 
 ```{r tval-varpart-mixed, echo=TRUE, warning=FALSE, message=FALSE, fig.asp=1.2}
 my.main <- "Quantities of effect size: mixed model (mixed.1)"
@@ -185,7 +190,7 @@ tval.vp.plot(tval.vp.mixed.1 <- tval.vp(m.type = "mixed.1", llm = M), main = my.
 
 #### Impact on variance partitioning
 
-The next plot illustrates how introducing random effects changes variance partitioning in terms of fractional variance explained.  Some predictors, like Age, PMI, Dx, or RNA\_batch, explain less variation in the mixed effects model, while the residuals increase.  This phenomenologically explains the stronger correlation between $T_{pg}$ and $\hat{\sigma}^2_{vg} / \hat{\sigma}^2_\mathrm{total}$ seen above.
+The next plot illustrates how introducing random effects changes variance partitioning in terms of fractional variance explained.  Some predictors, like Age, PMI, Dx, or RNA\_batch, explain less variation in the mixed effects model, while the residuals increase.  This phenomenologically explains the stronger correlation between $$T_{pg}$$ and $$\hat{\sigma}^2_{vg} / \hat{\sigma}^2_\mathrm{total}$$ seen above.
 
 ```{r fixed-mixed-varpart, echo=TRUE, warning=FALSE, message=FALSE, fig.asp=1.35}
 my.main <- "Variance partitioning: mixed vs fixed effects model"
@@ -202,7 +207,7 @@ update(my.plot(x = "fixed.1", y = "mixed.1", group.by = "gene", lbl.type = "pred
 
 #### Impact on regression coefficients
 
-The impact of introducing random effects on $T_{pg}$ statistics (normalized $\hat{\beta}_{pg}$) is rather small:
+The impact of introducing random effects on $$T_{pg}$$ statistics (normalized $$\hat{\beta}_{pg}$$) is rather small:
 
 ```{r mixed-1-fixed-tval, echo=FALSE, fig.asp=1.35}
 names(tval.vp.data) <- sub("t.value", "t.value.fixed.1", names(tval.vp.data))
@@ -214,7 +219,7 @@ my.ylab <- expression(paste(t[pg], "mixed effects (mixed.1)"))
 my.plot(x = "t.value.fixed.1", y = "t.value.mixed.1", lbl.type = "coefficient.1", dt = tval.vp.data, main = my.main, xlab = my.xlab, ylab = my.ylab)
 ```
 
-The result is similar for unnormalized $\hat{\beta}_{pg}$:
+The result is similar for unnormalized $$\hat{\beta}_{pg}$$:
 
 ```{r mixed-1-fixed, echo=FALSE, fig.asp=1.35}
 my.main <- "Regression coefficients: mixed vs fixed effects model"

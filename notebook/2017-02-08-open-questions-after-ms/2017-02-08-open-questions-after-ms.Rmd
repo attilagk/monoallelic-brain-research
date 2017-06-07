@@ -1,0 +1,43 @@
+---
+layout: default
+tags: [ andy, manuscript ]
+---
+
+## General questions
+
+### More data and/or better model?
+
+Explaining variation of allelic bias
+
+* Given the performed model checking and the estimated significance (CI, p-values) how solid are the results?
+    * if the employed model is correct the interpretation of CI and p-values is clear, isn't it?
+    * in the other case: what is specifically incorrect about the model and to what extent does it affect the results?
+* What are the most efficient ways to make results more solid
+    * more data: requires reimplementation of low-level pipeline and has little use if the model is incorrect
+    * better model: requires adapting an existing one (e.g. limma/voom) or designing a new one
+
+### Genome-wide assessment: what's new?
+
+* what are the most important findings considering two points:
+1. several studies, and even Dulac's own group, have shown that Dulac et al previous estimate of >1000 imprinted genes is hugely inflated
+1. the Lappalainen group ([Baran et al][Baran et al]) already assessed allelic bias in the human brain albeit using a smaller data set of not specified brain regions
+
+
+## Specific collaborators, coauthors
+
+### CMC WorkGroup
+
+I must become a member in order to access data and results.  Who can grant me admission?
+
+### Gabriel Hoffman
+
+Thoughtful comments.  The suggested analyses and modifications sound useful but would require reimplementation of low-level pipeline.  The suggested improvements to the presentation would be also useful and they are easy to do.
+
+* Are the regression results solid?  If not: more data and/or better model?  See above.
+* terminology
+    * "allelic bias": OK or replace with something else (e.g. allelic imbalance, allele-specific expression)?
+    * suggestions for replacing wnlm.Q, logi.S, etc
+
+### Ravi
+
+[Baran et al]: https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4484390/

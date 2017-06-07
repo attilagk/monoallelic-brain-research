@@ -1,3 +1,7 @@
+---
+layout: default
+---
+
 This short workflow exports the data onto which various GLMs have been fitted: the read count ratio for 30 genes (as response variables) and 12 predictors across 579 samples.  The dataset (as a CSV file) was sent to Gabriel Hoffman for potential analysis.
 
 ```{r}

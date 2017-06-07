@@ -1,3 +1,10 @@
+---
+layout: default
+tags: [ reproducible-research ]
+---
+
+For importing data to `R`, the related processing, source files and notations see [the preceding post]({{ site.baseurl }}{% post_url /projects/monoallelic-brain/2016-06-07-import-data %}).
+
 All functions have been reimplemented partly because the new .csv files created from html tables are organized differently than the ones from Ifat, and partly to make code simpler, more usable and maintainable.
 
 ### New importer functions
@@ -19,14 +26,14 @@ source("../2016-04-22-glm-for-s-statistic/2016-04-22-glm-for-s-statistic.R")
 source("../2016-04-22-glm-for-s-statistic/2016-04-22-glm-for-s-statistic-run.R")
 ```
 
-The old (left arguments) and new (right arguments) implementation agree perfectly on $N_g$ and $\bar{R}_{i;k\mathcal{G}_j}$.  For instance:
+The old (left arguments) and new (right arguments) implementation agree perfectly on $$N_g$$ and $$\bar{R}_{i;k\mathcal{G}_j}$$.  For instance:
 ```{r}
 c(identical(d$N_MEST, Y$MEST$N),
 identical(d$R_MEST, Y$MEST$R),
 identical(d$R_avg8, Y$UA.8$R))
 ```
 
-But there are slight differences regarding $S_g$ because the new implementation calculates it afresh from $L_g$ and $H_g$ whereas the old implementation imported rounded numbers from Ifat's `pop_skew_3June15.txt` file loosing some precision.
+But there are slight differences regarding $$S_g$$ because the new implementation calculates it afresh from $$L_g$$ and $$H_g$$ whereas the old implementation imported rounded numbers from Ifat's `pop_skew_3June15.txt` file loosing some precision.
 ```{r}
 c(identical(d$S_MEST, Y$MEST$S), all.equal(d$S_MEST, Y$MEST$S))
 ```
@@ -35,7 +42,7 @@ Moreover:
 c(identical(d$S_avg8, Y$WA.8$S), all.equal(d$S_avg8, Y$WA.8$S))
 c(identical(d$S_avg8, Y$UA.8$S), all.equal(d$S_avg8, Y$UA.8$S))
 ```
-which shows that the `S_avg8` statistic corresponds to the `WA.8` weighted average $\bar{S}_{i}$ more closely than to the unweighted `UA.8`.  Analyzing the code of the old implementation in `../2016-04-22-glm-for-s-statistic/2016-04-22-glm-for-s-statistic.R` confirms this.
+which shows that the `S_avg8` statistic corresponds to the `WA.8` weighted average $$\bar{S}_{i}$$ more closely than to the unweighted `UA.8`.  Analyzing the code of the old implementation in `../2016-04-22-glm-for-s-statistic/2016-04-22-glm-for-s-statistic.R` confirms this.
 
 Note that the names of predictors have been simplified in the new implementation:
 ```{r}
@@ -47,26 +54,26 @@ str(E[ , 1:15])
 ```{r}
 source("~/projects/monoallelic-brain/src/fit-glms.R")
 ```
-Compare estimated coefficients using the new and my old implementation under normal linear model fitted to unweighted average (`UA`) $R$ as response to find perfect agreement:
+Compare estimated coefficients using the new and my old implementation under normal linear model fitted to unweighted average (`UA`) $$R$$ as response to find perfect agreement:
 ```{r}
 old <- coef(m$avg8$nlm.R)
 e.vars <- names(E)[1:13]
 new <- coef(do.fit(Y$UA.8$R, X = E, e.v = e.vars, family = gaussian))
 all.equal(old, new, tolerance = 0, check.attributes = FALSE)
 ```
-Using weighted (`WA`) average $S$ as response agrees reasonably but not perfectly since $S$ shows differences due to rounding between old and new importers (as discussed above):
+Using weighted (`WA`) average $$S$$ as response agrees reasonably but not perfectly since $$S$$ shows differences due to rounding between old and new importers (as discussed above):
 ```{r}
 old <- coef(m$avg8$nlm.S)
 new <- coef(do.fit(Y$WA.8$S, X = E, e.v = e.vars, family = gaussian))
 all.equal(old, new, check.attributes = FALSE)
 ```
-In case of unweighted (`UA`) average $S$ the agreement is poor as expected based on the results concerning import:
+In case of unweighted (`UA`) average $$S$$ the agreement is poor as expected based on the results concerning import:
 ```{r}
 old <- coef(m$avg8$nlm.S)
 new <- coef(do.fit(Y$UA.8$S, X = E, e.v = e.vars, family = gaussian))
 all.equal(old, new, check.attributes = FALSE)
 ```
-Again with weighted (`WA`) average $S$ as response the agreement is also reasonable under the logistic model:
+Again with weighted (`WA`) average $$S$$ as response the agreement is also reasonable under the logistic model:
 ```{r}
 logi.S <- function(g)
     do.fit(response = cbind(Y[[g]]$H, Y[[g]]$L), X = E, e.v = e.vars, family = binomial)
@@ -74,7 +81,7 @@ old <- coef(m$avg8$logi.S)
 new <- coef(logi.S("WA.8"))
 all.equal(old, new, check.attributes = FALSE)
 ```
-Using weighted average (`WA`) but subjecting $S$ to an affine transformation $T$ such that $T(S)$ is supported on the interval $[0,1]$ as opposed to $S$'s support on $[1/2,1]$ results in less reasonable agreement between implementations because the "rounding differences" are further amplified:
+Using weighted average (`WA`) but subjecting $$S$$ to an affine transformation $$T$$ such that $$T(S)$$ is supported on the interval $$[0,1]$$ as opposed to $$S$$'s support on $$[1/2,1]$$ results in less reasonable agreement between implementations because the "rounding differences" are further amplified:
 ```{r}
 affine.transform.S <- function(y) {
     H2 <- as.integer((y$S * 2 - 1) * y$N)

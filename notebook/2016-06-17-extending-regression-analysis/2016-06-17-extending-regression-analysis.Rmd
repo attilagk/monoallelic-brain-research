@@ -1,3 +1,10 @@
+---
+layout: default
+tags: [ regression ]
+---
+
+The analysis presented here follows up on [earlier fitting of regression models]({{ site.baseurl }}{% post_url /projects/monoallelic-brain/2016-04-22-glm-for-s-statistic %}) on statistics (like $$S$$) based on read counts; somewhat less relevant the subsequent [comparison of regression models]({{ site.baseurl }}{% post_url /projects/monoallelic-brain/2016-05-07-comparing-regression-models %}).  Data processing steps as well as several notations and computational objects were introduced in [the article on data import]({{ site.baseurl }}{% post_url /projects/monoallelic-brain/2016-06-07-import-data %}).
+
 ```{r}
 library(ggplot2)
 library(lattice)
@@ -10,26 +17,26 @@ library(latticeExtra)
 
 Previous analysis set up two filters in order to reduce error by removing "noisy" or "weak" units of data; the principal difference between the two are the kind of data units they operate on:
 
-1. observations $i$ (RNA samples/individuals)
-1. genes $g$
+1. observations $$i$$ (RNA samples/individuals)
+1. genes $$g$$
 
-Given gene $g$ filtering *observations* was done according to the total read count associated with each observation $N_{ig}$, using the rule that $i$ is filtered out if $N_{ig} \le 50$.  (Note that more generally $g$ may index a data set aggregated over a set of genes using for instance weighted or unweighted average aggregation method denoted as `WA` and `UA`, respectively).
+Given gene $$g$$ filtering *observations* was done according to the total read count associated with each observation $$N_{ig}$$, using the rule that $$i$$ is filtered out if $$N_{ig} \le 50$$.  (Note that more generally $$g$$ may index a data set aggregated over a set of genes using for instance weighted or unweighted average aggregation method denoted as `WA` and `UA`, respectively).
 
-Filtering for *genes* was then preformed using the rule that a gene be removed if the number of observations that passed the observational filter is $<180$: "We examined genes where we had greater than 180 analyzable individuals[...]" (see [manuscript]).
+Filtering for *genes* was then preformed using the rule that a gene be removed if the number of observations that passed the observational filter is $$<180$$: "We examined genes where we had greater than 180 analyzable individuals[...]" (see [manuscript]).
 
 ### What's new
 
 #### Weighting instead of filtering observations
 
-Filtering units in general can be considered as "all or none" weighting so that weight $w_{i}$ of unit $i$ is 1 if $i$ passed the filter and 0 otherwise.  It is theoretically beneficial to replace this crude weighting scheme with a more subtle one that uses finer grained weights because that way relatively strong observations that would be filtered out are still allowed to provide some information and, on the other hand, relatively week observations that would pass the filter have smaller impact on the results.
+Filtering units in general can be considered as "all or none" weighting so that weight $$w_{i}$$ of unit $$i$$ is 1 if $$i$$ passed the filter and 0 otherwise.  It is theoretically beneficial to replace this crude weighting scheme with a more subtle one that uses finer grained weights because that way relatively strong observations that would be filtered out are still allowed to provide some information and, on the other hand, relatively week observations that would pass the filter have smaller impact on the results.
 
-In the current application, given $i,g$, the total read count lends itself as a natural weight, so $w_{ig} = N_{ig}$.  Such weighting scheme is natural if we assume that the higher read count $H_{ig} = S_{ig} N_{ig}$ is binomial with denominator $N_{ig}$, which is the case for logistic regression `logi.S`. Under the normal linear regression model using $S_{g}$, $Q_g$ and $R_g$ as response there is no such "natural" argument but it is still tempting and seemingly reasonable to use $N_{ig}$ as weight.  In the computational objects below this will be denoted as `wnlm.S`, `wnlm.Q`, and `wnlm.R`, whereas no weighting will be labeled with `unlm.S`, `unlm.Q`, and `unlm.R`, respectively (see `fit-glms.R`).
+In the current application, given $$i,g$$, the total read count lends itself as a natural weight, so $$w_{ig} = N_{ig}$$.  Such weighting scheme is natural if we assume that the higher read count $$H_{ig} = S_{ig} N_{ig}$$ is binomial with denominator $$N_{ig}$$, which is the case for logistic regression `logi.S`. Under the normal linear regression model using $$S_{g}$$, $$Q_g$$ and $$R_g$$ as response there is no such "natural" argument but it is still tempting and seemingly reasonable to use $$N_{ig}$$ as weight.  In the computational objects below this will be denoted as `wnlm.S`, `wnlm.Q`, and `wnlm.R`, whereas no weighting will be labeled with `unlm.S`, `unlm.Q`, and `unlm.R`, respectively (see `fit-glms.R`).
 
 #### Weighting genes instead of filtering them
 
-The original rule for genes has little advantage if one recalls that fitting regression models provides standard errors and p-values for regression coefficients so that genes with sparse data will tend to be associated with large errors and insignificant results.  As we will see, all but one of the candidate imprinted genes would have to be removed under the $<180$ rule.
+The original rule for genes has little advantage if one recalls that fitting regression models provides standard errors and p-values for regression coefficients so that genes with sparse data will tend to be associated with large errors and insignificant results.  As we will see, all but one of the candidate imprinted genes would have to be removed under the $$<180$$ rule.
 
-The only advantage of filtering out those genes was to prevent them from inflating the variance of $S_i$ (or $Q_i$, $R_i$) in aggregated data sets that were obtained by unweighted averaging of $S_{ig}$ (or $Q_i$, $R_i$) over a gene set $\mathcal{G}$.  The new implementation of data import and processing (see `import-data.R`) introduces weighted average as a method of aggregating $S_{ig}$ for a set of genes.  Again, this is natural if $S_{ig}, \; g\in\mathcal{G}$ are assumed binomial with corresponding denominators $N_{ig}$ and, in addition, assumed to share $p_i \equiv p_{ig_1} = p_{ig_2} = ...$.  The new implementation also calculates the unweighted average `UA`, but the present analyses will be based only on `WA`.  This way, genes will affect the results from aggregated data sets in proportion with their contribution to those data.
+The only advantage of filtering out those genes was to prevent them from inflating the variance of $$S_i$$ (or $$Q_i$$, $$R_i$$) in aggregated data sets that were obtained by unweighted averaging of $$S_{ig}$$ (or $$Q_i$$, $$R_i$$) over a gene set $$\mathcal{G}$$.  The new implementation of data import and processing (see `import-data.R`) introduces weighted average as a method of aggregating $$S_{ig}$$ for a set of genes.  Again, this is natural if $$S_{ig}, \; g\in\mathcal{G}$$ are assumed binomial with corresponding denominators $$N_{ig}$$ and, in addition, assumed to share $$p_i \equiv p_{ig_1} = p_{ig_2} = ...$$.  The new implementation also calculates the unweighted average `UA`, but the present analyses will be based only on `WA`.  This way, genes will affect the results from aggregated data sets in proportion with their contribution to those data.
 
 ## Extended data set
 
@@ -76,7 +83,7 @@ lattice.options(default.args = list(as.table = TRUE))
 lattice.options(default.theme = "standard.theme")
 ```
 
-The number of available observations is closely (and inversely) related to the standard error of estimated regression coefficients such as of $\hat{\beta}_\mathrm{age}$, on which our attention is centered. The number of observations before and after filtering at total read count threshold $\le 50$)...
+The number of available observations is closely (and inversely) related to the standard error of estimated regression coefficients such as of $$\hat{\beta}_\mathrm{age}$$, on which our attention is centered. The number of observations before and after filtering at total read count threshold $$\le 50$$)...
 ```{r}
 (nobs <- as.data.frame(lapply(list(unfiltered=Y, filtered=Y.f), function(y) sapply(y, function(x) sum(! is.na(x[[1]]))))))
 ```
@@ -97,7 +104,7 @@ points(nobs[ 24:25, "unfiltered" ], nobs[ 24:25, "filtered" ], pch = 16, col = "
 
 The above results show that the previously used gene filter would remove 6 out of the 7 candidate genes with which the analysis now is extended.  This points to one of the benefits of the new weighting schemes introduced above.
 
-### Apparent age dependence of $S_g$ for candidate genes $g$
+### Apparent age dependence of $$S_g$$ for candidate genes $$g$$
 
 ```{r S-vs-age-candidate-imprinted, echo=FALSE, dev=c('png','pdf'), out.width=700}
 par(mfcol = c(3,3))
@@ -134,11 +141,11 @@ f.ids["TMEM261P1", c("logi.S", "logi2.S")] <- FALSE
 ```
 Note that potential `NULL` results reflect genes that have been filtered out---by default none.
 
-### Regression coefficient $\beta_\mathrm{age}$ 
+### Regression coefficient $$\beta_\mathrm{age}$$ 
 
 #### Logistic model
 
-Under the `logi.S` model $\beta_\mathrm{age}$ seems to vary greatly accross genes suggesting both gain or loss of imprinting with age or no effect of age.  Genes with fewer observations (as typical for candidate imprinted genes) have broad confidence intervals and so tend support the null hypothesis of $\beta_\mathrm{age}=0$ at a given significance level $\alpha$.  Aggregating read counts using weighted average is hugely beneficial as evidenced by dramatically shrunken confidence intervals (`WA`) because the logistic model takes advantage of the increased total read counts.  The following pair of plots (obtained with the `lattice` and `ggplot2` package, respectively) illustrate these result:
+Under the `logi.S` model $$\beta_\mathrm{age}$$ seems to vary greatly accross genes suggesting both gain or loss of imprinting with age or no effect of age.  Genes with fewer observations (as typical for candidate imprinted genes) have broad confidence intervals and so tend support the null hypothesis of $$\beta_\mathrm{age}=0$$ at a given significance level $$\alpha$$.  Aggregating read counts using weighted average is hugely beneficial as evidenced by dramatically shrunken confidence intervals (`WA`) because the logistic model takes advantage of the increased total read counts.  The following pair of plots (obtained with the `lattice` and `ggplot2` package, respectively) illustrate these result:
 
 ```{r beta-age-logi-S, dev=c('png','pdf'), echo=FALSE, warning=FALSE, message=FALSE}
 plot.CI <- function(df, package = "lattice", ...) {
@@ -178,7 +185,7 @@ plot.CI(get.CI(M$wnlm.Q[f.ids$wnlm.Q]), package = "lattice")
 plot.CI(get.CI(M$wnlm.Q[f.ids$wnlm.Q]), package = "ggplot2")
 ```
 
-### Comparing $\beta_\mathrm{age}$ from different models
+### Comparing $$\beta_\mathrm{age}$$ from different models
 
 #### Consistency between `wnlm.Q` and `logi.S`
 
@@ -196,16 +203,16 @@ abline(h = 0, lty = "dashed")
 
 #### Impact of S rescaling (`logi2.S`) and of weighting observations (`nlm`)
 
-Let $M' / M$ denote the comparison of two models in terms of the mean absolute difference of regression coefficients under $M'$ relative to $M$ for a given gene or aggregate $g$, defined as
+Let $$M' / M$$ denote the comparison of two models in terms of the mean absolute difference of regression coefficients under $$M'$$ relative to $$M$$ for a given gene or aggregate $$g$$, defined as
 $$
 \frac{\sum_j | \beta'_{jg} - \beta_{jg} | }{\sum_j | \beta_{jg} | }
 $$
-where $\{\beta_{jg} : j=1,..,p\}$ and $\{\beta'_{jg} : j=1,..,p\}$ is a set of $p$ regression coefficients under $M$ and $M'$, respectively.
+where $$\{\beta_{jg} \mid j=1,..,p\}$$ and $$\{\beta'_{jg} \mid j=1,..,p\}$$ is a set of $$p$$ regression coefficients under $$M$$ and $$M'$$, respectively.
 
 The following plot shows such differences for three model comparisons and all genes and aggregates.  Two systematic trends be seen:
 
 1. the difference tends to decrease with increasing number of observations indicating that some of the difference comes from sampling error due to limited number of observations
-1. the `logi2.S` / `logi.S` differences (both can be considered weighted averages) tend to be smaller than the differences between weighed and unweighted averaging of $\{S_{g}\}_g$ and especially that of $\{Q_{g}\}_g$.
+1. the `logi2.S` / `logi.S` differences (both can be considered weighted averages) tend to be smaller than the differences between weighed and unweighted averaging of $$\{S_{g}\}_g$$ and especially that of $$\{Q_{g}\}_g$$.
 
 ```{r mean-abs-diff-coefs, echo=FALSE}
 mrds <- list(logi =

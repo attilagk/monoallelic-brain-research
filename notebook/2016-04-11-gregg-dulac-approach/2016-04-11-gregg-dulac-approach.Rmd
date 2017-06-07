@@ -1,1 +1,57 @@
-Hello World!
+---
+layout: default
+title: The Gregg-Dulac Definition of Imprinted Genes
+---
+
+## The controversy
+
+[Gregg et al][gregg] in the Dulac lab found unexpectedly many (> 1300) imprinted genes genome-wide.  However, [DeVeale, der Kooy and Babak][deveale] repeated that study and suggested that most of the positive calls by Gregg et al were false.  These authors estimated only 175 imprinted genes genome-wide.  (A side note: neither of these studies investigated the within-gene variation of imprinting across individuals.)
+
+DeVeale et al explain the biased estimate of Gregg et al by unaccounted variation from both technical and biological sources.  But by strictly adhering to the "Gregg-Dulac" definition of imprinted gene, neither DeVeale et al consider **how the definition per se may impact statistical inference**.  This article is centered on that point. 
+
+
+## Various definitions of imprinting
+
+Gregg et al themselves make the crucial statement (Introduction, 2nd paragraph, of main text):
+
+> Imprinting refers to functional differences between the maternal and paternal chromosomes or alleles [...], and is also used more strictly to define complete allele-specific silencing [...]
+
+This means two imprinted gene sets: a larger set defined by **some** (possibly small) functional difference and a smaller subset of only those genes for which the difference is very **large**.  In their next sentence Gregg et al also describe these two sets as "biased" or "all-or-none" allelic expression, respectively.
+
+Although Gregg et al verbally allude to these two (or more than two) sets of imprinted genes, in my understanding (detailed in the next section) they use a single mathematical definition of imprinting.  This is based on their implicitly assumed[^1] parameter, the expected of fraction of maternal transcripts, denoted here as $$p$$.  Our favored definition of imprinting (or monoallelic expression) is also based on $$p$$ but in a characteristically different way:
+
+|                             | not imprinted (biallelic)   |  imprinted (monoallelic)    |
+|:---------------------------:|:---------------------------:|:---------------------------:|
+|    Gregg-Dulac              |     $$p=1/2$$               |        $$p>1/2$$            |
+|    DeVeale et al            |     $$p=1/2$$               |        $$p>1/2$$            |
+|    our work                 |     $$p=1/2$$               |        $$p=0.9$$            |
+
+The above definitions of imprinting allow testing specifically for what Gregg et al call maternal bias.  For paternal bias the definition modify to $$p<1/2$$ (Gregg-Dulac) and to $$p=0.1$$ (our work).  It is clear that the Gregg-Dulac definition of imprinting is very liberal and inclusive whereas ours is conservative and exclusive (excludes all values of $$p$$ between 1/2 and 0.9).
+
+
+## Hypothesis tests
+
+Neither Gregg et al nor DeVeale et al gave a definition as formal as those in the above table.  I deduced those formal definitions from their methodological descriptions.  I summarize their methods here not only to present the deduction of their definitions but also to establish a link between their chi-squared test and my proposed test of monoallelic expression.
+
+## Minor points: ambiguities, contradictions
+
+###  F1i and F1r together or separately?
+
+The statement (Gregg SOM 2.2 p4)
+
+> In the current study,
+male and female samples were treated as replicates by summing the male and
+female F1i and F1r read data for each SNP.
+
+...seems to contradict with (Gregg main text)...
+
+> Imprinting was assessed by $$\chi^2$$ tests in both initial and reciprocal crosses as described in the SOM.
+
+Along the same line: Fig 2B clearly shows separate $$P$$ values for F1i and F1r.  But Fig 2A is ambiguously annotated with "F1i and F1r $$P$$ value cutoff", wherein the word "and" may mean that F1i and F1r was analyzed either together or separately.
+
+
+### "Two tailed $$\chi^2$$ probability"
+
+[gregg]: http://www.ncbi.nlm.nih.gov/pmc/articles/PMC3005244/#SD13
+[deveale]: http://journals.plos.org/plosgenetics/article?id=10.1371/journal.pgen.1002600
+[^1]: DeVeale et al is even more implicit in this regard
