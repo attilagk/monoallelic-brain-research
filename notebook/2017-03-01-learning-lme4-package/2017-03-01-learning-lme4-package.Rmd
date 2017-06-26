@@ -2,7 +2,10 @@
 layout: default
 tags: [regression, anova ]
 title: Mixed Model Demo Using the lme4 Package
+featimg: "observed-predicted-1.png"
 ---
+
+TODO
 
 ```{r}
 library(lme4)
@@ -24,7 +27,7 @@ The `sleepstudy` dataset from the `lme4` package is chosen for the demonstration
 
 Plotting the average reaction time against the test day for each subject...
 
-```{r}
+```{r observed-only}
 xyplot(Reaction ~ Days | Subject, data = sleepstudy, layout = c(6, 3))
 ```
 
@@ -59,7 +62,7 @@ M2 <- lmer(Reaction ~ Days + (1 | Subject), sleepstudy)
 
 The magenta lines represent the fitted line under `M1`, the green lines under `M2` (the observed data remain cyan).
 
-```{r}
+```{r observed-predicted}
 df <- cbind(sleepstudy, data.frame(yhat.M1 = predict(M1), yhat.M2 = predict(M2)))
 xyplot(Reaction + yhat.M1 + yhat.M2 ~ Days | Subject, data = df, type = "l", ylab = "Reaction", layout = c(6, 3),
        auto.key = list(text = c("observed", "predicted by M1", "predicted by M2"), points = FALSE, lines = TRUE))

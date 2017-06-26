@@ -3,6 +3,8 @@ layout: default
 tags: [discussion, andy]
 ---
 
+Summary of planned task for the completion of this research project.
+
 * finalize model selection; use *unlm.Q* family and fine-tune terms of linear predictor
     * include imprinted gene cluster as predictor (embed genes in it)
 * predict *Age*, *Ancestry.1*, *Gender* effect for each gene

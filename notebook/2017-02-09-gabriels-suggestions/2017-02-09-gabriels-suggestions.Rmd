@@ -3,6 +3,8 @@ layout: default
 tags: [ andy, manuscript, gabrielhoffman, discussion ]
 ---
 
+TODO
+
 1. Extend regression analysis (both fixed and mixed effects models) to many more (perhaps all?) assessable genes.
 1. Consolidate and employ both fixed and mixed effects models
     * $$\hat{\beta}$$ from mixed models to $$\hat{\beta}$$ from the corresponding fixed models in order to resolve present discrepancies.

@@ -1,5 +1,7 @@
 ---
 layout: default
+Rdir: "projects/monoallelic-brain/R/2016-03-28-age-distribution/"
+featimg: "unnamed-chunk-3-1.png"
 ---
 
 This is an explanatory, qualitative, analysis on the distribution of the age of death among the studied individuals  from the [CommonMind Consortium](http://commonmind.org/WP/).  The conclusion is that biological variables such as gender and psychiatric state do seem to affect age of death but such qualitative analysis is insufficient to confidently disentangle these biological variables from psychological, social, institutional, and other biomedical variables.

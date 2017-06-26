@@ -3,6 +3,8 @@ layout: default
 tags: [ reproducible-research ]
 ---
 
+TODO
+
 For importing data to `R`, the related processing, source files and notations see [the preceding post]({{ site.baseurl }}{% post_url /projects/monoallelic-brain/2016-06-07-import-data %}).
 
 All functions have been reimplemented partly because the new .csv files created from html tables are organized differently than the ones from Ifat, and partly to make code simpler, more usable and maintainable.

@@ -1,8 +1,7 @@
 ---
 layout: default
+featimg: "ZNF331-1.png"
 ---
-
-## Introduction
 
 This article illustrates some of the properties of the various regression models (logi.S, logi2.S, wnlm.S, wnlm.R, unlm.S, unlm.R) used to fit the Common Mind data as well as the properties of the data themselves
 

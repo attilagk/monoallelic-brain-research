@@ -2,7 +2,10 @@
 layout: default
 tags:
 title: Differentially Expressed Genes in Schizophrenia
+featimg: "venn-triple-1.png"
 ---
+
+TODO
 
 ## Introduction
 

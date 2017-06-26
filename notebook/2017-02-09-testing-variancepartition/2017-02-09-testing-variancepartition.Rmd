@@ -2,7 +2,10 @@
 title: Testing variancePartition
 layout: default
 tags: [ regression, anova, ]
+featimg: "varpart-log-1.png"
 ---
+
+TODO
 
 Load packages...
 
@@ -46,19 +49,19 @@ vp.S <- fitExtractVarPartModel( t(S), form, E )
 
 ## Results
 
-```{r}
+```{r varpart-log}
 main <- "Q: quasi-log transformation"
 plotVarPart(vp.Q, main = main)
 plotPercentBars(vp.Q)
 ```
 
-```{r echo=FALSE, eval=FALSE}
+```{r varpart-rank, echo=FALSE, eval=FALSE}
 main <- "R: rank transformation"
 plotVarPart(vp.R, main = main)
 plotPercentBars(vp.R)
 ```
 
-```{r}
+```{r varpart-untransformed}
 main <- "S: untransformed"
 plotVarPart(vp.S, main = main)
 plotPercentBars(vp.S)

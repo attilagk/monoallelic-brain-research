@@ -2,7 +2,10 @@
 layout: default
 title: Logistic Models Using the S statistic as Response
 tags: [ regression, reproducible-research ]
+featimg: "s-stat-cmp-simple-multiple-regr-peg3-1.png"
 ---
+
+TODO
 
 ## Introduction
 
@@ -82,9 +85,9 @@ characterized by
 
 1. the *linear predictor* $$\eta = \sum_r x_r \beta_r$$, where $$\beta_r$$ are regression *coefficients* mediating the *effects* of $$X$$ on the response
 1. the *link function*: a one to one mapping of $$\eta$$ onto the mean response $$\mu\equiv \mathrm{E} Y$$
-1. $$P(Y_i|\eta_i)$$, the *conditional distribution of the response* given the predictor for observation (individual) $$i$$
+1. $$P(Y_i\mid \eta_i)$$, the *conditional distribution of the response* given the predictor for observation (individual) $$i$$
 
-For the logi and logi2 models the response, for each observation (individual) is distributed binomially and the denominator is used as weight for that observation.  Using $$S_{ig}$$ as response suggests using the corresponding observed $$n_{ig}$$ as weights.  In contrast the nlm model has linear link function and normal (Gaussian) response distribution; under this model the weight is uniformly 1 across observations (individuals) for single and pooled genes.  For averaged genes the weights are, as previously, also taken as uniformly 1.  In this case, however, a more rigorous treatment would be defining the weight at observation $$i$$ as the number $$|G|_i$$ of averaged genes at that $$i$$ since that number varies due to non-uniformly missing data and filtering.
+For the logi and logi2 models the response, for each observation (individual) is distributed binomially and the denominator is used as weight for that observation.  Using $$S_{ig}$$ as response suggests using the corresponding observed $$n_{ig}$$ as weights.  In contrast the nlm model has linear link function and normal (Gaussian) response distribution; under this model the weight is uniformly 1 across observations (individuals) for single and pooled genes.  For averaged genes the weights are, as previously, also taken as uniformly 1.  In this case, however, a more rigorous treatment would be defining the weight at observation $$i$$ as the number $$\mid G\mid _i$$ of averaged genes at that $$i$$ since that number varies due to non-uniformly missing data and filtering.
 
 The link functions are given by the following equations
 $$
@@ -227,9 +230,9 @@ Importantly, these plots below suggest that, at least for PEG3, the response's d
 
 ```{r coplot-s-peg3, echo=FALSE, warning=FALSE, dev=c('png','pdf')}
 # condition R_PEG3 vs age on a given institution, RIN value and ancestry
-coplot(S_PEG3 ~ Age.of.Death | Institution, data=d, pch='.', cex=2)
-coplot(S_PEG3 ~ Age.of.Death | DLPFC_RNA_isolation..RIN, data=d, pch='.', cex=2)
-coplot(S_PEG3 ~ Age.of.Death | Ancestry.EV.2, data=d, pch='.', cex=2)
+coplot(S_PEG3 ~ Age.of.Death \mid  Institution, data=d, pch='.', cex=2)
+coplot(S_PEG3 ~ Age.of.Death \mid  DLPFC_RNA_isolation..RIN, data=d, pch='.', cex=2)
+coplot(S_PEG3 ~ Age.of.Death \mid  Ancestry.EV.2, data=d, pch='.', cex=2)
 ```
 
 ## Regression analysis

@@ -4,6 +4,8 @@ title: 'Project on Monoallelic Expression: a Statistical View'
 tags: [ modeling, article, classification, regression, error-rate ]
 ---
 
+TODO
+
 I wrote a article (accessible [here][pdf]) with the same title as this post.
 The article evaluates the current state of the "monoallelic expression project" (MAE) by
 

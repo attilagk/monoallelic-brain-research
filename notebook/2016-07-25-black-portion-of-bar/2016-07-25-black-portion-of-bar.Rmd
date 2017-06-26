@@ -4,6 +4,8 @@ tags: [ andy, manuscript ]
 title: Interpretation of the Black Bars
 ---
 
+TODO
+
 ## Question
 
 What is the precise meaning of the sentence below, taken from [Ifat's manuscript][ifat]?

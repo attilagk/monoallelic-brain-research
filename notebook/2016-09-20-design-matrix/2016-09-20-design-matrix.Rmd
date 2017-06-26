@@ -1,7 +1,10 @@
 ---
 layout: default
 tags: [ regression, experimental-design ]
+featimg: "terms-PEG3-RIN-RIN2-1.png"
 ---
+
+TODO
 
 ## Motivation
 

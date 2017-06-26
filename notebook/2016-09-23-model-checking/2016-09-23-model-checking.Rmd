@@ -1,7 +1,10 @@
 ---
 layout: default
 tags: [ regression, model-checking ]
+featimg: "qqnorm-ZNF331-1.png"
 ---
+
+TODO
 
 Click [model-checking.csv][model-checking] to download the saved csv files reporting which genes were excluded under the logi.S model.
 

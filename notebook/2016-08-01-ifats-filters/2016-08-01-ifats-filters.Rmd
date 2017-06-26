@@ -2,7 +2,10 @@
 layout: default
 title: Ifat's Filtering, Gene Ranking and Classification
 tags: [reproducible-research, genome, monoallelic-expression, manuscript]
+featimg: "known-genes-1.png"
 ---
+
+TODO
 
 This post was extended with the test for reference/nonreference bias, whose results are summarized in [ref-nonref-test.csv][ref-nonref-test.csv] for top scoring genes.
 

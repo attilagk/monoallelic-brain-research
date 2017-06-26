@@ -4,6 +4,8 @@ title: Adopting limma and voom
 tags: [regression, discussion, article, expression]
 ---
 
+TODO
+
 ## Background
 
 Ifat's initial analysis (stage 1) used $$R_i$$, the rank transformed $$S_{ig}$$ statistic averaged over 8 known imprinted genes $$g\in\{g_1,...,g_8\}$$ as the response variable of a normal linear model.  My [subsequent analysis][logi] extended this framework in several ways, fitting 88 various multiple regression models (and 88 additional simple regression models).  These extensions include

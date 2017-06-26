@@ -1,6 +1,9 @@
 ---
 layout: default
+featimg: "Q-Dx-RIN-MEST-density-1.png"
 ---
+
+TODO
 
 This analysis presents plots of the conditional distribution of the read count ratio statistic $$S$$ or its quasi-log transformed version $$Q$$ given each a gene a predictor of interest, which is either *Gender* or *Dx*.  For the predictor *Age* see the previous post [trellis display of data]({{ site.baseurl }}{% post_url /projects/monoallelic-brain/2016-06-26-trellis-display-of-data %}).  In the present post a more detailed conditioning is done, using *RIN* and *Institution* for *MEG3* and *MEST*.  These are genes found in a previous analysis (see [permutation test]({{ site.baseurl }}{% post_url /projects/monoallelic-brain/2016-10-03-permutation-test %})) to be significantly associated to *Gender* and *Dx*, respectively.  The plots below show that the distributions greatly overlap between differing levels of gender or disease even for the most significantly associated genes, and that this holds in case of further conditioning on RIN and Institution.
 

@@ -1,7 +1,10 @@
 ---
 layout: default
 tags: [genome]
+featimg: "score-genomic-location-1.png"
 ---
+
+TODO
 
 Note that a table comparing imprinted genes identified by Baran et al to those by this study is available at [baran-vs-ourwork.csv][baran-vs-ourwork.csv].
 

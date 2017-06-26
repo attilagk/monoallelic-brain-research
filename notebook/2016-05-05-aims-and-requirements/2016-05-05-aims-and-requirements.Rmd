@@ -3,6 +3,8 @@ layout: default
 tags: [ andy, modeling, discussion ]
 ---
 
+TODO
+
 ## Notation
 
 $$S_{ig}$$: the $$S$$ statistic for individual (tissue sample) $$i$$ and gene $$g$$

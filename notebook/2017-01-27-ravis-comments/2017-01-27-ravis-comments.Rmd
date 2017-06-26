@@ -3,8 +3,6 @@ layout: default
 tags: [ manuscript, ravi, ]
 ---
 
-## General
-
 From Ravi's email to Andy (January 27, 2017 at 12:35:30 AM EST)
 
 > Broadly, I think expanding captions of figures would help, I sometimes had trouble understanding the message from a graph/plot. also, the fits  to various parameters could probably be moved to supplementary (at least in cases where the parameters, like age, seemed to not have a predictive value). and maybe a conclusion section would be useful (I think some journals also require it). 

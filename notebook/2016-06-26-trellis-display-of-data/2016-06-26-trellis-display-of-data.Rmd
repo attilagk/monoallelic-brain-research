@@ -2,7 +2,10 @@
 layout: default
 title: "Trellis Display of Data"
 tag: [ multivariate ]
+featimg: "S-age-tot-read-count-1.png"
 ---
+
+TODO
 
 ## Goal
 

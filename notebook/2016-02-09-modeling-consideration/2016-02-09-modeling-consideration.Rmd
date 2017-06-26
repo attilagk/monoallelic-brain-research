@@ -3,6 +3,8 @@ layout: default
 tags: [discussion, modeling]
 ---
 
+TODO
+
 ## Assessment of monoallelic expression (m.a.e.)
 
 In this note I identify some shortcomings of our project "monoallelic expression in the brain" in its present state (see the [project page], [slides] and [manuscript]), discuss their impact on the study, and make suggestions for amendments.  In short, those shortcomings are the implicit treatment of...

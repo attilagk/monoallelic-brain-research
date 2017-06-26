@@ -3,6 +3,8 @@ layout: default
 title: The Gregg-Dulac Definition of Imprinted Genes
 ---
 
+TODO
+
 ## The controversy
 
 [Gregg et al][gregg] in the Dulac lab found unexpectedly many (> 1300) imprinted genes genome-wide.  However, [DeVeale, der Kooy and Babak][deveale] repeated that study and suggested that most of the positive calls by Gregg et al were false.  These authors estimated only 175 imprinted genes genome-wide.  (A side note: neither of these studies investigated the within-gene variation of imprinting across individuals.)

@@ -1,7 +1,10 @@
 ---
 layout: default
 tags: [ regression, monoallelic-expression ]
+featimg: "read-count-regr-1.png"
 ---
+
+TODO
 
 This document supplements the **article** [Binomial Models]({% post_url /projects/monoallelic-brain/2016-02-19-binomial-models %}).
 

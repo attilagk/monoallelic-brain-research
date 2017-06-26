@@ -1,7 +1,10 @@
 ---
 layout: default
 tags: [regression, model-checking ]
+featimg: "qqplot-families-M3-1.png"
 ---
+
+TODO
 
 ```{r echo=FALSE}
 library(lme4)

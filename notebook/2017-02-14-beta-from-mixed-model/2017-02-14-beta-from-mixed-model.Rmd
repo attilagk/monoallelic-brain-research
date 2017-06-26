@@ -1,7 +1,10 @@
 ---
 layout: default
 tags: [regression, anova ]
+featimg: "tval-varpart-fixed-present-b-1.png"
 ---
+
+TODO
 
 ## Motivation
 
