@@ -5,7 +5,7 @@ tags: [genome, monoallelic-expression, manuscript]
 featimg: "complex-plot-b-1.png"
 ---
 
-TODO
+Various plots present the distribution of read count ratio across individuals and genes jointly.  Genes are also ranked using a summary statistic derived from the empirical distribution of read count ration across individuals for each given gene.
 
 ### Missing data due to bug
 

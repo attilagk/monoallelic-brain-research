@@ -5,8 +5,6 @@ title: Extending ANOVA
 featimg: "anova-effects-fw-rv-wnlm-Q-1.png"
 ---
 
-TODO
-
 The analysis presented here follows up on the [previous ANOVA]({{ site.baseurl }}{% post_url /projects/monoallelic-brain/2016-04-22-glm-for-s-statistic %}) and extends it in two ways:
 
 1. terms, corresponding to predictors, are added in various sequences

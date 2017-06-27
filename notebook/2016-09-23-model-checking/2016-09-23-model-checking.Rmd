@@ -4,7 +4,7 @@ tags: [ regression, model-checking ]
 featimg: "qqnorm-ZNF331-1.png"
 ---
 
-TODO
+For a fixed set of terms in the linear predictor and for each gene, different data transformations, link functions, and error distributions are compared in terms of model fit.  Fit is evaluated by diagnostic plots by inspecting the normality of residuals and the homogeneity of error (homoscedasticity).  Although model fit varies across genes, taken all genes together the wnlm.Q and unlm.Q models emerge as the best fitting ones.
 
 Click [model-checking.csv][model-checking] to download the saved csv files reporting which genes were excluded under the logi.S model.
 

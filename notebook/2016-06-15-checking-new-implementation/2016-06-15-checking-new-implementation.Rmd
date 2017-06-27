@@ -3,7 +3,7 @@ layout: default
 tags: [ reproducible-research ]
 ---
 
-TODO
+Some of the key functions have been reimplemented for more robustness and modularity.  These checkups show that the new implementation is correct.
 
 For importing data to `R`, the related processing, source files and notations see [the preceding post]({{ site.baseurl }}{% post_url /projects/monoallelic-brain/2016-06-07-import-data %}).
 

@@ -4,8 +4,6 @@ tags: [ permutation, p-value, hypothesis-test ]
 featimg: "p-values-1.png"
 ---
 
-TODO
-
 This analysis extends [permuted observations]({{ site.baseurl }}{% post_url /projects/monoallelic-brain/2016-09-20-permuted-observations %}) to testing hypotheses $$\beta_j=0, \; j=1,...,p$$ for any gene.  This is done by random permutation tests, which provide only approximate p-values in contrast with exact permutation tests (which are unpractical in the present case due to the large number $$n!$$ of all permutations of $$n\approx 500$$ cases).  These approximations more or less agree with the "theoretical" p-values, which are based on the hypothesis that the Studentized $$\hat{\beta}_j$$ follows a t-distribution on $$n - p$$ degrees of freedom (see ch8.3, p371 in A.C Davison: Statistical Models):
 
 $$

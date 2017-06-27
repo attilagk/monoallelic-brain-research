@@ -4,10 +4,6 @@ tags: [ andy, manuscript ]
 title: Interpretation of the Black Bars
 ---
 
-TODO
-
-## Question
-
 What is the precise meaning of the sentence below, taken from [Ifat's manuscript][ifat]?
 
 >The black portion of each bar represents the fraction of individuals with evidence for biallelic expression (where the observed $$S_g$$ is close to 0.5 and the 95% confidence interval given the observed read counts does not include 0.7)

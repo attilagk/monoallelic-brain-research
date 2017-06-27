@@ -2,7 +2,7 @@
 layout: default
 ---
 
-TODO
+Some online resources (knowledge bases, catalogs) relevant to this study are listed here.
 
 Classification
 

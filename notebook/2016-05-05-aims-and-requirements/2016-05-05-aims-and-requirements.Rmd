@@ -3,7 +3,7 @@ layout: default
 tags: [ andy, modeling, discussion ]
 ---
 
-TODO
+What are the aims of the project?  The question is stated from a modeling viewpoint.
 
 ## Notation
 

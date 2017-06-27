@@ -4,7 +4,7 @@ tags: [ regression, experimental-design ]
 featimg: "terms-PEG3-RIN-RIN2-1.png"
 ---
 
-TODO
+Some shortcomings of the previous design matrix are inspected and corrected here.  These include highly collinear terms as well as awkward allocation of control and treatment factors.
 
 ## Motivation
 

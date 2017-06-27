@@ -4,7 +4,7 @@ title: 'More Discussion on the "Monoallelic Expression (MAE) Project"'
 tags: [ discussion, monoallelic-expression, andy ]
 ---
 
-TODO
+This is a discussion on Ifat's draft in order to complete the research project.
 
 ## Overall
 

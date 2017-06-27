@@ -4,10 +4,6 @@ tags: [regression, anova ]
 featimg: "tval-varpart-fixed-present-b-1.png"
 ---
 
-TODO
-
-## Motivation
-
 For certain genes $$g$$ allelic bias was found to depend on biological predictors (Age, Dx, Ancestry) in our previous analysis.  That analysis fitted various **fixed effects** multiple regression models (GLM family) using as response variable the read count ratio $$S_{ig}$$ or its quasi-log transformed version $$Q_{ig}$$.  After checking model fit, we primarily based our results to a weighted, normal linear model using $$Q_{ig}$$, which we called *wnlm.Q* (as opposed to its unweighted variation *unlm.Q*).  Significant dependence of the allelic bias of gene $$g$$ on (some level of) the predictor $$p$$ was assessed in terms of the estimated regression coefficient $$\hat{\beta}_{pg}$$.
 
 But decomposition of variance using `variancePartition` showed that a predictor that significantly affected allelic bias for a certain gene did not necessarily explain substantial fraction of variance.  This was the case in spite of using the same response and predictors in the **mixed effects** model for `variancePartition` as for fixed effects models like wnlm.Q.  A notable difference is that the mixed effects model was based on the unweighted unlm.Q rather than the weighted wnlm.Q.

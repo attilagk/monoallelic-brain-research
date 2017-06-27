@@ -4,7 +4,7 @@ title: Adopting limma and voom
 tags: [regression, discussion, article, expression]
 ---
 
-TODO
+The R packages limma and voom have been developed for analysis of RNA-seq read count data, whereby RNA-seq artifacts are modeled successfully, as it was demonstrated.  Here I consider employing limma and voom for our study.
 
 ## Background
 

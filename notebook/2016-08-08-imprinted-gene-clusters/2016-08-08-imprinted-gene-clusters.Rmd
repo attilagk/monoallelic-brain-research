@@ -4,14 +4,6 @@ tags: [genome]
 featimg: "score-genomic-location-1.png"
 ---
 
-TODO
-
-Note that a table comparing imprinted genes identified by Baran et al to those by this study is available at [baran-vs-ourwork.csv][baran-vs-ourwork.csv].
-
-
-[baran-vs-ourwork.csv]: {{ site.baseurl }}/assets/projects/monoallelic-brain/baran-vs-ourwork.csv
-## Motivation
-
 Imprinted genes form **clusters** of one or more genes.  Previous work by Ifat established the **imprinting status** of each gene as either known to be imprinted, *not* known to be imprinted but near an "known" gene, or else neither.  I refer to these three categories as "known", "nearby candidate" and "candidate", respectively.
 
 The main question queries the mechanism of the age effect on imprinting (loss, gain or lack of effect).  In particular: does age regulate genes within some cluster in a concerted or an independent manner?
@@ -20,6 +12,8 @@ The current work studies this by performing two main steps
 
 1. delineation of clusters
 1. visualize clusters and age effect in terms of regression coefficients for age
+
+Note that a table comparing imprinted genes identified by Baran et al to those by this study is available at [baran-vs-ourwork.csv][baran-vs-ourwork.csv].
 
 ## Data import and preparation
 
@@ -271,3 +265,4 @@ write.csv(baran.vs.ourwork, file = "../../results/baran-vs-ourwork.csv", row.nam
 ```
 
 [baran]: https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4484390/
+[baran-vs-ourwork.csv]: {{ site.baseurl }}/assets/projects/monoallelic-brain/baran-vs-ourwork.csv

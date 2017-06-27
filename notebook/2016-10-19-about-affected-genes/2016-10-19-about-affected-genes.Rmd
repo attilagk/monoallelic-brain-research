@@ -3,10 +3,6 @@ layout: default
 tags: [ literature ]
 ---
 
-TODO
-
-## Introduction
-
 Based on the aggregation of various p-values from [a previous analysis]({{ site.baseurl }}{% post_url /projects/monoallelic-brain/2016-10-03-permutation-test %}), a list of those genes was collated, which are significantly affected by any of the four chosen coefficients (Age, GenderMale, DxSCZ, Ancestry.1) representing various biological variables (see [signif-gene-effects-either.csv]).  These genes were then queried against Ensemble Genes 86 database, Homo sapiens genes (GRCh38.p7) using BioMart with the following HGNC symbols as input external reference IDs:
 
 MAGEL2,

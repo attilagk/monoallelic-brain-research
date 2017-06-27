@@ -5,7 +5,7 @@ tags: [ regression, anova, ]
 featimg: "varpart-log-1.png"
 ---
 
-TODO
+This short article presents the testing of Gabriel Hoffman's variancePartition package on our read count ratio data.  In particular, a mixed effects model is fitted with Institution, Gender, Dx, and RNA_batch having random effects on the read count ratio and all other predictors having fixed effects.  No interactions are considered.  The large residual variance is probably due to the large variation among individuals.
 
 Load packages...
 

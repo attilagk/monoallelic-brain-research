@@ -3,7 +3,7 @@ layout: default
 tags: [ andy, manuscript ]
 ---
 
-TODO
+Based on the criticism by some coauthors of our recent manuscript the decision has been made that the work needs a major revision.  What should be that revision?  Some key points are listed here.
 
 ## General questions
 

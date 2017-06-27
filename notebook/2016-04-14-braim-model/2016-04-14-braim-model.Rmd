@@ -4,10 +4,6 @@ title: Bayesian regression allelic imbalance model (BRAIM)
 tags: [modeling, regression, article]
 ---
 
-TODO
-
-## Scope
-
 The Bayesian regression allelic imbalance model (BRAIM) was published by Dulac and coworkers (Perez et al, [eLife 2015;4:e07860][Perez et al]) and was applied to RNA-seq data from the cerebellum of crossed F1 hybrid mice in same study to investigate:
 
 * which genes are monoallelically expressed (imprinted), and to what degree

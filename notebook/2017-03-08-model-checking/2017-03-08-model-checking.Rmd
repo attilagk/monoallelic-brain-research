@@ -4,7 +4,7 @@ tags: [regression, model-checking ]
 featimg: "qqplot-families-M3-1.png"
 ---
 
-TODO
+Two characteristics of fit are checked for a set of models: (1) normality of residuals and (2) homogeneity of error variance.  These are evaluated with diagnostic plots.  Among the checked models the best fitting one is unlm.Q and wnlm.Q regardless of the terms in the linear predictor.  However, the fit of wnlm.Q converges very slowly or fails to converge especially when more terms are present in the linear predictor.
 
 ```{r echo=FALSE}
 library(lme4)

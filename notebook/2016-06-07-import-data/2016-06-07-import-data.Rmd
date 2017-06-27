@@ -3,7 +3,7 @@ layout: default
 tags: [ reproducible-research ]
 ---
 
-TODO
+Here all read count data are fetched from Ifat's website using hacks that aim to extract information from HTML tables.
 
 ## Preparing data for analysis in `R`
 

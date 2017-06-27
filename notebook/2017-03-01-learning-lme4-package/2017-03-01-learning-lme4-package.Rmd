@@ -5,7 +5,7 @@ title: Mixed Model Demo Using the lme4 Package
 featimg: "observed-predicted-1.png"
 ---
 
-TODO
+The advantage of linear mixed models is demonstrated on a toy data (sleepstudy, bundled with R), in which study individuals act as grouping factors instead of genes.  The mixed model is global in the sense that it may be fitted to the entire dataset covering all groups jointly.  This is contrasted with local models fitted separately to each group, which is less powerful and tends to over fit the data.  The mixed model is also contrasted with a fixed global model, in which the groups (individuals, genes) all have the same effect on the response or on the dependence of the response on predictors of potential interest.
 
 ```{r}
 library(lme4)

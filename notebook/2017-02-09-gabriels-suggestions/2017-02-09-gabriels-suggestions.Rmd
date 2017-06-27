@@ -3,7 +3,7 @@ layout: default
 tags: [ andy, manuscript, gabrielhoffman, discussion ]
 ---
 
-TODO
+Summary of our personal communication with Gabriel Hoffman.
 
 1. Extend regression analysis (both fixed and mixed effects models) to many more (perhaps all?) assessable genes.
 1. Consolidate and employ both fixed and mixed effects models

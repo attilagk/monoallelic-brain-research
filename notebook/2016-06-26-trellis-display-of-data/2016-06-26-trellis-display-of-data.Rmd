@@ -5,10 +5,6 @@ tag: [ multivariate ]
 featimg: "S-age-tot-read-count-1.png"
 ---
 
-TODO
-
-## Goal
-
 Improved graphical overview of data and results pertaining to the recently extended [regression analysis]({{ site.baseurl }}{% post_url /projects/monoallelic-brain/2016-06-17-extending-regression-analysis %}) and [ANOVA]({{ site.baseurl }}{% post_url /projects/monoallelic-brain/2016-06-22-extending-anova %})
 
 ## Prepare data

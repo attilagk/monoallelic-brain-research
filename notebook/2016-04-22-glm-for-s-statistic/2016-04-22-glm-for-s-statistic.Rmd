@@ -5,10 +5,6 @@ tags: [ regression, reproducible-research ]
 featimg: "s-stat-cmp-simple-multiple-regr-peg3-1.png"
 ---
 
-TODO
-
-## Introduction
-
 [Previous analysis][ifat] by Ifat analyzed the relationship between age and allelic imbalance by fitting a normal linear model to rank-transformed $$s_{ig}$$ values averaged over a set of $$8$$ genes.  My [follow-up analysis][nlm g13] extended this to a set of $$13$$ genes.  Here alternative models are fitted directly to the (untransformed) $$s_{ig}$$ values.  Furthermore, all models are fitted to not only aggregated gene sets but also single genes.  Models are compared based on the Akaike information criterion (AIC).
 
 

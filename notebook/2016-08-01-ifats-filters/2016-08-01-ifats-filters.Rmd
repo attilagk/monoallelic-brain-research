@@ -5,15 +5,9 @@ tags: [reproducible-research, genome, monoallelic-expression, manuscript]
 featimg: "known-genes-1.png"
 ---
 
-TODO
+It is crucial for publication to ensure that the genes selected for regression analysis were chosen on objective criteria.  This requires the reproduction of the set of genes that were called monoallelic in the [manuscript][ms] drafted by Ifat.  I'll refer to that in this document as *the previous manuscript*.  If perfect reproduction fails then minimum discordance is desired, and the regression analysis will potentially **need to be repeated** accordingly with the new set of genes called monoallelic.
 
 This post was extended with the test for reference/nonreference bias, whose results are summarized in [ref-nonref-test.csv][ref-nonref-test.csv] for top scoring genes.
-
-
-[ref-nonref-test.csv]: {{ site.baseurl }}/assets/projects/monoallelic-brain/ref-nonref-test.csv
-## Goal
-
-It is crucial for publication to ensure that the genes selected for regression analysis were chosen on objective criteria.  This requires the reproduction of the set of genes that were called monoallelic in the [manuscript][ms] drafted by Ifat.  I'll refer to that in this document as *the previous manuscript*.  If perfect reproduction fails then minimum discordance is desired, and the regression analysis will potentially **need to be repeated** accordingly with the new set of genes called monoallelic.
 
 ## Procedures from the previous manuscript
 
@@ -340,3 +334,4 @@ grid.draw(do.call(draw.quad.venn, l))
 
 [ifat fig 1]: https://docs.google.com/presentation/d/1YvpA1AJ-zzir1Iw0F25tO9x8gkSAzqaO4fjB7K3zBhE/edit#slide=id.p4
 [ms]: https://docs.google.com/document/d/1cWd4UH98SJR5lihDihC0ZO-C_A1-8MQ5COcixxCLzHE/edit
+[ref-nonref-test.csv]: {{ site.baseurl }}/assets/projects/monoallelic-brain/ref-nonref-test.csv

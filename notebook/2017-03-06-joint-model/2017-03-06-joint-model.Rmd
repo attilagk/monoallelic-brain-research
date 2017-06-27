@@ -3,7 +3,7 @@ layout: default
 tags: [regression, anova ]
 ---
 
-TODO
+An ad-hoc forward model selection strategy is used to evaluate the effect of the terms of the linear predictor in mixed effects models.  A strongly reduced starting model is prompted by earlier analysis using linear models conditioned on genes.  The model space is explored using that prior knowledge combined with information criteria (BIC and AIC) and likelihood ratio test.  The biologically interesting finding is that Ancestry and Age have significant effect but only when their interaction with genes is considered.  Their marginal effect (without that interaction) is very weak.
 
 ```{r echo=FALSE}
 library(lme4)

@@ -3,10 +3,6 @@ layout: default
 featimg: "s-r-stat-nlm-check-peg3-1.png"
 ---
 
-TODO
-
-## Introduction
-
 This post follows up on a [previous regression analysis][regr], which used fitted several regression model types (nlm, logi, log2) to the data concerning monoallelic expression, and the effect of age and other explanatory variables.  The goal here is to compare these models to select the one(s) with the most desirable properties.
 
 
