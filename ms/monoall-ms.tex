@@ -1,6 +1,6 @@
 %\documentclass[letterpaper]{article}
 \documentclass[12pt,letterpaper]{article}
-\usepackage{amsmath, geometry, graphicx, tikz}
+\usepackage{amsmath, geometry, graphicx, tikz, changes}
 \usetikzlibrary{arrows.meta}
 \bibliographystyle{plain}
 
@@ -25,20 +25,26 @@ Andrew Chess}
 \maketitle
 
 \begin{abstract}
-We present the first genome-wide analysis of human genomic imprinting based on
-RNA-seq measurements of the parental bias in allele-specific expression in the
+We present \replaced[remark={the Lappalainen group already
+published similar work}]{a}{the first}
+genome-wide analysis of human genomic imprinting based on
+RNA-seq measurements of \deleted{the}
+parental bias in allele-specific expression in the
 dorsolateral prefrontal cortex.  We find that the fraction of imprinted human
 genes is consistent with lower (\(\approx 0.5\%\)) as opposed to higher
 (\(\approx 5\%\)) estimates in mice.  Our analysis reveals that age up or
-down-regulates allelic bias of some imprinted genes even in later life and
-that allelic bias depends also on gender and genetic variation.  Furthermore,
+down-regulates allelic bias of some\added{, but not all,} imprinted genes
+\deleted{even} in \replaced{adulthood}{later life}
+and
+that allelic bias depends also on \deleted{gender and }genetic variation.
+\deleted{Furthermore,
 we show that allelic bias of some imprinted genes, like UBE3A in the
-Prader-Willi region, is linked to schizophrenia.  These results support the
+Prader-Willi region, is linked to schizophrenia.  }These results support the
 hypothesized role of imprinted genes in social interactions, which dynamically
 change in the life course and depend on neuropsychological function.
 \end{abstract}
 
-\section{Introduction}
+\section{\added[remark=This section will benefit from rewriting]{Introduction}}
 
 Genomic imprinting, leading to repression of either the maternal or paternal
 allele, has reached its highest prevalence in humans and other placental
@@ -53,7 +59,7 @@ and allele-specific differential epigenetic marks are found near specific
 genes as well as in shared regulatory elements called imprinting control
 regions. For non-imprinted genes expression is balanced such that the two
 alleles are roughly equally expressed. By contrast, for imprinted genes
-epigenetic marks lead to substantial, degrees of
+epigenetic marks lead to substantial\deleted{,} degrees of
 imbalance in the expression level of the two alleles.  We refer to the degree
 of expression imbalance as \emph{allelic bias}; at its maximum expression is
 completely monoallelic.
@@ -111,9 +117,9 @@ had been reported to be imprinted in the context of one or another tissue
 and/or species. We find a number of genes with allele specific expression
 residing near clusters of known imprinted genes. Furthermore, our data suggest
 that for several imprinted genes the variation of allelic bias across
-individuals is explained by differences in age, schizophrenia diagnosis,
-gender or ancestry.  For example, UBE3A in 15q11-q13, appears to have
-allele-specific bias that varies with age and psychiatric condition.
+individuals is explained by differences in \added{ancestry and} age\deleted{, schizophrenia diagnosis,
+gender or ancestry} \added{in a manner that depends on the gene}.\deleted{  For example, UBE3A in 15q11-q13, appears to have
+allele-specific bias that varies with age and psychiatric condition.}
 
 \section{Methods}
 
@@ -276,9 +282,9 @@ for less than $t_\mathrm{ind}$ number of individuals, set to 25.
 These final filtering procedures decreased the number of genes in the data from
 \(15584\) to \(n=5307\).
 
-\subsection{Statistical analysis}
+\subsection{\deleted{Statistical analysis}}
 
-\subsubsection{Test for nearly unbiased expression}
+\subsection{Test for nearly unbiased expression}
 
 This test was defined by the criterion
 \begin{equation}
@@ -298,15 +304,26 @@ asymptotically (as \(T_{ig}\rightarrow \infty\)) normal with
 \end{equation}
 where $z_{p}$ is the $p$ quantile of the standard normal distribution.
 
-\subsubsection{Regression models}
+\subsection{Regression \replaced[remark=This section will be extended greatly not only
+with the mixed effects models but also by moving details of model selection
+here from the Results]{analysis}{models}}
 \label{sec:methods-regression}
+
+\subsubsection{\added{Formulation of models}}
 
 Let \(m\) denote the number of individuals/samples and \(\mathcal{G}\) the set
 of \(n=5307\) genes that passed quality filtering.  Regression analysis
 involved a subset \(\mathcal{G}_1\subset\mathcal{G}\) of \(n_1=30\) genes
 called as imprinted.
 
-The basic model, unlm.S (see Table~\ref{tab:model-names}) for the semantics of
+\begin{itemize}
+\item \added{modeling genes jointly/globally (mixed model) and
+separately/locally}
+\item \added{data transformations, link functions, error distributions}
+\end{itemize}
+
+\deleted[remark=the rest of this subsection will be replaced by what is
+outlined above]{The basic model}, unlm.S (see Table~\ref{tab:model-names}) for the semantics of
 model names in this study), is
 \begin{eqnarray}
 \mathbf{S} &=& \mathbf{X} \boldsymbol{\beta} + \boldsymbol{\varepsilon},
@@ -396,6 +413,13 @@ parameters.  Two corresponding sets of models with a single Age parameter
 (\(p=1\)) were also fitted but the results were only used for visual
 illustration of model fits in Fig.~\ref{fig:predicted-curves} but not for
 quantitative inference.
+
+\subsubsection{Model fitting, selection and inference}
+
+\begin{itemize}
+\item \added{R package, convergence}
+\item \added{Selection criteria and heuristic search}
+\end{itemize}
 
 \section{Results}
 
@@ -501,9 +525,21 @@ known imprinted genes are often imprinted in some but not all tissues.
 \subsection{Selection among predictive models of allelic bias}
 \label{sec:results-regression}
 
-We studied further the sources and psychological consequences of the variation
+\begin{itemize}
+\item \added{the best fitting data transformation, link function and error distribution was
+selected (see Methods)}
+\item \added{global models (condidering genes jointly) gave stronger results than
+local ones}
+\item \added{terms significantly improving model fit include technical ones;
+including them in the model corrects for large technical noise}
+\item \added{terms significantly improving model fit identify as 
+biological regulators of parental bias Ancestry.1 and Age}
+\item \added{both variables affect parental bias in a gene-specific manner}
+\end{itemize}
+
+\deleted[remark=this subsection will be rewritten]{We studied further the sources and psychological consequences of the variation
 of allelic bias in 30 genes that the above results suggested to be imprinted
-in the human adult DLPFC.  These 30 genes consist of the 29 known imprinted or
+in the human adult DLPFC.  }These 30 genes consist of the 29 known imprinted or
 nearby candidates in the top 50 (Fig.~\ref{fig:top-genes}) as well as UBE3A
 (Fig.~\ref{fig:known-genes}).  For these genes we characterized in detail the
 dependence of the read count ratio on biological and technical explanatory

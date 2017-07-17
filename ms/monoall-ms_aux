@@ -4,6 +4,16 @@
 \citation{Plasschaert2014}
 \citation{Peters2014}
 \citation{Plasschaert2014}
+\@writefile{loc}{\contentsline {subsection}{Replaced: \truncate {.3\textwidth }{a}}{1}}
+\@writefile{loc}{\contentsline {subsection}{Deleted: \truncate {.3\textwidth }{the}}{1}}
+\@writefile{loc}{\contentsline {subsection}{Added: \truncate {.3\textwidth }{, but not all,}}{1}}
+\@writefile{loc}{\contentsline {subsection}{Deleted: \truncate {.3\textwidth }{even}}{1}}
+\@writefile{loc}{\contentsline {subsection}{Replaced: \truncate {.3\textwidth }{adulthood}}{1}}
+\@writefile{loc}{\contentsline {subsection}{Deleted: \truncate {.3\textwidth }{gender and }}{1}}
+\@writefile{loc}{\contentsline {subsection}{Deleted: \truncate {.3\textwidth }{Furthermore, we show that allelic bias of some imprinted genes, like UBE3A in the Prader-Willi region, is linked to schizophrenia. }}{1}}
+\@writefile{loc}{\contentsline {subsection}{Added: \truncate {.3\textwidth }{Introduction}}{1}}
+\@writefile{toc}{\contentsline {section}{\numberline {1}\added [remark=This section will benefit from rewriting]{Introduction}}{1}}
+\@writefile{loc}{\contentsline {subsection}{Deleted: \truncate {.3\textwidth }{,}}{1}}
 \citation{Wilkins2003}
 \citation{McDonald2005}
 \citation{Keverne2015}
@@ -11,7 +21,6 @@
 \citation{Wilkins2003}
 \citation{Plasschaert2014}
 \citation{Peters2014}
-\@writefile{toc}{\contentsline {section}{\numberline {1}Introduction}{1}}
 \citation{Bourke2007}
 \citation{Plasschaert2014}
 \citation{Peters2014}
@@ -26,6 +35,10 @@
 \citation{Ingason2011}
 \citation{Sullivan2012}
 \citation{Fromer2016a}
+\@writefile{loc}{\contentsline {subsection}{Added: \truncate {.3\textwidth }{ancestry and}}{3}}
+\@writefile{loc}{\contentsline {subsection}{Deleted: \truncate {.3\textwidth }{, schizophrenia diagnosis, gender or ancestry}}{3}}
+\@writefile{loc}{\contentsline {subsection}{Added: \truncate {.3\textwidth }{in a manner that depends on the gene}}{3}}
+\@writefile{loc}{\contentsline {subsection}{Deleted: \truncate {.3\textwidth }{ For example, UBE3A in 15q11-q13, appears to have allele-specific bias that varies with age and psychiatric condition.}}{3}}
 \@writefile{toc}{\contentsline {section}{\numberline {2}Methods}{3}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {2.1}Study design}{3}}
 \newlabel{eq:S-definition}{{1}{4}}
@@ -35,28 +48,44 @@
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {2.2.3}Genotyping and calibration of imputed SNPs}{5}}
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {2.2.4}Quality filtering}{6}}
 \newlabel{sec:filtering}{{2.2.4}{6}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.3}Statistical analysis}{6}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.3.1}Test for nearly unbiased expression}{6}}
+\@writefile{loc}{\contentsline {subsection}{Deleted: \truncate {.3\textwidth }{Statistical analysis}}{6}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.3}\deleted {Statistical analysis}}{6}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.4}Test for nearly unbiased expression}{6}}
 \newlabel{eq:unbiased-test}{{2}{6}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.3.2}Regression models}{6}}
-\newlabel{sec:methods-regression}{{2.3.2}{6}}
+\@writefile{loc}{\contentsline {subsection}{Replaced: \truncate {.3\textwidth }{analysis}}{7}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.5}Regression \replaced [remark=This section will be extended greatly not only with the mixed effects models but also by moving details of model selection here from the Results]{analysis}{models}}{7}}
+\newlabel{sec:methods-regression}{{2.5}{7}}
+\@writefile{loc}{\contentsline {subsection}{Added: \truncate {.3\textwidth }{Formulation of models}}{7}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.5.1}\added {Formulation of models}}{7}}
+\@writefile{loc}{\contentsline {subsection}{Added: \truncate {.3\textwidth }{modeling genes jointly/globally (mixed model) and separately/locally}}{7}}
+\@writefile{loc}{\contentsline {subsection}{Added: \truncate {.3\textwidth }{data transformations, link functions, error distributions}}{7}}
+\@writefile{loc}{\contentsline {subsection}{Deleted: \truncate {.3\textwidth }{The basic model}}{7}}
 \newlabel{eq:unlm.S-matrix-form}{{4}{7}}
 \newlabel{eq:unlm.S-vector-form}{{6}{7}}
 \newlabel{eq:nlm-general}{{7}{7}}
 \newlabel{eq:Q}{{8}{7}}
-\newlabel{eq:logi-general}{{9}{7}}
-\newlabel{eq:glm-mean-predictor}{{10}{7}}
-\newlabel{eq:binom-error}{{11}{7}}
-\@writefile{toc}{\contentsline {section}{\numberline {3}Results}{8}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.1}Genome- and population-wide variation of allelic bias}{8}}
+\newlabel{eq:logi-general}{{9}{8}}
+\newlabel{eq:glm-mean-predictor}{{10}{8}}
+\newlabel{eq:binom-error}{{11}{8}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.5.2}Model fitting, selection and inference}{8}}
+\@writefile{loc}{\contentsline {subsection}{Added: \truncate {.3\textwidth }{R package, convergence}}{8}}
+\@writefile{loc}{\contentsline {subsection}{Added: \truncate {.3\textwidth }{Selection criteria and heuristic search}}{8}}
+\@writefile{toc}{\contentsline {section}{\numberline {3}Results}{9}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.1}Genome- and population-wide variation of allelic bias}{9}}
 \citation{Zwemer2012}
 \citation{Bai2014a}
 \citation{Zheng2014}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.2}Selection among predictive models of allelic bias}{10}}
-\newlabel{sec:results-regression}{{3.2}{10}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.2}Selection among predictive models of allelic bias}{11}}
+\newlabel{sec:results-regression}{{3.2}{11}}
+\@writefile{loc}{\contentsline {subsection}{Added: \truncate {.3\textwidth }{the best fitting data transformation, link function and error distribution was selected (see Methods)}}{11}}
+\@writefile{loc}{\contentsline {subsection}{Added: \truncate {.3\textwidth }{global models (condidering genes jointly) gave stronger results than local ones}}{11}}
+\@writefile{loc}{\contentsline {subsection}{Added: \truncate {.3\textwidth }{terms significantly improving model fit include technical ones; including them in the model corrects for large technical noise}}{11}}
+\@writefile{loc}{\contentsline {subsection}{Added: \truncate {.3\textwidth }{terms significantly improving model fit identify as biological regulators of parental bias Ancestry.1 and Age}}{11}}
+\@writefile{loc}{\contentsline {subsection}{Added: \truncate {.3\textwidth }{both variables affect parental bias in a gene-specific manner}}{11}}
+\@writefile{loc}{\contentsline {subsection}{Deleted: \truncate {.3\textwidth }{We studied further the sources and psychological consequences of the variation of allelic bias in 30 genes that the above results suggested to be imprinted in the human adult DLPFC. }}{11}}
 \citation{Sullivan2012}
 \citation{McNamara2013}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.3}Biological predictors and interpretation}{12}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.3}Biological predictors and interpretation}{13}}
 \citation{Fromer2016a}
 \@writefile{toc}{\contentsline {subsection}{\numberline {3.4}Methodological limitations}{14}}
 \newlabel{sec:limitations}{{3.4}{14}}
@@ -67,7 +96,7 @@
 \citation{Wilkins2003}
 \citation{McNamara2013}
 \citation{Crespi2008a}
-\@writefile{toc}{\contentsline {section}{\numberline {4}Discussion}{15}}
+\@writefile{toc}{\contentsline {section}{\numberline {4}Discussion}{16}}
 \citation{Hannon2016}
 \citation{Broad2009}
 \citation{Keverne2015}
@@ -96,72 +125,72 @@
 \bibcite{Wilkins2003}{20}
 \bibcite{Zheng2014}{21}
 \bibcite{Zwemer2012}{22}
-\@writefile{toc}{\contentsline {section}{\numberline {5}Figures, Tables and Supplementary Material}{20}}
-\@writefile{lot}{\contentsline {table}{\numberline {1}{\ignorespaces  \emph  {Left column:} predictors (explanatory variables) of read count ratio. \emph  {Right column:} levels of each factor-valued (i.e.\nobreakspace  {}categorical) predictor. Square brackets \([...]\) surround the baseline level against which other levels are contrasted. \emph  {Abbreviations:} PMI: post-mortem interval; Dx: disease status; AFF: affective spectrum disorder; SCZ: schizophrenia; RIN: RNA integrity number; Ancestry.\(k\): the \(k\)-th eigenvalue from the decomposition of genotypes indicating population structure.}}{20}}
-\newlabel{tab:predictors}{{1}{20}}
-\@writefile{lot}{\contentsline {table}{\numberline {2}{\ignorespaces Explanation of the nomenclature for read count ratio variables and model names.}}{21}}
-\newlabel{tab:model-names}{{2}{21}}
-\@writefile{lot}{\contentsline {table}{\numberline {3}{\ignorespaces  Properties of genes with significance of association to one or more biological predictors. }}{21}}
-\newlabel{tab:signif-gene-effects}{{3}{21}}
-\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces  Quantifying allelic bias of expression in human individuals using the RNA-seq read count ratio statistic \(S_{ig}\). The strength of bias towards the expression of the maternal (red) or paternal (blue) allele of a given gene \(g\) in individual \(i\) is gauged with the count of RNA-seq reads carrying the reference allele (small closed circles) and the count of reads carrying an alternative allele (open squares) at all SNPs for which the individual is heterozygous. The allele with the higher read count tends to match the allele with the higher expression but measurement errors may occasionally revert this tendency as seen for SNP \(s_3\) in gene \(g_1\) in individual \(i_2\). }}{22}}
-\newlabel{fig:study-design}{{1}{22}}
-\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces  Using the read count ratio statistic \(S\) to report on variation of allelic bias across individuals and genes. \emph  {Upper half}, from top to bottom: (1) kernel density estimate; (2) the graph of the survival function 1 - ECDF, where ECDF means empirical cumulative distribution function; note color scale for heat map and green filled circles marking genes' score; (3) the heat map representation of the survival function. \emph  {Lower half}, main panels: heat map of the survival function for all 5307 analyzed genes ranked according to their score; right side panels: gene score. }}{23}}
-\newlabel{fig:ranking-genes}{{2}{23}}
-\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces  The top 50 genes ranked by the gene score. The score of gene \(g\) is \(1 - \mathrm  {ECDF}_g(0.9)\), the fraction of individuals \(i\) for which \(S_{ig}>0.9\) and is indicated by the length of dark blue, dark green or dark red bars. Note that the same ranking and score is shown in the bottom half of Fig.\nobreakspace  {}2\hbox {}. The right border of the light blue, light green and light red bars is at \(1 - \mathrm  {ECDF}_g(0.8)\). The length of the black bars indicates the fraction of individuals passing the test of nearly unbiased expression (Eq.\nobreakspace  {}2\hbox {}). ``X'' characters next to gene names indicate reference allele bias, while ``0'' indicate that reference allele bias could not be determined due to small amount of data. }}{24}}
-\newlabel{fig:top-genes}{{3}{24}}
-\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces  Variation of the read count ratio \(S_{ig}\) with age across hundreds of individuals \(i\) (dots) and 30 genes \(g\) that have been considered as imprinted in the DLPFC brain area in this study. }}{25}}
-\newlabel{fig:S-age}{{4}{25}}
-\@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces Fitting four families of generalized linear models to the same data set. In each panel the horizontal axis is age and the vertical axis is the possibly transformed read count ratio \(S\). For all panels the green scatter represents the same data set (KCNK9 gene, cf.\nobreakspace  {}Fig4\hbox {}) except that in the bottom right panel the observed read count ratio \(S\) is transformed to \(Q\) according to Eq.\nobreakspace  {}8\hbox {}. Given each one of four model families the predicted read count ratio is represented by thick black curves. The probability mass or density of the sampling distribution is indicated by a cyan-to-magenta gradient and various prediction limits by gray lines. Note that for demonstration the depicted fitted models are all simple in the sense that they contain age as a sole predictor. Quantitative inference, however, was based on the corresponding multiple regression models including all predictors (Table\nobreakspace  {}1\hbox {}). }}{26}}
-\newlabel{fig:predicted-curves}{{5}{26}}
-\@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces  Significance of association between biological predictors and imprinted genes in the DLPFC. Association was tested based on the p-value for the null hypothesis \(\beta _{jg}=0\), where the regression coefficient \(\beta _{jg}\) mediates the dependence of the read count ratio for gene \(g\) on predictor/``treatment'' \(j\) (Age,...)\nobreakspace  {}in the wnlm.Q model (Fig.\nobreakspace  {}5\hbox {} bottom right). Note that the p-values estimated parametrically (t-distribution) agree well with those estimated non-parametrically (random permutations). The gray area shows the decision rule for rejecting the null hypothesis and thus contains significant associations. }}{27}}
-\newlabel{fig:pval-wnlm.Q}{{6}{27}}
-\@writefile{lof}{\contentsline {figure}{\numberline {7}{\ignorespaces  Dependence of allelic bias for each imprinted gene \(g\) (rows) on each biological predictor/term \(j\) (graphs). Dependence is quantified by the regression coefficient \(\beta _{j\cdot } = 0\). Note that the coefficients for different predictors are on different scale in general therefore it is not meaningful to compare them across graphs. The null hypothesis of no dependence is marked by the dashed vertical line at \(\beta _{jg}=0\). Each estimate \(\mathaccentV {hat}05E{\beta }_{jg}\) is represented by a filled symbol and each 99\% confidence interval by a horizontal bar. }}{28}}
-\newlabel{fig:biol-effects-wnlm.Q}{{7}{28}}
-\@writefile{lof}{\contentsline {figure}{\numberline {S1}{\ignorespaces  Clustering of top-scoring genes in the context of human DLPFC around genomic locations that had been previously described as imprinted gene clusters in other contexts. }}{29}}
-\newlabel{fig:clusters}{{S1}{29}}
-\@writefile{lof}{\contentsline {figure}{\numberline {S2}{\ignorespaces Known imprinted genes ranked by the gene score (dark blue bars). ``Known imprinted'' refers to prior studies on imprinting in the context of any tissue and developmental stage. The length of the black bars indicates the fraction of individuals passing the test of nearly unbiased expression.}}{30}}
-\newlabel{fig:known-genes}{{S2}{30}}
-\@writefile{lof}{\contentsline {figure}{\numberline {S3}{\ignorespaces  Distribution and inter-dependence of predictors. The diagonal graphs of the plot-matrix show the marginal distribution of six predictors (Age, Institution,...)\nobreakspace  {}while the off-diagonal graphs show pairwise joint distributions. For instance, the upper left graph shows that, in the whole cohort, individuals' Age ranges between ca.\nobreakspace  {}15 and 105 years and most individuals around 75 years; the bottom and right neighbor of this graph both show (albeit in different representation) the joint distribution of Age and Institution, from which can be seen that individuals from Pittsburg tended to be younger than those from the two other institutions. }}{31}}
-\newlabel{fig:predictor-associations}{{S3}{31}}
-\@writefile{lof}{\contentsline {figure}{\numberline {S4}{\ignorespaces  Variation of the read count ratio \(S_{ig}\) with age and gender across hundreds of individuals \(i\) (dots) and 30 genes \(g\) that have been considered as imprinted in the DLPFC brain area in this study. }}{32}}
-\newlabel{fig:S-age-gender}{{S4}{32}}
-\@writefile{lof}{\contentsline {figure}{\numberline {S5}{\ignorespaces Variation of total RNA-seq read count across genes and individuals.}}{33}}
-\newlabel{fig:weight-of-evidence}{{S5}{33}}
-\@writefile{lof}{\contentsline {figure}{\numberline {S6}{\ignorespaces  Checking the fit of wnlm.Q model: analysis of the normality of residuals. }}{34}}
-\newlabel{fig:qqnorm-wnlm.Q}{{S6}{34}}
-\@writefile{lof}{\contentsline {figure}{\numberline {S7}{\ignorespaces  Checking the fit of logi.S model: analysis of the normality of standardized deviance residuals. }}{35}}
-\newlabel{fig:qqnorm-logi.S}{{S7}{35}}
-\@writefile{lof}{\contentsline {figure}{\numberline {S8}{\ignorespaces  Checking the fit of wnlm.Q model: analysis of homoscedasticity. }}{36}}
-\newlabel{fig:homoscedas-wnlm.Q}{{S8}{36}}
-\@writefile{lof}{\contentsline {figure}{\numberline {S9}{\ignorespaces  Checking the fit of logi.S model: analysis of homoscedasticity. }}{37}}
-\newlabel{fig:homoscedas-logi.S}{{S9}{37}}
-\@writefile{lof}{\contentsline {figure}{\numberline {S10}{\ignorespaces  Checking the fit of wnlm.Q model: analysis of the impact of outliers. }}{38}}
-\newlabel{fig:influence-wnlm.Q}{{S10}{38}}
-\@writefile{lof}{\contentsline {figure}{\numberline {S11}{\ignorespaces  Checking the fit of logi.S model: analysis of the impact of outliers. }}{39}}
-\newlabel{fig:influence-logi.S}{{S11}{39}}
-\@writefile{lof}{\contentsline {figure}{\numberline {S12}{\ignorespaces Agreement between a parametric (t-distribution) and non-parametric (permutations) method of estimating p-values.}}{40}}
-\newlabel{fig:pval-tdist-vs-perm}{{S12}{40}}
-\@writefile{lof}{\contentsline {figure}{\numberline {S13}{\ignorespaces  Significance of association between biological predictors and imprinted genes in the DLPFC calculated under wnlm.Q and logi.S. Under logi.S, only those genes are shown for which the model fit was acceptable. }}{41}}
-\newlabel{fig:pval}{{S13}{41}}
-\@writefile{lof}{\contentsline {figure}{\numberline {S14}{\ignorespaces  Estimate \(\mathaccentV {hat}05E{\beta }_{jg}\) and 99\% confidence interval of each regression coefficient \(\beta _{jg}\) under the logi.S model, where \(j\) is a predictor/term and \(g\) is a gene. \(\mathaccentV {hat}05E{\beta }_{jg}\) and the confidence interval are shown only for those genes are shown for which the model fit was acceptable. }}{42}}
-\newlabel{fig:biol-effects-logi.S}{{S14}{42}}
-\@writefile{lof}{\contentsline {figure}{\numberline {S15}{\ignorespaces  \emph  {Top} and \emph  {bottom}: two representations of the relative log likelihood on a 2 dimensional section of the \(p>20\) dimensional parameter space given the wnlm.Q model and data for the gene \(g=\mathrm  {PEG3}\). The section was taken by fixing all but two parameters at their estimates: \(\beta _{jg} = \mathaccentV {hat}05E{\beta }_{jg}\). A rectangular subspace for these two parameters, \(\beta _{\mathrm  {Age},g}\) and \(\beta _{\mathrm  {Ancestry.2},g}\), was chosen around the maximum likelihood estimate \(\mathaccentV {hat}05E{\beta } = (\mathaccentV {hat}05E{\beta }_{\mathrm  {Age},g}, \mathaccentV {hat}05E{\beta }_{\mathrm  {Ancestry.2},g})\). The nearly parabolic shape of the log-likelihood function suggests that the regularity conditions for likelihood-based parametric inference are fulfilled. }}{43}}
-\newlabel{fig:ll-surf-explain}{{S15}{43}}
-\@writefile{lof}{\contentsline {figure}{\numberline {S16}{\ignorespaces  Agreement of the wnlm.Q and logi.S models in terms of estimated regression coefficients. }}{44}}
-\newlabel{fig:logi.S-wnlm.Q-compare}{{S16}{44}}
-\@writefile{lof}{\contentsline {figure}{\numberline {S17}{\ignorespaces  General dependency structure of three regression model frameworks. In all of threse model frameworks the regression coefficients \(\beta _{1g},...,\beta _{3g}\) mediate, for a given gene \(g\), probabilistic dependencies (arrows) between the response variable \(Y_g\) (read count ratio for \(g\)) and the corresponding predictors \(X_1,...,X_3\). For simplicity but without loss of generality only 3 predictors are depicted. The model frameworks differ in how \(\beta _{jg_1},\beta _{jg_2},...\) relate to each other for a given predictor (or a given \(j\)). \emph  {Left:} there is no connection among \(\beta _{jg_1},\beta _{jg_2},...\) which means that the way \(Y_{g}\), the read count ratio for gene \(g\) depends on predictor \(X_j\) is completely separate from how the read count ratio for any other gene \(g'\) (i.e.\nobreakspace  {}\(Y_{g'}\)) depends on it. Consequently no information may be shared among gene-specific models. \emph  {Middle:} In this case \(\beta _{jg_1}=\beta _{jg_2}=...\equiv \beta _j\) so that all genes are identical with respect to how their read count ratio depends the predictors. Thus genes share all information in the data in the sense that the model forces them to be identical. \emph  {Right:} Hierarchical Bayesian model where genes show both variation as well as invariance with regards to depenencies. The variation is described by the dependence of \(\beta _j\) on the hyperparameter \(\gamma _j\), whereas the invariance by the dependence of \(\gamma _j\) on \emph  {its} hyperparameter \(\xi _j\). Only this model framework allows information sharing among genes in a flexible way. }}{45}}
-\newlabel{fig:glm-vs-hierarch}{{S17}{45}}
-\@writefile{lof}{\contentsline {figure}{\numberline {S18}{\ignorespaces  Estimates \(\mathaccentV {hat}05E{\beta }_{jg}\) and confidence intervals for regression coefficients under the wnlm.Q model concerning for all predictors. }}{46}}
-\newlabel{fig:all-effects-wnlm.Q}{{S18}{46}}
-\@writefile{lof}{\contentsline {figure}{\numberline {S19}{\ignorespaces  Estimates \(\mathaccentV {hat}05E{\beta }_{jg}\) and confidence intervals for regression coefficients under the logi.S model concerning for all predictors. Gaps for certain genes indicate unacceptable fit. }}{47}}
-\newlabel{fig:all-effects-logi.S}{{S19}{47}}
-\@writefile{lof}{\contentsline {figure}{\numberline {S20}{\ignorespaces  Analysis of orthogonality of regression coefficients. Relative log-likelihood surfaces for the gene PEG3 on various rectangles corresponding to 2D sections through the \(p>20\) dimentional parameter space. The set of points in a rectangle where log-likelihood takes the same value are quasi-ellipses, whose major and minor axes and their tiltedness express association between coefficients. For instance, \(\beta _\mathrm  {Age}\) is not assiciated with (orthogonal to) \(\beta _\mathrm  {Ancestry.2}\) but is strongly associated with \(\beta _\mathrm  {RIN}\). Such association hinders statistical inference due to the following circularity: If we knew the precise value of \(\beta _\mathrm  {RIN}\) we could estimate the true value of \(\beta _\mathrm  {Age}\) with higher precision and confidence but the precise value of \(\beta _\mathrm  {RIN}\) could only be obtained with high confidence if we precisely knew \(\beta _\mathrm  {Age}\). }}{48}}
-\newlabel{fig:ll-non-orthogonality}{{S20}{48}}
-\@writefile{lof}{\contentsline {figure}{\numberline {S21}{\ignorespaces  Analysis of interactions among predictors under the wnlm.Q model. Contextual depenendence of the read count ratio on age, where the context is given by some specific level of Institution (MSSM, Penn, Pitt) or Gender (Female, Male). }}{49}}
-\newlabel{fig:interaction-wnlm.Q}{{S21}{49}}
-\@writefile{lof}{\contentsline {figure}{\numberline {S22}{\ignorespaces  Analysis of interactions among predictors under the logi.S model. The missing panels correspond to genes for which logi.S did not provide acceptable fit. }}{50}}
-\newlabel{fig:interaction-logi.S}{{S22}{50}}
-\@writefile{lof}{\contentsline {figure}{\numberline {S23}{\ignorespaces  \emph  {Left:} analysis of variance (ANOVA) is undermined by the non-orthogonality of predictors because the reduction in deviance (i.e.\nobreakspace  {}in residual sum of squares) for a term (predictor) depends on the sequence in which terms are added to the model. \emph  {Right:} the same concept is demonstrated using QR decomposition. }}{51}}
-\newlabel{fig:anova}{{S23}{51}}
-\@writefile{lof}{\contentsline {figure}{\numberline {S24}{\ignorespaces  Association of genes' expression to schizophrenia (SCZ) assayed by two RNA-seq based approaches: total read count (overall expression, Nat Neurosci.\nobreakspace  {}2016 Nov;19(11):1442-1453.)\nobreakspace  {}and read count ratio (allelic bias, present work). When these approaches are compared for only those genes that we find imprinted in the DLPFC in this study, 1 gene is found associated to schizophrenia by both approaches, 1 by only overall expression, and 3 by only allelic bias. }}{52}}
-\newlabel{fig:diff-exp-scz}{{S24}{52}}
+\@writefile{toc}{\contentsline {section}{\numberline {5}Figures, Tables and Supplementary Material}{21}}
+\@writefile{lot}{\contentsline {table}{\numberline {1}{\ignorespaces  \emph  {Left column:} predictors (explanatory variables) of read count ratio. \emph  {Right column:} levels of each factor-valued (i.e.\nobreakspace  {}categorical) predictor. Square brackets \([...]\) surround the baseline level against which other levels are contrasted. \emph  {Abbreviations:} PMI: post-mortem interval; Dx: disease status; AFF: affective spectrum disorder; SCZ: schizophrenia; RIN: RNA integrity number; Ancestry.\(k\): the \(k\)-th eigenvalue from the decomposition of genotypes indicating population structure.}}{21}}
+\newlabel{tab:predictors}{{1}{21}}
+\@writefile{lot}{\contentsline {table}{\numberline {2}{\ignorespaces Explanation of the nomenclature for read count ratio variables and model names.}}{22}}
+\newlabel{tab:model-names}{{2}{22}}
+\@writefile{lot}{\contentsline {table}{\numberline {3}{\ignorespaces  Properties of genes with significance of association to one or more biological predictors. }}{22}}
+\newlabel{tab:signif-gene-effects}{{3}{22}}
+\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces  Quantifying allelic bias of expression in human individuals using the RNA-seq read count ratio statistic \(S_{ig}\). The strength of bias towards the expression of the maternal (red) or paternal (blue) allele of a given gene \(g\) in individual \(i\) is gauged with the count of RNA-seq reads carrying the reference allele (small closed circles) and the count of reads carrying an alternative allele (open squares) at all SNPs for which the individual is heterozygous. The allele with the higher read count tends to match the allele with the higher expression but measurement errors may occasionally revert this tendency as seen for SNP \(s_3\) in gene \(g_1\) in individual \(i_2\). }}{23}}
+\newlabel{fig:study-design}{{1}{23}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces  Using the read count ratio statistic \(S\) to report on variation of allelic bias across individuals and genes. \emph  {Upper half}, from top to bottom: (1) kernel density estimate; (2) the graph of the survival function 1 - ECDF, where ECDF means empirical cumulative distribution function; note color scale for heat map and green filled circles marking genes' score; (3) the heat map representation of the survival function. \emph  {Lower half}, main panels: heat map of the survival function for all 5307 analyzed genes ranked according to their score; right side panels: gene score. }}{24}}
+\newlabel{fig:ranking-genes}{{2}{24}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces  The top 50 genes ranked by the gene score. The score of gene \(g\) is \(1 - \mathrm  {ECDF}_g(0.9)\), the fraction of individuals \(i\) for which \(S_{ig}>0.9\) and is indicated by the length of dark blue, dark green or dark red bars. Note that the same ranking and score is shown in the bottom half of Fig.\nobreakspace  {}2\hbox {}. The right border of the light blue, light green and light red bars is at \(1 - \mathrm  {ECDF}_g(0.8)\). The length of the black bars indicates the fraction of individuals passing the test of nearly unbiased expression (Eq.\nobreakspace  {}2\hbox {}). ``X'' characters next to gene names indicate reference allele bias, while ``0'' indicate that reference allele bias could not be determined due to small amount of data. }}{25}}
+\newlabel{fig:top-genes}{{3}{25}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces  Variation of the read count ratio \(S_{ig}\) with age across hundreds of individuals \(i\) (dots) and 30 genes \(g\) that have been considered as imprinted in the DLPFC brain area in this study. }}{26}}
+\newlabel{fig:S-age}{{4}{26}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces Fitting four families of generalized linear models to the same data set. In each panel the horizontal axis is age and the vertical axis is the possibly transformed read count ratio \(S\). For all panels the green scatter represents the same data set (KCNK9 gene, cf.\nobreakspace  {}Fig4\hbox {}) except that in the bottom right panel the observed read count ratio \(S\) is transformed to \(Q\) according to Eq.\nobreakspace  {}8\hbox {}. Given each one of four model families the predicted read count ratio is represented by thick black curves. The probability mass or density of the sampling distribution is indicated by a cyan-to-magenta gradient and various prediction limits by gray lines. Note that for demonstration the depicted fitted models are all simple in the sense that they contain age as a sole predictor. Quantitative inference, however, was based on the corresponding multiple regression models including all predictors (Table\nobreakspace  {}1\hbox {}). }}{27}}
+\newlabel{fig:predicted-curves}{{5}{27}}
+\@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces  Significance of association between biological predictors and imprinted genes in the DLPFC. Association was tested based on the p-value for the null hypothesis \(\beta _{jg}=0\), where the regression coefficient \(\beta _{jg}\) mediates the dependence of the read count ratio for gene \(g\) on predictor/``treatment'' \(j\) (Age,...)\nobreakspace  {}in the wnlm.Q model (Fig.\nobreakspace  {}5\hbox {} bottom right). Note that the p-values estimated parametrically (t-distribution) agree well with those estimated non-parametrically (random permutations). The gray area shows the decision rule for rejecting the null hypothesis and thus contains significant associations. }}{28}}
+\newlabel{fig:pval-wnlm.Q}{{6}{28}}
+\@writefile{lof}{\contentsline {figure}{\numberline {7}{\ignorespaces  Dependence of allelic bias for each imprinted gene \(g\) (rows) on each biological predictor/term \(j\) (graphs). Dependence is quantified by the regression coefficient \(\beta _{j\cdot } = 0\). Note that the coefficients for different predictors are on different scale in general therefore it is not meaningful to compare them across graphs. The null hypothesis of no dependence is marked by the dashed vertical line at \(\beta _{jg}=0\). Each estimate \(\mathaccentV {hat}05E{\beta }_{jg}\) is represented by a filled symbol and each 99\% confidence interval by a horizontal bar. }}{29}}
+\newlabel{fig:biol-effects-wnlm.Q}{{7}{29}}
+\@writefile{lof}{\contentsline {figure}{\numberline {S1}{\ignorespaces  Clustering of top-scoring genes in the context of human DLPFC around genomic locations that had been previously described as imprinted gene clusters in other contexts. }}{30}}
+\newlabel{fig:clusters}{{S1}{30}}
+\@writefile{lof}{\contentsline {figure}{\numberline {S2}{\ignorespaces Known imprinted genes ranked by the gene score (dark blue bars). ``Known imprinted'' refers to prior studies on imprinting in the context of any tissue and developmental stage. The length of the black bars indicates the fraction of individuals passing the test of nearly unbiased expression.}}{31}}
+\newlabel{fig:known-genes}{{S2}{31}}
+\@writefile{lof}{\contentsline {figure}{\numberline {S3}{\ignorespaces  Distribution and inter-dependence of predictors. The diagonal graphs of the plot-matrix show the marginal distribution of six predictors (Age, Institution,...)\nobreakspace  {}while the off-diagonal graphs show pairwise joint distributions. For instance, the upper left graph shows that, in the whole cohort, individuals' Age ranges between ca.\nobreakspace  {}15 and 105 years and most individuals around 75 years; the bottom and right neighbor of this graph both show (albeit in different representation) the joint distribution of Age and Institution, from which can be seen that individuals from Pittsburg tended to be younger than those from the two other institutions. }}{32}}
+\newlabel{fig:predictor-associations}{{S3}{32}}
+\@writefile{lof}{\contentsline {figure}{\numberline {S4}{\ignorespaces  Variation of the read count ratio \(S_{ig}\) with age and gender across hundreds of individuals \(i\) (dots) and 30 genes \(g\) that have been considered as imprinted in the DLPFC brain area in this study. }}{33}}
+\newlabel{fig:S-age-gender}{{S4}{33}}
+\@writefile{lof}{\contentsline {figure}{\numberline {S5}{\ignorespaces Variation of total RNA-seq read count across genes and individuals.}}{34}}
+\newlabel{fig:weight-of-evidence}{{S5}{34}}
+\@writefile{lof}{\contentsline {figure}{\numberline {S6}{\ignorespaces  Checking the fit of wnlm.Q model: analysis of the normality of residuals. }}{35}}
+\newlabel{fig:qqnorm-wnlm.Q}{{S6}{35}}
+\@writefile{lof}{\contentsline {figure}{\numberline {S7}{\ignorespaces  Checking the fit of logi.S model: analysis of the normality of standardized deviance residuals. }}{36}}
+\newlabel{fig:qqnorm-logi.S}{{S7}{36}}
+\@writefile{lof}{\contentsline {figure}{\numberline {S8}{\ignorespaces  Checking the fit of wnlm.Q model: analysis of homoscedasticity. }}{37}}
+\newlabel{fig:homoscedas-wnlm.Q}{{S8}{37}}
+\@writefile{lof}{\contentsline {figure}{\numberline {S9}{\ignorespaces  Checking the fit of logi.S model: analysis of homoscedasticity. }}{38}}
+\newlabel{fig:homoscedas-logi.S}{{S9}{38}}
+\@writefile{lof}{\contentsline {figure}{\numberline {S10}{\ignorespaces  Checking the fit of wnlm.Q model: analysis of the impact of outliers. }}{39}}
+\newlabel{fig:influence-wnlm.Q}{{S10}{39}}
+\@writefile{lof}{\contentsline {figure}{\numberline {S11}{\ignorespaces  Checking the fit of logi.S model: analysis of the impact of outliers. }}{40}}
+\newlabel{fig:influence-logi.S}{{S11}{40}}
+\@writefile{lof}{\contentsline {figure}{\numberline {S12}{\ignorespaces Agreement between a parametric (t-distribution) and non-parametric (permutations) method of estimating p-values.}}{41}}
+\newlabel{fig:pval-tdist-vs-perm}{{S12}{41}}
+\@writefile{lof}{\contentsline {figure}{\numberline {S13}{\ignorespaces  Significance of association between biological predictors and imprinted genes in the DLPFC calculated under wnlm.Q and logi.S. Under logi.S, only those genes are shown for which the model fit was acceptable. }}{42}}
+\newlabel{fig:pval}{{S13}{42}}
+\@writefile{lof}{\contentsline {figure}{\numberline {S14}{\ignorespaces  Estimate \(\mathaccentV {hat}05E{\beta }_{jg}\) and 99\% confidence interval of each regression coefficient \(\beta _{jg}\) under the logi.S model, where \(j\) is a predictor/term and \(g\) is a gene. \(\mathaccentV {hat}05E{\beta }_{jg}\) and the confidence interval are shown only for those genes are shown for which the model fit was acceptable. }}{43}}
+\newlabel{fig:biol-effects-logi.S}{{S14}{43}}
+\@writefile{lof}{\contentsline {figure}{\numberline {S15}{\ignorespaces  \emph  {Top} and \emph  {bottom}: two representations of the relative log likelihood on a 2 dimensional section of the \(p>20\) dimensional parameter space given the wnlm.Q model and data for the gene \(g=\mathrm  {PEG3}\). The section was taken by fixing all but two parameters at their estimates: \(\beta _{jg} = \mathaccentV {hat}05E{\beta }_{jg}\). A rectangular subspace for these two parameters, \(\beta _{\mathrm  {Age},g}\) and \(\beta _{\mathrm  {Ancestry.2},g}\), was chosen around the maximum likelihood estimate \(\mathaccentV {hat}05E{\beta } = (\mathaccentV {hat}05E{\beta }_{\mathrm  {Age},g}, \mathaccentV {hat}05E{\beta }_{\mathrm  {Ancestry.2},g})\). The nearly parabolic shape of the log-likelihood function suggests that the regularity conditions for likelihood-based parametric inference are fulfilled. }}{44}}
+\newlabel{fig:ll-surf-explain}{{S15}{44}}
+\@writefile{lof}{\contentsline {figure}{\numberline {S16}{\ignorespaces  Agreement of the wnlm.Q and logi.S models in terms of estimated regression coefficients. }}{45}}
+\newlabel{fig:logi.S-wnlm.Q-compare}{{S16}{45}}
+\@writefile{lof}{\contentsline {figure}{\numberline {S17}{\ignorespaces  General dependency structure of three regression model frameworks. In all of threse model frameworks the regression coefficients \(\beta _{1g},...,\beta _{3g}\) mediate, for a given gene \(g\), probabilistic dependencies (arrows) between the response variable \(Y_g\) (read count ratio for \(g\)) and the corresponding predictors \(X_1,...,X_3\). For simplicity but without loss of generality only 3 predictors are depicted. The model frameworks differ in how \(\beta _{jg_1},\beta _{jg_2},...\) relate to each other for a given predictor (or a given \(j\)). \emph  {Left:} there is no connection among \(\beta _{jg_1},\beta _{jg_2},...\) which means that the way \(Y_{g}\), the read count ratio for gene \(g\) depends on predictor \(X_j\) is completely separate from how the read count ratio for any other gene \(g'\) (i.e.\nobreakspace  {}\(Y_{g'}\)) depends on it. Consequently no information may be shared among gene-specific models. \emph  {Middle:} In this case \(\beta _{jg_1}=\beta _{jg_2}=...\equiv \beta _j\) so that all genes are identical with respect to how their read count ratio depends the predictors. Thus genes share all information in the data in the sense that the model forces them to be identical. \emph  {Right:} Hierarchical Bayesian model where genes show both variation as well as invariance with regards to depenencies. The variation is described by the dependence of \(\beta _j\) on the hyperparameter \(\gamma _j\), whereas the invariance by the dependence of \(\gamma _j\) on \emph  {its} hyperparameter \(\xi _j\). Only this model framework allows information sharing among genes in a flexible way. }}{46}}
+\newlabel{fig:glm-vs-hierarch}{{S17}{46}}
+\@writefile{lof}{\contentsline {figure}{\numberline {S18}{\ignorespaces  Estimates \(\mathaccentV {hat}05E{\beta }_{jg}\) and confidence intervals for regression coefficients under the wnlm.Q model concerning for all predictors. }}{47}}
+\newlabel{fig:all-effects-wnlm.Q}{{S18}{47}}
+\@writefile{lof}{\contentsline {figure}{\numberline {S19}{\ignorespaces  Estimates \(\mathaccentV {hat}05E{\beta }_{jg}\) and confidence intervals for regression coefficients under the logi.S model concerning for all predictors. Gaps for certain genes indicate unacceptable fit. }}{48}}
+\newlabel{fig:all-effects-logi.S}{{S19}{48}}
+\@writefile{lof}{\contentsline {figure}{\numberline {S20}{\ignorespaces  Analysis of orthogonality of regression coefficients. Relative log-likelihood surfaces for the gene PEG3 on various rectangles corresponding to 2D sections through the \(p>20\) dimentional parameter space. The set of points in a rectangle where log-likelihood takes the same value are quasi-ellipses, whose major and minor axes and their tiltedness express association between coefficients. For instance, \(\beta _\mathrm  {Age}\) is not assiciated with (orthogonal to) \(\beta _\mathrm  {Ancestry.2}\) but is strongly associated with \(\beta _\mathrm  {RIN}\). Such association hinders statistical inference due to the following circularity: If we knew the precise value of \(\beta _\mathrm  {RIN}\) we could estimate the true value of \(\beta _\mathrm  {Age}\) with higher precision and confidence but the precise value of \(\beta _\mathrm  {RIN}\) could only be obtained with high confidence if we precisely knew \(\beta _\mathrm  {Age}\). }}{49}}
+\newlabel{fig:ll-non-orthogonality}{{S20}{49}}
+\@writefile{lof}{\contentsline {figure}{\numberline {S21}{\ignorespaces  Analysis of interactions among predictors under the wnlm.Q model. Contextual depenendence of the read count ratio on age, where the context is given by some specific level of Institution (MSSM, Penn, Pitt) or Gender (Female, Male). }}{50}}
+\newlabel{fig:interaction-wnlm.Q}{{S21}{50}}
+\@writefile{lof}{\contentsline {figure}{\numberline {S22}{\ignorespaces  Analysis of interactions among predictors under the logi.S model. The missing panels correspond to genes for which logi.S did not provide acceptable fit. }}{51}}
+\newlabel{fig:interaction-logi.S}{{S22}{51}}
+\@writefile{lof}{\contentsline {figure}{\numberline {S23}{\ignorespaces  \emph  {Left:} analysis of variance (ANOVA) is undermined by the non-orthogonality of predictors because the reduction in deviance (i.e.\nobreakspace  {}in residual sum of squares) for a term (predictor) depends on the sequence in which terms are added to the model. \emph  {Right:} the same concept is demonstrated using QR decomposition. }}{52}}
+\newlabel{fig:anova}{{S23}{52}}
+\@writefile{lof}{\contentsline {figure}{\numberline {S24}{\ignorespaces  Association of genes' expression to schizophrenia (SCZ) assayed by two RNA-seq based approaches: total read count (overall expression, Nat Neurosci.\nobreakspace  {}2016 Nov;19(11):1442-1453.)\nobreakspace  {}and read count ratio (allelic bias, present work). When these approaches are compared for only those genes that we find imprinted in the DLPFC in this study, 1 gene is found associated to schizophrenia by both approaches, 1 by only overall expression, and 3 by only allelic bias. }}{53}}
+\newlabel{fig:diff-exp-scz}{{S24}{53}}
