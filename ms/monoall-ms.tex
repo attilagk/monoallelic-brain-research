@@ -1,12 +1,12 @@
-%\documentclass[letterpaper]{article}
-\documentclass[12pt,letterpaper]{article}
+\documentclass[letterpaper]{article}
+%\documentclass[12pt,letterpaper]{article}
+%\setlength{\textwidth}{480pt}
+%\setlength{\textheight}{630pt}
+%\setlength{\voffset}{0pt}
+
 \usepackage{amsmath, geometry, graphicx, tikz, changes}
 \usetikzlibrary{arrows.meta}
 \bibliographystyle{plain}
-
-\setlength{\textwidth}{480pt}
-\setlength{\textheight}{630pt}
-\setlength{\voffset}{0pt}
 
 \title{Variation of Genomic Imprinting in the Human Brain}
 %\title{Regulators and Psychiatric Associates of Genomic Imprinting in the Human Brain}
@@ -316,11 +316,12 @@ of \(n=5307\) genes that passed quality filtering.  Regression analysis
 involved a subset \(\mathcal{G}_1\subset\mathcal{G}\) of \(n_1=30\) genes
 called as imprinted.
 
-\begin{itemize}
+\added{Outline:}
+\begin{enumerate}
 \item \added{modeling genes jointly/globally (mixed model) and
 separately/locally}
 \item \added{data transformations, link functions, error distributions}
-\end{itemize}
+\end{enumerate}
 
 \deleted[remark=the rest of this subsection will be replaced by what is
 outlined above]{The basic model}, unlm.S (see Table~\ref{tab:model-names}) for the semantics of
@@ -416,10 +417,11 @@ quantitative inference.
 
 \subsubsection{Model fitting, selection and inference}
 
-\begin{itemize}
+\added{Outline:}
+\begin{enumerate}
 \item \added{R package, convergence}
 \item \added{Selection criteria and heuristic search}
-\end{itemize}
+\end{enumerate}
 
 \section{Results}
 
@@ -522,20 +524,33 @@ suggests that these genes do not display imprinted expression in the human
 adult DLPFC, consistent with many reports in the literature indicating that
 known imprinted genes are often imprinted in some but not all tissues.  
 
-\subsection{Selection among predictive models of allelic bias}
+\subsection{\replaced{Regulators of allelic bias}{Selection among predictive models of allelic bias}}
 \label{sec:results-regression}
 
-\begin{itemize}
+\added{Outline:}
+\begin{enumerate}
 \item \added{the best fitting data transformation, link function and error distribution was
-selected (see Methods)}
-\item \added{global models (condidering genes jointly) gave stronger results than
-local ones}
-\item \added{terms significantly improving model fit include technical ones;
-including them in the model corrects for large technical noise}
-\item \added{terms significantly improving model fit identify as 
-biological regulators of parental bias Ancestry.1 and Age}
-\item \added{both variables affect parental bias in a gene-specific manner}
-\end{itemize}
+selected for a fixed set of terms in the linear predictor (see Methods) for
+both global and local models}
+\item \added{global models (considering genes jointly) gave stronger results than
+local ones because the former allows gene-wise data units to borrow
+statistical strength from each other}
+\item \added{terms in the linear predictor that significantly improved model fit are mainly technical ones;
+including them in the model therefore corrects for a large technical noise}
+\item \added{the most important biological term is 'Gene', meaning that
+allelic bias varies greatly among imprinted genes regardless other variables}
+\item \added{the remaining biological terms that significantly improving model fit are 
+'Ancestry.1:Gene' and 'Age:Gene', suggesting that genes differ not only in
+their mean/overall allelic bias but also in how bias depends on Ancestry.1 and
+Age; in other words, Ancestry.1 and Age has a differential effect on allelic
+bias when comparing genes}
+\item \added{Ancestry.1 and Age alone was found to have little if any effect
+meaning that genes do not share a common pattern of how allelic bias depends
+on these variables}
+\item \added{Dx (SCZ) and Gender had essentially no effect alone or in combination with
+'Gene' (only 'Gender:Gene' lead to minor improvement in fit)}
+\item \added{TODO: imprinted gene clusters and other biological effect ('Gene:Cluster', Age:Cluster, Ancestry.1:Cluster)}
+\end{enumerate}
 
 \deleted[remark=this subsection will be rewritten]{We studied further the sources and psychological consequences of the variation
 of allelic bias in 30 genes that the above results suggested to be imprinted
@@ -621,10 +636,23 @@ For subsequent analysis we selected  the wnlm.Q model for all 30 genes, and
 additionally considered the logi.S model for the eight
 genes with good fit.
 
-\subsection{Biological predictors and interpretation}
+\subsection{\added{Inspecting allelic bias in individual imprinted genes}}
 
-We selected four biological terms in our linear predictor
-(Eq.~\ref{eq:nlm-general}, \ref{eq:glm-mean-predictor}).  Of these terms Age
+\added{Outline:}
+\begin{enumerate}
+\item \added{examples for imprinted genes with strong allelic bias
+(monoallelically expressed) and those with moderate bias; discuss those genes}
+\item \added{predicted effect of Age for each gene based on mixed model}
+\item \added{note: similar prediction for Ancestry.1 is possible but seems much less
+interesting because we do not know the genetic mechanisms linked to Ancestry.1}
+\item \added{depending on the effect of 'Gene:Cluster', Age:Cluster,
+Ancestry.1:Cluster inspect and discuss clusters}
+\end{enumerate}
+
+\subsection{\deleted{Biological predictors and interpretation}}
+
+\deleted[remark=The whole section is to be deleted]{We selected four biological terms in our linear predictor
+(Eq.~\ref{eq:nlm-general}, \ref{eq:glm-mean-predictor}).  }Of these terms Age
 and Ancestry.1 represent the corresponding continuous predictors whereas
 GenderMale and DxSCZ are “treatment” levels of the corresponding categorical
 predictors (Gender and Dx, respectively) contrasted with the corresponding
@@ -723,11 +751,11 @@ expected given the central role of of a single imprinting control region in
 the establishment and maintenance of imprinting and allelic bias for all
 genes in a cluster.
 
-\subsection{Methodological limitations}
+\subsection{\deleted{Methodological limitations}}
 \label{sec:limitations}
 
-The previous section focussed primarily on the question of dependence between
-a gene's read count ratio and a predictor.  Therein \(\hat\beta_{jg_1},
+\deleted[remark=delete this entire section]{The previous section focussed primarily on the question of dependence between
+a gene's read count ratio and a predictor.  }Therein \(\hat\beta_{jg_1},
 \hat\beta_{jg_2},...\)~were compared (Fig.~\ref{fig:biol-effects-wnlm.Q}) to
 provide relative effect sizes across genes \(g_1, g_2,...\)~for a given
 predictor \(j\). But how do predictors compare to each other for any given
@@ -792,7 +820,7 @@ effects were often of opposite direction.
 
 \section{Discussion}
 
-We present the first genome-wide characterization of allelic bias of
+We present \deleted{the first} genome-wide characterization of allelic bias of
 expression in humans and, at the same time, the first genome-scale study of
 the potential for imprinted genes' impact on a psychiatric disorder. Important
 to mention first, but not surprising, is our finding that \(\approx
@@ -807,9 +835,29 @@ are imprinted, which agrees closely with the most recent mouse
 studies~\cite{DeVeale2012,Perez2015} but contradicts a controversial earlier
 estimate of \(\approx 5\%\) also from mouse~\cite{Gregg2010a}.
 
-We also examined the dependence of allelic bias on variables such as age,
-diagnosis, gender and ancestry. We comment on a number of intriguing findings
-with respect to the impact of these variables in the next few paragraphs.  One
+We also examined the dependence of allelic bias on variables \replaced{namely}{such as} age,
+diagnosis, gender and ancestry.
+\added{Outline from this point:}
+\begin{enumerate}
+\item \added{we find (so far the strongest?) evidence that age regulates
+imprinted genes in adulthood: biological significance in light of kinship
+theory, social interactions and aging}
+\item \added{we find a strong Ancestry.1:Gene effect; this shows how genetic
+(Ancestry.1) and epigenetic (imprinting control region of a given gene)
+mechanisms act together to shape gene expression}
+\item \added{we do not detect effect of Dx (SCZ); lack of effect is
+surprising given the involvement of several imprinted genes in psychiatric
+disorders; alternatively the effect exists but has been masked by the large
+technical noise in our study}
+\item \added{even subtle variation in allelic bias and allele specific
+expression might substantially affect biological function for some (imprinted)
+genes while not for others; this must be borne in mind in interpreting our
+results}
+\end{enumerate}
+
+\deleted[remark=delete remaining part of
+Discussion from this point on]{We comment on a number of intriguing findings
+with respect to the impact of these variables in the next few paragraphs.}  One
 must bear in mind, however, that the biological interpretation of the findings
 depends on the correctness of our statistical approach.  Although we did
 perform model selection based on model fit, we found that even the best

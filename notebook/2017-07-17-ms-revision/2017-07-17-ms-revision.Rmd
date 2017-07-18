@@ -6,4 +6,4 @@ tags: [ manuscript, ]
 Earlier and more recent versions of the manuscript can be downloaded here.
 
 * [2017-02-10-monoall-ms.pdf]({{ site.baseurl }}/assets/projects/monoallelic-brain/2017-02-10-monoall-ms.pdf),
-[2017-02-10-monoall-ms.tex]({{ site.baseurl }}/assets/projects/monoallelic-brain/2017-02-10-monoall-ms.tex)
+[2017-02-10-monoall-ms.rtf]({{ site.baseurl }}/assets/projects/monoallelic-brain/2017-02-10-monoall-ms.rtf)
