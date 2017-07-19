@@ -7,4 +7,5 @@ Earlier and more recent versions of the manuscript can be downloaded here.
 
 * [pdf]({{ site.baseurl }}/assets/projects/monoallelic-brain/2017-02-10-monoall-ms.pdf) and
 [rtf]({{ site.baseurl }}/assets/projects/monoallelic-brain/2017-02-10-monoall-ms.rtf) as of 2017-02-10
-* [pdf]({{ site.baseurl }}/assets/projects/monoallelic-brain/2017-07-17-monoall-ms.pdf) and [rtf]({{ site.baseurl }}/assets/projects/monoallelic-brain/2017-07-17-monoall-ms.rtf) as of 2017-07-17 with parts marked up for change
+* [pdf]({{ site.baseurl }}/assets/projects/monoallelic-brain/2017-07-18-monoall-ms.pdf) and [rtf]({{ site.baseurl }}/assets/projects/monoallelic-brain/2017-07-18-monoall-ms.rtf) as of 2017-07-18 with parts marked up for change
+* [pdf]({{ site.baseurl }}/assets/projects/monoallelic-brain/2017-07-19-monoall-ms.pdf) and [rtf]({{ site.baseurl }}/assets/projects/monoallelic-brain/2017-07-19-monoall-ms.rtf) as of 2017-07-19 with parts deleted

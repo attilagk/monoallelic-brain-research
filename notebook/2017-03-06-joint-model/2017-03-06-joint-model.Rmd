@@ -193,6 +193,30 @@ av.4 <- anova(update(M1b, . ~ . + (scale(RIN) + scale(Ancestry.1) | Gene)),
 print.av(summarize.anova(list(av.4)))
 ```
 
+```{r cache=TRUE}
+M5 <- update(M3, . ~ . - (scale(Age) + scale(RIN) + scale(Ancestry.1) | Gene) + (Dx + Gender + scale(Age) + scale(RIN) + scale(Ancestry.1) | Gene))
+```
+
+```{r cache=TRUE}
+av.5 <- list()
+av.5$Age <-
+    anova(update(M5, . ~ . + (Dx + Gender + scale(RIN) + scale(Ancestry.1) | Gene) - (Dx + Gender + scale(Age) + scale(RIN) + scale(Ancestry.1) | Gene)),
+          M5)
+av.5$Ancestry.1 <-
+    anova(update(M5, . ~ . + (Dx + Gender + scale(RIN) + scale(Age) | Gene) - (Dx + Gender + scale(Age) + scale(RIN) + scale(Ancestry.1) | Gene)),
+          M5)
+av.5$Dx <-
+    anova(update(M5, . ~ . + (Gender + scale(RIN) + scale(Age) + scale(Ancestry.1) | Gene) - (Dx + Gender + scale(Age) + scale(RIN) + scale(Ancestry.1) | Gene)),
+          M5)
+av.5$Gender <-
+    anova(update(M5, . ~ . + (Dx + scale(RIN) + scale(Age) + scale(Ancestry.1) | Gene) - (Dx + Gender + scale(Age) + scale(RIN) + scale(Ancestry.1) | Gene)),
+          M5)
+```
+
+```{r}
+t(as.matrix(sapply(av.5, function(a) summarize.anova(list(a)))))
+```
+
 ### Saving model formulas
 
 Save all model formulas in the `results` directory

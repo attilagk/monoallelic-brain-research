@@ -121,7 +121,7 @@ depends on the gene.
 
 \subsection{Defining the read count ratio to quantify allelic bias}
 
-We quantifieied allelic bias using a statistic called
+We quantifieied allelic bias \added{based on RNA-seq reads} using a statistic called
 \emph{read count ratio} \(S\), whose definition we
 based on the total read count \(T\) and the \emph{higher read count} \(H\),
 i.e.~the count of reads carrying only either the reference or the alternative SNP variant,
@@ -147,6 +147,12 @@ combination of two hypothetical genes, \(g_1,g_2\), and two individuals,
 \(i_1,i_2\).  It also shows an example for the less likely event that the lower rather
 than the higher read count corresponds to the SNP variant tagging the higher
 expressed allele (see SNP \(s_3\) in gene \(g_1\) in individual \(i_2\)).
+
+Before we carried out our read count ratio-based analyses, however, we cleaned
+our RNA-seq data by quality-filtering and by improving the accuracy of SNP
+calling with the use of DNA SNP array data and imputation. In the following
+subsections of Methods we describe the data, these procedures, as well as our
+regression models in detail.
 
 \subsection{Data}
 
@@ -257,12 +263,6 @@ asymptotically (as \(T_{ig}\rightarrow \infty\)) normal with
 where $z_{p}$ is the $p$ quantile of the standard normal distribution.
 
 \subsection{Regression analysis}
-Before we carried out our read count ratio-based analyses, however, we cleaned
-our RNA-seq data by quality-filtering and by improving the accuracy of SNP
-calling with the use of DNA SNP array data and imputation. In the following
-subsections of Methods we describe the data, these procedures, as well as our
-regression models in detail.
-
 \label{sec:methods-regression}
 
 \subsubsection{Formulation of models}
@@ -287,8 +287,46 @@ separately/locally}
 \item \added{data transformations, link functions, error distributions}
 \end{enumerate}
 
+\begin{itemize}
+\item we studied how the allelic bias of the 30 imprinted genes we identified depends on certain biological variables
+\item biol variables: Dx, Age, Gender and genetics (Ancestry)
+\item to that aim we fitted several regression models to the data consisting of the
+observed read count ratios (the response) and the corresponding observations
+on biological and technical variables (the explanatory variables or predictors, Table~\ref{tab:predictors})
+\item we used both mixed models that describe the variation of read count
+ratio jointly for all 30 genes as well as sets of 30 conventional (i.e.~fixed effects)
+regression models, one for each gene
+\item the fitted models in both classes (mixed or separate gene-specific)
+differed in three additional aspects Table~\ref{tab:model-names}
+\begin{enumerate}
+\item the transformation applied to the read count data
+\item model family: the link function + error distribution
+\item the terms of explanatory variables present in the linear predictor
+\end{enumerate}
+\end{itemize}
 
 \subsubsection{Model fitting, selection and inference}
+
+\begin{itemize}
+\item we based our inference on mixed effects models due to their robustness
+against overfitting, which we were concerned about given initial results based
+on the separate (gene-specific) modeling strategy
+\item we let preliminary results from the separate gene-wise modeling
+framework to guide heuristic search for the best fitting mixed model
+\item based on those results and on qualitative exploratory analysis we
+guessed the set of most informative terms in order to
+\begin{enumerate}
+\item find the best overall combination of data transformation and model
+family (Figure~\ref{fig:qqnorm-mixed},~\ref{fig:homoscedas-mixed})
+\item start the search in the space of linear predictors as near the optimum as possible
+\item guide the sequence in which further terms are added
+\end{enumerate}
+\item fit during search was evaluated using information criteria AUC, BIC, as well as
+p-value from Chi-squared test on the degrees of freedom that depends on the
+term(s) added
+\item the same criteria were used to infer the relevance of biological
+variables by omitting each of them from the best model (Table~\ref{tab:mod-sel})
+\end{itemize}
 
 \added{Outline:}
 \begin{enumerate}
@@ -483,52 +521,32 @@ results}
 
 \section{Figures, Tables and Supplementary Material}
 
-\begin{table}[h]
-\begin{center}
-\begin{tabular}{r|l}
-predictor & levels\\
-\hline
-Age &  \\
-Institution & [MSSM], Penn, Pitt\\
-Gender & [Female], Male\\
-PMI & \\
-Dx & [AFF], Control, SCZ\\
-RIN &  \\
-RNA\_batch & [A], B, C, D, E, F, G, H, 0\\
-Ancestry.1 & \\
-\vdots & \\
-Ancestry.5 &  \\
-\end{tabular}
-\caption{ \emph{Left column:} predictors (explanatory variables) of read count
-ratio.  \emph{Right column:} levels of each factor-valued (i.e.~categorical)
-predictor.  Square brackets \([...]\) surround the baseline level against
-which other levels are contrasted.  \emph{Abbreviations:} PMI: post-mortem
-interval; Dx: disease status; AFF: affective spectrum disorder; SCZ:
-schizophrenia; RIN: RNA integrity number;
-Ancestry.\(k\): the \(k\)-th eigenvalue from the decomposition of genotypes
-indicating population structure.}
-\label{tab:predictors}
-\end{center}
-\end{table}
-
 \begin{table}
-\begin{tabular}{r|l}
-\multicolumn{2}{c}{read count ratio (response variable)} \\
+\begin{center}
+\begin{tabular}{rcrc}
+term                                  & effect &   \(\Delta\)AIC &        p-value \\
 \hline
-\(S_{ig}\) & untransformed ratio \\
-\(Q_{ig}\) & \emph{q}uasi-log-transformed ratio \\
-\(R_{ig}\) & \emph{r}ank-transformed ratio \\
-\hline
-\multicolumn{2}{c}{\replaced{link function and error distribution}{regression models}} \\
-\hline
-unlm.[S/Q/R] & \emph{u}nweighted \emph{n}ormal \emph{l}inear \emph{m}odel fitted to \(S_{ig}\)/\(Q_{ig}\)/\(R_{ig}\)\\
-wnlm.[S/Q/R] & \emph{w}eighted \emph{n}ormal \emph{l}inear \emph{m}odel fitted to \(S_{ig}\)/\(Q_{ig}\)/\(R_{ig}\)\\
-logi.S & standard \emph{logi}stic model fitted to \(S_{ig}\)\\
-logi2.S & \emph{logi}stic model with \(\frac{1}{2}\times\) down-scaled link function, fitted to \(S_{ig}\) \\
+Gene                                  & fixed &  TODO &  TODO  \\
+Gene                                  & rnd &  TODO &  TODO  \\
+Age                                   & fixed &   1.8 &  6.5e-01 \\
+Ancestry.1                                & fixed &  -0.2 &  1.3e-01 \\
+Dx                                & fix &   3.9 &  9.5e-01 \\
+Dx                                & rnd &   2.0 &  1.0  \\
+Gender                            & fix &   1.0 &  3.2e-01 \\
+Gender                            & rnd &   2.0 &  1.0 \\
+\(\mathrm{Age}\times\mathrm{Gene}\)   & rnd & -23.4    &  2.5e-06 \\
+\(\mathrm{Ancestry.1}\times\mathrm{Gene}\)& rnd & -56.8 &  4.8e-13 \\
+\(\mathrm{Dx}\times\mathrm{Gene}\)    & rnd &   0.5 &  2.1e-01 \\
+\(\mathrm{Gender}\times\mathrm{Gene}\)& rnd &  -5.8 &  5.2e-03 \\
 \end{tabular}
-\caption{Explanation of the nomenclature for read count ratio variables and
-model names.}
-\label{tab:model-names}
+\end{center}
+\caption{Biological terms---added as fixed or random effects---and their impact on model fit.  Large negative
+change in Akaike information criterion and small p-value (Chi-squared test)
+indicates significant improvement in fit by that term and hence the
+relevance of the corresponding biological variable(s).  Note that some
+variables (cf.~Age) may be irrelevant on their own but still relevant in
+interaction with another variable (cf.~\(\mathrm{Age}\times\mathrm{Gene}\)).}
+\label{tab:mod-sel}
 \end{table}
 
 \begin{figure}[h]
@@ -610,6 +628,55 @@ brain area in this study.
 \renewcommand{\thetable}{S\@arabic\c@table}
 \makeatother
 
+\begin{table}[h]
+\begin{center}
+\begin{tabular}{r|l}
+predictor & levels\\
+\hline
+Age &  \\
+Institution & [MSSM], Penn, Pitt\\
+Gender & [Female], Male\\
+PMI & \\
+Dx & [AFF], Control, SCZ\\
+RIN &  \\
+RNA\_batch & [A], B, C, D, E, F, G, H, 0\\
+Ancestry.1 & \\
+\vdots & \\
+Ancestry.5 &  \\
+\end{tabular}
+\caption{ \emph{Left column:} predictors (explanatory variables) of read count
+ratio.  \emph{Right column:} levels of each factor-valued (i.e.~categorical)
+predictor.  Square brackets \([...]\) surround the baseline level against
+which other levels are contrasted.  \emph{Abbreviations:} PMI: post-mortem
+interval; Dx: disease status; AFF: affective spectrum disorder; SCZ:
+schizophrenia; RIN: RNA integrity number;
+Ancestry.\(k\): the \(k\)-th eigenvalue from the decomposition of genotypes
+indicating population structure.}
+\label{tab:predictors}
+\end{center}
+\end{table}
+
+\begin{table}
+\begin{center}
+\begin{tabular}{ccc}
+%\multicolumn{2}{c}{\replaced{link function and error distribution}{regression models}} \\
+model family & abbrev. & response var.~\\
+\hline
+\emph{u}nweighted \emph{n}ormal \emph{l}inear & unlm  & \(S, Q,\) or \(R\) \\
+\emph{w}eighted \emph{n}ormal \emph{l}inear & wnlm  & \(S, Q,\) or \(R\) \\
+\emph{logi}stic & logi & \(S\) \\
+\emph{logi}stic, \(\frac{1}{2}\times\) down-scaled link fun.~& logi2 & \(S\) \\
+\end{tabular}
+\caption{Fitted regression model families, in which the response variable is the read count ratio with or without some transformation: 
+\(S\)---untransformed, \(Q\)---\emph{q}uasi-log-transformed, and
+\(R\)---\emph{r}ank-transformed read count ratio.
+}
+\end{center}
+\label{tab:model-names}
+\end{table}
+
+% Supplementary figures
+
 \setcounter{figure}{0}
 \makeatletter 
 \renewcommand{\thefigure}{S\@arabic\c@figure}
@@ -679,22 +746,22 @@ brain area in this study.
 
 \begin{figure}[h]
 \begin{center}
-\includegraphics[scale=0.6]{figures/2016-09-23-model-checking/qqnorm-wnlm-Q-1.pdf}
+\includegraphics[scale=0.6]{figures/2017-03-08-model-checking/qqplot-families-M3-1.pdf}
 \end{center}
 \caption{
 Checking the fit of wnlm.Q model: analysis of the normality of residuals.
 }
-\label{fig:qqnorm-wnlm.Q}
+\label{fig:qqnorm-mixed}
 \end{figure}
 
 \begin{figure}[h]
 \begin{center}
-\includegraphics[scale=0.6]{figures/2016-09-23-model-checking/homoscedas-wnlm-Q-1.pdf}
+\includegraphics[scale=0.6]{figures/2017-03-08-model-checking/scedasticity-families-M3-1.pdf}
 \end{center}
 \caption{
 Checking the fit of wnlm.Q model: analysis of homoscedasticity.
 }
-\label{fig:homoscedas-wnlm.Q}
+\label{fig:homoscedas-mixed}
 \end{figure}
 
 \begin{figure}[h]
