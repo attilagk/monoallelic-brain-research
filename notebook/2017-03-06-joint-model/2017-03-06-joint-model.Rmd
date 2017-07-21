@@ -200,25 +200,75 @@ M5 includes interaction of Ancestry.1, Age, Dx, Gender with Gene.  Therefore it 
 
 The following sequence of ANOVA is removes each variable:Gene term.
 
-```{r cache=TRUE, eval=FALSE}
+```{r cache=TRUE, eval=TRUE}
 av.5 <- list()
-av.5$Age <-
-    anova(update(M5, . ~ . + (Dx + Gender + scale(RIN) + scale(Ancestry.1) | Gene) - (Dx + Gender + scale(Age) + scale(RIN) + scale(Ancestry.1) | Gene)),
+av.5$Age.Gene <-
+    anova(update(M5, . ~ . - (scale(Age) + scale(RIN) + scale(Ancestry.1) + scale(Ancestry.3) | Gene) + (scale(RIN) + scale(Ancestry.1) + scale(Ancestry.3) | Gene)),
           M5)
 av.5$Ancestry.1 <-
-    anova(update(M5, . ~ . + (Dx + Gender + scale(RIN) + scale(Age) | Gene) - (Dx + Gender + scale(Age) + scale(RIN) + scale(Ancestry.1) | Gene)),
+    anova(update(M5, . ~ . - (scale(Age) + scale(RIN) + scale(Ancestry.1) + scale(Ancestry.3) | Gene) + (scale(Age) + scale(RIN) + scale(Ancestry.3) | Gene)),
           M5)
-av.5$Dx <-
-    anova(update(M5, . ~ . + (Gender + scale(RIN) + scale(Age) + scale(Ancestry.1) | Gene) - (Dx + Gender + scale(Age) + scale(RIN) + scale(Ancestry.1) | Gene)),
+av.5$Ancestry.2.Gene <-
+    anova(M5,
+          update(M5, . ~ . - (scale(Age) + scale(RIN) + scale(Ancestry.1) + scale(Ancestry.3) | Gene) + (scale(Age) + scale(RIN) + scale(Ancestry.1) + scale(Ancestry.2) + scale(Ancestry.3) | Gene)))
+av.5$Ancestry.3 <-
+    anova(update(M5, . ~ . - (scale(Age) + scale(RIN) + scale(Ancestry.1) + scale(Ancestry.3) | Gene) + (scale(Age) + scale(RIN) + scale(Ancestry.1) | Gene)),
           M5)
-av.5$Gender <-
-    anova(update(M5, . ~ . + (Dx + scale(RIN) + scale(Age) + scale(Ancestry.1) | Gene) - (Dx + Gender + scale(Age) + scale(RIN) + scale(Ancestry.1) | Gene)),
-          M5)
+av.5$Ancestry.4.Gene <-
+    anova(M5,
+          update(M5, . ~ . - (scale(Age) + scale(RIN) + scale(Ancestry.1) + scale(Ancestry.3) | Gene) + (scale(Age) + scale(RIN) + scale(Ancestry.1) + scale(Ancestry.4) + scale(Ancestry.3) | Gene)))
+av.5$Ancestry.5.Gene <-
+    anova(M5,
+          update(M5, . ~ . - (scale(Age) + scale(RIN) + scale(Ancestry.1) + scale(Ancestry.3) | Gene) + (scale(Age) + scale(RIN) + scale(Ancestry.1) + scale(Ancestry.5) + scale(Ancestry.3) | Gene)))
+av.5$Gender.Gene <-
+    anova(update(M5, . ~ . - (1 | Gender:Gene)), M5)
+av.5$Gender <- anova(M5, update(M5, . ~ . + (1 | Gender)))
+# note that the next one is an addition to M5
+av.5$Dx.Gene <-
+    anova(M5, update(M5, . ~ . + (1 | Dx:Gene)))
+av.5$Dx <- anova(M5, update(M5, . ~ . + (1 | Dx)))
 ```
+
+### M6
+
+```{r cache=TRUE, eval=TRUE}
+M6 <- M5.Dx.Gene
+av.6 <- list()
+av.6$Age.Gene <-
+    anova(update(M6, . ~ . - (scale(Age) + scale(RIN) + scale(Ancestry.1) + scale(Ancestry.3) | Gene) + (scale(RIN) + scale(Ancestry.1) + scale(Ancestry.3) | Gene)),
+          M6)
+av.6$Ancestry.1 <-
+    anova(update(M6, . ~ . - (scale(Age) + scale(RIN) + scale(Ancestry.1) + scale(Ancestry.3) | Gene) + (scale(Age) + scale(RIN) + scale(Ancestry.3) | Gene)),
+          M6)
+av.6$Ancestry.2.Gene <-
+    anova(M6,
+          update(M6, . ~ . - (scale(Age) + scale(RIN) + scale(Ancestry.1) + scale(Ancestry.3) | Gene) + (scale(Age) + scale(RIN) + scale(Ancestry.1) + scale(Ancestry.2) + scale(Ancestry.3) | Gene)))
+av.6$Ancestry.3 <-
+    anova(update(M6, . ~ . - (scale(Age) + scale(RIN) + scale(Ancestry.1) + scale(Ancestry.3) | Gene) + (scale(Age) + scale(RIN) + scale(Ancestry.1) | Gene)),
+          M6)
+av.6$Ancestry.4.Gene <-
+    anova(M6,
+          update(M6, . ~ . - (scale(Age) + scale(RIN) + scale(Ancestry.1) + scale(Ancestry.3) | Gene) + (scale(Age) + scale(RIN) + scale(Ancestry.1) + scale(Ancestry.4) + scale(Ancestry.3) | Gene)))
+av.6$Ancestry.5.Gene <-
+    anova(M6,
+          update(M6, . ~ . - (scale(Age) + scale(RIN) + scale(Ancestry.1) + scale(Ancestry.3) | Gene) + (scale(Age) + scale(RIN) + scale(Ancestry.1) + scale(Ancestry.5) + scale(Ancestry.3) | Gene)))
+av.6$Gender.Gene <-
+    anova(update(M6, . ~ . - (1 | Gender:Gene)), M6)
+av.6$Gender <- anova(M6, update(M6, . ~ . + (1 | Gender)))
+av.6$Dx.Gene <-
+    anova(update(M6, . ~ . - (1 | Dx:Gene)), M6)
+av.6$Dx <- anova(M6, update(M6, . ~ . + (1 | Dx)))
+```
+
+```{r}
+print.av(summarize.anova(av.5))
+print.av(summarize.anova(av.6))
+```
+
 
 M5 does not contain fixed effects
 
-### M6
+### M6 (old)
 
 ```{r cache=TRUE, eval=FALSE}
 (M6 <- update(M1b, . ~ . + (scale(RIN) + scale(Ancestry.1) | Gene)))
