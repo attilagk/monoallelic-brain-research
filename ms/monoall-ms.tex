@@ -526,18 +526,21 @@ results}
 \begin{tabular}{rlrc}
 predictor term                              & interpretation: effect due to &   \(\Delta\)AIC &        p-value \\
 \hline
-\((1\,|\,\mathrm{Gene})\)                   & Gene, independently from other variables &  &  \\
-{\((1\,|\,\mathrm{Dx})\)}                   & Dx, independently from other variables &   &  \\
-\((1\,|\,\mathrm{Dx}:\mathrm{Gene})\)       & interaction of Dx and Gene &  &  \\
-\(\mathrm{Age}\)                            & Age, independently from other variables &   &  \\
-\((\mathrm{Age}\,|\,\mathrm{Gene})\)        & Age, depending on Gene &   &  \\
-\(\mathrm{Ancestry.1}\)                     & Ancestry.1, independently from other variables &   &  \\
-\((\mathrm{Ancestry.1}\,|\,\mathrm{Gene})\) & Ancestry.1, depending on Gene &   &  \\
+\((1\,|\,\mathrm{Gene})\)                   & Gene, independently of other variables & \(-126.8\)  & \(8.5\times 10^{-28}\) \\
+{\((1\,|\,\mathrm{Dx})\)}                   & Dx, independently of other variables & \(2.0\)  & \(1.0\)  \\
+\((1\,|\,\mathrm{Dx}:\mathrm{Gene})\)       & Dx, depending on Gene & \(0.4\) &  \(0.21\) \\
+{\((1\,|\,\mathrm{Gender})\)}               & Gender, independently of other variables & \(2.0\)  & \(1.0\)  \\
+\((1\,|\,\mathrm{Gender}:\mathrm{Gene})\)   & Gender, depending on Gene & \(-5.7\) &  \(5.5\times 10^{-3}\) \\
+\(\mathrm{Age}\)                            & Age, independently of other variables & \(1.3\)   & \(0.39\) \\
+\((\mathrm{Age}\,|\,\mathrm{Gene})\)        & Age, depending on Gene & \(-18.9\)  & \(2.5\times 10^{-5}\)  \\
+\(\mathrm{Ancestry.1}\)                     & Ancestry.1, independently of other variables & \(0.6\)  & \(0.24\) \\
+\((\mathrm{Ancestry.1}\,|\,\mathrm{Gene})\) & Ancestry.1, depending on Gene & \(-71.2\)   & \(4.6\times 10^{-16}\) \\
 \end{tabular}
 \end{center}
 \caption{Biological terms and their impact on the fit of the mixed model.  The
-smaller (more negative) \(\Delta \mathrm{AIC}\)}, and the smaller the p-value,
+smaller (more negative) \(\Delta \mathrm{AIC}\), and the smaller the p-value,
 the more likely that the term has non-zero effect on the read count ratio.
+}
 \label{tab:mod-sel}
 \end{table}
 
@@ -603,10 +606,11 @@ reference allele bias could not be determined due to small amount of data.
 
 \begin{figure}[h]
 \begin{center}
-\includegraphics[scale=0.6]{figures/2016-11-01-plotting-distribution-of-s/S-Dx-density-1.png}
+\includegraphics[scale=0.6]{figures/2016-11-01-plotting-distribution-of-s/S-Dx-strip-1.png}
 \caption{
-Distribution of read count ratio for control and schizophrenic (SCZ)
-individuals within each gene.
+Distribution of read count ratio for control, schizophrenic (SCZ), and
+affectic spectrum (AFF) individuals within each gene that has been considered as imprinted in the DLPFC
+brain area in this study.
 }
 \label{fig:S-Dx}
 \end{center}
@@ -614,11 +618,10 @@ individuals within each gene.
 
 \begin{figure}[h]
 \begin{center}
-\includegraphics[scale=0.6]{figures/2016-06-26-trellis-display-of-data/S-age-1.pdf}
+\includegraphics[scale=0.6]{figures/2016-11-01-plotting-distribution-of-s/S-Dx-age-1.png}
 \caption{
-Variation of the read count ratio \(S_{ig}\) with age across hundreds of individuals
-\(i\) (dots) and 30 genes \(g\) that have been considered as imprinted in the DLPFC
-brain area in this study.
+Variation of read count ratio with age.  Color codes psychiatric diagnosis
+(Dx) consistent with Fig.~\ref{fig:S-Dx}.
 }
 \label{fig:S-age}
 \end{center}

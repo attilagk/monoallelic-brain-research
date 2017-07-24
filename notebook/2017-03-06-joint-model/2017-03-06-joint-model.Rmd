@@ -268,6 +268,28 @@ av.6$Gene <-
           M6)
 ```
 
+Effect of *Age*, *Ancestry.n* independently from other variables.
+
+```{r cache=TRUE, eval=TRUE}
+av.5$Age <- anova(M5, update(M5, . ~ . + scale(Age)))
+av.5$Ancestry.1 <- anova(M5, update(M5, . ~ . + scale(Ancestry.1)))
+av.5$Ancestry.2 <- anova(M5, update(M5, . ~ . + scale(Ancestry.2)))
+av.5$Ancestry.3 <- anova(M5, update(M5, . ~ . + scale(Ancestry.3)))
+av.5$Ancestry.4 <- anova(M5, update(M5, . ~ . + scale(Ancestry.4)))
+av.5$Ancestry.5 <- anova(M5, update(M5, . ~ . + scale(Ancestry.5)))
+```
+
+```{r cache=TRUE, eval=TRUE}
+av.6$Age <- anova(M6, update(M6, . ~ . + scale(Age)))
+av.6$Ancestry.1 <- anova(M6, update(M6, . ~ . + scale(Ancestry.1)))
+av.6$Ancestry.2 <- anova(M6, update(M6, . ~ . + scale(Ancestry.2)))
+av.6$Ancestry.3 <- anova(M6, update(M6, . ~ . + scale(Ancestry.3)))
+av.6$Ancestry.4 <- anova(M6, update(M6, . ~ . + scale(Ancestry.4)))
+av.6$Ancestry.5 <- anova(M6, update(M6, . ~ . + scale(Ancestry.5)))
+```
+
+#### Results of ANOVA
+
 ```{r}
 print.av(summarize.anova(av.5))
 print.av(summarize.anova(av.6))
