@@ -523,29 +523,21 @@ results}
 
 \begin{table}
 \begin{center}
-\begin{tabular}{rcrc}
-term                                  & effect &   \(\Delta\)AIC &        p-value \\
+\begin{tabular}{rlrc}
+predictor term                              & interpretation: effect due to &   \(\Delta\)AIC &        p-value \\
 \hline
-Gene                                  & fixed &  TODO &  TODO  \\
-Gene                                  & rnd &  TODO &  TODO  \\
-Age                                   & fixed &   1.8 &  6.5e-01 \\
-Ancestry.1                                & fixed &  -0.2 &  1.3e-01 \\
-Dx                                & fix &   3.9 &  9.5e-01 \\
-Dx                                & rnd &   2.0 &  1.0  \\
-Gender                            & fix &   1.0 &  3.2e-01 \\
-Gender                            & rnd &   2.0 &  1.0 \\
-\(\mathrm{Age}\times\mathrm{Gene}\)   & rnd & -23.4    &  2.5e-06 \\
-\(\mathrm{Ancestry.1}\times\mathrm{Gene}\)& rnd & -56.8 &  4.8e-13 \\
-\(\mathrm{Dx}\times\mathrm{Gene}\)    & rnd &   0.5 &  2.1e-01 \\
-\(\mathrm{Gender}\times\mathrm{Gene}\)& rnd &  -5.8 &  5.2e-03 \\
+\((1\,|\,\mathrm{Gene})\)                   & Gene, independently from other variables &  &  \\
+{\((1\,|\,\mathrm{Dx})\)}                   & Dx, independently from other variables &   &  \\
+\((1\,|\,\mathrm{Dx}:\mathrm{Gene})\)       & interaction of Dx and Gene &  &  \\
+\(\mathrm{Age}\)                            & Age, independently from other variables &   &  \\
+\((\mathrm{Age}\,|\,\mathrm{Gene})\)        & Age, depending on Gene &   &  \\
+\(\mathrm{Ancestry.1}\)                     & Ancestry.1, independently from other variables &   &  \\
+\((\mathrm{Ancestry.1}\,|\,\mathrm{Gene})\) & Ancestry.1, depending on Gene &   &  \\
 \end{tabular}
 \end{center}
-\caption{Biological terms---added as fixed or random effects---and their impact on model fit.  Large negative
-change in Akaike information criterion and small p-value (Chi-squared test)
-indicates significant improvement in fit by that term and hence the
-relevance of the corresponding biological variable(s).  Note that some
-variables (cf.~Age) may be irrelevant on their own but still relevant in
-interaction with another variable (cf.~\(\mathrm{Age}\times\mathrm{Gene}\)).}
+\caption{Biological terms and their impact on the fit of the mixed model.  The
+smaller (more negative) \(\Delta \mathrm{AIC}\)}, and the smaller the p-value,
+the more likely that the term has non-zero effect on the read count ratio.
 \label{tab:mod-sel}
 \end{table}
 
@@ -606,6 +598,17 @@ gene names indicate reference allele bias, while ``0'' indicate that
 reference allele bias could not be determined due to small amount of data.
 }
 \label{fig:top-genes}
+\end{center}
+\end{figure}
+
+\begin{figure}[h]
+\begin{center}
+\includegraphics[scale=0.6]{figures/2016-11-01-plotting-distribution-of-s/S-Dx-density-1.png}
+\caption{
+Distribution of read count ratio for control and schizophrenic (SCZ)
+individuals within each gene.
+}
+\label{fig:S-Dx}
 \end{center}
 \end{figure}
 
