@@ -4,7 +4,7 @@
 %\setlength{\textheight}{630pt}
 %\setlength{\voffset}{0pt}
 
-\usepackage{amsmath, geometry, graphicx, tikz, changes}
+\usepackage{amsmath, geometry, graphicx, tikz}
 \usetikzlibrary{arrows.meta}
 \bibliographystyle{plain}
 
@@ -17,8 +17,6 @@
 %Ravi Sachinanandam,
 Andrew Chess}
 \date{Mount Sinai School of Medicine}
-
-\linespread{1.2}
 
 \begin{document}
 
@@ -121,7 +119,7 @@ depends on the gene.
 
 \subsection{Defining the read count ratio to quantify allelic bias}
 
-We quantifieied allelic bias \added{based on RNA-seq reads} using a statistic called
+We quantifieied allelic bias based on RNA-seq reads using a statistic called
 \emph{read count ratio} \(S\), whose definition we
 based on the total read count \(T\) and the \emph{higher read count} \(H\),
 i.e.~the count of reads carrying only either the reference or the alternative SNP variant,
@@ -280,59 +278,41 @@ of \(n=5307\) genes that passed quality filtering.  Regression analysis
 involved a subset \(\mathcal{G}_1\subset\mathcal{G}\) of \(n_1=30\) genes
 called as imprinted.
 
-\added{Outline:}
-\begin{enumerate}
-\item \added{modeling genes jointly/globally (mixed model) and
-separately/locally}
-\item \added{data transformations, link functions, error distributions}
-\end{enumerate}
-
+Outline:
 \begin{itemize}
-\item we studied how the allelic bias of the 30 imprinted genes we identified depends on certain biological variables
-\item biol variables: Dx, Age, Gender and genetics (Ancestry)
-\item to that aim we fitted several regression models to the data consisting of the
-observed read count ratios (the response) and the corresponding observations
-on biological and technical variables (the explanatory variables or predictors, Table~\ref{tab:predictors})
-\item we used both mixed models that describe the variation of read count
-ratio jointly for all 30 genes as well as sets of 30 conventional (i.e.~fixed effects)
-regression models, one for each gene
-\item the fitted models in both classes (mixed or separate gene-specific)
-differed in three additional aspects Table~\ref{tab:model-names}
+\item we modeled the dependence of read count ratio of imprinted genes on
+on biological and technical explanatory variables (Table~\ref{tab:predictors})
+using two regression frameworks
 \begin{enumerate}
-\item the transformation applied to the read count data
-\item model family: the link function + error distribution
-\item the terms of explanatory variables present in the linear predictor
+\item hierarchical mixed effects models, which describe data jointly for all 30 imprinted genes
+ TODO: equation
+\item non-hierarchical generalized linear models, which describe data
+separately for each of the 30 imprinted genes TODO: equation
 \end{enumerate}
+\item within each framework several data transformations, link functions, error distributions (Table~\ref{tab:model-names})
+\item initial inference using non-hierarchical models guided heuristic search
+for the best fitting mixed model considering the space of linear predictors
+based on subsets of the explanatory variables
+\item we prefered mixed models for final inference due to their higher power and
+robustness against overfitting which they achieve by letting gene-wise data borrow statistical strength from each other
 \end{itemize}
 
-\subsubsection{Model fitting, selection and inference}
+\subsubsection{Model fitting and selection}
 
 \begin{itemize}
-\item we based our inference on mixed effects models due to their robustness
-against overfitting, which we were concerned about given initial results based
-on the separate (gene-specific) modeling strategy
-\item we let preliminary results from the separate gene-wise modeling
-framework to guide heuristic search for the best fitting mixed model
-\item based on those results and on qualitative exploratory analysis we
-guessed the set of most informative terms in order to
+\item fitting mixed and non-hierarchical regression models with lme4 and stats
+R packages, respectively, convergence
+\item fit during search was evaluated using information criteria AUC, as well as
+p-value from Chi-squared test on the degrees of freedom that depends on the
+term(s) added
 \begin{enumerate}
 \item find the best overall combination of data transformation and model
 family (Figure~\ref{fig:qqnorm-mixed},~\ref{fig:homoscedas-mixed})
 \item start the search in the space of linear predictors as near the optimum as possible
 \item guide the sequence in which further terms are added
 \end{enumerate}
-\item fit during search was evaluated using information criteria AUC, BIC, as well as
-p-value from Chi-squared test on the degrees of freedom that depends on the
-term(s) added
-\item the same criteria were used to infer the relevance of biological
-variables by omitting each of them from the best model (Table~\ref{tab:mod-sel})
+\item many of the terms in the linear predictor that significantly improved model fit are technical ones; including them in the model therefore corrects for a large technical noise
 \end{itemize}
-
-\added{Outline:}
-\begin{enumerate}
-\item \added{R package, convergence}
-\item \added{Selection criteria and heuristic search}
-\end{enumerate}
 
 \section{Results}
 
@@ -463,25 +443,6 @@ significantly suggesting that perturbation of allelic bias of imprinted genes in
 is not associated to SCZ
 \end{itemize}
 
-\added{Outline:}
-\begin{enumerate}
-\item \added{the best fitting data transformation, link function and error distribution was
-selected for a fixed set of terms in the linear predictor (see Methods) for
-both global and local models}
-\item \added{global models (considering genes jointly) gave stronger results than
-local ones because the former allows gene-wise data units to borrow
-statistical strength from each other}
-\item \added{terms in the linear predictor that significantly improved model fit are mainly technical ones;
-including them in the model therefore corrects for a large technical noise}
-\item \added{the most important biological term is 'Gene', meaning that
-allelic bias varies greatly among imprinted genes regardless other variables}
-\item \added{the remaining biological terms that significantly improving model fit are 
-'Ancestry.1:Gene' and 'Age:Gene', suggesting that genes differ not only in
-their mean/overall allelic bias but also in how bias depends on Ancestry.1 and
-Age; in other words, Ancestry.1 and Age has a differential effect on allelic
-bias when comparing genes}
-\end{enumerate}
-
 \subsection{Gene-specific effects of age and ancestry}
 
 \begin{itemize}
@@ -503,53 +464,31 @@ was the effect of Ancestry.1, that of Age
 followed, while that of Gender was only weakly
 significant 
 \item TODO: predicted effect of Age that is specific to each gene
-\item note: similar prediction for Ancestry.1 is possible but seems much less interesting because we do not know the genetic mechanisms linked to Ancestry.1
+\footnote{similar prediction for Ancestry.1 is possible but seems much less
+interesting because we do not know the genetic mechanisms linked to
+Ancestry.1}
 \end{itemize}
-
-\added{Outline:}
-\begin{enumerate}
-\item \added{examples for imprinted genes with strong allelic bias
-(monoallelically expressed) and those with moderate bias; discuss those genes}
-\item \added{depending on the effect of 'Gene:Cluster', Age:Cluster,
-Ancestry.1:Cluster inspect and discuss clusters}
-\end{enumerate}
 
 \section{Discussion}
 
-We present the first genome-wide characterization of allelic bias of
-expression in humans and, at the same time, the first genome-scale study of
-the potential for imprinted genes' impact on a psychiatric disorder. Important
-to mention first, but not surprising, is our finding that \(\approx
-\frac{2}{3}\)rd of known imprinted genes display imprinting in the adult human
-DLPFC. The fact that the remaining \(\approx \frac{1}{3}\)rd of known
-imprinted genes do not display imprinting is consistent with many other
-studies showing that imprinted genes often display imprinting in some but not
-all tissues. We also find allelic bias consistent with imprinting for eight
-novel candidate genes, all of which are nearby known imprinted genes.  Strong
-allelic bias for \(\approx 0.6\%\) of all assessable genes suggests that they
-are imprinted, which agrees closely with the most recent mouse
-studies~\cite{DeVeale2012,Perez2015} but contradicts a controversial earlier
-estimate of \(\approx 5\%\) also from mouse~\cite{Gregg2010a}.
-
-We also examined the dependence of allelic bias on variables namely age,
-diagnosis, gender and ancestry.
-\added{Outline from this point:}
-\begin{enumerate}
-\item \added{we find (so far the strongest?) evidence that age regulates
-imprinted genes in adulthood: biological significance in light of kinship
-theory, social interactions and aging}
-\item \added{we find a strong Ancestry.1:Gene effect; this shows how genetic
-(Ancestry.1) and epigenetic (imprinting control region of a given gene)
-mechanisms act together to shape gene expression}
-\item \added{we do not detect effect of Dx (SCZ); lack of effect is
-surprising given the involvement of several imprinted genes in psychiatric
-disorders; alternatively the effect exists but has been masked by the large
-technical noise in our study}
-\item \added{even subtle variation in allelic bias and allele specific
-expression might substantially affect biological function for some (imprinted)
-genes while not for others; this must be borne in mind in interpreting our
-results}
-\end{enumerate}
+\begin{itemize}
+\item we identified imprinted genes in adult DLPF cortex using an RNA-seq read count ratio approach
+that estimates allelic bias for a given gene and individual
+\item the resulting set of imprinted genes is in agreement with this and that
+study but contrasts earlier work (Dulac, Gregg)
+\item our model-based inference does not support the hypothesis that perturbed allelic bias
+of imprinted genes increases the risk of SCZ
+\item implications, alternative hypothetical biological mechanisms involving
+imprinting and SCZ
+\item alternatively the effect exists but has been masked by the large technical noise in our study
+\item
+we also examined the dependence of allelic bias on variables namely age,
+gender and ancestry
+\item we find (so far the strongest?) evidence that age regulates imprinted genes in adulthood
+\item biological significance in light of kinship theory, social interactions and aging
+\item we find a strong Ancestry.1:Gene effect; this shows how genetic (Ancestry.1) and epigenetic (imprinting control region of a given gene) mechanisms act together to shape gene expression
+\item even subtle variation in allelic bias and allele specific expression might substantially affect biological function for some (imprinted) genes while not for others; this must be borne in mind in interpreting our results
+\end{itemize}
 
 \bibliographystyle{plain}
 \bibliography{monoall-ms}
