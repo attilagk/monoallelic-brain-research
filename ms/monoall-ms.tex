@@ -360,25 +360,23 @@ other than the adult human DLPFC.  The third, AFAP1, has not been reported to be
 in any context.  For all three genes \(S_{\cdot g}\) varies considerably
 within its theoretical range \([\frac{1}{2}, 1]\).  This suggests variation of
 allelic bias across study individuals, although some component of the
-variation of \(S_{\cdot g}\) must originate from technical sources.  Later
-subsections present our modeling and detailed analysis of the
-across-individual variation on genes called imprinted in the context of adult
-human DLPFC.  The rest of the present subsection reports the calling of
-imprinted genes.
+variation of \(S_{\cdot g}\) must originate from technical sources.
 
-We defined gene score as
-the location statistic \(1 - \mathrm{ECDF}_g(0.9)\), the fraction of
-individuals \(i\) for which \(S_{ig}>0.9\).  This score is shown in side plots
-of the lower half of Fig.~\ref{fig:ranking-genes} as gray filled circles or,
-for the three genes mentioned above, as larger green circles (the latter are
-also present in the second from top graph).  Based on the score genes were
-ranked; the heat map of empirical distribution of \(S_{\cdot g}\) of ranked
-genes suggests that the top \(50\) genes, which constitute \(\approx
-1\%\) of all genes in our analysis, are qualitatively different from the
-bottom \(\approx 99\%\) suggesting that most of them are imprinted.
-Consistent with this, the top-scoring genes tended to cluster around genomic
-locations that had been previously described as imprinted gene clusters
-(Fig.~\ref{fig:clusters}).
+To identify imprinted genes based on the read count ratio we
+defined the score of each gene \(g\) as the location statistic \(1 -
+\mathrm{ECDF}_g(0.9)\), which is fraction of
+individuals \(i\) for which \(S_{ig}>0.9\).  We ranked all 5307 genes
+according to their score shown in the side plots of the lower half of
+Fig.~\ref{fig:ranking-genes} as gray filled circles.  Larger green circles
+mark the three genes mentioned above.  The heat map of empirical distribution
+of \(S_{\cdot g}\) of ranked genes (Fig.~\ref{fig:ranking-genes}, lower left)
+suggests that the top \(50\) genes, which constitute \(\approx 1\%\) of all
+genes in our analysis, are qualitatively different from the bottom \(\approx
+99\%\) suggesting that most of them are imprinted.  Consistent with this, the
+top-scoring genes tended to cluster around genomic locations that had been
+previously described as imprinted gene clusters (Fig.~\ref{fig:clusters}).
+
+\subsection{Imprinted genes in the adult DLPF cortex}
 
 The set of top scoring 50 genes is highly enriched in known imprinted genes,
 marked by blue in Fig.~\ref{fig:top-genes} and in \emph{nearby candidate}
@@ -435,8 +433,35 @@ suggests that these genes do not display imprinted expression in the human
 adult DLPFC, consistent with many reports in the literature indicating that
 known imprinted genes are often imprinted in some but not all tissues.  
 
-\subsection{Regulators of allelic bias}
+\subsection{Allelic bias of imprinted genes and schizophrenia}
 \label{sec:results-regression}
+
+\begin{itemize}
+\item overall hypothesis: aberrations in imprinted genes as a risk of
+SCZ
+\item specific hypothesis: normal allelic bias is perturbed in SCZ
+\item Fig.~\ref{fig:S-Dx} compares read count ratio distribution among
+control, SCZ and AFF and shows no difference
+\item more rigorous test: mixed (hierarchical) regression model-based statistical inference considering data
+for all 30 genes jointly
+\item read count ratio as response variable whereas Dx, Gene, Age, RIN,... as
+explanatory variables
+\item identify the best fitting model (Methods) and quantify how significantly the presence
+of various terms of explanatory variables in the model improves the fit
+\item the power of our model is indicated by the extreme significance by
+which the term \((1\,|\,\mathrm{Gene})\) improves fit; this term represents
+the gene-to-gene variation of read count ratio among imprinted genes (Fig.~\ref{fig:S-Dx})
+\item two terms involving Dx: two sub-hypotheses
+\begin{enumerate}
+\item \((1\,|\,\mathrm{Dx})\) represents effect of Dx on read count ratio that
+is independent of any other explanatory variable in the model and thus is not specific to any gene
+\item \((1\,|\,\mathrm{Dx}:\mathrm{Gene})\) represents gene-specific effect of
+Dx 
+\end{enumerate}
+\item Table~\ref{tab:mod-sel} shows that neither term improved fit
+significantly suggesting that perturbation of allelic bias of imprinted genes in the DLPFC
+is not associated to SCZ
+\end{itemize}
 
 \added{Outline:}
 \begin{enumerate}
@@ -455,24 +480,36 @@ allelic bias varies greatly among imprinted genes regardless other variables}
 their mean/overall allelic bias but also in how bias depends on Ancestry.1 and
 Age; in other words, Ancestry.1 and Age has a differential effect on allelic
 bias when comparing genes}
-\item \added{Ancestry.1 and Age alone was found to have little if any effect
-meaning that genes do not share a common pattern of how allelic bias depends
-on these variables}
-\item \added{Dx (SCZ) and Gender had essentially no effect alone or in combination with
-'Gene' (only 'Gender:Gene' lead to minor improvement in fit)}
-\item \added{TODO: imprinted gene clusters and other biological effect ('Gene:Cluster', Age:Cluster, Ancestry.1:Cluster)}
 \end{enumerate}
 
+\subsection{Gene-specific effects of age and ancestry}
 
-\subsection{\added{Inspecting allelic bias in individual imprinted genes}}
+\begin{itemize}
+\item Fig.~\ref{fig:S-age} shows that the read count ratio of some imprinted
+genes do not vary with age whereas for other imprinted genes age has a
+negative or positive effect on the read count ratio
+\item however, this apparent age effect may be mediated solely by other explanatory variables
+to which age is associated with (Fig.~\ref{fig:predictor-associations})
+\item to investigate the direct effect of age, ancestry, and gender we turned
+to our mixed models once again, evaluating how significantly terms associated
+with these variables improve fit (Table~\ref{tab:mod-sel})
+\item as for Dx we defined two predictor terms for each variable, one that
+represents its gene-specific effect, like \((\mathrm{Age}\,|\,\mathrm{Gene})\), and another one that represents an
+effect that is shared by all imprinted genes, like \(\mathrm{Age}\)
+\item the shared effects were not supported by any criteria of model fit (see
+\(\mathrm{Age}\), \(\mathrm{Ancestry.1}\), and \((1\,|\,\mathrm{Gender})\) in Table~\ref{tab:mod-sel})
+\item but the gene-specific effects did receive support: the most significant
+was the effect of Ancestry.1, that of Age
+followed, while that of Gender was only weakly
+significant 
+\item TODO: predicted effect of Age that is specific to each gene
+\item note: similar prediction for Ancestry.1 is possible but seems much less interesting because we do not know the genetic mechanisms linked to Ancestry.1
+\end{itemize}
 
 \added{Outline:}
 \begin{enumerate}
 \item \added{examples for imprinted genes with strong allelic bias
 (monoallelically expressed) and those with moderate bias; discuss those genes}
-\item \added{predicted effect of Age for each gene based on mixed model}
-\item \added{note: similar prediction for Ancestry.1 is possible but seems much less
-interesting because we do not know the genetic mechanisms linked to Ancestry.1}
 \item \added{depending on the effect of 'Gene:Cluster', Age:Cluster,
 Ancestry.1:Cluster inspect and discuss clusters}
 \end{enumerate}
@@ -529,12 +566,12 @@ predictor term                              & interpretation: effect due to &   
 \((1\,|\,\mathrm{Gene})\)                   & Gene, independently of other variables & \(-126.8\)  & \(8.5\times 10^{-28}\) \\
 {\((1\,|\,\mathrm{Dx})\)}                   & Dx, independently of other variables & \(2.0\)  & \(1.0\)  \\
 \((1\,|\,\mathrm{Dx}:\mathrm{Gene})\)       & Dx, depending on Gene & \(0.4\) &  \(0.21\) \\
-{\((1\,|\,\mathrm{Gender})\)}               & Gender, independently of other variables & \(2.0\)  & \(1.0\)  \\
-\((1\,|\,\mathrm{Gender}:\mathrm{Gene})\)   & Gender, depending on Gene & \(-5.7\) &  \(5.5\times 10^{-3}\) \\
 \(\mathrm{Age}\)                            & Age, independently of other variables & \(1.3\)   & \(0.39\) \\
 \((\mathrm{Age}\,|\,\mathrm{Gene})\)        & Age, depending on Gene & \(-18.9\)  & \(2.5\times 10^{-5}\)  \\
 \(\mathrm{Ancestry.1}\)                     & Ancestry.1, independently of other variables & \(0.6\)  & \(0.24\) \\
 \((\mathrm{Ancestry.1}\,|\,\mathrm{Gene})\) & Ancestry.1, depending on Gene & \(-71.2\)   & \(4.6\times 10^{-16}\) \\
+{\((1\,|\,\mathrm{Gender})\)}               & Gender, independently of other variables & \(2.0\)  & \(1.0\)  \\
+\((1\,|\,\mathrm{Gender}:\mathrm{Gene})\)   & Gender, depending on Gene & \(-5.7\) &  \(5.5\times 10^{-3}\) \\
 \end{tabular}
 \end{center}
 \caption{Biological terms and their impact on the fit of the mixed model.  The
