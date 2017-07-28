@@ -55,26 +55,20 @@
 \@writefile{toc}{\contentsline {subsection}{\numberline {3.4}Gene-specific effects of age and ancestry}{8}}
 \@writefile{toc}{\contentsline {section}{\numberline {4}Discussion}{8}}
 \bibcite{Bourke2007}{2}
-\bibcite{Broad2009}{3}
-\bibcite{Crespi2008a}{4}
-\bibcite{DeVeale2012}{5}
-\bibcite{Fromer2016a}{6}
-\bibcite{Gregg2010a}{7}
-\bibcite{Haig2014}{8}
-\bibcite{Hannon2016}{9}
-\bibcite{Ingason2011}{10}
-\bibcite{Keverne2015}{11}
-\bibcite{McDonald2005}{12}
-\bibcite{McNamara2013}{13}
-\bibcite{Perez2015}{14}
-\bibcite{Peters2014}{15}
-\bibcite{Plasschaert2014}{16}
-\bibcite{Renfree2012}{17}
-\bibcite{Sullivan2012}{18}
-\bibcite{Ubeda2012}{19}
-\bibcite{Wilkins2003}{20}
-\bibcite{Zheng2014}{21}
-\bibcite{Zwemer2012}{22}
+\bibcite{Crespi2008a}{3}
+\bibcite{Fromer2016a}{4}
+\bibcite{Ingason2011}{5}
+\bibcite{Keverne2015}{6}
+\bibcite{McDonald2005}{7}
+\bibcite{Perez2015}{8}
+\bibcite{Peters2014}{9}
+\bibcite{Plasschaert2014}{10}
+\bibcite{Renfree2012}{11}
+\bibcite{Sullivan2012}{12}
+\bibcite{Ubeda2012}{13}
+\bibcite{Wilkins2003}{14}
+\bibcite{Zheng2014}{15}
+\bibcite{Zwemer2012}{16}
 \@writefile{lot}{\contentsline {table}{\numberline {1}{\ignorespaces Biological terms and their impact on the fit of the mixed model. The smaller (more negative) \(\Delta \mathrm  {AIC}\), and the smaller the p-value, the more likely that the term has non-zero effect on the read count ratio. }}{11}}
 \newlabel{tab:mod-sel}{{1}{11}}
 \@writefile{toc}{\contentsline {section}{\numberline {5}Figures, Tables and Supplementary Material}{11}}
