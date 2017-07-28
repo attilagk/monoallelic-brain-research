@@ -417,24 +417,28 @@ known imprinted genes are often imprinted in some but not all tissues.
 \label{sec:results-regression}
 
 \begin{itemize}
-\item overall hypothesis: aberrations in imprinted genes as a risk of
+\item our overall hypothesis: aberrations in imprinted genes as a risk of
 SCZ
-\item specific hypothesis: normal allelic bias is perturbed in SCZ
+\item the more specific hypothesis: normal allelic bias of imprinted genes is perturbed in SCZ
 \item Fig.~\ref{fig:S-Dx} compares read count ratio distribution among
-control, SCZ and AFF and shows no difference
-\item more rigorous test: mixed (hierarchical) regression model-based statistical inference considering data
-for all 30 genes jointly
-\item read count ratio as response variable whereas Dx, Gene, Age, RIN,... as
+control, SCZ and AFF for the 30 imprinted genes and suggests there is no difference
+\item we performed a more rigorous test: mixed (hierarchical) regression
+model-based statistical inference,
+in which read count ratio was taken as the response variable whereas Dx, Gene, Age, RIN,... as
 explanatory variables
-\item identify the best fitting model (Methods) and quantify how significantly the presence
-of various terms of explanatory variables in the model improves the fit
+\item first we selected the best fitting model among many related ones (Methods)
+\item then we quantified how significantly the presence
+of various terms of some explanatory variable improves the fit
 \item the power of our model is indicated by the extreme significance by
 which the term \((1\,|\,\mathrm{Gene})\) improves fit; this term represents
-the gene-to-gene variation of read count ratio among imprinted genes (Fig.~\ref{fig:S-Dx})
-\item two terms involving Dx: two sub-hypotheses
+the gene-to-gene variation of read count ratio among imprinted genes that is
+clear from Fig.~\ref{fig:S-Dx}
+\item we examined two terms involving Dx, which correspond to two
+sub-hypotheses:
 \begin{enumerate}
 \item \((1\,|\,\mathrm{Dx})\) represents effect of Dx on read count ratio that
-is independent of any other explanatory variable in the model and thus is not specific to any gene
+is independent of Gene and any other explanatory variable in the model and
+thus represents an effect shared by all 30 genes
 \item \((1\,|\,\mathrm{Dx}:\mathrm{Gene})\) represents gene-specific effect of
 Dx 
 \end{enumerate}
@@ -452,9 +456,9 @@ negative or positive effect on the read count ratio
 \item however, this apparent age effect may be mediated solely by other explanatory variables
 to which age is associated with (Fig.~\ref{fig:predictor-associations})
 \item to investigate the direct effect of age, ancestry, and gender we turned
-to our mixed models once again, evaluating how significantly terms associated
+to our mixed models once again, evaluating how significantly predictor terms associated
 with these variables improve fit (Table~\ref{tab:mod-sel})
-\item as for Dx we defined two predictor terms for each variable, one that
+\item as for Dx we defined two terms for each variable, one that
 represents its gene-specific effect, like \((\mathrm{Age}\,|\,\mathrm{Gene})\), and another one that represents an
 effect that is shared by all imprinted genes, like \(\mathrm{Age}\)
 \item the shared effects were not supported by any criteria of model fit (see
@@ -463,10 +467,10 @@ effect that is shared by all imprinted genes, like \(\mathrm{Age}\)
 was the effect of Ancestry.1, that of Age
 followed, while that of Gender was only weakly
 significant 
-\item TODO: predicted effect of Age that is specific to each gene
-\footnote{similar prediction for Ancestry.1 is possible but seems much less
+\item TODO: predict the effect of Age that is specific to each gene;
+note that similar prediction for Ancestry.1 is possible but seems much less
 interesting because we do not know the genetic mechanisms linked to
-Ancestry.1}
+Ancestry.1
 \end{itemize}
 
 \section{Discussion}
