@@ -265,6 +265,35 @@ where $z_{p}$ is the $p$ quantile of the standard normal distribution.
 
 \subsubsection{Formulation of models}
 
+We modeled the dependence of read count ratio of imprinted genes on biological and technical explanatory variables (Table~\ref{tab:predictors})
+using two generalized linear regression frameworks
+\begin{enumerate}
+\item hierarchical mixed models, which describe data \emph{jointly} for all 30 imprinted genes
+\item non-hierarchical fixed models, which describe data
+\emph{separately} for each of the 30 imprinted genes TODO: equation
+\end{enumerate}
+
+Mixed models can be written as \(g^{-1}(y) &=& X \beta + Z b +
+\varepsilon\) and fixed models as \(g^{-1}(y) &=& X \beta + 
+\varepsilon\).  In this formalism \(g\) is a link function; the response \(y\) is the
+observed read count ratio that is possibly transformed to improve fit; \(X, Z\) are design matrices
+containing data on explanatory variables; \(\beta \) and \(b\) are
+fixed and random vectors of regression coefficients, respectively;
+\(\varepsilon\) is the random error.  Besides the presence or absence of
+random effects term \(Zb\) the key difference between
+the mixed and fixed models in this study is
+
+
+\begin{itemize}
+
+ 
+\item within each framework several data transformations, link functions, error distributions (Table~\ref{tab:model-names})
+\item initial inference using non-hierarchical models guided heuristic search
+for the best fitting mixed model considering the space of linear predictors
+based on subsets of the explanatory variables
+\item we prefered mixed models for final inference due to their higher power and
+robustness against overfitting which they achieve by letting gene-wise data borrow statistical strength from each other
+
 Given a top-scoring gene \(g\), we
 sought to identify biological regulators and psychiatric consequences of
 allelic bias by studying the conditional distribution of \(S_{\cdot g}\) given
@@ -278,23 +307,39 @@ of \(n=5307\) genes that passed quality filtering.  Regression analysis
 involved a subset \(\mathcal{G}_1\subset\mathcal{G}\) of \(n_1=30\) genes
 called as imprinted.
 
-Outline:
-\begin{itemize}
-\item we modeled the dependence of read count ratio of imprinted genes on
-on biological and technical explanatory variables (Table~\ref{tab:predictors})
-using two regression frameworks
-\begin{enumerate}
-\item hierarchical mixed effects models, which describe data jointly for all 30 imprinted genes
- TODO: equation
-\item non-hierarchical generalized linear models, which describe data
-separately for each of the 30 imprinted genes TODO: equation
-\end{enumerate}
-\item within each framework several data transformations, link functions, error distributions (Table~\ref{tab:model-names})
-\item initial inference using non-hierarchical models guided heuristic search
-for the best fitting mixed model considering the space of linear predictors
-based on subsets of the explanatory variables
-\item we prefered mixed models for final inference due to their higher power and
-robustness against overfitting which they achieve by letting gene-wise data borrow statistical strength from each other
+We formulate the model so that the response variable \(y\)---the read count ratio that may
+have been transformed to improve fit---is 
+\begin{eqnarray}
+\label{eq:nlme-matrix}
+y &=& X \beta + Z b + \varepsilon \\
+b &\sim& \mathcal{N}(0, \Omega_b) \\
+\varepsilon &\sim& \mathcal{N}(0, \sigma^2 I_{m n_1})
+\end{eqnarray}
+
+Eq.~\ref{eq:nlme-matrix}
+
+\begin{eqnarray}
+y_i = \overbrace{\sum_{j=0}^J x_{ij} \beta_j}^{\text{fixed effects}} +
+\overbrace{\sum_{k=1}^K \sum_{j=0}^{J_k} z_{ij}^{(k)} b_{j}^{(k)}}^{\text{random effects}} + \varepsilon_i
+\end{eqnarray}
+
+\begin{eqnarray}
+y_{i} &=& \overbrace{\beta_0 + \mathrm{Age}_{i}
+\beta_1}^{\text{fixed effects}} \\
+&+& \overbrace{\underbrace{b_{0}^{(1)} +
+\mathrm{Age}_i b_1^{(1)} +
+\mathrm{Ancestry.1}_i b_{2}^{(1)}}_{\mathrm{Gene}_i} +
+\underbrace{b_{0}^{(2)}}_{\mathrm{Dx}_i,\mathrm{Gene}_i}}^{\text{random effects}} \\
+&+& \varepsilon_i \\
+y &\sim& \overbrace{1 + \mathrm{Age}}^{\text{fixed effects}} \\
+&+& \overbrace{\underbrace{(1 \,|\, \mathrm{Gene}) + (\mathrm{Age} \,|\, \mathrm{Gene}) + (\mathrm{Ancestry.1} \,|\, \mathrm{Gene})}_{k=1} +
+\underbrace{(1 \,|\, \mathrm{Dx}:\mathrm{Gene})}_{k=2}}^{\text{random effects}} \\
+y &\sim& \mathrm{Age} +
+(\mathrm{Age} + \mathrm{Ancestry.1} \,|\, \mathrm{Gene}) +
+(1 \,|\, \mathrm{Dx}:\mathrm{Gene})
+\end{eqnarray}
+
+
 \end{itemize}
 
 \subsubsection{Model fitting and selection}
