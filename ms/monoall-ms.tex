@@ -263,86 +263,159 @@ where $z_{p}$ is the $p$ quantile of the standard normal distribution.
 \subsection{Regression analysis}
 \label{sec:methods-regression}
 
-\subsubsection{Formulation of models}
+\subsubsection{Mixed and fixed models}
 
-We modeled the dependence of read count ratio of imprinted genes on biological and technical explanatory variables (Table~\ref{tab:predictors})
-using two generalized linear regression frameworks
-\begin{enumerate}
-\item hierarchical mixed models, which describe data \emph{jointly} for all 30 imprinted genes
-\item non-hierarchical fixed models, which describe data
-\emph{separately} for each of the 30 imprinted genes TODO: equation
-\end{enumerate}
+We modeled the dependence of read count ratio of imprinted genes on biological
+and technical explanatory variables (Table~\ref{tab:predictors}) using mixed
+and fixed generalized linear models (GLMs).
 
-Mixed models can be written as \(g^{-1}(y) &=& X \beta + Z b +
-\varepsilon\) and fixed models as \(g^{-1}(y) &=& X \beta + 
-\varepsilon\).  In this formalism \(g\) is a link function; the response \(y\) is the
-observed read count ratio that is possibly transformed to improve fit; \(X, Z\) are design matrices
-containing data on explanatory variables; \(\beta \) and \(b\) are
-fixed and random vectors of regression coefficients, respectively;
-\(\varepsilon\) is the random error.  Besides the presence or absence of
-random effects term \(Zb\) the key difference between
-the mixed and fixed models in this study is
+GLMs in general describe a conditional distribution of a response variable
+\(y\) given a linear predictor \(\eta\) such that the distribution is from the
+exponential family and that \(\mathrm{E}(y|\eta) = g^{-1} (\eta)\), where
+\(g\) is some link function.  In the present context the response \(y\) is the
+observed read count ratio that is possibly transformed to improve the model's
+fit to the data.  We tested several combinations of transformations, link
+functions, and error distributions (Table~\ref{tab:model-names}).  For
+inference we used the best fitting combinations as assessed by the normality
+(Fig.~\ref{fig:qqnorm-mixed}) and homoscedasticity
+(Fig.~\ref{fig:homoscedas-mixed}) of residuals.
 
+In mixed GLMs \(\eta = X
+\beta + Z b\) and in fixed GLMS \(\eta = X \beta\), where \(X, Z\) are design
+matrices containing data on explanatory variables whereas \(\beta \) and \(b\)
+are fixed and random vectors of regression coefficients that mediate fixed and
+random effects, respectively (see Section~\ref{sec:mixed-mod} for 
+details).
 
-\begin{itemize}
+Besides the random effects term \(Zb\) the key difference between
+the mixed and fixed models in this study is that the former describes
+read count ratio \emph{jointly} for all imprinted genes and the latter
+\emph{separately} for each imprinted gene.  An important consequence is that
+our mixed models are more powerful because they can utilize 
+information shared by all genes.  Therefore we preferred mixed models for final
+inference and used fixed models only to guide selection among possible mixed
+models (Section~\ref{sec:fitting}).
 
- 
-\item within each framework several data transformations, link functions, error distributions (Table~\ref{tab:model-names})
-\item initial inference using non-hierarchical models guided heuristic search
-for the best fitting mixed model considering the space of linear predictors
-based on subsets of the explanatory variables
-\item we prefered mixed models for final inference due to their higher power and
-robustness against overfitting which they achieve by letting gene-wise data borrow statistical strength from each other
+\subsubsection{Formulation and interpretation of mixed models}
+\label{sec:mixed-mod}
 
-Given a top-scoring gene \(g\), we
-sought to identify biological regulators and psychiatric consequences of
-allelic bias by studying the conditional distribution of \(S_{\cdot g}\) given
-observations \(x_{\cdot 1},...,x_{\cdot p}\) on features of study individuals
-that are not gene-specific. We call these features \emph{predictors} because
-we used them in a regression model framework.  Predictors and their various
-levels (if any) are listed in Table~\ref{tab:predictors}.
-
-Let \(m\) denote the number of individuals/samples and \(\mathcal{G}\) the set
-of \(n=5307\) genes that passed quality filtering.  Regression analysis
-involved a subset \(\mathcal{G}_1\subset\mathcal{G}\) of \(n_1=30\) genes
-called as imprinted.
-
-We formulate the model so that the response variable \(y\)---the read count ratio that may
-have been transformed to improve fit---is 
+Here we describe the detailed syntax and semantics of the normal linear mixed
+models combined with a quasi-log transformation \(Q\) of read count ratio as
+this combination was found to provide the best fit
+(Fig.~\ref{fig:qqnorm-mixed},~\ref{fig:homoscedas-mixed}).  Thus having data
+on \(m=579\) individuals and \(n=30\) imprinted genes the response vector is
+\(y=(Q_{i_1g_1},...,Q_{i_mg_1},Q_{i_1g_2},...,Q_{i_mg_2},...,Q_{i_1g_n},...,Q_{i_mg_n})\).
+Then the model in matrix notation is
 \begin{eqnarray}
-\label{eq:nlme-matrix}
+\label{eq:mixed-mod-matrix}
 y &=& X \beta + Z b + \varepsilon \\
-b &\sim& \mathcal{N}(0, \Omega_b) \\
-\varepsilon &\sim& \mathcal{N}(0, \sigma^2 I_{m n_1})
+\varepsilon_i &\overset{\text{i.i.d.}}{\sim}& \mathcal{N}(0, \sigma^2),\;
+i=1,...,mn \\
+b &\sim& \mathcal{N}(0, \Omega_b),
 \end{eqnarray}
+where the size of the covariance matrix \(\Omega_b\) depends on the number of
+terms with random effects (the columns of \(Z\)).  Simply put: errors and
+random coefficients are all normal.
 
-Eq.~\ref{eq:nlme-matrix}
+To clarify the semantics of Eq.~\ref{eq:mixed-mod-matrix} let us consider a
+simple toy model with just a few terms in the linear predictor.  But before
+expressing it in terms of Eq.~\ref{eq:mixed-mod-matrix} it is easier
+to cast it in the compact formalism of the stats and lme4 packages of the R
+language as
+\begin{equation}
+\label{eq:toy-mod-r}
+y \sim \overbrace{1 + \mathrm{Age}}^{\text{fixed effect}} +
+\overbrace{\underbrace{(1 + \mathrm{Age} + \mathrm{Ancestry.1} \,|\,
+\mathrm{Gene})}_{k=1} +
+\underbrace{(1 \,|\, \mathrm{Dx}:\mathrm{Gene})}_{k=2}}^{\text{random
+effects}}.
+\end{equation}
 
-\begin{eqnarray}
-y_i = \overbrace{\sum_{j=0}^J x_{ij} \beta_j}^{\text{fixed effects}} +
-\overbrace{\sum_{k=1}^K \sum_{j=0}^{J_k} z_{ij}^{(k)} b_{j}^{(k)}}^{\text{random effects}} + \varepsilon_i
-\end{eqnarray}
+The \(1\)s mean intercept terms: one as a fixed effect and two as random
+effects.  The first random intercept term \((1\,|\,\mathrm{Gene})\) expresses
+the gene-to-gene variability in read count ratio (compare panels in
+Fig.~\ref{fig:S-Dx} and~\ref{fig:S-age}), in other words the random effect of
+the \(\mathrm{Gene}\) variable.  The second random intercept term
+\((1\,|\,\mathrm{Dx}:\mathrm{Gene})\) corresponds to the interaction between
+psychiatric diagnosis \(\mathrm{Dx}\) and \(\mathrm{Gene}\); it can be
+interpreted as the \(\mathrm{Gene}\) specific effect of \(\mathrm{Dx}\)
+or---alternatively---as the \(\mathrm{Dx}\) specific component of gene-to-gene
+variability.  This term is not likely to be informative as Fig.~\ref{fig:S-Dx}
+suggests little \(\mathrm{Gene}\) specific effect of \(\mathrm{Dx}\).
 
-\begin{eqnarray}
-y_{i} &=& \overbrace{\beta_0 + \mathrm{Age}_{i}
-\beta_1}^{\text{fixed effects}} \\
-&+& \overbrace{\underbrace{b_{0}^{(1)} +
-\mathrm{Age}_i b_1^{(1)} +
+We see that \(\mathrm{Age}\) appears twice: first as a fixed slope effect on \(y\) and
+second as a \(\mathrm{Gene}\) specific random slope effect, denoted as
+\((\mathrm{Age}\,|\,\mathrm{Gene})\).  The latter effect appears to be
+supported by Fig.~\ref{fig:S-age} because the dependence of read count ratio
+on \(\mathrm{Age}\) varies among genes but the former, fixed, effect is not
+supported because the dependence is decreasing for several genes, increasing for
+for a few, and negligible for the remaining.  The model includes another
+random slope effect: \((\mathrm{Ancestry.1}\,|\,\mathrm{Gene})\) with a
+similar interpretation as \((\mathrm{Age}\,|\,\mathrm{Gene})\) but lacks a
+fixed effect of \(\mathrm{Ancestry.1}\).
+
+Now we are ready to write the toy model as an expansion of
+Eq.~\ref{eq:mixed-mod-matrix} as
+\begin{equation}
+\label{eq:toy-mod-math}
+y_{i} = \overbrace{\beta_0 + \mathrm{Age}_{i}
+\beta_1}^{\text{fixed effects}} +
+\overbrace{\underbrace{b_{0}^{(1)} + \mathrm{Age}_i b_1^{(1)} +
 \mathrm{Ancestry.1}_i b_{2}^{(1)}}_{\mathrm{Gene}_i} +
-\underbrace{b_{0}^{(2)}}_{\mathrm{Dx}_i,\mathrm{Gene}_i}}^{\text{random effects}} \\
-&+& \varepsilon_i \\
-y &\sim& \overbrace{1 + \mathrm{Age}}^{\text{fixed effects}} \\
-&+& \overbrace{\underbrace{(1 \,|\, \mathrm{Gene}) + (\mathrm{Age} \,|\, \mathrm{Gene}) + (\mathrm{Ancestry.1} \,|\, \mathrm{Gene})}_{k=1} +
-\underbrace{(1 \,|\, \mathrm{Dx}:\mathrm{Gene})}_{k=2}}^{\text{random effects}} \\
-y &\sim& \mathrm{Age} +
-(\mathrm{Age} + \mathrm{Ancestry.1} \,|\, \mathrm{Gene}) +
-(1 \,|\, \mathrm{Dx}:\mathrm{Gene})
-\end{eqnarray}
+\underbrace{b_{0}^{(2)}}_{\mathrm{Dx}_i:\mathrm{Gene}_i}}^{\text{random
+effects}} + \varepsilon_i.
+\end{equation}
 
+As in the earlier, more compact, formalism the terms of the linear predictor
+are grouped into fixed and random effects.  Within the latter group we have
+two batches of terms indicated by the \(k\) superscripts on the random
+regression coefficients \(b_j^{(k)}\).  The first batch
+\(\{b_0^{(1)},b_1^{(1)},b_2^{(1)}\}\) corresponds to
+\(\{(1\,|\,\mathrm{Gene}), (\mathrm{Age}\,|\,\mathrm{Gene}),
+(\mathrm{Ancestry.1}\,|\,\mathrm{Gene})\}\) in Eq.~\ref{eq:toy-mod-r}, the
+second batch contains only \(b_0^{(2)}\) corresponding to
+\((1\,|\,\mathrm{Dx}:\mathrm{Gene})\).
 
-\end{itemize}
+Within the \(k\)th batch Eq.~\ref{eq:toy-mod-math} contains one and only a
+single intercept coefficient \(b_0^{(k)}\) and, if random slope terms are also
+present in the batch, only a single slope coefficient associated with the
+variable \(\mathrm{Age}\) or \(\mathrm{Ancestry.1}\).  This is because only a
+single level of the factor \(\mathrm{Gene}\) or the composite factor
+\(\mathrm{Dx}:\mathrm{Gene}\) needs to be considered for the \(i\)th
+observation; these levels are denoted as \(\mathrm{Gene}_i\) and
+\(\mathrm{Dx}_i:\mathrm{Gene}_i\), respectively.  Implicitly however,
+Eq.~\ref{eq:toy-mod-math} contains the respective coefficients for all levels
+of these factors.  So to generalize Eq.~\ref{eq:toy-mod-math} we need \(J_k\)
+coefficients in the \(k\)th batch, where \(J_k\) is the product of the number
+of factor levels and one plus the number of random slope variables.  This way we
+can provide the expansion of the general formula Eq.~\ref{eq:mixed-mod-matrix}
+using the semantics of the toy model
+(Eq.~\ref{eq:toy-mod-r},~\ref{eq:toy-mod-math})
+as
+\begin{equation}
+y_i = \overbrace{\sum_{j=0}^J x_{ij} \beta_j}^{\text{fixed effects}} +
+\overbrace{\sum_{k=1}^K \sum_{j=0}^{J_k} z_{ij}^{(k)}
+b_{j}^{(k)}}^{\text{random effects}} + \varepsilon_i.
+\end{equation}
+
+%\begin{eqnarray}
+%y_{i} &=& \overbrace{\beta_0 + \mathrm{Age}_{i}
+%\beta_1}^{\text{fixed effects}} \\
+%&+& \overbrace{\underbrace{b_{0}^{(1)} +
+%\mathrm{Age}_i b_1^{(1)} +
+%\mathrm{Ancestry.1}_i b_{2}^{(1)}}_{\mathrm{Gene}_i} +
+%\underbrace{b_{0}^{(2)}}_{\mathrm{Dx}_i,\mathrm{Gene}_i}}^{\text{random effects}} \\
+%&+& \varepsilon_i \\
+%y &\sim& \overbrace{1 + \mathrm{Age}}^{\text{fixed effects}} \\
+%&+& \overbrace{\underbrace{(1 \,|\, \mathrm{Gene}) + (\mathrm{Age} \,|\, \mathrm{Gene}) + (\mathrm{Ancestry.1} \,|\, \mathrm{Gene})}_{k=1} +
+%\underbrace{(1 \,|\, \mathrm{Dx}:\mathrm{Gene})}_{k=2}}^{\text{random effects}} \\
+%y &\sim& \mathrm{Age} +
+%(\mathrm{Age} + \mathrm{Ancestry.1} \,|\, \mathrm{Gene}) +
+%(1 \,|\, \mathrm{Dx}:\mathrm{Gene})
+%\end{eqnarray}
 
 \subsubsection{Model fitting and selection}
+\label{sec:fitting}
 
 \begin{itemize}
 \item fitting mixed and non-hierarchical regression models with lme4 and stats
@@ -549,22 +622,24 @@ gender and ancestry
 \begin{table}
 \begin{center}
 \begin{tabular}{rlrc}
-predictor term                              & interpretation: effect due to &   \(\Delta\)AIC &        p-value \\
+predictor term                              & interpretation&   \(\Delta\)AIC &        p-value \\
 \hline
-\((1\,|\,\mathrm{Gene})\)                   & Gene, independently of other variables & \(-126.8\)  & \(8.5\times 10^{-28}\) \\
-\((1\,|\,\mathrm{Dx})\)                   & Dx, independently of other variables & \(2.0\)  & \(1.0\)  \\
-\((1\,|\,\mathrm{Dx}:\mathrm{Gene})\)       & Dx, depending on Gene & \(0.4\) &  \(0.21\) \\
-\(\mathrm{Age}\)                            & Age, independently of other variables & \(1.3\)   & \(0.39\) \\
-\((\mathrm{Age}\,|\,\mathrm{Gene})\)        & Age, depending on Gene & \(-18.9\)  & \(2.5\times 10^{-5}\)  \\
-\(\mathrm{Ancestry.1}\)                     & Ancestry.1, independently of other variables & \(0.6\)  & \(0.24\) \\
-\((\mathrm{Ancestry.1}\,|\,\mathrm{Gene})\) & Ancestry.1, depending on Gene & \(-71.2\)   & \(4.6\times 10^{-16}\) \\
-\((1\,|\,\mathrm{Gender})\)               & Gender, independently of other variables & \(2.0\)  & \(1.0\)  \\
-\((1\,|\,\mathrm{Gender}:\mathrm{Gene})\)   & Gender, depending on Gene & \(-5.7\) &  \(5.5\times 10^{-3}\) \\
+\((1\,|\,\mathrm{Gene})\)                   & variability among genes & \(-126.8\)  & \(8.5\times 10^{-28}\) \\
+\((1\,|\,\mathrm{Dx})\)                     & variability among Control, SCZ, AFF & \(2.0\)  & \(1.0\)  \\
+\((1\,|\,\mathrm{Dx}:\mathrm{Gene})\)       & Gene specific variability among Ctrl, SCZ, AFF & \(0.4\) &  \(0.21\) \\
+\(\mathrm{Age}\)                            & effect of Age & \(1.3\)   & \(0.39\) \\
+\((\mathrm{Age}\,|\,\mathrm{Gene})\)        & Gene specific effect of Age & \(-18.9\)  & \(2.5\times 10^{-5}\)  \\
+\(\mathrm{Ancestry.1}\)                     & effect of Ancestry.1 & \(0.6\)  & \(0.24\) \\
+\((\mathrm{Ancestry.1}\,|\,\mathrm{Gene})\) & Gene specific effect of Ancestry.1 & \(-71.2\)   & \(4.6\times 10^{-16}\) \\
+\((1\,|\,\mathrm{Gender})\)                 & difference between Male and Female & \(2.0\)  & \(1.0\)  \\
+\((1\,|\,\mathrm{Gender}:\mathrm{Gene})\)   & Gene specific difference between M and F & \(-5.7\) &  \(5.5\times 10^{-3}\) \\
 \end{tabular}
 \end{center}
-\caption{Biological terms and their impact on the fit of the mixed model.  The
+\caption{Selected biological terms in the predictor of a mixed model and their impact on model fit.  The
 smaller (more negative) \(\Delta \mathrm{AIC}\), and the smaller the p-value,
 the more likely that the term has non-zero effect on the read count ratio.
+For further discussion on interpretation and mathematical properties of terms see
+Section~\ref{sec:mixed-mod}.
 }
 \label{tab:mod-sel}
 \end{table}
@@ -668,7 +743,7 @@ Age &  \\
 Institution & [MSSM], Penn, Pitt\\
 Gender & [Female], Male\\
 PMI & \\
-Dx & [AFF], Control, SCZ\\
+Dx & [Control], SCZ, AFF \\
 RIN &  \\
 RNA\_batch & [A], B, C, D, E, F, G, H, 0\\
 Ancestry.1 & \\
