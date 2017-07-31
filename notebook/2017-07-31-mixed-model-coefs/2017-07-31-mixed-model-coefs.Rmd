@@ -1,0 +1,41 @@
+---
+layout: default
+tags: [regression, anova ]
+---
+
+Estimate regression coefficients of a mixed effect model.  This requires extracting the conditional modes of random effects.
+
+```{r echo=FALSE, message=FALSE}
+library(lme4)
+library(lattice)
+opts_chunk$set(dpi = 144)
+opts_chunk$set(out.width = "700px")
+opts_chunk$set(dev = c("png", "pdf"))
+lattice.options(default.args = list(as.table = TRUE))
+lattice.options(default.theme = "standard.theme")
+source("../../src/import-data.R")
+source("../../src/fit-glms.R")
+source("2017-07-31-mixed-model-coefs.R")
+```
+
+Selected genes (inferred to be imprinted)
+
+```{r cache=TRUE}
+gene.ids <- unlist(read.csv("../../data/genes.regression.new", as.is = TRUE))
+names(gene.ids) <- gene.ids
+dat <- merge.data(gene.ids = gene.ids)
+```
+
+Get model $$M5$$ formula and fit to data
+
+```{r cache=TRUE}
+get.formula <- function(model.name = "M5") {
+    x <- read.csv(file = "../../results/M-formulas.csv", stringsAsFactors = FALSE)[[model.name]]
+    formula(do.call(paste, as.list(x[c(2, 1, 3)])))
+}
+M5 <- lmer(get.formula("M5"), data = dat)
+M6 <- lmer(get.formula("M6"), data = dat)
+```
+
+```{r}
+```
