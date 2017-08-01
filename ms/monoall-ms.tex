@@ -280,7 +280,7 @@ inference we used the best fitting combinations as assessed by the normality
 (Fig.~\ref{fig:qqnorm-mixed}) and homoscedasticity
 (Fig.~\ref{fig:homoscedas-mixed}) of residuals.
 
-In mixed GLMs \(\eta = X
+In mixed GLMs the linear predictor \(\eta = X
 \beta + Z b\) and in fixed GLMS \(\eta = X \beta\), where \(X, Z\) are design
 matrices containing data on explanatory variables whereas \(\beta \) and \(b\)
 are fixed and random vectors of regression coefficients that mediate fixed and
@@ -302,10 +302,10 @@ models (Section~\ref{sec:fitting}).
 Here we describe the detailed syntax and semantics of the normal linear mixed
 models combined with a quasi-log transformation \(Q\) of read count ratio as
 this combination was found to provide the best fit
-(Fig.~\ref{fig:qqnorm-mixed},~\ref{fig:homoscedas-mixed}).  Thus having data
-on \(m=579\) individuals and \(n=30\) imprinted genes the response vector is
+(Fig.~\ref{fig:qqnorm-mixed},~\ref{fig:homoscedas-mixed}).  We have data
+on \(m=579\) individuals and \(n=30\) imprinted genes and so the response vector is
 \(y=(Q_{i_1g_1},...,Q_{i_mg_1},Q_{i_1g_2},...,Q_{i_mg_2},...,Q_{i_1g_n},...,Q_{i_mg_n})\).
-Then the model in matrix notation is
+The model in matrix notation is
 \begin{eqnarray}
 \label{eq:mixed-mod-matrix}
 y &=& X \beta + Z b + \varepsilon \\
@@ -315,12 +315,12 @@ b &\sim& \mathcal{N}(0, \Omega_b),
 \end{eqnarray}
 where the size of the covariance matrix \(\Omega_b\) depends on the number of
 terms with random effects (the columns of \(Z\)).  Simply put: errors and
-random coefficients are all normal.
+random coefficients are all normally distributed.
 
 To clarify the semantics of Eq.~\ref{eq:mixed-mod-matrix} let us consider a
 simple toy model with just a few terms in the linear predictor.  But before
 expressing it in terms of Eq.~\ref{eq:mixed-mod-matrix} it is easier
-to cast it in the compact formalism of the stats and lme4 packages of the R
+to cast it in the compact ``R formalism'' of the stats and lme4 packages of the R
 language as
 \begin{equation}
 \label{eq:toy-mod-r}
@@ -331,30 +331,33 @@ y \sim \overbrace{1 + \mathrm{Age}}^{\text{fixed effect}} +
 effects}}.
 \end{equation}
 
-The \(1\)s mean intercept terms: one as a fixed effect and two as random
-effects.  The first random intercept term \((1\,|\,\mathrm{Gene})\) expresses
-the gene-to-gene variability in read count ratio (compare panels in
-Fig.~\ref{fig:S-Dx} and~\ref{fig:S-age}), in other words the random effect of
-the \(\mathrm{Gene}\) variable.  The second random intercept term
+First note that the random effect term labeled with \(k=1\) can be expanded
+into \((1 \,|\, \mathrm{Gene}) + (\mathrm{Age}\,|\, \mathrm{Gene}) +
+(\mathrm{Ancestry.1} \,|\, \mathrm{Gene})\).  The `\(1\)'s mean intercept
+terms: one as a fixed effect and two as random effects.  The first random
+intercept term \((1\,|\,\mathrm{Gene})\) expresses the gene-to-gene
+variability in read count ratio (compare panels in Fig.~\ref{fig:S-Dx}
+and~\ref{fig:S-age}), in other words the random effect of the
+\(\mathrm{Gene}\) variable.  The second random intercept term
 \((1\,|\,\mathrm{Dx}:\mathrm{Gene})\) corresponds to the interaction between
 psychiatric diagnosis \(\mathrm{Dx}\) and \(\mathrm{Gene}\); it can be
 interpreted as the \(\mathrm{Gene}\) specific effect of \(\mathrm{Dx}\)
-or---alternatively---as the \(\mathrm{Dx}\) specific component of gene-to-gene
+or---equivalently---as \(\mathrm{Dx}\) specific gene-to-gene
 variability.  This term is not likely to be informative as Fig.~\ref{fig:S-Dx}
 suggests little \(\mathrm{Gene}\) specific effect of \(\mathrm{Dx}\).
 
 We see that \(\mathrm{Age}\) appears twice: first as a fixed slope effect on \(y\) and
 second as a \(\mathrm{Gene}\) specific random slope effect, denoted as
-\((\mathrm{Age}\,|\,\mathrm{Gene})\).  The latter effect appears to be
+\((\mathrm{Age}\,|\,\mathrm{Gene})\).  The random effect appears to be
 supported by Fig.~\ref{fig:S-age} because the dependence of read count ratio
-on \(\mathrm{Age}\) varies among genes but the former, fixed, effect is not
-supported because the dependence is decreasing for several genes, increasing for
-for a few, and negligible for the remaining.  The model includes another
+on \(\mathrm{Age}\) varies substantially among genes but the fixed effect is not
+supported because the negative dependence seen for several genes is balanced
+out by the positive dependence seen for others.  The model includes another
 random slope effect: \((\mathrm{Ancestry.1}\,|\,\mathrm{Gene})\) with a
 similar interpretation as \((\mathrm{Age}\,|\,\mathrm{Gene})\) but lacks a
 fixed effect of \(\mathrm{Ancestry.1}\).
 
-Now we are ready to write the toy model as an expansion of
+Now we are ready to write the toy model as an expanded special case of
 Eq.~\ref{eq:mixed-mod-matrix} as
 \begin{equation}
 \label{eq:toy-mod-math}
@@ -366,7 +369,7 @@ y_{i} = \overbrace{\beta_0 + \mathrm{Age}_{i}
 effects}} + \varepsilon_i.
 \end{equation}
 
-As in the earlier, more compact, formalism the terms of the linear predictor
+As in the earlier R formalism the terms of the linear predictor
 are grouped into fixed and random effects.  Within the latter group we have
 two batches of terms indicated by the \(k\) superscripts on the random
 regression coefficients \(b_j^{(k)}\).  The first batch
@@ -376,8 +379,8 @@ regression coefficients \(b_j^{(k)}\).  The first batch
 second batch contains only \(b_0^{(2)}\) corresponding to
 \((1\,|\,\mathrm{Dx}:\mathrm{Gene})\).
 
-Within the \(k\)th batch Eq.~\ref{eq:toy-mod-math} contains one and only a
-single intercept coefficient \(b_0^{(k)}\) and, if random slope terms are also
+Within the \(k\)th batch Eq.~\ref{eq:toy-mod-math} contains only a single
+intercept coefficient \(b_0^{(k)}\) and, if random slope terms are also
 present in the batch, only a single slope coefficient associated with the
 variable \(\mathrm{Age}\) or \(\mathrm{Ancestry.1}\).  This is because only a
 single level of the factor \(\mathrm{Gene}\) or the composite factor
@@ -385,17 +388,18 @@ single level of the factor \(\mathrm{Gene}\) or the composite factor
 observation; these levels are denoted as \(\mathrm{Gene}_i\) and
 \(\mathrm{Dx}_i:\mathrm{Gene}_i\), respectively.  Implicitly however,
 Eq.~\ref{eq:toy-mod-math} contains the respective coefficients for all levels
-of these factors.  So to generalize Eq.~\ref{eq:toy-mod-math} we need \(J_k\)
-coefficients in the \(k\)th batch, where \(J_k\) is the product of the number
-of factor levels and one plus the number of random slope variables.  This way we
-can provide the expansion of the general formula Eq.~\ref{eq:mixed-mod-matrix}
-using the semantics of the toy model
-(Eq.~\ref{eq:toy-mod-r},~\ref{eq:toy-mod-math})
-as
+of these factors.  For example, there are \(n=30\) intercept coefficients
+\(b_j^{(1)}\) each of which corresponds to a given gene.  So to generalize
+Eq.~\ref{eq:toy-mod-math} we need \(J_k\) coefficients in the \(k\)th batch,
+where \(J_k\) is the product of the number of factor levels and one plus the
+number of random slope variables.  This way we can provide the expansion of
+the general formula Eq.~\ref{eq:mixed-mod-matrix} using the semantics of the
+toy model (Eq.~\ref{eq:toy-mod-r},~\ref{eq:toy-mod-math}) as
 \begin{equation}
 y_i = \overbrace{\sum_{j=0}^J x_{ij} \beta_j}^{\text{fixed effects}} +
 \overbrace{\sum_{k=1}^K \sum_{j=0}^{J_k} z_{ij}^{(k)}
 b_{j}^{(k)}}^{\text{random effects}} + \varepsilon_i.
+\label{eq:mixed-mod-general}
 \end{equation}
 
 %\begin{eqnarray}
@@ -418,6 +422,10 @@ b_{j}^{(k)}}^{\text{random effects}} + \varepsilon_i.
 \label{sec:fitting}
 
 \begin{itemize}
+\item Eq.~\ref{eq:mixed-mod-general} is general in the sense that it describes
+many linear predictors that can be constructed from the explanatory variables
+in Table~\ref{tab:predictors}.  By model selection we mean finding the best linear
+predictor under some criterion.
 \item fitting mixed and non-hierarchical regression models with lme4 and stats
 R packages, respectively, convergence
 \item fit during search was evaluated using information criteria AUC, as well as
@@ -430,6 +438,14 @@ family (Figure~\ref{fig:qqnorm-mixed},~\ref{fig:homoscedas-mixed})
 \item guide the sequence in which further terms are added
 \end{enumerate}
 \item many of the terms in the linear predictor that significantly improved model fit are technical ones; including them in the model therefore corrects for a large technical noise
+\item the model that was found to fit the best is 
+\begin{eqnarray*}
+Q &\sim&
+\mathrm{RIN} + (1 \,|\, \mathrm{RNA\_batch}) + (1 \,|\, \mathrm{Institution}) + (1 \,|\,
+\mathrm{Institution}:\mathrm{Individual}) \\
+&+& (1 \,|\, \mathrm{Gene}:\mathrm{Institution}) + (1 \,|\, \mathrm{Gender}:\mathrm{Gene}) \\
+&+& (\mathrm{Age} + \mathrm{RIN} + \mathrm{Ancestry.1} + \mathrm{Ancestry.3} \,|\, \mathrm{Gene})
+\end{eqnarray*}
 \end{itemize}
 
 \section{Results}
@@ -737,7 +753,7 @@ Variation of read count ratio with age.  Color codes psychiatric diagnosis
 \begin{table}[h]
 \begin{center}
 \begin{tabular}{r|l}
-predictor & levels\\
+explanatory variable & levels\\
 \hline
 Age &  \\
 Institution & [MSSM], Penn, Pitt\\
@@ -750,9 +766,9 @@ Ancestry.1 & \\
 \vdots & \\
 Ancestry.5 &  \\
 \end{tabular}
-\caption{ \emph{Left column:} predictors (explanatory variables) of read count
+\caption{ \emph{Left column:} explanatory variables of read count
 ratio.  \emph{Right column:} levels of each factor-valued (i.e.~categorical)
-predictor.  Square brackets \([...]\) surround the baseline level against
+variable.  Square brackets \([...]\) surround the baseline level against
 which other levels are contrasted.  \emph{Abbreviations:} PMI: post-mortem
 interval; Dx: disease status; AFF: affective spectrum disorder; SCZ:
 schizophrenia; RIN: RNA integrity number;
@@ -777,8 +793,8 @@ model family & abbrev. & response var.~\\
 \(S\)---untransformed, \(Q\)---\emph{q}uasi-log-transformed, and
 \(R\)---\emph{r}ank-transformed read count ratio.
 }
-\end{center}
 \label{tab:model-names}
+\end{center}
 \end{table}
 
 % Supplementary figures
@@ -816,8 +832,8 @@ unbiased expression.}
 \includegraphics[scale=0.6]{figures/2016-06-26-trellis-display-of-data/evar-scatterplot-matrix-2.png}
 \end{center}
 \caption{
-Distribution and inter-dependence of predictors.  The diagonal graphs of the
-plot-matrix show the marginal distribution of six predictors (Age,
+Distribution and inter-dependence of explanatory variables.  The diagonal graphs of the
+plot-matrix show the marginal distribution of six variables (Age,
 Institution,...)~while the off-diagonal graphs show pairwise joint
 distributions.  For instance, the upper left graph shows that, in the whole
 cohort, individuals' Age
@@ -882,17 +898,17 @@ Checking the fit of wnlm.Q model: analysis of homoscedasticity.
 In all of threse model frameworks the regression coefficients
 \(\beta_{1g},...,\beta_{3g}\) mediate, for a given gene \(g\), probabilistic
 dependencies (arrows) between the response variable \(Y_g\) (read count ratio
-for \(g\)) and the corresponding predictors \(X_1,...,X_3\).  For simplicity
-but without loss of generality only 3 predictors are depicted.  The model
+for \(g\)) and the corresponding explanatory variables \(X_1,...,X_3\).  For simplicity
+but without loss of generality only 3 explanatory variables are depicted.  The model
 frameworks differ in how \(\beta_{jg_1},\beta_{jg_2},...\) relate to each
-other for a given predictor (or a given \(j\)).  \emph{Left:} there is no
+other for a given explanatory variable (or a given \(j\)).  \emph{Left:} there is no
 connection among \(\beta_{jg_1},\beta_{jg_2},...\) which means that the way
-\(Y_{g}\), the read count ratio for gene \(g\) depends on predictor \(X_j\) is
+\(Y_{g}\), the read count ratio for gene \(g\) depends on variable \(X_j\) is
 completely separate from how the read count ratio for any other gene \(g'\)
 (i.e.~\(Y_{g'}\)) depends on it.  Consequently no information may be shared
 among gene-specific models.  \emph{Middle:} In this case
 \(\beta_{jg_1}=\beta_{jg_2}=...\equiv\beta_j\) so that all genes are identical
-with respect to how their read count ratio depends the predictors.  Thus genes
+with respect to how their read count ratio depends the explanatory variables.  Thus genes
 share all information in the data in the sense that the model forces them to
 be identical.  \emph{Right:} Hierarchical Bayesian model where genes show both
 variation as well as invariance with regards to depenencies.  The variation is
