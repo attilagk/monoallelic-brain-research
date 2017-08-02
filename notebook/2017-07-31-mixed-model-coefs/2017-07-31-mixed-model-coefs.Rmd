@@ -1,9 +1,12 @@
 ---
 layout: default
 tags: [regression, anova ]
+featimg: "ranef-gender-gender-gene-m5-1.png"
 ---
 
-Estimate regression coefficients of a mixed effect model.  This requires extracting the conditional modes of random effects.
+Predict random regression coefficients of the mixed effect model M5 (the best fitting model).  This uses the ranef function of the lme4 R package.  As the documentation says: "\[ranef is a\] generic function to extract the conditional modes of the random effects from a fitted model object. For linear mixed models the conditional modes of the random effects are also the conditional means."
+
+## Preliminaries
 
 ```{r echo=FALSE, message=FALSE}
 library(lme4)
@@ -18,7 +21,7 @@ source("../../src/fit-glms.R")
 source("2017-07-31-mixed-model-coefs.R")
 ```
 
-Selected genes (inferred to be imprinted)
+Get selected genes (inferred to be imprinted)
 
 ```{r cache=TRUE}
 gene.ids <- unlist(read.csv("../../data/genes.regression.new", as.is = TRUE))
@@ -26,7 +29,7 @@ names(gene.ids) <- gene.ids
 dat <- merge.data(gene.ids = gene.ids)
 ```
 
-Get model $$M5$$ formula and fit to data
+Get model $$M5$$ formula and fit to data.  $$M6$$ is also fitted.
 
 ```{r cache=TRUE}
 get.formula <- function(model.name = "M5") {
@@ -37,5 +40,32 @@ M5 <- lmer(get.formula("M5"), data = dat)
 M6 <- lmer(get.formula("M6"), data = dat)
 ```
 
+To recapitulate, the linear predictor of $$M5$$ contains the following terms:
+
 ```{r}
+formula(M5)
+```
+
+Recall that the '1's are intercept terms, the rest are slope terms; each kind has its own sets of random coefficients.
+
+## Results
+
+Only the biologically meaningful terms are analyzed here, which represent the random effects of Gene and Gender:Gene.  Let's look at the coefficients for Gene first:
+
+```{r ranef-gene-m5, fig.asp=1.25}
+mydotplot(x = get.coef("Gene", M5), layout = c(3, 2))
+```
+
+Next, the coefficients for Gender:Gene.  Since this is an interaction of two factors with 2 and 30 levels, respectively, there are $$60 = 2 \times 30$$ levels and the same number of random coefficients for the intercept term:
+
+```{r ranef-gender-gene-m5, fig.asp=1.25}
+mydotplot(x = get.coef("Gender:Gene", M5))
+```
+
+This figure summarizes the most important results and is meant for the manuscript.
+
+```{r ranef-gender-gender-gene-m5, fig.asp=0.75}
+mydotplot(rbind(get.coef(batch = "Gene", model = M5),
+                contrast.coef(cf = get.coef("Gender:Gene"), e.var = "Gender")[[1]]),
+          layout = c(3, 1))[c(1, 2, 6)]
 ```
