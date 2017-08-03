@@ -62,10 +62,16 @@ Next, the coefficients for Gender:Gene.  Since this is an interaction of two fac
 mydotplot(x = get.coef("Gender:Gene", M5))
 ```
 
-This figure summarizes the most important results and is meant for the manuscript.
+This figure summarizes the most important results and is meant for the manuscript.  The panel named as $$(1\mid\mathrm{Gender:Gene})$$ presents the difference between the coefficient for Male and that for Female for each gene: $$b_{g\mathrm{Male}}^{(k)} - b_{g\mathrm{Female}}^{(k)}$$, say, where $$g$$ is a given gene and $$k$$ in the superscript identifies the batch of coefficients associated with $$(1\mid\mathrm{Gender:Gene})$$ .
 
 ```{r ranef-gender-gender-gene-m5, fig.asp=0.75}
 mydotplot(rbind(get.coef(batch = "Gene", model = M5),
                 contrast.coef(cf = get.coef("Gender:Gene"), e.var = "Gender")[[1]]),
           layout = c(3, 1))[c(1, 2, 6)]
+```
+
+```{r ranef-gender-gender-gene-m5-all-panels, fig.asp=1.5}
+mydotplot(rbind(get.coef(batch = "Gene", model = M5),
+                contrast.coef(cf = get.coef("Gender:Gene"), e.var = "Gender")[[1]]),
+          layout = c(3, 2))
 ```
