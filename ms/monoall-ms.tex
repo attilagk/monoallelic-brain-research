@@ -496,10 +496,7 @@ The set of top scoring 50 genes is highly enriched in known imprinted genes,
 marked by blue in Fig.~\ref{fig:top-genes} and in \emph{nearby candidate}
 genes (green) defined as being within 1Mb of a known imprinted gene. Within
 the top 50, we find 29 such genes; 21 known imprinted genes and eight nearby
-candidates.  In subsequent analysis (below) we also consider UBE3A as
-demonstrating allelic bias consistent with imprinting in the context of human
-adult DLFPC as evidenced by Fig.~\ref{fig:known-genes} even though its rank
-falls outside of the top 50.
+candidates.
 
 The remaining 21 genes in the top 50 are separated by \(>1\) Mb from some
 known imprinted gene (termed \emph{distant candidates}, red in
@@ -547,39 +544,62 @@ suggests that these genes do not display imprinted expression in the human
 adult DLPFC, consistent with many reports in the literature indicating that
 known imprinted genes are often imprinted in some but not all tissues.  
 
+In subsequent analysis (below) we also consider UBE3A as
+demonstrating allelic bias consistent with imprinting in the context of human
+adult DLFPC as evidenced by Fig.~\ref{fig:known-genes} even though its rank
+falls outside of the top 50.  Thus, we have thirty genes we consider imprinted in the adult DLPFC.
+
 \subsection{Allelic bias of imprinted genes and schizophrenia}
 \label{sec:results-regression}
 
-\begin{itemize}
-\item our overall hypothesis: aberrations in imprinted genes as a risk of
-SCZ
-\item the more specific hypothesis: normal allelic bias of imprinted genes is perturbed in SCZ
-\item Fig.~\ref{fig:S-Dx} compares read count ratio distribution among
-control, SCZ and AFF for the 30 imprinted genes and suggests there is no difference
-\item we performed a more rigorous test: mixed (hierarchical) regression
-model-based statistical inference,
-in which read count ratio was taken as the response variable whereas Dx, Gene, Age, RIN,... as
-explanatory variables
-\item first we selected the best fitting model among many related ones (Methods)
-\item then we quantified how significantly the presence
-of various terms of some explanatory variable improves the fit
-\item the power of our model is indicated by the extreme significance by
-which the term \((1\,|\,\mathrm{Gene})\) improves fit; this term represents
-the gene-to-gene variation of read count ratio among imprinted genes that is
-clear from Fig.~\ref{fig:S-Dx}
-\item we examined two terms involving Dx, which correspond to two
-sub-hypotheses:
-\begin{enumerate}
-\item \((1\,|\,\mathrm{Dx})\) represents effect of Dx on read count ratio that
-is independent of Gene and any other explanatory variable in the model and
-thus represents an effect shared by all 30 genes
-\item \((1\,|\,\mathrm{Dx}:\mathrm{Gene})\) represents gene-specific effect of
-Dx 
-\end{enumerate}
-\item Table~\ref{tab:mod-sel} shows that neither term improved fit
-significantly suggesting that perturbation of allelic bias of imprinted genes in the DLPFC
-is not associated to SCZ
-\end{itemize}
+Given that our sample is comprised of neurotypic individuals (Control) as well as individuals with
+schizophrenia (SCZ) and with with affective spectrum disorder (AFF), we explored whether there is
+any association between diagnosis and allelic bias of imprinted genes.
+Fig.~\ref{fig:S-Dx} compares read count ratio
+distribution among control, SCZ and AFF for the 30 imprinted genes and suggests there are no
+differences among the three groups.
+
+To further explore the data, we performed statistical inference using mixed
+effects models.  With this procedure we quantified the extent the read count
+ratio is dependent on diagnosis as well as other explanatory variables. These
+included biological variables namely Age, the first five principal components
+of ancestry (Ancestry.1,...,Ancestry.5), Gender as well as technical variables
+such as RIN, the RNA integrity number (see Table~\ref{tab:predictors} for
+complete list).  Our mixed models regress read count ratio on some or all of
+the explanatory variables simultaneously, which allows the dissection of
+various biological and technical sources of variation.  Another benefit of the
+mixed modeling framework is its power because it makes use of information that
+is only available when all thirty genes are considered simultaneously, while
+also allowing genes to be considered individually.  These benefits however
+hinge on the goodness of model fit to the data.  Therefore, we fitted many
+alternative mixed models, selected the best-fitting one using the Akaike
+Information Criterion (AIC) and confirmed the goodness of fit with diagnostic
+plots (Section~\ref{sec:fitting},
+Fig.~\ref{fig:qqnorm-mixed},~\ref{fig:homoscedas-mixed}).
+
+Based on the selected model we formally tested whether read count ratio
+depends on various predictor terms that represent either the main effect of
+some biological variable or the interaction between two variables
+(Table~\ref{tab:mod-sel}.  For example, given prior observations as well as
+the empirical distribution of data in Figures~\ref{fig:S-Dx}
+and~\ref{fig:S-age}, one would expect the model-based test should detect
+gene-to-gene variability of read count ratio.  Indeed that variability---more
+precisely the random main effect \((1\mid\mathrm{Gene})\) of the Gene
+variable---is strongly supported by the test with a \(\Delta
+\mathrm{AIC}\) of \(-127\) and a p-value of \(<10^{-27}\)
+(Table~\ref{tab:mod-sel}).
+
+Returning to our main question the model-based test did not support any
+overall dependence of read count ratio on diagnosis (\(\Delta \mathrm{AIC} =
+2.0,\; p = 1.0\) for the random main effect \((1\mid\mathrm{Dx})\)) consistent
+with Figures~\ref{fig:S-Dx} and~\ref{fig:S-age}.  A related test for
+gene-specific effects of diagnosis, wherein the effect of Dx varies across the
+thirty genes, also yielded negative result (\(\Delta \mathrm{AIC} = 0.4,\; p =
+0.21\) for the interaction term \((1\,|\,\mathrm{Dx}:\mathrm{Gene})\)), which
+is again consistent with Figures~\ref{fig:S-Dx} and~\ref{fig:S-age}.
+Together, these analyses indicate that diagnosis of SCZ or AFF does not have a
+substantial impact on the extent of allelic bias of imprinted genes in the
+DLPFC. 
 
 \subsection{Gene-specific effects of age and ancestry}
 
