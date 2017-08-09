@@ -607,31 +607,42 @@ DLPFC.
 \subsection{Gene-specific effects of age and ancestry}
 
 Fig.~\ref{fig:S-age} shows that the read count ratio depends negatively on age
-for some imprinted genes, depends positively for other genes, and is
-independent of age for the rest of imprinted genes.  However, this apparent
-age effect may be indirect in the sense that it is mechanistically mediated by
-other explanatory variables to which age is associated with
+for some imprinted genes (e.g.~PEG3, ZNF331), depends positively for other
+genes (e.g.~KCNK9, RP13-487P22.1), and is independent of age for the rest of
+imprinted genes (e.g.~NDN, NLRP2).  However, any apparent age effect may be
+indirect in the sense that it is mechanistically mediated by other explanatory
+variables to which age is associated with
 (Fig.~\ref{fig:predictor-associations}).
 
 To investigate the direct effect of age we turned to our best fitting mixed
 model once again, evaluating how significantly predictor terms associated with
 these variables improve the model's fit (Table~\ref{tab:mod-sel}).  As for Dx
 we defined two terms for each variable, the term \(\mathrm{Age}\) represents
-an effect that is shared by all imprinted genes while the term
-\((\mathrm{Age}\,|\,\mathrm{Gene})\) symbolizes gene-specific age effects.
+a fixed effect that is shared by all imprinted genes while the term
+\((\mathrm{Age}\,|\,\mathrm{Gene})\) symbolizes random, gene-specific, age effects.
 The shared effect was not supported by our criteria of model fit but the
 gene-specific effects received strong support at \(\Delta\mathrm{AIC}<-20\)
 and \(p<3\times 10^{-5}\), which is consistent with the large gene-to-gene
 variation of age dependence suggested by Fig.~\ref{fig:S-age}.
 
-Predicted gene-specific regression coefficients in
-Fig.~\ref{fig:pred-rnd-coefs}.
+The above result means a significantly greater than zero variance of the
+random coefficients that mediate the gene-specific age effect.  We
+complemented this with the posterior predicted values of those coefficients
+given the data and the estimated variance (Fig.~\ref{fig:pred-rnd-coefs} top
+middle).  These predictions showed an overall agreement with the qualitative
+findings on age dependence presented in Fig.~\ref{fig:S-age} with some finer
+discrepancies (e.g.~UBE3A), which allude to the model's ability to dissect
+direct effects from indirect ones.
 
-(see
-\(\mathrm{Age}\), \(\mathrm{Ancestry.1}\), and \((1\,|\,\mathrm{Gender})\) in
-).  In contrast, the gene-specific effects did receive
-support: the most significant was the effect of Ancestry.1, that of Age
-followed, while that of Gender was only weakly significant 
+A similar analysis of the effects of ancestry principal components and gender
+gave also similar results: while the fixed effect, shared by all genes, of
+these variables was neglectible, three of the random, gene-specific, effects
+received significant support.  These three are
+\((\mathrm{Ancestry.1}\,|\,\mathrm{Gene})\),
+\((\mathrm{Ancestry.3}\,|\,\mathrm{Gene})\) and
+\((1\,|\,\mathrm{Gender}:\mathrm{Gene})\) (Table~\ref{tab:mod-sel}).  The
+corresponding predicted random coefficients are presented in
+Fig.~\ref{fig:pred-rnd-coefs}.
 
 \begin{itemize}
 \item TODO: predict the effect of Age that is specific to each gene;
@@ -839,6 +850,64 @@ model family & abbrev. & response var.~\\
 
 \begin{figure}[h]
 \begin{center}
+\includegraphics{figures/by-me/monoall-dependencies-2/obs-simple-general/obs-simple-general}
+\hspace{\fill}
+\includegraphics{figures/by-me/monoall-dependencies-2/obs-simple-general-gene-aspec/obs-simple-general-gene-aspec}
+\hspace{\fill}
+\includegraphics{figures/by-me/monoall-dependencies-2/mixed/mixed}
+\end{center}
+\caption{ General dependency structures in two fixed effects regression models
+(\emph{left}, \emph{middle}) and a mixed effects model (\emph{right}).  In all
+three cases the regression coefficients \(\beta_{1g},...,\beta_{3g}\) or
+\(\beta_{1g},b_{2g},b_{3g}\) mediate, for a given gene \(g\), probabilistic
+dependencies (arrows) between the response variable \(Y_g\) (read count ratio
+for \(g\)) and the corresponding explanatory variables \(X_1,...,X_3\).  For
+simplicity but without loss of generality only 3 explanatory variables are
+depicted.  The model frameworks differ in how the coefficients relate to each
+other for a given explanatory variable (or a given \(j\)).  \emph{Left:} there
+is no connection among \(\beta_{jg_1},\beta_{jg_2},...\) which means that the
+way \(Y_{g}\), the read count ratio for gene \(g\) depends on variable \(X_j\)
+is completely separate from how the read count ratio for any other gene \(g'\)
+(i.e.~\(Y_{g'}\)) depends on it.  Consequently no information may be shared
+among gene-specific models.  \emph{Middle:} In this case
+\(\beta_{jg_1}=\beta_{jg_2}=...\equiv\beta_j\) so that all genes are identical
+with respect to how their read count ratio depends the explanatory variables.
+Thus genes share all information in the data in the sense that the model
+forces them to be identical.  \emph{Right:} Hierarchical mixed effects model
+where certain dependencies (\(\beta_1\)) are shared among genes while others
+(\(\{b_{2g}\}_g, \{b_{3g}\}_g\)) vary across genes.  The variation is controlled by the
+variance parameters \(\sigma^2_j\).  In this example there is a single set
+\(\{b_{2g}\}_g\) of random coefficients for \(X_2\)---and a similar set for
+\(X_3\)---, which are random intercepts.  In general, however, one or more set
+of random slope coefficients may also be present.  Given the estimates
+\(\hat{\sigma}^2_j\) and the data the gene-specific random coefficients
+\(b_{jg}\) can be predicted.  Among the three only this model framework allows
+information sharing among genes in a flexible way.  }
+\label{fig:glm-vs-hierarch}
+\end{figure}
+
+\begin{figure}[h]
+\begin{center}
+\includegraphics[scale=0.6]{figures/2017-03-08-model-checking/qqplot-families-M3-1.pdf}
+\end{center}
+\caption{
+Checking the fit of wnlm.Q model: analysis of the normality of residuals.
+}
+\label{fig:qqnorm-mixed}
+\end{figure}
+
+\begin{figure}[h]
+\begin{center}
+\includegraphics[scale=0.6]{figures/2017-03-08-model-checking/scedasticity-families-M3-1.pdf}
+\end{center}
+\caption{
+Checking the fit of wnlm.Q model: analysis of homoscedasticity.
+}
+\label{fig:homoscedas-mixed}
+\end{figure}
+
+\begin{figure}[h]
+\begin{center}
 \includegraphics[scale=0.6]{figures/2016-08-08-imprinted-gene-clusters/score-genomic-location-1.png}
 \end{center}
 \caption{
@@ -897,62 +966,6 @@ brain area in this study.
 \end{center}
 \caption{Variation of total RNA-seq read count across genes and individuals.}
 \label{fig:weight-of-evidence}
-\end{figure}
-
-\begin{figure}[h]
-\begin{center}
-\includegraphics{figures/by-me/monoall-dependencies-2/obs-simple-general/obs-simple-general}
-\hspace{\fill}
-\includegraphics{figures/by-me/monoall-dependencies-2/obs-simple-general-gene-aspec/obs-simple-general-gene-aspec}
-\hspace{\fill}
-\includegraphics{figures/by-me/monoall-dependencies-2/mixed/mixed}
-\end{center}
-\caption{ General dependency structures in two fixed effects regression model
-and a mixed effects model.
-In all three cases the regression coefficients
-\(\beta_{1g},...,\beta_{3g}\) or \(\beta_{1g},b_{2g},b_{3g}\) mediate, for a given gene \(g\), probabilistic
-dependencies (arrows) between the response variable \(Y_g\) (read count ratio
-for \(g\)) and the corresponding explanatory variables \(X_1,...,X_3\).  For
-simplicity but without loss of generality only 3 explanatory variables are
-depicted.  The model frameworks differ in how
-the coefficients relate to each other for a given explanatory
-variable (or a given \(j\)).  \emph{Left:} there is no connection among
-\(\beta_{jg_1},\beta_{jg_2},...\) which means that the way \(Y_{g}\), the read
-count ratio for gene \(g\) depends on variable \(X_j\) is completely separate
-from how the read count ratio for any other gene \(g'\) (i.e.~\(Y_{g'}\))
-depends on it.  Consequently no information may be shared among gene-specific
-models.  \emph{Middle:} In this case
-\(\beta_{jg_1}=\beta_{jg_2}=...\equiv\beta_j\) so that all genes are identical
-with respect to how their read count ratio depends the explanatory variables.
-Thus genes share all information in the data in the sense that the model
-forces them to be identical.  \emph{Right:} Hierarchical mixed effects model
-where certain dependencies (\(\beta_1\)) are shared among genes while others
-(\(b_{2g}, b_{3g}\)) vary across genes.  The variation is controlled by the
-variance parameters \(\sigma^2_j\).  Given the estimates \(\hat{\sigma}^2_j\)
-and the data the gene-specific random coefficients \(b_{jg}\) can be
-predicted.  Among the three only this model framework allows information
-sharing among genes in a flexible way.  }
-\label{fig:glm-vs-hierarch}
-\end{figure}
-
-\begin{figure}[h]
-\begin{center}
-\includegraphics[scale=0.6]{figures/2017-03-08-model-checking/qqplot-families-M3-1.pdf}
-\end{center}
-\caption{
-Checking the fit of wnlm.Q model: analysis of the normality of residuals.
-}
-\label{fig:qqnorm-mixed}
-\end{figure}
-
-\begin{figure}[h]
-\begin{center}
-\includegraphics[scale=0.6]{figures/2017-03-08-model-checking/scedasticity-families-M3-1.pdf}
-\end{center}
-\caption{
-Checking the fit of wnlm.Q model: analysis of homoscedasticity.
-}
-\label{fig:homoscedas-mixed}
 \end{figure}
 
 \begin{figure}[h]
