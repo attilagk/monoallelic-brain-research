@@ -8,8 +8,8 @@
 \usetikzlibrary{arrows.meta}
 \bibliographystyle{plain}
 
-\title{Variation of Genomic Imprinting in the Human Brain}
-%\title{Regulators and Psychiatric Associates of Genomic Imprinting in the Human Brain}
+%\title{Variation of Genomic Imprinting in the Human Brain}
+\title{Unperturbed Expression Bias of Imprinted Genes in Schizophrenics}
 \author{Attila Guly\'{a}s-Kov\'{a}cs\(^\ast\), Ifat Keydar\(^\ast\),
 ...,
 %\\
@@ -274,11 +274,14 @@ GLMs in general describe a conditional distribution of a response variable
 exponential family and that \(\mathrm{E}(y|\eta) = g^{-1} (\eta)\), where
 \(g\) is some link function.  In the present context the response \(y\) is the
 observed read count ratio that is possibly transformed to improve the model's
-fit to the data.  We tested several combinations of transformations, link
+fit to the data.  We performed fitting with the lme4 and stats
+R packages and tested several combinations of transformations, link
 functions, and error distributions (Table~\ref{tab:model-names}).  For
-inference we used the best fitting combinations as assessed by the normality
+inference we used the best fitting combination (\(\mathrm{unlm.Q}\),
+Table~\ref{tab:model-names}) as assessed by the normality
 (Fig.~\ref{fig:qqnorm-mixed}) and homoscedasticity
-(Fig.~\ref{fig:homoscedas-mixed}) of residuals.
+(Fig.~\ref{fig:homoscedas-mixed}) of residuals as well as by monitoring
+convergence.
 
 In mixed GLMs the linear predictor \(\eta = X
 \beta + Z b\) and in fixed GLMS \(\eta = X \beta\), where \(X, Z\) are design
@@ -422,24 +425,21 @@ b_{j}^{(k)}}^{\text{random effects}} + \varepsilon_i.
 \subsubsection{Model fitting and selection}
 \label{sec:fitting}
 
-\begin{itemize}
-\item Eq.~\ref{eq:mixed-mod-general} is general in the sense that it describes
-many linear predictors that can be constructed from the explanatory variables
-in Table~\ref{tab:predictors}.  By model selection we mean finding the best linear
-predictor under some criterion.
-\item fitting mixed and non-hierarchical regression models with lme4 and stats
-R packages, respectively, convergence
-\item fit during search was evaluated using information criteria AUC, as well as
-p-value from Chi-squared test on the degrees of freedom that depends on the
-term(s) added
-\begin{enumerate}
-\item find the best overall combination of data transformation and model
-family (Figure~\ref{fig:qqnorm-mixed},~\ref{fig:homoscedas-mixed})
-\item start the search in the space of linear predictors as near the optimum as possible
-\item guide the sequence in which further terms are added
-\end{enumerate}
-\item many of the terms in the linear predictor that significantly improved model fit are technical ones; including them in the model therefore corrects for a large technical noise
-\item the model that was found to fit the best is 
+Eq.~\ref{eq:mixed-mod-general} describes a large set of mixed models that
+differ in one or more individual terms that constitute their linear predictor.
+From this set we aimed to select the best fitting model under the Akaike
+Information Criterion (AIC).
+
+We used a heuristic search strategy in order to restrict
+the vast model space to a relatively small subset of plausible models.  The
+search was started at a model whose relatively simple linear predictor was composed of terms
+using our prior results based on fixed effects models.  The same results
+suggested a sequence in which further terms were progressively added to the
+model to test if they improve fit.  Improvement was assessed by \(\Delta
+\mathrm{AIC}\) and the \(\chi^2\)-test on the degrees of freedom that
+correspond the evaluated term.  If fit improved the term was added otherwise
+it was omitted.  Next, further terms were tested.  This iterative procedure
+lead to the following model.
 \begin{eqnarray*}
 Q &\sim&
 \mathrm{RIN} + (1 \,|\, \mathrm{RNA\_batch}) + (1 \,|\, \mathrm{Institution}) + (1 \,|\,
@@ -447,7 +447,9 @@ Q &\sim&
 &+& (1 \,|\, \mathrm{Gene}:\mathrm{Institution}) + (1 \,|\, \mathrm{Gender}:\mathrm{Gene}) \\
 &+& (\mathrm{Age} + \mathrm{RIN} + \mathrm{Ancestry.1} + \mathrm{Ancestry.3} \,|\, \mathrm{Gene})
 \end{eqnarray*}
-\end{itemize}
+We refer to this as the ``best
+fitting model'' even thought it may represent only a local optimum in model
+space.
 
 \section{Results}
 
@@ -625,31 +627,29 @@ gene-specific effects received strong support at \(\Delta\mathrm{AIC}<-20\)
 and \(p<3\times 10^{-5}\), which is consistent with the large gene-to-gene
 variation of age dependence suggested by Fig.~\ref{fig:S-age}.
 
-The above result means a significantly greater than zero variance of the
-random coefficients that mediate the gene-specific age effect.  We
+The above result technically means a significantly greater than zero variance
+of the random coefficients that mediate the gene-specific age effect.  We
 complemented this with the posterior predicted values of those coefficients
 given the data and the estimated variance (Fig.~\ref{fig:pred-rnd-coefs} top
-middle).  These predictions showed an overall agreement with the qualitative
-findings on age dependence presented in Fig.~\ref{fig:S-age} with some finer
-discrepancies (e.g.~UBE3A), which allude to the model's ability to dissect
-direct effects from indirect ones.
+middle).  These predictions of isolated direct gene-specific age effects showed an overall
+agreement with the qualitative findings on mixed direct and indirect age dependence presented in
+Fig.~\ref{fig:S-age} with some disagreements (e.g.~for UBE3A) that likely reflect 
+purely indirect dependence.
 
-A similar analysis of the effects of ancestry principal components and gender
-gave also similar results: while the fixed effect, shared by all genes, of
-these variables was neglectible, three of the random, gene-specific, effects
-received significant support.  These three are
+The same type of analysis on the effects of ancestry principal components and
+gender gave similar results.  While the fixed effect, shared by all genes, of
+these variables was negligible, three of the random, gene-specific, effects
+received significant support.  These three, ordered by decreasing
+statistical significance, are
 \((\mathrm{Ancestry.1}\,|\,\mathrm{Gene})\),
 \((\mathrm{Ancestry.3}\,|\,\mathrm{Gene})\) and
 \((1\,|\,\mathrm{Gender}:\mathrm{Gene})\) (Table~\ref{tab:mod-sel}).  The
 corresponding predicted random coefficients are presented in
 Fig.~\ref{fig:pred-rnd-coefs}.
 
-\begin{itemize}
-\item TODO: predict the effect of Age that is specific to each gene;
-note that similar prediction for Ancestry.1 is possible but seems much less
-interesting because we do not know the genetic mechanisms linked to
-Ancestry.1
-\end{itemize}
+In summary age, ancestry, and to a lesser extent gender, are suggested by our
+model-based analysis to exert effect on allelic bias in a way that the
+direction and magnitude of the effect varies across genes.
 
 \section{Discussion}
 
@@ -691,12 +691,15 @@ predictor term                              & interpretation&   \(\Delta\)AIC & 
 \((\mathrm{Age}\,|\,\mathrm{Gene})\)        & Gene specific effect of Age & \(-18.9\)  & \(2.5\times 10^{-5}\)  \\
 \(\mathrm{Ancestry.1}\)                     & effect of Ancestry.1 & \(0.6\)  & \(0.24\) \\
 \((\mathrm{Ancestry.1}\,|\,\mathrm{Gene})\) & Gene specific effect of Ancestry.1 & \(-71.2\)   & \(4.6\times 10^{-16}\) \\
+\(\mathrm{Ancestry.3}\)                     & effect of Ancestry.3 & \(1.6\)  & \(0.54\) \\
+\((\mathrm{Ancestry.3}\,|\,\mathrm{Gene})\) & Gene specific effect of Ancestry.3 & \(-17.9\)   & \(3.8\times 10^{-5}\) \\
 \((1\,|\,\mathrm{Gender})\)                 & difference between Male and Female & \(2.0\)  & \(1.0\)  \\
 \((1\,|\,\mathrm{Gender}:\mathrm{Gene})\)   & Gene specific difference between M and F & \(-5.7\) &  \(5.5\times 10^{-3}\) \\
 \end{tabular}
 \end{center}
 \caption{Selected biological terms in the predictor of a mixed model and their impact on model fit.  The
-smaller (more negative) \(\Delta \mathrm{AIC}\), and the smaller the p-value,
+smaller (more negative) \(\Delta \mathrm{AIC}\), and the smaller the p-value
+(\(\chi^2\)-test),
 the more likely that the term has non-zero effect on the read count ratio.
 For further discussion on interpretation and mathematical properties of terms see
 Section~\ref{sec:mixed-mod}.
@@ -766,7 +769,7 @@ reference allele bias could not be determined due to small amount of data.
 
 \begin{figure}[h]
 \begin{center}
-\includegraphics[scale=0.6]{figures/2016-11-01-plotting-distribution-of-s/S-Dx-strip-1.png}
+\includegraphics[scale=0.6]{figures/2016-11-01-plotting-distribution-of-s/S-Dx-strip-1.pdf}
 \caption{
 Distribution of read count ratio for control, schizophrenic (SCZ), and
 affectic spectrum (AFF) individuals within each gene that has been considered as imprinted in the DLPFC
@@ -778,10 +781,9 @@ brain area in this study.
 
 \begin{figure}[h]
 \begin{center}
-\includegraphics[scale=0.6]{figures/2016-11-01-plotting-distribution-of-s/S-Dx-age-1.png}
+\includegraphics[scale=0.6]{figures/2016-11-01-plotting-distribution-of-s/S-Dx-age-1.pdf}
 \caption{
-Variation of read count ratio with age.  Color codes psychiatric diagnosis
-(Dx) consistent with Fig.~\ref{fig:S-Dx}.
+Variation of read count ratio with age.
 }
 \label{fig:S-age}
 \end{center}
@@ -835,7 +837,10 @@ model family & abbrev. & response var.~\\
 \end{tabular}
 \caption{Fitted regression model families, in which the response variable is the read count ratio with or without some transformation: 
 \(S\)---untransformed, \(Q\)---\emph{q}uasi-log-transformed, and
-\(R\)---\emph{r}ank-transformed read count ratio.
+\(R\)---\emph{r}ank-transformed read count ratio.  Diagnostic plots
+(Fig.~\ref{fig:qqnorm-mixed},~\ref{fig:homoscedas-mixed}) and monitoring
+convergence suggested that the \(\mathrm{unlm}.Q\) combination allows the
+best fit for several linear predictors tested.
 }
 \label{tab:model-names}
 \end{center}
@@ -891,7 +896,7 @@ information sharing among genes in a flexible way.  }
 \includegraphics[scale=0.6]{figures/2017-03-08-model-checking/qqplot-families-M3-1.pdf}
 \end{center}
 \caption{
-Checking the fit of wnlm.Q model: analysis of the normality of residuals.
+Checking the fit of various model families: analysis of the normality of residuals.
 }
 \label{fig:qqnorm-mixed}
 \end{figure}
@@ -901,7 +906,7 @@ Checking the fit of wnlm.Q model: analysis of the normality of residuals.
 \includegraphics[scale=0.6]{figures/2017-03-08-model-checking/scedasticity-families-M3-1.pdf}
 \end{center}
 \caption{
-Checking the fit of wnlm.Q model: analysis of homoscedasticity.
+Checking the fit of various model families: analysis of homoscedasticity.
 }
 \label{fig:homoscedas-mixed}
 \end{figure}
@@ -950,54 +955,16 @@ the two other institutions.
 
 \begin{figure}[h]
 \begin{center}
-\includegraphics[scale=0.6]{figures/2016-06-26-trellis-display-of-data/S-age-gender-1.png}
-\caption{
-Variation of the read count ratio \(S_{ig}\) with age and gender across hundreds of individuals
-\(i\) (dots) and 30 genes \(g\) that have been considered as imprinted in the DLPFC
-brain area in this study.
-}
-\label{fig:S-age-gender}
-\end{center}
-\end{figure}
-
-\begin{figure}[h]
-\begin{center}
-\includegraphics[scale=0.6]{figures/2016-06-26-trellis-display-of-data/S-age-tot-read-count-1.png}
-\end{center}
-\caption{Variation of total RNA-seq read count across genes and individuals.}
-\label{fig:weight-of-evidence}
-\end{figure}
-
-\begin{figure}[h]
-\begin{center}
 \includegraphics[scale=0.6]{figures/2017-07-31-mixed-model-coefs/ranef-gender-gender-gene-m5-all-panels-1.png}
 \end{center}
 \caption{
+Predicted random coefficients \(b_{gj}\) for gene \(g\) (\(y\)-axis) and
+random effect \(j\) (panel headers). Positive and negative coefficient indicates direct positive and
+negative dependence of the given gene's read count ratio on age, respectively,
+while zero coefficient suggests independence of age.  Compare with
+Fig.~\ref{fig:S-age}.
 }
 \label{fig:pred-rnd-coefs}
 \end{figure}
-
-\begin{figure}[h]
-\begin{center}
-\includegraphics[scale=0.6]{figures/2016-10-20-differential-expression-scz/venn-triple-1.pdf}
-\end{center}
-\caption{
-Association of genes' expression to schizophrenia (SCZ) assayed by two RNA-seq
-based approaches: total read count (overall expression, Nat Neurosci.~2016
-Nov;19(11):1442-1453.)~and read count ratio
-(allelic bias, present work).  When these approaches are compared for only
-those genes that we find imprinted in the DLPFC in this study, 1 gene is found
-associated to schizophrenia by both approaches, 1 by only overall expression,
-and 3 by only allelic bias.
-}
-\label{fig:diff-exp-scz}
-\end{figure}
-
-%\begin{figure}[h]
-%\includegraphics[width=0.6\textwidth]{figures/2016-10-11-comparison-to-mouse-cerebellum/posterior-pp-vs-pval-wnlm-Q-1.pdf}
-%\caption{Comparison of the effects of age and gender between the present work and a
-%previous study~\cite{Perez2015} in the mouse cerebellum. }
-%\label{fig:mouse-cerebellum}
-%\end{figure}
 
 \end{document}
