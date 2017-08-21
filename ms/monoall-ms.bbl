@@ -6,17 +6,41 @@ Yu~Bai, Min Ni, Blerta Cooper, Yi~Wei, and Wen Fury.
   sequencing reads}.
 \newblock {\em BMC Genomics}, 15(1):325, may 2014.
 
+\bibitem{Baran2015}
+Yael Baran, Meena Subramaniam, Anne Biton, Taru Tukiainen, Emily~K. Tsang,
+  Manuel~A. Rivas, Matti Pirinen, Maria Gutierrez-Arcelus, Kevin~S. Smith,
+  Kim~R. Kukurba, Rui Zhang, Celeste Eng, Dara~G. Torgerson, Cydney Urbanek,
+  Jin~Billy Li, Jose~R. Rodriguez-Santana, Esteban~G. Burchard, Max~A. Seibold,
+  Daniel~G. MacArthur, Stephen~B. Montgomery, Noah~A. Zaitlen, and Tuuli
+  Lappalainen.
+\newblock {The landscape of genomic imprinting across diverse adult human
+  tissues}.
+\newblock {\em Genome Research}, 25(7), 2015.
+
 \bibitem{Bourke2007}
 Andrew~F.G. Bourke.
 \newblock {Kin Selection and the Evolutionary Theory of Aging}.
 \newblock {\em Annual Review of Ecology, Evolution, and Systematics},
   38(1):103--128, dec 2007.
 
+\bibitem{Crespi2008}
+Bernard Crespi.
+\newblock {Genomic imprinting in the development and evolution of psychotic
+  spectrum conditions.}
+\newblock {\em Biological reviews of the Cambridge Philosophical Society},
+  83(4):441--93, nov 2008.
+
 \bibitem{Crespi2008a}
 Bernard Crespi and Christopher Badcock.
 \newblock {Psychosis and autism as diametrical disorders of the social brain.}
 \newblock {\em The Behavioral and brain sciences}, 31(3):241--61; discussion
   261--320, jun 2008.
+
+\bibitem{DeVeale2012}
+Brian DeVeale, Derek van~der Kooy, and Tomas Babak.
+\newblock {Critical evaluation of imprinted gene expression by RNA-seq: A new
+  perspective}.
+\newblock {\em PLoS Genetics}, 8(3):e1002600, jan 2012.
 
 \bibitem{Fromer2016a}
 Menachem Fromer, Panos Roussos, Solveig~K Sieberts, Jessica~S Johnson, David~H
@@ -36,6 +60,13 @@ Menachem Fromer, Panos Roussos, Solveig~K Sieberts, Jessica~S Johnson, David~H
   schizophrenia.}
 \newblock {\em Nature neuroscience}, sep 2016.
 
+\bibitem{Gregg2010a}
+Christopher Gregg, Jiangwen Zhang, Brandon Weissbourd, Shujun Luo, Gary~P
+  Schroth, David Haig, and Catherine Dulac.
+\newblock {High-resolution analysis of parent-of-origin allelic expression in
+  the mouse brain.}
+\newblock {\em Science (New York, N.Y.)}, 329(5992):643--8, aug 2010.
+
 \bibitem{Ingason2011}
 Andr{\'{e}}s Ingason, George Kirov, Ina Giegling, Thomas Hansen, Anthony~R
   Isles, Klaus~D Jakobsen, Kari~T Kristinsson, Louise le~Roux, Omar Gustafsson,
@@ -52,6 +83,12 @@ Andr{\'{e}}s Ingason, George Kirov, Ina Giegling, Thomas Hansen, Anthony~R
   imprinted genes in psychotic illness.}
 \newblock {\em The American journal of psychiatry}, 168(4):408--17, apr 2011.
 
+\bibitem{Isles2006}
+Anthony~R Isles, William Davies, and Lawrence~S Wilkinson.
+\newblock {Genomic imprinting and the social brain.}
+\newblock {\em Philosophical transactions of the Royal Society of London.
+  Series B, Biological sciences}, 361(1476):2229--37, dec 2006.
+
 \bibitem{Keverne2015}
 Eric~B Keverne.
 \newblock {Genomic imprinting, action, and interaction of maternal and fetal
@@ -64,6 +101,12 @@ J~F McDonald, M~A Matzke, and A~J Matzke.
 \newblock {Host defenses to transposable elements and the evolution of genomic
   imprinting.}
 \newblock {\em Cytogenetic and genome research}, 110(1-4):242--9, 2005.
+
+\bibitem{McNamara2013}
+Gr{\'{a}}inne~I. McNamara and Anthony~R. Isles.
+\newblock {Dosage-sensitivity of imprinted genes expressed in the brain:
+  15q11–q13 and neuropsychiatric illness}.
+\newblock {\em Biochemical Society Transactions}, 41(3):721--726, jun 2013.
 
 \bibitem{Perez2015}
 Julio~D Perez, Nimrod~D Rubinstein, Daniel~E Fernandez, Stephen~W Santoro,
