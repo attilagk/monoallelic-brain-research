@@ -23,97 +23,45 @@ Andrew Chess}
 \maketitle
 
 \begin{abstract}
-We present a
-genome-wide analysis of human genomic imprinting based on
-RNA-seq measurements of
-parental bias in allele-specific expression in the
-dorsolateral prefrontal cortex.  We find that the fraction of imprinted human
-genes is consistent with lower (\(\approx 0.5\%\)) as opposed to higher
-(\(\approx 5\%\)) estimates in mice.  Our analysis reveals that age up or
-down-regulates allelic bias of some, but not all, imprinted genes
-in adulthood
-and
-that allelic bias depends also on genetic variation.
-These results support the
-hypothesized role of imprinted genes in social interactions, which dynamically
-change in the life course and depend on neuropsychological function.
+How inter-individual differences in gene regulation correlates with disease is
+beginning to be examined through analyses of RNA-seq from post-mortem brains
+of individuals with schizophrenia and from control brains~\cite{Fromer2016a}
+(TODO: other papers?). Here we focus on differences in allele-specific
+expression, following up on the CommonMind Consortium (CMC
+http://www.synapse.org/CMC) RNA-seq analyses of 579 human dorsolateral
+prefrontal cortex (DLPFC) samples.  We find that the fraction of imprinted
+human genes is consistent with lower (\(\approx 0.5
+\%\))~\cite{Perez2015,DeVeale2012,Baran2015} as opposed to
+higher~\cite{Gregg2010a} estimates in mice. The handful of novel potentially
+imprinted genes we find are all in close genomic proximity to known imprinted
+genes.  Analyzing the extent of allelic bias across hundreds of individuals
+allowed us to examine the impact of various factors on allelic bias. We find
+no impact of the diagnosis of schizophrenia on allelic bias.  Analyses of
+other factors indicates that age up or down-regulates allelic bias of some
+imprinted genes and that genetic ancestry also impacts allelic bias.  
 \end{abstract}
 
 \section{Introduction}
 
-Genomic imprinting, leading to repression of either the maternal or paternal
-allele, has reached its highest prevalence in humans and other placental
-organisms~\cite{Renfree2012}.  In line with this, well-known physiological
-functions of imprinted genes include embryonic and placental development, body
-growth, suckling, and maternal behavior~\cite{Plasschaert2014,Peters2014}.
-Genomic imprinting requires the placement of different epigenetic marks, such
-as DNA methylation, at the respective alleles residing on the chromosomes
-originating from the mother or father~\cite{Plasschaert2014}.  Indeed,
-imprinted genes typically reside in clusters spanning hundreds of kilobases
-and allele-specific differential epigenetic marks are found near specific
-genes as well as in shared regulatory elements called imprinting control
-regions. For non-imprinted genes expression is balanced such that the two
-alleles are roughly equally expressed. By contrast, for imprinted genes
-epigenetic marks lead to substantial degrees of
-imbalance in the expression level of the two alleles.  We refer to the degree
-of expression imbalance as \emph{allelic bias}; at its maximum expression is
-completely monoallelic.
+The observation~\cite{Noor2015,Rees2014} that maternally derived
+microduplications at 15q11-q13---harboring the imprinted gene UBE3A---may not
+only cause Prader-Willi syndrome, but are also highly penetrant for
+schizophrenia has raised the possibility that perturbation of regulation of
+imprinted genes in general may play a role in psychotic disorders.  As it is
+known that the extent of imprinting of individual genes varies over different
+tissues we chose the DLPFC region, which controls complex cognitive
+and executive functions and is known to display functional abnormalities in
+schizophrenia.  We obtained pre-publication DLPFC RNA-seq data from the CMC
+and analyzed allele-specific expression with the idea of assessing the
+fraction of human genes subject to imprinting as well as analyzing the
+variability in allelic bias across individuals and whether or not there is
+correlation with psychiatric diagnosis. Furthermore, the large age at death variability
+allowed us to examine, for individual imprinted genes, to what extent allelic
+bias changes as a function of age.
 
-Why natural selection favors allelic bias for imprinted genes remains
-debated~\cite{Wilkins2003,McDonald2005,Keverne2015} but the most mature of all
-theories, kinship or conflict theory~\cite{Wilkins2003}, provides a flexible
-framework for interpreting past studies on imprinted genes and formulating
-hypotheses and predictions regarding their detailed regulation and
-physiological function.  The theory assumes that all imprinted genes contribute to
-inter-individual interactions in a highly dose-dependent fashion, and explains
-allelic bias with the conflicting interests of paternal and maternal genes,
-which arise from sexual asymmetries in those interactions~\cite{Wilkins2003}.
-A well-known asymmetry is the disproportionate role of mothers in
-nurturing offspring in Placentalia.  Kinship theory thus explains why
-overexpression disorders of paternally or maternally biased genes in children
-abnormally promote or inhibit, respectively, their
-growth~\cite{Plasschaert2014,Peters2014}.
-
-Since different inter-individual interactions take place in various
-developmental stages and are mediated by various organs, kinship theory
-explains the non-uniform pattern of ``imprintedness'' and allelic bias over
-various ages~\cite{Bourke2007} and tissue types, which is seen for several
-imprinted genes~\cite{Plasschaert2014,Peters2014}.  For other genes such
-patterns await discovery.  The theory quantitatively predicts relaxation of
-allelic conflict with age~\cite{Ubeda2012} and so raises the hypothesis that
-change in allelic bias is linked to aging.  A study on newborn and young adult mice
-partially supports that hypothesis~\cite{Perez2015} but experimental evidence
-from humans, including older individuals, is missing.
-
-In the framework of kinship theory the question of aging is closely tied to
-the roles of imprinted genes in social interactions and in the underlying
-psychiatric functions~\cite{Ubeda2012,Wilkins2003}, whose importance has been
-increasing in human evolution.  Indeed, most human imprinted gene syndromes
-are characterized by not only growth disorder but also mental retardation and
-psychiatric dysfunction~\cite{Plasschaert2014,Peters2014}.  More precisely,
-paternally and maternally biased genes are suggested to play antagonistic
-roles not only in growth but also in psychiatric functions~\cite{Crespi2008a},
-since overexpression of the former is associated with autistic while that of
-the latter with psychotic spectrum disorders.  For example, maternally derived
-microduplications at 15q11-q13 may not only cause the Prader-Willi
-syndrome~\cite{Peters2014}---whose symptoms include obesity---but also highly
-penetrant for schizophrenia~\cite{Ingason2011,Sullivan2012}, which is perhaps the most devastating
-psychotic spectrum disorder.
-
-Recently the CommonMind Consortium produced and
-shared\footnote{www.commonmind.org} genome-wide data sets on genotype and gene
-expression in the dorsolateral prefrontal cortex (DLPFC) of hundreds of
-schizophrenic and control individuals, and identified some 650 differentially
-expressed genes~\cite{Fromer2016a}. Our present work extends that analysis
-with a focus on allele-specfic expression across the genome, allowing us to
-determine allelic bias for each gene.  Based on that, we find that \(\approx
-0.6\%\) of all genes are imprinted in the human DLPFC, the majority of which
-had been reported to be imprinted in the context of one or another tissue
-and/or species. We find a number of genes with allele specific expression
-residing near clusters of known imprinted genes. Furthermore, our data suggest
-that for several imprinted genes the variation of allelic bias across
-individuals is explained by differences in {ancestry and} age in a manner that
-depends on the gene.
+The large number of samples (258 SCZ, 267 Control, 54 bipolar or other
+affective/mood disorder, AFF) allowed us to explore these questions of
+interest.  
 
 \section{Methods}
 
@@ -654,12 +602,13 @@ direction and magnitude of the effect varies across genes.
 \section{Discussion}
 
 The number of imprinted genes in the brain has been controversial: early
-genome wide studies~\cite{Gregg2010a} estimated over a thousand but later
-the same authors and others~\cite{Perez2015,DeVeale2012,Baran2015} found that the statistical estimator was heavily biased
-and with more careful statistical analysis they discovered hundred or less imprinted
-genes in the brain.  Our work reinforces the latter group of studies as we
-identified 30 imprinted genes in the DLPFC among the genes we could assess
-(about the third of all genes). 
+genome wide studies~\cite{Gregg2010a} estimated over a thousand but later the
+same authors and others~\cite{Perez2015,DeVeale2012,Baran2015} found that the
+statistical estimator was heavily biased and with more careful statistical
+analysis they discovered hundred or less imprinted genes in the brain.  Our
+work reinforces the latter group of studies as we identified 30 imprinted
+genes in the DLPFC among the genes we could assess (about the third of all
+genes). 
 
 We have performed the most in-depth analysis up till now on the how 
 imprinting depends on schizophrenia, as well as on age and other variables.  This was made possible by
@@ -670,7 +619,8 @@ balanced case-control study groups, and
 powerful statistical inference based on a mixed model that captures much of the complex pattern of
 dependencies in genomic data.  The modeled dependencies include those within and between
 technical and biological variables as well as the partial similarities among
-genes.
+genes.  Despite these advantages, technical variation is still large and
+consequently so is the uncertainty of our statistical inferences.
 
 Although our approach gave strong support for dependence of imprinting on
 age and ancestry, no dependence on schizophrenia was detected either when
