@@ -1,3 +1,18 @@
+% You can submit either a single PDF file that includes the manuscript text
+% and any display items, or separate files for text, figures and tables.
+%
+% 1500 words, excluding the introductory paragraph, online Methods,
+% references and figure legends
+%
+% TODOs
+% - names and affiliations of all co-authors; correspondence with asterisk; current addresses
+% - cover letter
+% - Author affiliations
+% - Author contributions
+% - Acknowledgements
+%
+% - references: Gregg Neuron
+
 \documentclass[letterpaper]{article}
 %\documentclass[12pt,letterpaper]{article}
 %\setlength{\textwidth}{480pt}
@@ -5,24 +20,40 @@
 %\setlength{\voffset}{0pt}
 
 \usepackage{amsmath, geometry, graphicx, tikz}
+\usepackage{float}
 \usetikzlibrary{arrows.meta}
 \bibliographystyle{plain}
 
+% https://tex.stackexchange.com/questions/6758/how-can-i-create-a-bibliography-like-a-section
+\usepackage{etoolbox}
+\patchcmd{\thebibliography}{\section*}{\section}{}{}
+
 %\title{Variation of Genomic Imprinting in the Human Brain}
 \title{Unperturbed Expression Bias of Imprinted Genes in Schizophrenics}
-\author{Attila Guly\'{a}s-Kov\'{a}cs\(^\ast\), Ifat Keydar\(^\ast\),
+\author{Attila Guly\'{a}s-Kov\'{a}cs\(^\ddagger\), Ifat Keydar\(^\ddagger\),
 ...,
 %\\
 %Eva Xia, Menachem Fromer, Doug Ruderfer,\\
 %Ravi Sachinanandam,
-Andrew Chess}
-\date{Mount Sinai School of Medicine}
+Andrew Chess\(^\ast\)}
+
+\date{Icahn School of Medicine at Mount Sinai}
 
 \begin{document}
 
 \maketitle
+\begin{center}
+\(\ddagger\) equal contribution;
+\(\ast\) correspondence: andrew.chess@mssm.edu
+\end{center}
 
-\begin{abstract}
+%\clearpage
+\tableofcontents
+
+\clearpage
+
+\section{Main text}
+
 How inter-individual differences in gene regulation correlates with disease is
 beginning to be examined through analyses of RNA-seq from post-mortem brains
 of individuals with schizophrenia and from control brains~\cite{Fromer2016a}
@@ -39,9 +70,6 @@ allowed us to examine the impact of various factors on allelic bias. We find
 no impact of the diagnosis of schizophrenia on allelic bias.  Analyses of
 other factors indicates that age up or down-regulates allelic bias of some
 imprinted genes and that genetic ancestry also impacts allelic bias.  
-\end{abstract}
-
-\section{Introduction}
 
 The observation~\cite{Noor2015,Rees2014} that maternally derived
 microduplications at 15q11-q13---harboring the imprinted gene UBE3A---may not
@@ -62,6 +90,259 @@ bias changes as a function of age.
 The large number of samples (258 SCZ, 267 Control, 54 bipolar or other
 affective/mood disorder, AFF) allowed us to explore these questions of
 interest.  
+
+A total of \(5307\) genes passed our filters designed to remove genes with
+scarce RNA-seq data reflecting low expression and/or low coverage of RNA-seq.
+Examining these genes, we performed exploratory statistical analysis based on
+the read count ratio statistic \(S_{ig}\), whose results (below) we
+interpreted in terms of the variation of allelic bias both across genes \(g\)
+and across individuals \(i\).  Note that our later analyses used
+information not only in \(S_{ig}\) but also in the total read count as well as
+in data beyond RNA-seq.
+
+Fig.~\ref{fig:ranking-genes} presents the conditional empirical distribution
+of \(S_{\cdot g}\) given each gene \(g\).  Each of the three plots of the
+upper half show in a distinct representation the same empirical distributions
+based on data for three genes.  The main panels of the lower half present, in
+the most compact representation, the distributions based on all data (5307
+genes).  Two of the three genes in the upper half, PEG10 and ZNF331, are
+\emph{known imprinted} genes in the sense that they had previously been found
+imprinted in the context of some developmental stage, species, and tissue type
+other than the adult human DLPFC.  The third, AFAP1, has not been reported to be imprinted
+in any context.  For all three genes \(S_{\cdot g}\) varies considerably
+within its theoretical range \([\frac{1}{2}, 1]\).  This suggests variation of
+allelic bias across study individuals, although some component of the
+variation of \(S_{\cdot g}\) must originate from technical sources.
+
+To identify imprinted genes based on the read count ratio we
+defined the score of each gene \(g\) as the location statistic \(1 -
+\mathrm{ECDF}_g(0.9)\), which is the fraction of
+individuals \(i\) for whom \(S_{ig}>0.9\).  We ranked all 5307 genes
+according to their score shown in the side plots of the lower half of
+Fig.~\ref{fig:ranking-genes} as gray filled circles.  Larger green circles
+mark the three genes mentioned above.  The heat map of empirical distribution
+of \(S_{\cdot g}\) of ranked genes (Fig.~\ref{fig:ranking-genes}, lower left)
+suggests that the top \(50\) genes, which constitute \(\approx 1\%\) of all
+genes in our analysis, are qualitatively different from the bottom \(\approx
+99\%\) suggesting that most of them are imprinted.  Consistent with this, the
+top-scoring genes tended to cluster around genomic locations that had been
+previously described as imprinted gene clusters (Fig.~\ref{fig:clusters}).
+
+The set of top scoring 50 genes is highly enriched in known imprinted genes,
+marked by blue in Fig.~\ref{fig:top-genes} and in \emph{nearby candidate}
+genes (green) defined as being within 1Mb of a known imprinted gene. Within
+the top 50, we find 29 such genes; 21 known imprinted genes and eight nearby
+candidates.
+
+The remaining 21 genes in the top 50 are separated by \(>1\) Mb from some
+known imprinted gene (termed \emph{distant candidates}, red in
+Fig.~\ref{fig:top-genes}).  Upon further examination these distant candidate
+genes are overwhelmingly likely not imprinted. The primary reason for this
+conclusion is that we performed a test to see if there is reference allele
+bias for all candidate genes. For any gene (known imprinted, or candidate) the
+expectation is that when some allelic bias is detected, that should equally
+favor the reference or non-reference allele since for a given individual who
+is heterozygous at a given SNP in the genome it is reasonable to assume that
+the chances are equal that the mother or that the father has the reference
+allele. Most known imprinted genes and the nearby candidates display a
+reference/non-reference distribution consistent with a binomial distribution
+with a probability of 0.5 for both the reference and non-reference alleles.
+However, and in sharp distinction, most distant candidates have distributions
+of reference/non-reference that are not consistent with equal probabilities
+(see genes marked with ``X'' in Fig.~\ref{fig:top-genes}).  Indeed, for most of
+them the distribution is shifted towards the reference allele strongly
+suggesting that mistaken genotyping, imputation or a mapping issue led to the
+presence of these red genes in the list of the top 50 genes. One could argue
+that we should have left these genes out of Fig.~\ref{fig:top-genes}, but we
+thought it was important to show them and to indicate the reasons they are set
+aside.   Note also, that we also tested the hypothesis for each gene \(g\) and
+individual \(i\) that allelic expression is (nearly) unbiased
+(Eq.~\ref{eq:unbiased-test}).  The fraction of individuals for which the test
+was \emph{not} rejected tends to be much higher for the ``red'' genes in the
+top 50 (black bars in Fig.~\ref{fig:top-genes}).
+
+While the shifted distribution of reference/non-reference alleles leads us to
+discount the possibility of imprinting, random monoallelic expression is still
+a distinct possibility for these candidates as our studies of random
+monoallelic expression in mice suggested that a substantial fraction
+(\(40-80\%\)) of random monoallelically-expressed genes had a very strong bias
+towards monoallelic expression of one of the two alleles \cite{Zwemer2012}.
+Moreover, it is worth noting that three of these candidates are from the major
+histocompatibility locus (HLA), which is notable for extensive polymorphism
+and difficulties with allelic identification. For these three genes we also
+analyzed them more thoroughly with HLA-specific methods for determining
+haplotype based on RNA-seq \cite{Bai2014a} and genotype data \cite{Zheng2014}.
+The high observed read count ratios for HLA genes appear to be driven by
+eQTL-like effects, not by random monoallelic expression nor by imprinting
+(manuscript in preparation).  Examining all the assessable known imprinted
+genes, we find than \(\frac{1}{3}\)rd of them have a low gene score. This
+suggests that these genes do not display imprinted expression in the human
+adult DLPFC, consistent with many reports in the literature indicating that
+known imprinted genes are often imprinted in some but not all tissues.  
+
+In subsequent analysis (below) we also consider UBE3A as
+demonstrating allelic bias consistent with imprinting in the context of human
+adult DLFPC as evidenced by Fig.~\ref{fig:known-genes} even though its rank
+falls outside of the top 50.  Thus, we have thirty genes we consider imprinted in the adult DLPFC.
+
+Given that our sample is comprised of neurotypic individuals (Control) as well as individuals with
+schizophrenia (SCZ) and with with affective spectrum disorder (AFF), we explored whether there is
+any association between diagnosis and allelic bias of imprinted genes.
+Fig.~\ref{fig:S-Dx} compares read count ratio
+distribution among control, SCZ and AFF for the 30 imprinted genes and suggests there are no
+differences among the three groups.
+
+To further explore the data, we performed statistical inference using mixed
+effects models.  With this procedure we quantified the extent the read count
+ratio is dependent on diagnosis and other explanatory variables. These
+included biological variables namely Age, the first five principal components
+of ancestry (Ancestry.1,...,Ancestry.5), Gender and also technical variables
+such as RIN, the RNA integrity number (see Table~\ref{tab:predictors} for
+complete list).  Our mixed regression models describe the dependence of read
+count ratio on some or all of the explanatory variables simultaneously, which
+allows the dissection of various biological and technical sources of
+variation.  Another benefit of the mixed modeling framework is its power with
+respect to global, not gene-specific, parameters because it makes use of
+information that is only available when all thirty genes are considered
+simultaneously; still, it allows the prediction gene-specific regression
+coefficients (Fig.~\ref{fig:glm-vs-hierarch} right).  These benefits however
+hinge on the goodness of model fit to the data.  Therefore, we fitted many
+alternative mixed models, selected the best-fitting one using the Akaike
+Information Criterion (AIC) and confirmed the goodness of fit with diagnostic
+plots (Section~\ref{sec:fitting},
+Fig.~\ref{fig:qqnorm-mixed},~\ref{fig:homoscedas-mixed}).
+
+Based on the selected, best fitting, model we formally tested whether read count ratio
+depends on various predictor terms that represent either the main effect of
+some biological variable or the interaction between two variables
+(Table~\ref{tab:mod-sel}).  For example, given prior observations as well as
+the empirical distribution of data in Figures~\ref{fig:S-Dx}
+and~\ref{fig:S-age}, one would expect the model-based test should detect
+gene-to-gene variability of read count ratio.  Indeed that variability---more
+precisely the random main effect \((1\mid\mathrm{Gene})\) of the Gene
+variable---is strongly supported by the test with a \(\Delta
+\mathrm{AIC}\) of \(-127\) and a p-value of \(<10^{-27}\)
+(Table~\ref{tab:mod-sel}).
+
+Returning to our main question the model-based test did not support any
+overall dependence of read count ratio on diagnosis (\(\Delta \mathrm{AIC} =
+2.0,\; p = 1.0\) for the random main effect \((1\mid\mathrm{Dx})\)) consistent
+with Figures~\ref{fig:S-Dx} and~\ref{fig:S-age}.  A related test for
+gene-specific effects of diagnosis, wherein the effect of Dx varies across the
+thirty genes, also yielded negative result (\(\Delta \mathrm{AIC} = 0.4,\; p =
+0.21\) for the interaction term \((1\,|\,\mathrm{Dx}:\mathrm{Gene})\)), which
+is again consistent with Figures~\ref{fig:S-Dx} and~\ref{fig:S-age}.
+Together, these analyses indicate that diagnosis of SCZ or AFF does not have a
+substantial impact on the extent of allelic bias of imprinted genes in the
+DLPFC. 
+
+Fig.~\ref{fig:S-age} shows that the read count ratio depends negatively on age
+for some imprinted genes (e.g.~PEG3, ZNF331), depends positively for other
+genes (e.g.~KCNK9, RP13-487P22.1), and is independent of age for the rest of
+imprinted genes (e.g.~NDN, NLRP2).  However, any apparent age effect may be
+indirect in the sense that it is mechanistically mediated by other explanatory
+variables to which age is associated with
+(Fig.~\ref{fig:predictor-associations}).
+
+To investigate the direct effect of age we turned to our best fitting mixed
+model once again, evaluating how significantly predictor terms associated with
+these variables improve the model's fit (Table~\ref{tab:mod-sel}).  As for Dx
+we defined two terms for each variable, the term \(\mathrm{Age}\) represents
+a fixed effect that is shared by all imprinted genes while the term
+\((\mathrm{Age}\,|\,\mathrm{Gene})\) symbolizes random, gene-specific, age effects.
+The shared effect was not supported by our criteria of model fit but the
+gene-specific effects received strong support at \(\Delta\mathrm{AIC}<-20\)
+and \(p<3\times 10^{-5}\), which is consistent with the large gene-to-gene
+variation of age dependence suggested by Fig.~\ref{fig:S-age}.
+
+The above result technically means a significantly greater than zero variance
+of the random coefficients that mediate the gene-specific age effect.  We
+complemented this with the posterior predicted values of those coefficients
+given the data and the estimated variance (Fig.~\ref{fig:pred-rnd-coefs} top
+middle).  These predictions of isolated direct gene-specific age effects showed an overall
+agreement with the qualitative findings on mixed direct and indirect age dependence presented in
+Fig.~\ref{fig:S-age} with some disagreements (e.g.~for UBE3A) that likely reflect 
+purely indirect dependence.
+
+The same type of analysis on the effects of ancestry principal components and
+gender gave similar results.  While the fixed effect, shared by all genes, of
+these variables was negligible, three of the random, gene-specific, effects
+received significant support.  These three, ordered by decreasing
+statistical significance, are
+\((\mathrm{Ancestry.1}\,|\,\mathrm{Gene})\),
+\((\mathrm{Ancestry.3}\,|\,\mathrm{Gene})\) and
+\((1\,|\,\mathrm{Gender}:\mathrm{Gene})\) (Table~\ref{tab:mod-sel}).  The
+corresponding predicted random coefficients are presented in
+Fig.~\ref{fig:pred-rnd-coefs}.
+
+In summary age, ancestry, and to a lesser extent gender, are suggested by our
+model-based analysis to exert effect on allelic bias in a way that the
+direction and magnitude of the effect varies across genes.
+
+The number of imprinted genes in the mammalian brain has been controversial:
+some early genome wide studies~\cite{Gregg2010a,Gregg2010} estimated over a
+thousand, suggesting that the number of imprinted genesi in the brain is an
+order of magnitude greater than in other tissues.  Later work cast doubt on
+the methodology used and found that the number of imprinted genes in brain is
+in line with expectations from studies of other tissues, identifying only a
+handful of new candidate imprinted genes in brain
+~\cite{Perez2015,DeVeale2012,Baran2015}.  Based on 579 postmortem human DLPFC
+samples we find evidence supporting only a handful of novel imprinted genes
+all of which reside in genomic locations nearby to known imprinted genes.
+Thus our results support those more recent studies that found no large excess
+of imprinted genes in the brain.
+
+We have performed the most in-depth analysis up till now on the how 
+imprinting depends on schizophrenia, as well as on age and other variables.  This was made possible by
+(i)
+more study individuals than previous work~\cite{Baran2015} and well
+balanced case-control study groups, and
+(ii)
+powerful statistical inference based on a mixed model that captures much of the complex pattern of
+dependencies in genomic data.  The modeled dependencies include those within and between
+technical and biological variables as well as the partial similarities among
+genes.  Despite these advantages, technical variation is still large and
+consequently so is the uncertainty of our statistical inferences.
+
+Although our approach gave strong support for dependence of imprinting on
+age and ancestry, no dependence on schizophrenia was detected either when
+we assumed that the dependence is the same for all imprinted genes or that it
+varies across genes.  This might seem to suggest that imprinting in the DLFPC
+plays no significant role in schizophrenia and psychotic disorders
+contradicting the ``imprinted brain'' hypothesis~\cite{Crespi2008}.
+Alternatively,
+imprinting does play a role in
+schizophrenia but only very strong perturbations of some
+imprinted genes increase the risk significantly, perturbations that are too
+rare to detect in even at our relatively large sample size.  Additionally, the
+more subtle perturbations in our data might still have a significant effect when
+considered together with other genetic, epigenetic or environmental risk
+factors that were absent in our model.  The complex genetic architecture of
+schizophrenia~\cite{Sullivan2012} makes these alternative explanations 
+quite plausible.
+
+We found that imprinting depends on ancestry in a gene
+specific manner but the type of dependence that is shared by all imprinted
+genes was not supported.  This is expected because the studied
+ancestry variables must incorporate some of the cis expression
+QTLs in imprinted genes such that those eQTLS perturb allelic bias in a gene
+specific manner.
+
+Our discovery that imprinting depends on age in later adulthood is rather
+intriguing.  Although age dependence during embryonic development and
+childhood is both well-supported experimentally and well-understood, that
+during later adulthood has so far only been predicted~\cite{Ubeda2012} based
+on a hypothesis that links ``genomic imprinting and the social
+brain''~\cite{Isles2006}.  Previous genomics studies~\cite{Baran2015} were
+statistically underpowered to address this question in humans and the only
+experimental hints were gained from young mice~\cite{Perez2015}.  Although our
+age-related finding supports the ``social brain'' hypothesis, it leaves the
+possibility open that the observed age related changes indicate merely the
+loss of tight regulation of those genes after because they loose their
+functional significance in aging.
+
+
+\clearpage
 
 \section{Methods}
 
@@ -100,9 +381,7 @@ calling with the use of DNA SNP array data and imputation. In the following
 subsections of Methods we describe the data, these procedures, as well as our
 regression models in detail.
 
-\subsection{Data}
-
-\subsubsection{Brain samples, RNA-seq}
+\subsection{Brain samples, RNA-seq}
 
 Human RNA samples were collected from the dorsolateral prefrontal cortex of
 the CommonMind consortium from a total of \(579\) individuals after
@@ -112,7 +391,7 @@ RNA-seq library preparation uses Ribo-Zero (which selects against ribosomal
 RNA) to prepare the RNA, followed by Illumina paired end library generation.
 RNA-seq was performed on Illumina HiSeq 2000.
 
-\subsubsection{Mapping, SNP calling and filtering}
+\subsection{Mapping, SNP calling and filtering}
 
 We mapped 100bp, paired-end RNA-seq reads (\(\approx50\) million reads per sample) using Tophat
 to Ensembl gene transcripts of the human genome (hg19; February, 2009) with
@@ -139,7 +418,7 @@ samples there were 203 million reads overlapping one of the
 364,509 SNPs defined above.  Of those 158 million (78\%) had genotype data
 available from either SNP array or imputation.
 
-\subsubsection{Genotyping and calibration of imputed SNPs}
+\subsection{Genotyping and calibration of imputed SNPs}
 
 DNA samples were genotyped using the Illumina Infinium SNP array. We used
 PLINK with default parameters to impute genotypes for SNPs not present on the
@@ -174,7 +453,7 @@ expression.
 %million data points covering 213,208 SNPs, of which 114 million (77\%) have
 %imputation data.
 
-\subsubsection{Quality filtering}
+\subsection{Quality filtering}
 
 \label{sec:filtering}
 
@@ -208,10 +487,8 @@ asymptotically (as \(T_{ig}\rightarrow \infty\)) normal with
 \end{equation}
 where $z_{p}$ is the $p$ quantile of the standard normal distribution.
 
-\subsection{Regression analysis}
+\subsection{Mixed and fixed regression models}
 \label{sec:methods-regression}
-
-\subsubsection{Mixed and fixed models}
 
 We modeled the dependence of read count ratio of imprinted genes on biological
 and technical explanatory variables (Table~\ref{tab:predictors}) using mixed
@@ -248,7 +525,7 @@ information shared by all genes.  Therefore we preferred mixed models for final
 inference and used fixed models only to guide selection among possible mixed
 models (Section~\ref{sec:fitting}).
 
-\subsubsection{Formulation and interpretation of mixed models}
+\subsection{Formulation and interpretation of mixed models}
 \label{sec:mixed-mod}
 
 Here we describe the detailed syntax and semantics of the normal linear mixed
@@ -354,23 +631,7 @@ b_{j}^{(k)}}^{\text{random effects}} + \varepsilon_i.
 \label{eq:mixed-mod-general}
 \end{equation}
 
-%\begin{eqnarray}
-%y_{i} &=& \overbrace{\beta_0 + \mathrm{Age}_{i}
-%\beta_1}^{\text{fixed effects}} \\
-%&+& \overbrace{\underbrace{b_{0}^{(1)} +
-%\mathrm{Age}_i b_1^{(1)} +
-%\mathrm{Ancestry.1}_i b_{2}^{(1)}}_{\mathrm{Gene}_i} +
-%\underbrace{b_{0}^{(2)}}_{\mathrm{Dx}_i,\mathrm{Gene}_i}}^{\text{random effects}} \\
-%&+& \varepsilon_i \\
-%y &\sim& \overbrace{1 + \mathrm{Age}}^{\text{fixed effects}} \\
-%&+& \overbrace{\underbrace{(1 \,|\, \mathrm{Gene}) + (\mathrm{Age} \,|\, \mathrm{Gene}) + (\mathrm{Ancestry.1} \,|\, \mathrm{Gene})}_{k=1} +
-%\underbrace{(1 \,|\, \mathrm{Dx}:\mathrm{Gene})}_{k=2}}^{\text{random effects}} \\
-%y &\sim& \mathrm{Age} +
-%(\mathrm{Age} + \mathrm{Ancestry.1} \,|\, \mathrm{Gene}) +
-%(1 \,|\, \mathrm{Dx}:\mathrm{Gene})
-%\end{eqnarray}
-
-\subsubsection{Model fitting and selection}
+\subsection{Model fitting and selection}
 \label{sec:fitting}
 
 Eq.~\ref{eq:mixed-mod-general} describes a large set of mixed models that
@@ -399,309 +660,55 @@ We refer to this as the ``best
 fitting model'' even thought it may represent only a local optimum in model
 space.
 
-\section{Results}
-
-\subsection{Genome- and population-wide variation of allelic bias}
-
-A total of \(5307\) genes passed our filters designed to remove genes with
-scarce RNA-seq data reflecting low expression and/or low coverage of RNA-seq.
-Examining these genes, we performed exploratory statistical analysis based on
-the read count ratio statistic \(S_{ig}\), whose results (below) we
-interpreted in terms of the variation of allelic bias both across genes \(g\)
-and across individuals \(i\).  Note that our later analyses
-(Section~\ref{sec:results-regression} and below) used
-information not only in \(S_{ig}\) but also in the total read count as well as
-in data beyond RNA-seq.
-
-Fig.~\ref{fig:ranking-genes} presents the conditional empirical distribution
-of \(S_{\cdot g}\) given each gene \(g\).  Each of the three plots of the
-upper half show in a distinct representation the same empirical distributions
-based on data for three genes.  The main panels of the lower half present, in
-the most compact representation, the distributions based on all data (5307
-genes).  Two of the three genes in the upper half, PEG10 and ZNF331, are
-\emph{known imprinted} genes in the sense that they had previously been found
-imprinted in the context of some developmental stage, species, and tissue type
-other than the adult human DLPFC.  The third, AFAP1, has not been reported to be imprinted
-in any context.  For all three genes \(S_{\cdot g}\) varies considerably
-within its theoretical range \([\frac{1}{2}, 1]\).  This suggests variation of
-allelic bias across study individuals, although some component of the
-variation of \(S_{\cdot g}\) must originate from technical sources.
-
-To identify imprinted genes based on the read count ratio we
-defined the score of each gene \(g\) as the location statistic \(1 -
-\mathrm{ECDF}_g(0.9)\), which is the fraction of
-individuals \(i\) for whom \(S_{ig}>0.9\).  We ranked all 5307 genes
-according to their score shown in the side plots of the lower half of
-Fig.~\ref{fig:ranking-genes} as gray filled circles.  Larger green circles
-mark the three genes mentioned above.  The heat map of empirical distribution
-of \(S_{\cdot g}\) of ranked genes (Fig.~\ref{fig:ranking-genes}, lower left)
-suggests that the top \(50\) genes, which constitute \(\approx 1\%\) of all
-genes in our analysis, are qualitatively different from the bottom \(\approx
-99\%\) suggesting that most of them are imprinted.  Consistent with this, the
-top-scoring genes tended to cluster around genomic locations that had been
-previously described as imprinted gene clusters (Fig.~\ref{fig:clusters}).
-
-\subsection{Imprinted genes in the adult DLPF cortex}
-
-The set of top scoring 50 genes is highly enriched in known imprinted genes,
-marked by blue in Fig.~\ref{fig:top-genes} and in \emph{nearby candidate}
-genes (green) defined as being within 1Mb of a known imprinted gene. Within
-the top 50, we find 29 such genes; 21 known imprinted genes and eight nearby
-candidates.
-
-The remaining 21 genes in the top 50 are separated by \(>1\) Mb from some
-known imprinted gene (termed \emph{distant candidates}, red in
-Fig.~\ref{fig:top-genes}).  Upon further examination these distant candidate
-genes are overwhelmingly likely not imprinted. The primary reason for this
-conclusion is that we performed a test to see if there is reference allele
-bias for all candidate genes. For any gene (known imprinted, or candidate) the
-expectation is that when some allelic bias is detected, that should equally
-favor the reference or non-reference allele since for a given individual who
-is heterozygous at a given SNP in the genome it is reasonable to assume that
-the chances are equal that the mother or that the father has the reference
-allele. Most known imprinted genes and the nearby candidates display a
-reference/non-reference distribution consistent with a binomial distribution
-with a probability of 0.5 for both the reference and non-reference alleles.
-However, and in sharp distinction, most distant candidates have distributions
-of reference/non-reference that are not consistent with equal probabilities
-(see genes marked with ``X'' in Fig.~\ref{fig:top-genes}).  Indeed, for most of
-them the distribution is shifted towards the reference allele strongly
-suggesting that mistaken genotyping, imputation or a mapping issue led to the
-presence of these red genes in the list of the top 50 genes. One could argue
-that we should have left these genes out of Fig.~\ref{fig:top-genes}, but we
-thought it was important to show them and to indicate the reasons they are set
-aside.   Note also, that we also tested the hypothesis for each gene \(g\) and
-individual \(i\) that allelic expression is (nearly) unbiased
-(Eq.~\ref{eq:unbiased-test}).  The fraction of individuals for which the test
-was \emph{not} rejected tends to be much higher for the ``red'' genes in the
-top 50 (black bars in Fig.~\ref{fig:top-genes}).
-
-While the shifted distribution of reference/non-reference alleles leads us to
-discount the possibility of imprinting, random monoallelic expression is still
-a distinct possibility for these candidates as our studies of random
-monoallelic expression in mice suggested that a substantial fraction
-(\(40-80\%\)) of random monoallelically-expressed genes had a very strong bias
-towards monoallelic expression of one of the two alleles \cite{Zwemer2012}.
-Moreover, it is worth noting that three of these candidates are from the major
-histocompatibility locus (HLA), which is notable for extensive polymorphism
-and difficulties with allelic identification. For these three genes we also
-analyzed them more thoroughly with HLA-specific methods for determining
-haplotype based on RNA-seq \cite{Bai2014a} and genotype data \cite{Zheng2014}.
-The high observed read count ratios for HLA genes appear to be driven by
-eQTL-like effects, not by random monoallelic expression nor by imprinting
-(manuscript in preparation).  Examining all the assessable known imprinted
-genes, we find than \(\frac{1}{3}\)rd of them have a low gene score. This
-suggests that these genes do not display imprinted expression in the human
-adult DLPFC, consistent with many reports in the literature indicating that
-known imprinted genes are often imprinted in some but not all tissues.  
-
-In subsequent analysis (below) we also consider UBE3A as
-demonstrating allelic bias consistent with imprinting in the context of human
-adult DLFPC as evidenced by Fig.~\ref{fig:known-genes} even though its rank
-falls outside of the top 50.  Thus, we have thirty genes we consider imprinted in the adult DLPFC.
-
-\subsection{Allelic bias of imprinted genes and schizophrenia}
-\label{sec:results-regression}
-
-Given that our sample is comprised of neurotypic individuals (Control) as well as individuals with
-schizophrenia (SCZ) and with with affective spectrum disorder (AFF), we explored whether there is
-any association between diagnosis and allelic bias of imprinted genes.
-Fig.~\ref{fig:S-Dx} compares read count ratio
-distribution among control, SCZ and AFF for the 30 imprinted genes and suggests there are no
-differences among the three groups.
-
-To further explore the data, we performed statistical inference using mixed
-effects models.  With this procedure we quantified the extent the read count
-ratio is dependent on diagnosis and other explanatory variables. These
-included biological variables namely Age, the first five principal components
-of ancestry (Ancestry.1,...,Ancestry.5), Gender and also technical variables
-such as RIN, the RNA integrity number (see Table~\ref{tab:predictors} for
-complete list).  Our mixed regression models describe the dependence of read
-count ratio on some or all of the explanatory variables simultaneously, which
-allows the dissection of various biological and technical sources of
-variation.  Another benefit of the mixed modeling framework is its power with
-respect to global, not gene-specific, parameters because it makes use of
-information that is only available when all thirty genes are considered
-simultaneously; still, it allows the prediction gene-specific regression
-coefficients (Fig.~\ref{fig:glm-vs-hierarch} right).  These benefits however
-hinge on the goodness of model fit to the data.  Therefore, we fitted many
-alternative mixed models, selected the best-fitting one using the Akaike
-Information Criterion (AIC) and confirmed the goodness of fit with diagnostic
-plots (Section~\ref{sec:fitting},
-Fig.~\ref{fig:qqnorm-mixed},~\ref{fig:homoscedas-mixed}).
-
-Based on the selected, best fitting, model we formally tested whether read count ratio
-depends on various predictor terms that represent either the main effect of
-some biological variable or the interaction between two variables
-(Table~\ref{tab:mod-sel}).  For example, given prior observations as well as
-the empirical distribution of data in Figures~\ref{fig:S-Dx}
-and~\ref{fig:S-age}, one would expect the model-based test should detect
-gene-to-gene variability of read count ratio.  Indeed that variability---more
-precisely the random main effect \((1\mid\mathrm{Gene})\) of the Gene
-variable---is strongly supported by the test with a \(\Delta
-\mathrm{AIC}\) of \(-127\) and a p-value of \(<10^{-27}\)
-(Table~\ref{tab:mod-sel}).
-
-Returning to our main question the model-based test did not support any
-overall dependence of read count ratio on diagnosis (\(\Delta \mathrm{AIC} =
-2.0,\; p = 1.0\) for the random main effect \((1\mid\mathrm{Dx})\)) consistent
-with Figures~\ref{fig:S-Dx} and~\ref{fig:S-age}.  A related test for
-gene-specific effects of diagnosis, wherein the effect of Dx varies across the
-thirty genes, also yielded negative result (\(\Delta \mathrm{AIC} = 0.4,\; p =
-0.21\) for the interaction term \((1\,|\,\mathrm{Dx}:\mathrm{Gene})\)), which
-is again consistent with Figures~\ref{fig:S-Dx} and~\ref{fig:S-age}.
-Together, these analyses indicate that diagnosis of SCZ or AFF does not have a
-substantial impact on the extent of allelic bias of imprinted genes in the
-DLPFC. 
-
-\subsection{Gene-specific effects of age and ancestry}
-
-Fig.~\ref{fig:S-age} shows that the read count ratio depends negatively on age
-for some imprinted genes (e.g.~PEG3, ZNF331), depends positively for other
-genes (e.g.~KCNK9, RP13-487P22.1), and is independent of age for the rest of
-imprinted genes (e.g.~NDN, NLRP2).  However, any apparent age effect may be
-indirect in the sense that it is mechanistically mediated by other explanatory
-variables to which age is associated with
-(Fig.~\ref{fig:predictor-associations}).
-
-To investigate the direct effect of age we turned to our best fitting mixed
-model once again, evaluating how significantly predictor terms associated with
-these variables improve the model's fit (Table~\ref{tab:mod-sel}).  As for Dx
-we defined two terms for each variable, the term \(\mathrm{Age}\) represents
-a fixed effect that is shared by all imprinted genes while the term
-\((\mathrm{Age}\,|\,\mathrm{Gene})\) symbolizes random, gene-specific, age effects.
-The shared effect was not supported by our criteria of model fit but the
-gene-specific effects received strong support at \(\Delta\mathrm{AIC}<-20\)
-and \(p<3\times 10^{-5}\), which is consistent with the large gene-to-gene
-variation of age dependence suggested by Fig.~\ref{fig:S-age}.
-
-The above result technically means a significantly greater than zero variance
-of the random coefficients that mediate the gene-specific age effect.  We
-complemented this with the posterior predicted values of those coefficients
-given the data and the estimated variance (Fig.~\ref{fig:pred-rnd-coefs} top
-middle).  These predictions of isolated direct gene-specific age effects showed an overall
-agreement with the qualitative findings on mixed direct and indirect age dependence presented in
-Fig.~\ref{fig:S-age} with some disagreements (e.g.~for UBE3A) that likely reflect 
-purely indirect dependence.
-
-The same type of analysis on the effects of ancestry principal components and
-gender gave similar results.  While the fixed effect, shared by all genes, of
-these variables was negligible, three of the random, gene-specific, effects
-received significant support.  These three, ordered by decreasing
-statistical significance, are
-\((\mathrm{Ancestry.1}\,|\,\mathrm{Gene})\),
-\((\mathrm{Ancestry.3}\,|\,\mathrm{Gene})\) and
-\((1\,|\,\mathrm{Gender}:\mathrm{Gene})\) (Table~\ref{tab:mod-sel}).  The
-corresponding predicted random coefficients are presented in
-Fig.~\ref{fig:pred-rnd-coefs}.
-
-In summary age, ancestry, and to a lesser extent gender, are suggested by our
-model-based analysis to exert effect on allelic bias in a way that the
-direction and magnitude of the effect varies across genes.
-
-\section{Discussion}
-
-The number of imprinted genes in the brain has been controversial: early
-genome wide studies~\cite{Gregg2010a} estimated over a thousand but later the
-same authors and others~\cite{Perez2015,DeVeale2012,Baran2015} found that the
-statistical estimator was heavily biased and with more careful statistical
-analysis they discovered hundred or less imprinted genes in the brain.  Our
-work reinforces the latter group of studies as we identified 30 imprinted
-genes in the DLPFC among the genes we could assess (about the third of all
-genes). 
-
-We have performed the most in-depth analysis up till now on the how 
-imprinting depends on schizophrenia, as well as on age and other variables.  This was made possible by
-(i)
-more study individuals than previous work~\cite{Baran2015} and well
-balanced case-control study groups, and
-(ii)
-powerful statistical inference based on a mixed model that captures much of the complex pattern of
-dependencies in genomic data.  The modeled dependencies include those within and between
-technical and biological variables as well as the partial similarities among
-genes.  Despite these advantages, technical variation is still large and
-consequently so is the uncertainty of our statistical inferences.
-
-Although our approach gave strong support for dependence of imprinting on
-age and ancestry, no dependence on schizophrenia was detected either when
-we assumed that the dependence is the same for all imprinted genes or that it
-varies across genes.  This might seem to suggest that imprinting in the DLFPC
-plays no significant role in schizophrenia and psychotic disorders
-contradicting the ``imprinted brain'' hypothesis~\cite{Crespi2008}.
-Alternatively,
-imprinting does play a role in
-schizophrenia but only very strong perturbations of some
-imprinted genes increase the risk significantly, perturbations that are too
-rare to detect in even at our relatively large sample size.  Additionally, the
-more subtle perturbations in our data might still have a significant effect when
-considered together with other genetic, epigenetic or environmental risk
-factors that were absent in our model.  The complex genetic architecture of
-schizophrenia~\cite{Sullivan2012} makes these alternative explanations 
-quite plausible.
-
-We found that imprinting depends on ancestry in a gene
-specific manner but the type of dependence that is shared by all imprinted
-genes was not supported.  This is expected because the studied
-ancestry variables must incorporate some of the cis expression
-QTLs in imprinted genes such that those eQTLS perturb allelic bias in a gene
-specific manner.
-
-Our discovery that imprinting depends on age in later adulthood is rather
-intriguing.  Although age dependence during embryonic development and
-childhood is both well-supported experimentally and well-understood, that
-during later adulthood has so far only been predicted~\cite{Ubeda2012} based
-on a hypothesis that links ``genomic imprinting and the social
-brain''~\cite{Isles2006}.  Previous genomics studies~\cite{Baran2015} were
-statistically underpowered to address this question in humans and the only
-experimental hints were gained from young mice~\cite{Perez2015}.  Although our
-age-related finding supports the ``social brain'' hypothesis, it leaves the
-possibility open that the observed age related changes indicate merely the
-loss of tight regulation of those genes after because they loose their
-functional significance in aging.
-
-
-\bibliographystyle{plain}
+\clearpage
 \bibliography{library}
-%\bibliography{monoall-ms}
 
-\newpage
+\clearpage
+\section{Acknowledgements}
 
-\section{Figures, Tables and Supplementary Material}
+\clearpage
+\section{Author information}
 
-\begin{table}
-\begin{center}
-\begin{tabular}{rlrc}
-predictor term                              & interpretation&   \(\Delta\)AIC &        p-value \\
-\hline
-\((1\,|\,\mathrm{Gene})\)                   & variability among genes & \(-126.8\)  & \(8.5\times 10^{-28}\) \\
-\((1\,|\,\mathrm{Dx})\)                     & variability among Control, SCZ, AFF & \(2.0\)  & \(1.0\)  \\
-\((1\,|\,\mathrm{Dx}:\mathrm{Gene})\)       & Gene specific variability among Ctrl, SCZ, AFF & \(0.4\) &  \(0.21\) \\
-\(\mathrm{Age}\)                            & effect of Age & \(1.3\)   & \(0.39\) \\
-\((\mathrm{Age}\,|\,\mathrm{Gene})\)        & Gene specific effect of Age & \(-18.9\)  & \(2.5\times 10^{-5}\)  \\
-\(\mathrm{Ancestry.1}\)                     & effect of Ancestry.1 & \(0.6\)  & \(0.24\) \\
-\((\mathrm{Ancestry.1}\,|\,\mathrm{Gene})\) & Gene specific effect of Ancestry.1 & \(-71.2\)   & \(4.6\times 10^{-16}\) \\
-\(\mathrm{Ancestry.3}\)                     & effect of Ancestry.3 & \(1.6\)  & \(0.54\) \\
-\((\mathrm{Ancestry.3}\,|\,\mathrm{Gene})\) & Gene specific effect of Ancestry.3 & \(-17.9\)   & \(3.8\times 10^{-5}\) \\
-\((1\,|\,\mathrm{Gender})\)                 & difference between Male and Female & \(2.0\)  & \(1.0\)  \\
-\((1\,|\,\mathrm{Gender}:\mathrm{Gene})\)   & Gene specific difference between M and F & \(-5.7\) &  \(5.5\times 10^{-3}\) \\
-\end{tabular}
-\end{center}
-\caption{Selected biological terms in the predictor of a mixed model and their impact on model fit.  The
-smaller (more negative) \(\Delta \mathrm{AIC}\), and the smaller the p-value
-(\(\chi^2\)-test),
-the more likely that the term has non-zero effect on the read count ratio.
-For further discussion on interpretation and mathematical properties of terms see
-Section~\ref{sec:mixed-mod}.
-}
-\label{tab:mod-sel}
-\end{table}
+\subsection{Affiliation}
 
-\begin{figure}[h]
+Attila Guly\'{a}s-Kov\'{a}cs\(^a\)\\
+Ifat Keydar\(^{ab}\)\\
+...\\
+Andrew Chess\(^{ac}\)
+
+\begin{description}
+\item[\(a\)] 
+Department of Genetics and Genomic Sciences, Department of Developmental and
+Regenerative Biology, Icahn School of Medicine at Mount Sinai, New York, NY 10029-6574
+\item[\(b\)] 
+current address: TODO
+\item[\(c\)] 
+Fishberg Department of Neuroscience, and Friedman Brain
+Institute, Icahn School of Medicine at Mount Sinai, New York, NY 10029-6574
+\end{description}
+
+\subsection{Contributions}
+
+\subsection{Competing financial interests}
+
+None
+
+\subsection{Corresponding author}
+
+Andrew Chess\\
+email: andrew.chess@mssm.edu
+
+\clearpage
+
+\section{Figures with legends}
+
+\begin{figure}[H]
 \begin{center}
 \includegraphics[width=1.0\textwidth]{figures/by-me/commonmind-rna-seq-ms/commonmind-rna-seq-ms.pdf}
 \end{center}
 \caption{ Quantifying allelic bias of expression in human
-individuals using the RNA-seq read count ratio statistic \(S_{ig}\).  The strength of
+individuals using the RNA-seq read count ratio statistic \(S_{ig}\).\\
+The strength of
 bias towards the expression of the maternal (red) or paternal (blue) allele of
 a given gene \(g\) in individual \(i\) is gauged with the count of RNA-seq
 reads carrying the reference allele (small closed circles) and the count of
@@ -710,34 +717,32 @@ individual is heterozygous.  The allele with the higher read count tends to
 match the allele with the higher expression but measurement errors may
 occasionally revert this tendency as seen for SNP \(s_3\) in gene \(g_1\) in
 individual \(i_2\).
-%The differences in the unobserved allelic bias
-%between individual \(i_1\) and \(i_2\) arise only from biological differences
-%such as their disease status (black and gray silhouettes), age, or gender.  In
-%addition to these, the differences in the observed read count ratio also
-%reflect variation from technical sources like tissue preparation, or RNA
-%sequencing. 
 }
 \label{fig:study-design}
 \end{figure}
 
-\begin{figure}[h]
+\begin{figure}[H]
 \begin{center}
 \includegraphics[scale=0.6]{figures/2016-07-19-genome-wide-S/complex-plot-1.png}
 \end{center}
 \caption{
 Using the read count ratio statistic \(S\) to report on variation of allelic
-bias across individuals and genes.  \emph{Upper half}, from top to bottom: (1)
-kernel density estimate; (2) the graph of the survival function 1 - ECDF,
-where ECDF means empirical cumulative distribution function; note color scale
-for heat map and green filled circles marking genes' score; (3) the heat map
-representation of the survival function.  \emph{Lower half}, main panels: heat
+bias across individuals and genes.\\
+\emph{Upper half, from top to bottom}: (1)
+probability density of \(S\) for three genes taken across individuals; (2)
+the corresponding three survival functions \(1 - \mathrm{ECDF}(S)\), each giving the
+fraction of individuals whose read count ratio \(S'\) is less than \(S\); note color scale
+for heat map and green filled circles marking genes' score at \(1 -
+\mathrm{ECDF}(0.9)\); (3) the same
+survival functions representated as a heat map.\\
+\emph{Lower half, main panels}: heat
 map of the survival function for all 5307 analyzed genes ranked according to
-their score; right side panels: gene score.
+their score; \emph{right side panels}: gene score.
 }
 \label{fig:ranking-genes}
 \end{figure}
 
-\begin{figure}[h]
+\begin{figure}[H]
 \begin{center}
 \includegraphics[scale=0.6]{figures/2016-08-01-ifats-filters/top-ranking-genes-1.pdf}
 \caption{
@@ -756,11 +761,12 @@ reference allele bias could not be determined due to small amount of data.
 \end{center}
 \end{figure}
 
-\begin{figure}[h]
+\begin{figure}[H]
 \begin{center}
 \includegraphics[scale=0.6]{figures/2016-11-01-plotting-distribution-of-s/S-Dx-strip-1.pdf}
 \caption{
-Distribution of read count ratio for control, schizophrenic (SCZ), and
+Schizophrenia does not affect allelic bias of imprinted genes.\\
+Distribution of read count ratio for Control, schizophrenic (SCZ), and
 affectic spectrum (AFF) individuals within each gene that has been considered as imprinted in the DLPFC
 brain area in this study.
 }
@@ -768,81 +774,61 @@ brain area in this study.
 \end{center}
 \end{figure}
 
-\begin{figure}[h]
+\begin{figure}[H]
 \begin{center}
 \includegraphics[scale=0.6]{figures/2016-11-01-plotting-distribution-of-s/S-Dx-age-1.pdf}
 \caption{
-Variation of read count ratio with age.
+Allelic bias depends differentially on age across imprinted genes.\\
+The panels and colors are consistent with the imprinted genes and psychiatric diagnoses
+presented in Fig.~\ref{fig:S-Dx}.  The differential dependence on age is apparent
+when comparing PEG3 or ZNF331 (negative dependence) to KCNK9 or RP13-487P22.1
+(positive dependence) or to NDN or NLRP2 (no dependence).
 }
 \label{fig:S-age}
 \end{center}
 \end{figure}
 
-% Supplementary tables
+\clearpage
 
-\setcounter{table}{0}
-\makeatletter 
-\renewcommand{\thetable}{S\@arabic\c@table}
-\makeatother
+\section{Tables with legends}
 
-\begin{table}[h]
+\begin{table}[H]
 \begin{center}
-\begin{tabular}{r|l}
-explanatory variable & levels\\
+\begin{tabular}{rlrc}
+predictor term                              & interpretation&   \(\Delta\)AIC &        p-value \\
 \hline
-Age &  \\
-Institution & [MSSM], Penn, Pitt\\
-Gender & [Female], Male\\
-PMI & \\
-Dx & [Control], SCZ, AFF \\
-RIN &  \\
-RNA\_batch & [A], B, C, D, E, F, G, H, 0\\
-Ancestry.1 & \\
-\vdots & \\
-Ancestry.5 &  \\
+\((1\,|\,\mathrm{Gene})\)                   & variability among genes & \(-126.8\)  & \(8.5\times 10^{-28}\) \\
+\((1\,|\,\mathrm{Dx})\)                     & variability among Control, SCZ, AFF & \(2.0\)  & \(1.0\)  \\
+\((1\,|\,\mathrm{Dx}:\mathrm{Gene})\)       & Gene specific variability among Ctrl, SCZ, AFF & \(0.4\) &  \(0.21\) \\
+\(\mathrm{Age}\)                            & effect of Age & \(1.3\)   & \(0.39\) \\
+\((\mathrm{Age}\,|\,\mathrm{Gene})\)        & Gene specific effect of Age & \(-18.9\)  & \(2.5\times 10^{-5}\)  \\
+\(\mathrm{Ancestry.1}\)                     & effect of Ancestry.1 & \(0.6\)  & \(0.24\) \\
+\((\mathrm{Ancestry.1}\,|\,\mathrm{Gene})\) & Gene specific effect of Ancestry.1 & \(-71.2\)   & \(4.6\times 10^{-16}\) \\
+\(\mathrm{Ancestry.3}\)                     & effect of Ancestry.3 & \(1.6\)  & \(0.54\) \\
+\((\mathrm{Ancestry.3}\,|\,\mathrm{Gene})\) & Gene specific effect of Ancestry.3 & \(-17.9\)   & \(3.8\times 10^{-5}\) \\
+\((1\,|\,\mathrm{Gender})\)                 & difference between Male and Female & \(2.0\)  & \(1.0\)  \\
+\((1\,|\,\mathrm{Gender}:\mathrm{Gene})\)   & Gene specific difference between M and F & \(-5.7\) &  \(5.5\times 10^{-3}\) \\
 \end{tabular}
-\caption{ \emph{Left column:} explanatory variables of read count
-ratio.  \emph{Right column:} levels of each factor-valued (i.e.~categorical)
-variable.  Square brackets \([...]\) surround the baseline level against
-which other levels are contrasted.  \emph{Abbreviations:} PMI: post-mortem
-interval; Dx: disease status; AFF: affective spectrum disorder; SCZ:
-schizophrenia; RIN: RNA integrity number;
-Ancestry.\(k\): the \(k\)-th eigenvalue from the decomposition of genotypes
-indicating population structure.}
-\label{tab:predictors}
 \end{center}
-\end{table}
-
-\begin{table}
-\begin{center}
-\begin{tabular}{ccc}
-%\multicolumn{2}{c}{\replaced{link function and error distribution}{regression models}} \\
-model family & abbrev. & response var.~\\
-\hline
-\emph{u}nweighted \emph{n}ormal \emph{l}inear & unlm  & \(S, Q,\) or \(R\) \\
-\emph{w}eighted \emph{n}ormal \emph{l}inear & wnlm  & \(S, Q,\) or \(R\) \\
-\emph{logi}stic & logi & \(S\) \\
-\emph{logi}stic, \(\frac{1}{2}\times\) down-scaled link fun.~& logi2 & \(S\) \\
-\end{tabular}
-\caption{Fitted regression model families, in which the response variable is the read count ratio with or without some transformation: 
-\(S\)---untransformed, \(Q\)---\emph{q}uasi-log-transformed, and
-\(R\)---\emph{r}ank-transformed read count ratio.  Diagnostic plots
-(Fig.~\ref{fig:qqnorm-mixed},~\ref{fig:homoscedas-mixed}) and monitoring
-convergence suggested that the \(\mathrm{unlm}.Q\) combination allows the
-best fit for several linear predictors tested.
+\caption{Dependence of read count ratio on various predictor terms: largely
+negative \(\Delta\mathrm{AIC}\) and small p-values indicate significant
+dependence (see Methods).
 }
-\label{tab:model-names}
-\end{center}
+\label{tab:mod-sel}
 \end{table}
 
-% Supplementary figures
+\clearpage
+
+\section{Supplementary information}
+
+\subsection{Supplementary figures with legends}
 
 \setcounter{figure}{0}
 \makeatletter 
 \renewcommand{\thefigure}{S\@arabic\c@figure}
 \makeatother
 
-\begin{figure}[h]
+\begin{figure}[H]
 \begin{center}
 \includegraphics{figures/by-me/monoall-dependencies-2/obs-simple-general/obs-simple-general}
 \hspace{\fill}
@@ -880,7 +866,7 @@ information sharing among genes in a flexible way.  }
 \label{fig:glm-vs-hierarch}
 \end{figure}
 
-\begin{figure}[h]
+\begin{figure}[H]
 \begin{center}
 \includegraphics[scale=0.6]{figures/2017-03-08-model-checking/qqplot-families-M3-1.pdf}
 \end{center}
@@ -890,7 +876,7 @@ Checking the fit of various model families: analysis of the normality of residua
 \label{fig:qqnorm-mixed}
 \end{figure}
 
-\begin{figure}[h]
+\begin{figure}[H]
 \begin{center}
 \includegraphics[scale=0.6]{figures/2017-03-08-model-checking/scedasticity-families-M3-1.pdf}
 \end{center}
@@ -900,7 +886,7 @@ Checking the fit of various model families: analysis of homoscedasticity.
 \label{fig:homoscedas-mixed}
 \end{figure}
 
-\begin{figure}[h]
+\begin{figure}[H]
 \begin{center}
 \includegraphics[scale=0.6]{figures/2016-08-08-imprinted-gene-clusters/score-genomic-location-1.png}
 \end{center}
@@ -911,7 +897,7 @@ had been previously described as imprinted gene clusters in other contexts.
 \label{fig:clusters}
 \end{figure}
 
-\begin{figure}[h]
+\begin{figure}[H]
 \begin{center}
 \includegraphics[scale=0.6]{figures/2016-08-01-ifats-filters/known-genes-1.pdf}
 \caption{Known imprinted genes ranked by the gene score (dark blue bars).
@@ -923,7 +909,7 @@ unbiased expression.}
 \end{center}
 \end{figure}
 
-\begin{figure}[h]
+\begin{figure}[H]
 \begin{center}
 \includegraphics[scale=0.6]{figures/2016-06-26-trellis-display-of-data/evar-scatterplot-matrix-2.png}
 \end{center}
@@ -942,7 +928,7 @@ the two other institutions.
 \label{fig:predictor-associations}
 \end{figure}
 
-\begin{figure}[h]
+\begin{figure}[H]
 \begin{center}
 \includegraphics[scale=0.6]{figures/2017-07-31-mixed-model-coefs/ranef-gender-gender-gene-m5-all-panels-1.png}
 \end{center}
@@ -955,5 +941,64 @@ Fig.~\ref{fig:S-age}.
 }
 \label{fig:pred-rnd-coefs}
 \end{figure}
+
+\clearpage
+
+\subsection{Supplementary tables with legends}
+
+\setcounter{table}{0}
+\makeatletter 
+\renewcommand{\thetable}{S\@arabic\c@table}
+\makeatother
+
+\begin{table}[H]
+\begin{center}
+\begin{tabular}{r|l}
+explanatory variable & levels\\
+\hline
+Age &  \\
+Institution & [MSSM], Penn, Pitt\\
+Gender & [Female], Male\\
+PMI & \\
+Dx & [Control], SCZ, AFF \\
+RIN &  \\
+RNA\_batch & [A], B, C, D, E, F, G, H, 0\\
+Ancestry.1 & \\
+\vdots & \\
+Ancestry.5 &  \\
+\end{tabular}
+\caption{ \emph{Left column:} explanatory variables of read count
+ratio.  \emph{Right column:} levels of each factor-valued (i.e.~categorical)
+variable.  Square brackets \([...]\) surround the baseline level against
+which other levels are contrasted.  \emph{Abbreviations:} PMI: post-mortem
+interval; Dx: disease status; AFF: affective spectrum disorder; SCZ:
+schizophrenia; RIN: RNA integrity number;
+Ancestry.\(k\): the \(k\)-th eigenvalue from the decomposition of genotypes
+indicating population structure.}
+\label{tab:predictors}
+\end{center}
+\end{table}
+
+\begin{table}[H]
+\begin{center}
+\begin{tabular}{ccc}
+%\multicolumn{2}{c}{\replaced{link function and error distribution}{regression models}} \\
+model family & abbrev. & response var.~\\
+\hline
+\emph{u}nweighted \emph{n}ormal \emph{l}inear & unlm  & \(S, Q,\) or \(R\) \\
+\emph{w}eighted \emph{n}ormal \emph{l}inear & wnlm  & \(S, Q,\) or \(R\) \\
+\emph{logi}stic & logi & \(S\) \\
+\emph{logi}stic, \(\frac{1}{2}\times\) down-scaled link fun.~& logi2 & \(S\) \\
+\end{tabular}
+\caption{Fitted regression model families, in which the response variable is the read count ratio with or without some transformation: 
+\(S\)---untransformed, \(Q\)---\emph{q}uasi-log-transformed, and
+\(R\)---\emph{r}ank-transformed read count ratio.  Diagnostic plots
+(Fig.~\ref{fig:qqnorm-mixed},~\ref{fig:homoscedas-mixed}) and monitoring
+convergence suggested that the \(\mathrm{unlm}.Q\) combination allows the
+best fit for several linear predictors tested.
+}
+\label{tab:model-names}
+\end{center}
+\end{table}
 
 \end{document}
