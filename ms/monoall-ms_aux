@@ -23,26 +23,26 @@
 \citation{Isles2006}
 \citation{Baran2015}
 \citation{Perez2015}
-\@writefile{toc}{\contentsline {section}{\numberline {2}Methods}{7}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.1}Defining the read count ratio to quantify allelic bias}{7}}
-\newlabel{eq:S-definition}{{1}{7}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.2}Brain samples, RNA-seq}{7}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.3}Mapping, SNP calling and filtering}{7}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.4}Genotyping and calibration of imputed SNPs}{8}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.5}Quality filtering}{8}}
-\newlabel{sec:filtering}{{2.5}{8}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.6}Test for nearly unbiased expression}{8}}
-\newlabel{eq:unbiased-test}{{2}{8}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.7}Mixed and fixed regression models}{9}}
-\newlabel{sec:methods-regression}{{2.7}{9}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.8}Formulation and interpretation of mixed models}{9}}
-\newlabel{sec:mixed-mod}{{2.8}{9}}
-\newlabel{eq:mixed-mod-matrix}{{4}{9}}
-\newlabel{eq:toy-mod-r}{{7}{10}}
-\newlabel{eq:toy-mod-math}{{8}{10}}
-\newlabel{eq:mixed-mod-general}{{9}{11}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.9}Model fitting and selection}{11}}
-\newlabel{sec:fitting}{{2.9}{11}}
+\@writefile{toc}{\contentsline {section}{\numberline {2}Methods}{6}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.1}Defining the read count ratio to quantify allelic bias}{6}}
+\newlabel{eq:S-definition}{{1}{6}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.2}Brain samples, RNA-seq}{6}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.3}Mapping, SNP calling and filtering}{6}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.4}Genotyping and calibration of imputed SNPs}{7}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.5}Quality filtering}{7}}
+\newlabel{sec:filtering}{{2.5}{7}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.6}Test for nearly unbiased expression}{7}}
+\newlabel{eq:unbiased-test}{{2}{7}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.7}Mixed and fixed regression models}{8}}
+\newlabel{sec:methods-regression}{{2.7}{8}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.8}Formulation and interpretation of mixed models}{8}}
+\newlabel{sec:mixed-mod}{{2.8}{8}}
+\newlabel{eq:mixed-mod-matrix}{{4}{8}}
+\newlabel{eq:toy-mod-r}{{7}{9}}
+\newlabel{eq:toy-mod-math}{{8}{9}}
+\newlabel{eq:mixed-mod-general}{{9}{10}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.9}Model fitting and selection}{10}}
+\newlabel{sec:fitting}{{2.9}{10}}
 \bibdata{library}
 \bibcite{Bai2014a}{1}
 \bibcite{Baran2015}{2}
@@ -54,50 +54,50 @@
 \bibcite{Isles2006}{8}
 \bibcite{Noor2015}{9}
 \bibcite{Perez2015}{10}
-\@writefile{toc}{\contentsline {section}{\numberline {3}References}{12}}
+\@writefile{toc}{\contentsline {section}{\numberline {3}References}{11}}
 \bibcite{Rees2014}{11}
 \bibcite{Sullivan2012}{12}
 \bibcite{Ubeda2012}{13}
 \bibcite{Zheng2014}{14}
 \bibcite{Zwemer2012}{15}
-\@writefile{toc}{\contentsline {section}{\numberline {4}Acknowledgements}{14}}
-\@writefile{toc}{\contentsline {section}{\numberline {5}Author information}{15}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {5.1}Affiliation}{15}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {5.2}Contributions}{15}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {5.3}Competing financial interests}{15}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {5.4}Corresponding author}{15}}
-\@writefile{toc}{\contentsline {section}{\numberline {6}Figures with legends}{16}}
-\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces  Quantifying allelic bias of expression in human individuals using the RNA-seq read count ratio statistic \(S_{ig}\). The strength of bias towards the expression of the maternal (red) or paternal (blue) allele of a given gene \(g\) in individual \(i\) is gauged with the count of RNA-seq reads carrying the reference allele (small closed circles) and the count of reads carrying an alternative allele (open squares) at all SNPs for which the individual is heterozygous. The allele with the higher read count tends to match the allele with the higher expression but measurement errors may occasionally revert this tendency as seen for SNP \(s_3\) in gene \(g_1\) in individual \(i_2\). }}{16}}
-\newlabel{fig:study-design}{{1}{16}}
-\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces  Using the read count ratio statistic \(S\) to report on variation of allelic bias across individuals and genes. \emph  {Upper half, from top to bottom}: (1) probability density of \(S\) for three genes taken across individuals; (2) the corresponding three survival functions \(1 - \mathrm  {ECDF}(S)\), each giving the fraction of individuals whose read count ratio \(S'\) is less than \(S\); note color scale for heat map and green filled circles marking genes' score at \(1 - \mathrm  {ECDF}(0.9)\); (3) the same survival functions representated as a heat map. \emph  {Lower half, main panels}: heat map of the survival function for all 5307 analyzed genes ranked according to their score; \emph  {right side panels}: gene score. }}{17}}
-\newlabel{fig:ranking-genes}{{2}{17}}
-\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces  The top 50 genes ranked by the gene score. The score of gene \(g\) is \(1 - \mathrm  {ECDF}_g(0.9)\), the fraction of individuals \(i\) for which \(S_{ig}>0.9\) and is indicated by the length of dark blue, dark green or dark red bars. Note that the same ranking and score is shown in the bottom half of Fig.\nobreakspace  {}1\hbox {}. The right border of the light blue, light green and light red bars is at \(1 - \mathrm  {ECDF}_g(0.8)\). The length of the black bars indicates the fraction of individuals passing the test of nearly unbiased expression (Eq.\nobreakspace  {}2\hbox {}). ``X'' characters next to gene names indicate reference allele bias, while ``0'' indicate that reference allele bias could not be determined due to small amount of data. }}{18}}
-\newlabel{fig:top-genes}{{3}{18}}
-\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces  Schizophrenia does not affect allelic bias of imprinted genes. Distribution of read count ratio for Control, schizophrenic (SCZ), and affectic spectrum (AFF) individuals within each gene that has been considered as imprinted in the DLPFC brain area in this study. }}{19}}
-\newlabel{fig:S-Dx}{{4}{19}}
-\@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces  Allelic bias depends differentially on age across imprinted genes. The panels and colors are consistent with the imprinted genes and psychiatric diagnoses presented in Fig.\nobreakspace  {}3\hbox {}. The differential dependence on age is apparent when comparing PEG3 or ZNF331 (negative dependence) to KCNK9 or RP13-487P22.1 (positive dependence) or to NDN or NLRP2 (no dependence). }}{20}}
-\newlabel{fig:S-age}{{5}{20}}
-\@writefile{toc}{\contentsline {section}{\numberline {7}Tables with legends}{21}}
-\@writefile{lot}{\contentsline {table}{\numberline {1}{\ignorespaces Dependence of read count ratio on various predictor terms: largely negative \(\Delta \mathrm  {AIC}\) and small p-values indicate significant dependence (see Methods). }}{21}}
-\newlabel{tab:mod-sel}{{1}{21}}
-\@writefile{toc}{\contentsline {section}{\numberline {8}Supplementary information}{22}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {8.1}Supplementary figures with legends}{22}}
-\@writefile{lof}{\contentsline {figure}{\numberline {S1}{\ignorespaces  General dependency structures in two fixed effects regression models (\emph  {left}, \emph  {middle}) and a mixed effects model (\emph  {right}). In all three cases the regression coefficients \(\beta _{1g},...,\beta _{3g}\) or \(\beta _{1g},b_{2g},b_{3g}\) mediate, for a given gene \(g\), probabilistic dependencies (arrows) between the response variable \(Y_g\) (read count ratio for \(g\)) and the corresponding explanatory variables \(X_1,...,X_3\). For simplicity but without loss of generality only 3 explanatory variables are depicted. The model frameworks differ in how the coefficients relate to each other for a given explanatory variable (or a given \(j\)). \emph  {Left:} there is no connection among \(\beta _{jg_1},\beta _{jg_2},...\) which means that the way \(Y_{g}\), the read count ratio for gene \(g\) depends on variable \(X_j\) is completely separate from how the read count ratio for any other gene \(g'\) (i.e.\nobreakspace  {}\(Y_{g'}\)) depends on it. Consequently no information may be shared among gene-specific models. \emph  {Middle:} In this case \(\beta _{jg_1}=\beta _{jg_2}=...\equiv \beta _j\) so that all genes are identical with respect to how their read count ratio depends the explanatory variables. Thus genes share all information in the data in the sense that the model forces them to be identical. \emph  {Right:} Hierarchical mixed effects model where certain dependencies (\(\beta _1\)) are shared among genes while others (\(\{b_{2g}\}_g, \{b_{3g}\}_g\)) vary across genes. The variation is controlled by the variance parameters \(\sigma ^2_j\). In this example there is a single set \(\{b_{2g}\}_g\) of random coefficients for \(X_2\)---and a similar set for \(X_3\)---, which are random intercepts. In general, however, one or more set of random slope coefficients may also be present. Given the estimates \(\mathaccentV {hat}05E{\sigma }^2_j\) and the data the gene-specific random coefficients \(b_{jg}\) can be predicted. Among the three only this model framework allows information sharing among genes in a flexible way. }}{22}}
-\newlabel{fig:glm-vs-hierarch}{{S1}{22}}
-\@writefile{lof}{\contentsline {figure}{\numberline {S2}{\ignorespaces  Checking the fit of various model families: analysis of the normality of residuals. }}{23}}
-\newlabel{fig:qqnorm-mixed}{{S2}{23}}
-\@writefile{lof}{\contentsline {figure}{\numberline {S3}{\ignorespaces  Checking the fit of various model families: analysis of homoscedasticity. }}{24}}
-\newlabel{fig:homoscedas-mixed}{{S3}{24}}
-\@writefile{lof}{\contentsline {figure}{\numberline {S4}{\ignorespaces  Clustering of top-scoring genes in the context of human DLPFC around genomic locations that had been previously described as imprinted gene clusters in other contexts. }}{25}}
-\newlabel{fig:clusters}{{S4}{25}}
-\@writefile{lof}{\contentsline {figure}{\numberline {S5}{\ignorespaces Known imprinted genes ranked by the gene score (dark blue bars). ``Known imprinted'' refers to prior studies on imprinting in the context of any tissue and developmental stage. The length of the black bars indicates the fraction of individuals passing the test of nearly unbiased expression.}}{26}}
-\newlabel{fig:known-genes}{{S5}{26}}
-\@writefile{lof}{\contentsline {figure}{\numberline {S6}{\ignorespaces  Distribution and inter-dependence of explanatory variables. The diagonal graphs of the plot-matrix show the marginal distribution of six variables (Age, Institution,...)\nobreakspace  {}while the off-diagonal graphs show pairwise joint distributions. For instance, the upper left graph shows that, in the whole cohort, individuals' Age ranges between ca.\nobreakspace  {}15 and 105 years and most individuals around 75 years; the bottom and right neighbor of this graph both show (albeit in different representation) the joint distribution of Age and Institution, from which can be seen that individuals from Pittsburg tended to be younger than those from the two other institutions. }}{27}}
-\newlabel{fig:predictor-associations}{{S6}{27}}
-\@writefile{lof}{\contentsline {figure}{\numberline {S7}{\ignorespaces  Predicted random coefficients \(b_{gj}\) for gene \(g\) (\(y\)-axis) and random effect \(j\) (panel headers). Positive and negative coefficient indicates direct positive and negative dependence of the given gene's read count ratio on age, respectively, while zero coefficient suggests independence of age. Compare with Fig.\nobreakspace  {}4\hbox {}. }}{28}}
-\newlabel{fig:pred-rnd-coefs}{{S7}{28}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {8.2}Supplementary tables with legends}{29}}
-\@writefile{lot}{\contentsline {table}{\numberline {S1}{\ignorespaces  \emph  {Left column:} explanatory variables of read count ratio. \emph  {Right column:} levels of each factor-valued (i.e.\nobreakspace  {}categorical) variable. Square brackets \([...]\) surround the baseline level against which other levels are contrasted. \emph  {Abbreviations:} PMI: post-mortem interval; Dx: disease status; AFF: affective spectrum disorder; SCZ: schizophrenia; RIN: RNA integrity number; Ancestry.\(k\): the \(k\)-th eigenvalue from the decomposition of genotypes indicating population structure.}}{29}}
-\newlabel{tab:predictors}{{S1}{29}}
-\@writefile{lot}{\contentsline {table}{\numberline {S2}{\ignorespaces Fitted regression model families, in which the response variable is the read count ratio with or without some transformation: \(S\)---untransformed, \(Q\)---\emph  {q}uasi-log-transformed, and \(R\)---\emph  {r}ank-transformed read count ratio. Diagnostic plots (Fig.\nobreakspace  {}S3\hbox {},\nobreakspace  {}S4\hbox {}) and monitoring convergence suggested that the \(\mathrm  {unlm}.Q\) combination allows the best fit for several linear predictors tested. }}{29}}
-\newlabel{tab:model-names}{{S2}{29}}
+\@writefile{toc}{\contentsline {section}{\numberline {4}Acknowledgements}{13}}
+\@writefile{toc}{\contentsline {section}{\numberline {5}Author information}{14}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.1}Affiliation}{14}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.2}Contributions}{14}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.3}Competing financial interests}{14}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.4}Corresponding author}{14}}
+\@writefile{toc}{\contentsline {section}{\numberline {6}Figures with legends}{15}}
+\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces  Quantifying allelic bias of expression in human individuals using the RNA-seq read count ratio statistic \(S_{ig}\). The strength of bias towards the expression of the maternal (red) or paternal (blue) allele of a given gene \(g\) in individual \(i\) is gauged with the count of RNA-seq reads carrying the reference allele (small closed circles) and the count of reads carrying an alternative allele (open squares) at all SNPs for which the individual is heterozygous. The allele with the higher read count tends to match the allele with the higher expression but measurement errors may occasionally revert this tendency as seen for SNP \(s_3\) in gene \(g_1\) in individual \(i_2\). }}{15}}
+\newlabel{fig:study-design}{{1}{15}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces  Across-individuals distribution of read count ratio \(S\) for each gene indicates substantial variation of allelic bias. The vertically arranged five main panels present the empirical distribution of \(S_{\cdot g}\) across all individuals given each gene \(g\). The \emph  {upper three panels} are distinct representations (density plot, survival plot \(1 - \mathrm  {ECDF}\), and survival heatmap) of the same three distributions: two for PEG10 and ZNF331, previously found to be imprinted in mice or in other human tissues, and one for AFAP1, a gene without prior evidence. Note the color scale in the survival plot (\emph  {second panel from top}) for the heatmaps (\emph  {third, fourth and fifth main panels from top}). The bottom two survival heatmaps present the distribution of \(S_{\cdot g}\) for the top \(2\%\) and \(100\%\) of the 5307 analyzed genes. These are ranked according to gene score defined as \(1 - \mathrm  {ECDF}(0.9)\) in the \emph  {bottom far right panels}. The score of PEG10, ZNF331, and AFAP1 is marked by \(a,b,c\) in green circles, respectively. As expected, PEG10 and ZNF331 both score high and rank within the top 30 of all genes suggesting they are also imprinted in the present context, the adult human DLFPC. The bottom panels also indicate that \(>1\%\) of all genes might be imprinted. }}{16}}
+\newlabel{fig:ranking-genes}{{2}{16}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces  The top 50 genes ranked by the gene score. The score of gene \(g\) is \(1 - \mathrm  {ECDF}_g(0.9)\), the fraction of individuals \(i\) for which \(S_{ig}>0.9\) and is indicated by the length of dark blue, dark green or dark red bars. Note that the same ranking and score is shown in the bottom half of Fig.\nobreakspace  {}2\hbox {}. The right border of the light blue, light green and light red bars is at \(1 - \mathrm  {ECDF}_g(0.8)\). The length of the black bars indicates the fraction of individuals passing the test of nearly unbiased expression (Eq.\nobreakspace  {}2\hbox {}). ``X'' characters next to gene names indicate reference allele bias, while ``0'' indicate that reference allele bias could not be determined due to small amount of data. }}{17}}
+\newlabel{fig:top-genes}{{3}{17}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces  Schizophrenia does not affect allelic bias of imprinted genes. Distribution of read count ratio for Control, schizophrenic (SCZ), and affectic spectrum (AFF) individuals within each gene that has been considered as imprinted in the DLPFC brain area in this study. }}{18}}
+\newlabel{fig:S-Dx}{{4}{18}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces  Allelic bias depends differentially on age across imprinted genes. The panels and colors are consistent with the imprinted genes and psychiatric diagnoses presented in Fig.\nobreakspace  {}4\hbox {}. The differential dependence on age is apparent when comparing PEG3 or ZNF331 (negative dependence) to KCNK9 or RP13-487P22.1 (positive dependence) or to NDN or NLRP2 (no dependence). }}{19}}
+\newlabel{fig:S-age}{{5}{19}}
+\@writefile{toc}{\contentsline {section}{\numberline {7}Tables with legends}{20}}
+\@writefile{lot}{\contentsline {table}{\numberline {1}{\ignorespaces Dependence of read count ratio on various predictor terms: largely negative \(\Delta \mathrm  {AIC}\) and small p-values indicate significant dependence (see Methods). }}{20}}
+\newlabel{tab:mod-sel}{{1}{20}}
+\@writefile{toc}{\contentsline {section}{\numberline {8}Supplementary information}{21}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {8.1}Supplementary figures with legends}{21}}
+\@writefile{lof}{\contentsline {figure}{\numberline {S1}{\ignorespaces  General dependency structures in two fixed effects regression models (\emph  {left}, \emph  {middle}) and a mixed effects model (\emph  {right}). In all three cases the regression coefficients \(\beta _{1g},...,\beta _{3g}\) or \(\beta _{1g},b_{2g},b_{3g}\) mediate, for a given gene \(g\), probabilistic dependencies (arrows) between the response variable \(Y_g\) (read count ratio for \(g\)) and the corresponding explanatory variables \(X_1,...,X_3\). For simplicity but without loss of generality only 3 explanatory variables are depicted. The model frameworks differ in how the coefficients relate to each other for a given explanatory variable (or a given \(j\)). \emph  {Left:} there is no connection among \(\beta _{jg_1},\beta _{jg_2},...\) which means that the way \(Y_{g}\), the read count ratio for gene \(g\) depends on variable \(X_j\) is completely separate from how the read count ratio for any other gene \(g'\) (i.e.\nobreakspace  {}\(Y_{g'}\)) depends on it. Consequently no information may be shared among gene-specific models. \emph  {Middle:} In this case \(\beta _{jg_1}=\beta _{jg_2}=...\equiv \beta _j\) so that all genes are identical with respect to how their read count ratio depends the explanatory variables. Thus genes share all information in the data in the sense that the model forces them to be identical. \emph  {Right:} Hierarchical mixed effects model where certain dependencies (\(\beta _1\)) are shared among genes while others (\(\{b_{2g}\}_g, \{b_{3g}\}_g\)) vary across genes. The variation is controlled by the variance parameters \(\sigma ^2_j\). In this example there is a single set \(\{b_{2g}\}_g\) of random coefficients for \(X_2\)---and a similar set for \(X_3\)---, which are random intercepts. In general, however, one or more set of random slope coefficients may also be present. Given the estimates \(\mathaccentV {hat}05E{\sigma }^2_j\) and the data the gene-specific random coefficients \(b_{jg}\) can be predicted. Among the three only this model framework allows information sharing among genes in a flexible way. }}{21}}
+\newlabel{fig:glm-vs-hierarch}{{S1}{21}}
+\@writefile{lof}{\contentsline {figure}{\numberline {S2}{\ignorespaces  Checking the fit of various model families: analysis of the normality of residuals. }}{22}}
+\newlabel{fig:qqnorm-mixed}{{S2}{22}}
+\@writefile{lof}{\contentsline {figure}{\numberline {S3}{\ignorespaces  Checking the fit of various model families: analysis of homoscedasticity. }}{23}}
+\newlabel{fig:homoscedas-mixed}{{S3}{23}}
+\@writefile{lof}{\contentsline {figure}{\numberline {S4}{\ignorespaces  Clustering of top-scoring genes in the context of human DLPFC around genomic locations that had been previously described as imprinted gene clusters in other contexts. }}{24}}
+\newlabel{fig:clusters}{{S4}{24}}
+\@writefile{lof}{\contentsline {figure}{\numberline {S5}{\ignorespaces Known imprinted genes ranked by the gene score (dark blue bars). ``Known imprinted'' refers to prior studies on imprinting in the context of any tissue and developmental stage. The length of the black bars indicates the fraction of individuals passing the test of nearly unbiased expression.}}{25}}
+\newlabel{fig:known-genes}{{S5}{25}}
+\@writefile{lof}{\contentsline {figure}{\numberline {S6}{\ignorespaces  Distribution and inter-dependence of explanatory variables. The diagonal graphs of the plot-matrix show the marginal distribution of six variables (Age, Institution,...)\nobreakspace  {}while the off-diagonal graphs show pairwise joint distributions. For instance, the upper left graph shows that, in the whole cohort, individuals' Age ranges between ca.\nobreakspace  {}15 and 105 years and most individuals around 75 years; the bottom and right neighbor of this graph both show (albeit in different representation) the joint distribution of Age and Institution, from which can be seen that individuals from Pittsburg tended to be younger than those from the two other institutions. }}{26}}
+\newlabel{fig:predictor-associations}{{S6}{26}}
+\@writefile{lof}{\contentsline {figure}{\numberline {S7}{\ignorespaces  Predicted random coefficients \(b_{gj}\) for gene \(g\) (\(y\)-axis) and random effect \(j\) (panel headers). Positive and negative coefficient indicates direct positive and negative dependence of the given gene's read count ratio on age, respectively, while zero coefficient suggests independence of age. Compare with Fig.\nobreakspace  {}5\hbox {}. }}{27}}
+\newlabel{fig:pred-rnd-coefs}{{S7}{27}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {8.2}Supplementary tables with legends}{28}}
+\@writefile{lot}{\contentsline {table}{\numberline {S1}{\ignorespaces  \emph  {Left column:} explanatory variables of read count ratio. \emph  {Right column:} levels of each factor-valued (i.e.\nobreakspace  {}categorical) variable. Square brackets \([...]\) surround the baseline level against which other levels are contrasted. \emph  {Abbreviations:} PMI: post-mortem interval; Dx: disease status; AFF: affective spectrum disorder; SCZ: schizophrenia; RIN: RNA integrity number; Ancestry.\(k\): the \(k\)-th eigenvalue from the decomposition of genotypes indicating population structure.}}{28}}
+\newlabel{tab:predictors}{{S1}{28}}
+\@writefile{lot}{\contentsline {table}{\numberline {S2}{\ignorespaces Fitted regression model families, in which the response variable is the read count ratio with or without some transformation: \(S\)---untransformed, \(Q\)---\emph  {q}uasi-log-transformed, and \(R\)---\emph  {r}ank-transformed read count ratio. Diagnostic plots (Fig.\nobreakspace  {}S2\hbox {},\nobreakspace  {}S3\hbox {}) and monitoring convergence suggested that the \(\mathrm  {unlm}.Q\) combination allows the best fit for several linear predictors tested. }}{28}}
+\newlabel{tab:model-names}{{S2}{28}}

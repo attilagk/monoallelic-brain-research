@@ -57,20 +57,20 @@ Andrew Chess\(^\ast\)}
 
 How inter-individual differences in gene regulation correlates with disease is
 beginning to be examined through analyses of RNA-seq from post-mortem brains
-of individuals with schizophrenia and from control brains~\cite{Fromer2016a}
-(TODO: other papers?). Here we focus on differences in allele-specific
-expression, following up on the CommonMind Consortium (CMC
-http://www.synapse.org/CMC) RNA-seq analyses of 579 human dorsolateral
-prefrontal cortex (DLPFC) samples.  We find that the fraction of imprinted
-human genes is consistent with lower (\(\approx 0.5
+of individuals with schizophrenia and from control brains~\cite{Fromer2016a}.
+Here we focus on differences in allele-specific expression, following up on
+the CommonMind Consortium (CMC http://www.synapse.org/CMC) RNA-seq analyses of
+579 human dorsolateral prefrontal cortex (DLPFC) samples.  We find that the
+fraction of imprinted human genes is consistent with lower (\(\approx 0.5
 \%\))~\cite{Perez2015,DeVeale2012,Baran2015} as opposed to
 higher~\cite{Gregg2010a} estimates in mice. The handful of novel potentially
 imprinted genes we find are all in close genomic proximity to known imprinted
-genes.  Analyzing the extent of allelic bias across hundreds of individuals
-allowed us to examine the impact of various factors on allelic bias. We find
-no impact of the diagnosis of schizophrenia on allelic bias.  Analyses of
-other factors indicates that age up or down-regulates allelic bias of some
-imprinted genes and that genetic ancestry also impacts allelic bias.  
+genes.  Analyzing the extent of allelic expression bias---a hallmark of
+imprinting---across hundreds of individuals allowed us to examine its
+dependence on various factors.  We find that allelic bias is independent of
+the diagnosis of schizophrenia is independent of allelic bias.  In contrast
+age up or down-regulates allelic bias of some imprinted genes and genetic
+ancestry also has an impact.
 
 The observation~\cite{Noor2015,Rees2014} that maternally derived
 microduplications at 15q11-q13---harboring the imprinted gene UBE3A---may not
@@ -78,54 +78,45 @@ only cause Prader-Willi syndrome, but are also highly penetrant for
 schizophrenia has raised the possibility that perturbation of regulation of
 imprinted genes in general may play a role in psychotic disorders.  As it is
 known that the extent of imprinting of individual genes varies over different
-tissues we chose the DLPFC region, which controls complex cognitive
-and executive functions and is known to display functional abnormalities in
+tissues we chose the DLPFC region, which controls complex cognitive and
+executive functions and is known to display functional abnormalities in
 schizophrenia.  We obtained pre-publication DLPFC RNA-seq data from the CMC
-and analyzed allele-specific expression with the idea of assessing the
-fraction of human genes subject to imprinting as well as analyzing the
-variability in allelic bias across individuals and whether or not there is
-correlation with psychiatric diagnosis. Furthermore, the large age at death variability
-allowed us to examine, for individual imprinted genes, to what extent allelic
-bias changes as a function of age.
+and analyzed allele-specific expression with the idea of (i) identifying
+imprinted genes in the human brain and (ii) explaining the
+variability in allelic bias across 579 individuals in terms of their
+psychiatric diagnosis, age at death, etc.  This was facilitated by the
+balanced case-control groups (258 SCZ, 267 Control, 54 bipolar or other
+affective/mood disorder, AFF) and the large age variability.
 
-The large number of samples (258 SCZ, 267 Control, 54 bipolar or other
-affective/mood disorder, AFF) allowed us to explore these questions of
-interest.  
+For each individual \(i\) and gene \(g\) we quantified allelic bias based on
+RNA-seq reads using a statistic called \emph{read count ratio} \(S_{ig}\)
+(Fig.~\ref{fig:study-design}), which ranges from 0.5 to 1 indicating unbiased
+biallelic expression (at 0.5), some allelic bias (at intermediate values) or
+strictly monoallelic expression (at 1) (Methods).  We corrected for a number
+of factors this approach is known to be sensitive to.  We quality-filtered
+RNA-seq reads and helped distinguish allele-specific reads using DNA
+genotyping data before calculating \(S\) and then applied post-hoc corrections
+for mapping bias (Methods).
 
 A total of \(5307\) genes passed our filters designed to remove genes with
 scarce RNA-seq data reflecting low expression and/or low coverage of RNA-seq.
-Examining these genes, we performed exploratory statistical analysis based on
-the read count ratio statistic \(S_{ig}\), whose results (below) we
-interpreted in terms of the variation of allelic bias both across genes \(g\)
-and across individuals \(i\).  Note that our later analyses used
-information not only in \(S_{ig}\) but also in the total read count as well as
-in data beyond RNA-seq.
-
 Fig.~\ref{fig:ranking-genes} presents the conditional empirical distribution
-of \(S_{\cdot g}\) given each gene \(g\).  Each of the three plots of the
-upper half show in a distinct representation the same empirical distributions
-based on data for three genes.  The main panels of the lower half present, in
-the most compact representation, the distributions based on all data (5307
-genes).  Two of the three genes in the upper half, PEG10 and ZNF331, are
-\emph{known imprinted} genes in the sense that they had previously been found
-imprinted in the context of some developmental stage, species, and tissue type
-other than the adult human DLPFC.  The third, AFAP1, has not been reported to be imprinted
-in any context.  For all three genes \(S_{\cdot g}\) varies considerably
-within its theoretical range \([\frac{1}{2}, 1]\).  This suggests variation of
-allelic bias across study individuals, although some component of the
-variation of \(S_{\cdot g}\) must originate from technical sources.
+of \(S_{\cdot g}\) across all individuals given each gene \(g\).  The observed wide
+distributions suggest large across-individuals variation of allelic bias for all
+genes, even if a substantial component of the variation originates from technical sources.
+Still, as expected, for many genes known to be imprinted in mice or in other human tissues
+(referred to as \emph{known imprinted} genes like PEG10, ZNF331) the distribution of \(S_{\cdot g}\) was shifted
+to the right signaling strong allelic bias (Fig.~\ref{fig:ranking-genes}, upper
+half).
 
-To identify imprinted genes based on the read count ratio we
-defined the score of each gene \(g\) as the location statistic \(1 -
-\mathrm{ECDF}_g(0.9)\), which is the fraction of
-individuals \(i\) for whom \(S_{ig}>0.9\).  We ranked all 5307 genes
-according to their score shown in the side plots of the lower half of
-Fig.~\ref{fig:ranking-genes} as gray filled circles.  Larger green circles
-mark the three genes mentioned above.  The heat map of empirical distribution
-of \(S_{\cdot g}\) of ranked genes (Fig.~\ref{fig:ranking-genes}, lower left)
-suggests that the top \(50\) genes, which constitute \(\approx 1\%\) of all
-genes in our analysis, are qualitatively different from the bottom \(\approx
-99\%\) suggesting that most of them are imprinted.  Consistent with this, the
+To identify imprinted genes in the human adult DLPFC we defined the score of
+each gene \(g\) as the fraction of individuals \(i\) for whom \(S_{ig}>0.9\).
+We ranked all 5307 genes according to their score
+(Fig.~\ref{fig:ranking-genes} bottom right).  The heat map of the \(S_{\cdot
+g}\) distribution for ranked genes (Fig.~\ref{fig:ranking-genes}, lower left)
+shows that the top \(50\) genes, which constitute \(\approx 1\%\) of all genes
+in our analysis, are qualitatively different from the bottom \(\approx 99\%\)
+suggesting that most of them are imprinted.  Consistent with this, the
 top-scoring genes tended to cluster around genomic locations that had been
 previously described as imprinted gene clusters (Fig.~\ref{fig:clusters}).
 
@@ -296,8 +287,8 @@ of imprinted genes in the brain.
 We have performed the most in-depth analysis up till now on the how 
 imprinting depends on schizophrenia, as well as on age and other variables.  This was made possible by
 (i)
-more study individuals than previous work~\cite{Baran2015} and well
-balanced case-control study groups, and
+more study individuals than in previous work~\cite{Baran2015} distributed in
+well-balanced case-control study groups, and
 (ii)
 powerful statistical inference based on a mixed model that captures much of the complex pattern of
 dependencies in genomic data.  The modeled dependencies include those within and between
@@ -349,7 +340,7 @@ functional significance in aging.
 
 \subsection{Defining the read count ratio to quantify allelic bias}
 
-We quantifieied allelic bias based on RNA-seq reads using a statistic called
+We quantified allelic bias based on RNA-seq reads using a statistic called
 \emph{read count ratio} \(S\), whose definition we
 based on the total read count \(T\) and the \emph{higher read count} \(H\),
 i.e.~the count of reads carrying only either the reference or the alternative SNP variant,
@@ -725,17 +716,24 @@ individual \(i_2\).  }
 \begin{center}
 \includegraphics[scale=0.6]{figures/2016-07-19-genome-wide-S/complex-plot-1.png}
 \end{center}
-\caption{ Using the read count ratio statistic \(S\) to report on variation of allelic
-bias across individuals and genes.
-\emph{Upper half, from top to bottom}: (1)
-probability density of \(S\) for three genes taken across individuals; (2)
-the corresponding three survival functions \(1 - \mathrm{ECDF}(S)\), each giving the
-fraction of individuals whose read count ratio \(S'\) is less than \(S\); note color scale
-for heat map and green filled circles marking genes' score at \(1 - \mathrm{ECDF}(0.9)\); (3) the same
-survival functions representated as a heat map.
-\emph{Lower half, main panels}: heat
-map of the survival function for all 5307 analyzed genes ranked according to
-their score; \emph{right side panels}: gene score.
+\caption{ Across-individuals distribution of read count ratio \(S\) for each
+gene indicates substantial variation of allelic bias.  The vertically arranged
+five main panels present the empirical distribution of \(S_{\cdot g}\) across all
+individuals given each gene \(g\).  The \emph{upper three panels} are distinct
+representations (density plot, survival plot \(1 - \mathrm{ECDF}\), and
+survival heatmap) of the same three distributions: two for PEG10 and ZNF331,
+previously found to be imprinted in mice or in other human tissues, and one
+for AFAP1, a gene without prior evidence.  Note the color scale in the
+survival plot (\emph{second panel from top}) for the heatmaps (\emph{third,
+fourth and fifth main panels from top}).  The bottom two survival heatmaps present
+the distribution of \(S_{\cdot g}\) for the top \(2\%\) and \(100\%\) of the
+5307 analyzed genes.  These are ranked according to gene score defined as \(1
+- \mathrm{ECDF}(0.9)\) in the \emph{bottom
+far right panels}.  The score of PEG10, ZNF331, and AFAP1 is marked by
+\(a,b,c\) in green circles, respectively.  As expected, PEG10 and ZNF331 both score
+high and rank within the top 30 of all genes suggesting they are also imprinted in
+the present context, the adult human DLFPC.  The bottom panels also indicate
+that \(>1\%\) of all genes might be imprinted.
  }
 \label{fig:ranking-genes}
 \end{figure}
