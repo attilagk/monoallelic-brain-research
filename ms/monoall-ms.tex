@@ -5,9 +5,8 @@
 % references and figure legends
 %
 % TODOs
-% - names and affiliations of all co-authors; correspondence with asterisk; current addresses
 % - cover letter
-% - Author affiliations
+% - names and affiliations of all co-authors; current addresses
 % - Author contributions
 % - Acknowledgements
 %
@@ -27,6 +26,8 @@
 % https://tex.stackexchange.com/questions/6758/how-can-i-create-a-bibliography-like-a-section
 \usepackage{etoolbox}
 \patchcmd{\thebibliography}{\section*}{\section}{}{}
+
+\pagestyle{plain}
 
 %\title{Variation of Genomic Imprinting in the Human Brain}
 \title{Unperturbed Expression Bias of Imprinted Genes in Schizophrenics}
@@ -707,7 +708,7 @@ email: andrew.chess@mssm.edu
 \includegraphics[width=1.0\textwidth]{figures/by-me/commonmind-rna-seq-ms/commonmind-rna-seq-ms.pdf}
 \end{center}
 \caption{ Quantifying allelic bias of expression in human
-individuals using the RNA-seq read count ratio statistic \(S_{ig}\).\\
+individuals using the RNA-seq read count ratio statistic \(S_{ig}\).
 The strength of
 bias towards the expression of the maternal (red) or paternal (blue) allele of
 a given gene \(g\) in individual \(i\) is gauged with the count of RNA-seq
@@ -716,8 +717,7 @@ reads carrying an alternative allele (open squares) at all SNPs for which the
 individual is heterozygous.  The allele with the higher read count tends to
 match the allele with the higher expression but measurement errors may
 occasionally revert this tendency as seen for SNP \(s_3\) in gene \(g_1\) in
-individual \(i_2\).
-}
+individual \(i_2\).  }
 \label{fig:study-design}
 \end{figure}
 
@@ -725,20 +725,18 @@ individual \(i_2\).
 \begin{center}
 \includegraphics[scale=0.6]{figures/2016-07-19-genome-wide-S/complex-plot-1.png}
 \end{center}
-\caption{
-Using the read count ratio statistic \(S\) to report on variation of allelic
-bias across individuals and genes.\\
+\caption{ Using the read count ratio statistic \(S\) to report on variation of allelic
+bias across individuals and genes.
 \emph{Upper half, from top to bottom}: (1)
 probability density of \(S\) for three genes taken across individuals; (2)
 the corresponding three survival functions \(1 - \mathrm{ECDF}(S)\), each giving the
 fraction of individuals whose read count ratio \(S'\) is less than \(S\); note color scale
-for heat map and green filled circles marking genes' score at \(1 -
-\mathrm{ECDF}(0.9)\); (3) the same
-survival functions representated as a heat map.\\
+for heat map and green filled circles marking genes' score at \(1 - \mathrm{ECDF}(0.9)\); (3) the same
+survival functions representated as a heat map.
 \emph{Lower half, main panels}: heat
 map of the survival function for all 5307 analyzed genes ranked according to
 their score; \emph{right side panels}: gene score.
-}
+ }
 \label{fig:ranking-genes}
 \end{figure}
 
@@ -765,7 +763,7 @@ reference allele bias could not be determined due to small amount of data.
 \begin{center}
 \includegraphics[scale=0.6]{figures/2016-11-01-plotting-distribution-of-s/S-Dx-strip-1.pdf}
 \caption{
-Schizophrenia does not affect allelic bias of imprinted genes.\\
+Schizophrenia does not affect allelic bias of imprinted genes.
 Distribution of read count ratio for Control, schizophrenic (SCZ), and
 affectic spectrum (AFF) individuals within each gene that has been considered as imprinted in the DLPFC
 brain area in this study.
@@ -778,7 +776,7 @@ brain area in this study.
 \begin{center}
 \includegraphics[scale=0.6]{figures/2016-11-01-plotting-distribution-of-s/S-Dx-age-1.pdf}
 \caption{
-Allelic bias depends differentially on age across imprinted genes.\\
+Allelic bias depends differentially on age across imprinted genes.
 The panels and colors are consistent with the imprinted genes and psychiatric diagnoses
 presented in Fig.~\ref{fig:S-Dx}.  The differential dependence on age is apparent
 when comparing PEG3 or ZNF331 (negative dependence) to KCNK9 or RP13-487P22.1
