@@ -1,14 +1,15 @@
-\contentsline {section}{\numberline {1}Main text}{2}
+\contentsline {section}{\numberline {1}Main text}{3}
 \contentsline {section}{\numberline {2}Methods}{6}
 \contentsline {subsection}{\numberline {2.1}Defining the read count ratio to quantify allelic bias}{6}
 \contentsline {subsection}{\numberline {2.2}Brain samples, RNA-seq}{6}
 \contentsline {subsection}{\numberline {2.3}Mapping, SNP calling and filtering}{6}
 \contentsline {subsection}{\numberline {2.4}Genotyping and calibration of imputed SNPs}{7}
 \contentsline {subsection}{\numberline {2.5}Quality filtering}{7}
-\contentsline {subsection}{\numberline {2.6}Test for nearly unbiased expression}{7}
-\contentsline {subsection}{\numberline {2.7}Mixed and fixed regression models}{8}
-\contentsline {subsection}{\numberline {2.8}Formulation and interpretation of mixed models}{8}
-\contentsline {subsection}{\numberline {2.9}Model fitting and selection}{10}
+\contentsline {subsection}{\numberline {2.6}Test and post hoc correction for mapping bias}{7}
+\contentsline {subsection}{\numberline {2.7}Testing nearly unbiased allelic expression}{8}
+\contentsline {subsection}{\numberline {2.8}Mixed and fixed regression models}{8}
+\contentsline {subsection}{\numberline {2.9}Formulation and interpretation of mixed models}{9}
+\contentsline {subsection}{\numberline {2.10}Model fitting and selection}{10}
 \contentsline {section}{\numberline {3}References}{11}
 \contentsline {section}{\numberline {4}Acknowledgements}{13}
 \contentsline {section}{\numberline {5}Author information}{14}
