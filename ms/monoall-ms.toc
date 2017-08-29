@@ -5,8 +5,8 @@
 \contentsline {subsection}{\numberline {2.3}Mapping, SNP calling and filtering}{6}
 \contentsline {subsection}{\numberline {2.4}Genotyping and calibration of imputed SNPs}{7}
 \contentsline {subsection}{\numberline {2.5}Quality filtering}{7}
-\contentsline {subsection}{\numberline {2.6}Test and post hoc correction for mapping bias}{7}
-\contentsline {subsection}{\numberline {2.7}Testing nearly unbiased allelic expression}{8}
+\contentsline {subsection}{\numberline {2.6}Reference/non-reference allele test to correct for mapping bias and eQTLs}{8}
+\contentsline {subsection}{\numberline {2.7}Test for nearly unbiased allelic expression}{8}
 \contentsline {subsection}{\numberline {2.8}Mixed and fixed regression models}{8}
 \contentsline {subsection}{\numberline {2.9}Formulation and interpretation of mixed models}{9}
 \contentsline {subsection}{\numberline {2.10}Model fitting and selection}{10}
