@@ -5,6 +5,10 @@ tags: [ manuscript, ]
 
 Recent versions of the manuscript are listed in reverse chronological order and can be downloaded via the links.
 
+1. [pdf]({{ site.baseurl }}/assets/projects/monoallelic-brain/2017-08-30-monoall-ms.pdf) and [rtf]({{ site.baseurl }}/assets/projects/monoallelic-brain/2017-08-30-monoall-ms.rtf) as of 2017-08-30; Main text word count:
+   1. allowed: 1500
+   1. counted by atp-latex: 1466
+   1. counted by LibreOffice Writer: 1476
 1. [pdf]({{ site.baseurl }}/assets/projects/monoallelic-brain/2017-08-23-monoall-ms.pdf) and [rtf]({{ site.baseurl }}/assets/projects/monoallelic-brain/2017-08-23-monoall-ms.rtf) as of 2017-08-23
 1. [pdf]({{ site.baseurl }}/assets/projects/monoallelic-brain/2017-08-10-monoall-ms.pdf) and [rtf]({{ site.baseurl }}/assets/projects/monoallelic-brain/2017-08-10-monoall-ms.rtf) as of 2017-08-10
 1. [pdf]({{ site.baseurl }}/assets/projects/monoallelic-brain/2017-07-30-monoall-ms.pdf) and [rtf]({{ site.baseurl }}/assets/projects/monoallelic-brain/2017-07-30-monoall-ms.rtf) as of 2017-07-30

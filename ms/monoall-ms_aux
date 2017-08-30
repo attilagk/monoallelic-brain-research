@@ -13,13 +13,12 @@
 \citation{Perez2015}
 \citation{DeVeale2012}
 \citation{Baran2015}
-\citation{Baran2015}
 \citation{Crespi2008}
 \citation{Sullivan2012}
+\citation{Perez2015}
 \citation{Ubeda2012}
 \citation{Isles2006}
 \citation{Baran2015}
-\citation{Perez2015}
 \@writefile{toc}{\contentsline {section}{\numberline {2}Methods}{6}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {2.1}Defining the read count ratio to quantify allelic bias}{6}}
 \newlabel{eq:S-definition}{{1}{6}}
