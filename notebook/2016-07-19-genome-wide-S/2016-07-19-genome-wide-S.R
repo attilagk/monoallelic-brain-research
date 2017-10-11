@@ -122,36 +122,46 @@ my.ecdfplot <- function(Y.long, eval.at = c(0.9), survival = TRUE, ...) {
 my.ecdfplot2 <- function(Y.long, invert.col.grad = TRUE, ramp.cols = c("red", "blue"), eval.at = c(0.9), ...) {
     genes <- levels(Y.long$gene)
     names(genes) <- genes
-    helper <- function(g) {
+    helper <- function(i) {
+        g <- genes[i]
         # jump locations (knots) and y values (probabilities) of the ECDF for S distribution
-        k <- knots(with(Y.long, ecdf(s[gene == g])))
-        y <- seq_along(k) / length(k)
+        k <- knots(ecdf.g <- with(Y.long, ecdf(s[gene == g])))
         k <- c(0.5, k)
-        y <- c(0, y)
+        y <- sapply(k, ecdf.g)
         # coloring vector
         color <- colorRampPalette(ramp.cols)(length(k))
+        names(color) <- color
         df <- data.frame(y = y, k = k, color = color, stringsAsFactors = FALSE)
         # small 2-point segments; one for each group
         d <- data.frame(lapply(df, rep, each = 2), stringsAsFactors = FALSE)
+        # without setting row names R warns
+        row.names(d) <- seq.int(nr <- nrow(d))
         # shift k values relative to y values; necessary for
         # correct display of the 2-point segments
         d$k <- c(d$k[-1], 1)
-        nr <- nrow(d)
         d <- cbind(d, data.frame(gene = g), stringsAsFactors = FALSE)
         #d <- cbind(d[c(seq_len(nr - 1) + 1, nr), c("y", "k")], d["color"], data.frame(gene = g), stringsAsFactors = FALSE)
         invert.fun <- if(invert.col.grad) rev else I
         d$group <- paste(invert.fun(d$color), d$gene, sep = ".")
+        d$eval.at.y <- c(ecdf.g(eval.at), rep(NA, nr - 1))
+        d$eval.at.x <- c(eval.at, rep(NA, nr - 1))
+        d$letter <- c(letters[i], rep(NA, nr - 1))
+        row.names(d) <- seq.int(nr)
         return(d)
     }
-    df <- data.frame(do.call(rbind, lapply(genes, helper)))
+    #return(lapply(genes.ix, helper))
+    df <- data.frame(do.call(rbind, lapply(seq_along(genes), helper)))
     #return(df)
-    panel.my.ecdfplot2 <- function(x, y, groups, subscripts, mycol, eval.at = eval.at, ...) {
+    panel.my.ecdfplot2 <- function(x, y, groups, subscripts, mycol, eval.at.x, eval.at.y, letter, ...) {
         panel.grid(h = 0, v = -1)
-        panel.superpose(x = x, y = y, groups = groups, subscripts = subscripts, col = mycol, ...)
+        panel.superpose(x = x, y = y, groups = groups, subscripts = subscripts, col = mycol, type = "l", lty = "solid", ...)
+        panel.xyplot(x = eval.at.x, y = 1 - eval.at.y, type = "p", ...)
+        panel.xyplot(x = eval.at.x, y = 1 - eval.at.y, type = "p", pch = letter, col = "black", cex = 1.5, ...)
     }
     scl <- list(x = list(draw = FALSE),
                 y = list(rot = 90, relation = "free", at = yloc <- seq(0, 1, length.out = 5), label = yloc))
-    xyplot(1 - y ~ k, data = df, groups = df$group, pch = 21, panel = panel.my.ecdfplot2, mycol = df$color, type = "l",
+    xyplot(1 - y ~ k, data = df, groups = df$group, panel = panel.my.ecdfplot2, mycol = df$color,
+           eval.at.x = df$eval.at.x, eval.at.y = df$eval.at.y, letter = df$letter,
            xlim = c(0.5, 1), ylab = "1 - ECDF", xlab = NULL, scales = scl, ...)
 }
 
@@ -310,6 +320,14 @@ plot.all.b <- function(plots) {
     print(plots$density, position = c(0.0, 0.85, 0.8, 1.0), panel.height = list(0.9, "npc"), more = TRUE)
     print(plots$ecdf, position = c(0.0, 0.7, 0.8, 0.85), panel.height = list(0.9, "npc"), more = TRUE)
     print(plots$level.sel.g, position = c(0.0, 0.58, 0.8, 0.73), more = TRUE)
+    print(plots$rank, position = c(0.8, 0.0, 1.0, 0.65), more = TRUE)
+    print(plots$level, position = c(0.0, 0.0, 0.8, 0.65), more = FALSE)
+}
+
+
+plot.all.c <- function(plots) {
+    print(plots$ecdf, position = c(0.0, 0.75, 0.8, 1.0), panel.height = list(0.9, "npc"), more = TRUE)
+    print(plots$level.sel.g, position = c(0.0, 0.6, 0.8, 0.75), more = TRUE)
     print(plots$rank, position = c(0.8, 0.0, 1.0, 0.65), more = TRUE)
     print(plots$level, position = c(0.0, 0.0, 0.8, 0.65), more = FALSE)
 }
