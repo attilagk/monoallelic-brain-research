@@ -142,16 +142,18 @@ There are `r length(S)` genes on this figure but before filtering there were `r 
 ```{r complex-plot, echo=FALSE, fig.asp=1.5, out.height=1000}
 sel.g <- c("PEG10", "ZNF331", "AFAP1")
 S.long <- reshape.Y(Y = S, sel.g = sel.g)
+ramp.cols <- c("red", "blue")
 plots <- list()
 superpose.line <- standard.theme(color = FALSE)$superpose.line
 superpose.line$lty <- c(2, 1, 3:7)
 plots$density <- my.densityplot(S.long, par.settings = list(superpose.line = superpose.line), xlab = NULL, ylab = "density")
 plots$density <- update(plots$density, scales = list(y = list(at = pretty(density(S[[sel.g[1]]], na.rm = TRUE)$y, n = 3))))
-plots$ecdf <- my.ecdfplot(S.long, eval.at = c(0.9), survival = TRUE, par.settings =
-                          list(superpose.line = superpose.line,
-                               plot.symbol = list(pch = 21, col = "black", fill = "lightgreen", cex = 2)))
-plots$level <- my.levelplot(ED.long, pct.top.g = 2, n.all.g = length(levels(ED.long$gene)), top.on.top = TRUE, xlab = "read count ratio, S", ylab = "gene rank")
-plots$level.sel.g <- my.levelplot.sel.g(ED.long, sel.g = sel.g, letter.labels = TRUE)
+plots$ecdf <- my.ecdfplot2(S.long, invert.col.grad = TRUE, ramp.cols = ramp.cols, par.settings = list())
+#plots$ecdf <- my.ecdfplot(S.long, eval.at = c(0.9), survival = TRUE, par.settings =
+#                          list(superpose.line = superpose.line,
+#                               plot.symbol = list(pch = 21, col = "black", fill = "lightgreen", cex = 2)))
+plots$level <- my.levelplot(ED.long, pct.top.g = 2, n.all.g = length(levels(ED.long$gene)), top.on.top = TRUE, xlab = "read count ratio, S", ylab = "gene rank", col.regions = colorRampPalette(ramp.cols, 100))
+plots$level.sel.g <- my.levelplot.sel.g(ED.long, sel.g = sel.g, letter.labels = TRUE, col.regions = colorRampPalette(ramp.cols, 100))
 plots$rank <- rankplot.2(frac, pct.top.g = 2, sel.g = sel.g, top.on.top = TRUE,
                           xlab = "gene score", ylab = NULL,
                          par.settings = list(superpose.symbol =
