@@ -649,14 +649,13 @@ individual \(i_2\).  }
 \caption{Across-individuals distribution of read count ratio \(S\) for each
 gene indicates substantial variation of allelic bias and that \(<1\%\) of all
 genes are imprinted.  The vertically arranged
-five main panels present the empirical distribution of \(S_{\cdot g}\) across all
-individuals given each gene \(g\).  The \emph{upper three panels} are distinct
-representations (density plot, survival plot: \(1 - \mathrm{ECDF}\), and
-``survival heatmap'') of the same three distributions: two for PEG10 and ZNF331,
+four main panels present the empirical distribution of \(S_{\cdot g}\) across all
+individuals given each gene \(g\).  The \emph{upper two panels} are distinct
+representations (survival plot: \(1 - \mathrm{ECDF}\), and
+``survival heatmap'') of the same three distributions corresponding to \(a\):
+PEG10, \(b\): ZNF331, and \(c\): AFAP1.  PEG10 and ZNF331,
 previously found to be imprinted in mice or in other human tissues, and one
-for AFAP1, a gene without prior evidence.  Note the color scale in the
-survival plot (\emph{second panel from top}) for the heatmaps (\emph{third,
-fourth and fifth main panels from top}).  The bottom two survival heatmaps present
+for AFAP1, a gene without prior evidence.  The bottom two survival heatmaps present
 the distribution of \(S_{\cdot g}\) for the top \(2\%\) and \(100\%\) of the
 5307 analyzed genes.  These are ranked according to gene score defined as \(1
 - \mathrm{ECDF}(0.9)\) in the \emph{bottom
@@ -673,14 +672,15 @@ that \(<1\%\) of all genes might be imprinted.
 \begin{center}
 \includegraphics[scale=0.6]{figures/2016-08-01-ifats-filters/top-ranking-genes-1.pdf}
 \caption{
-The top 50 genes ranked by the gene score.  The score of gene \(g\) is \(1 -
-\mathrm{ECDF}_g(0.9)\), the fraction of individuals \(i\) for which
-\(S_{ig}>0.9\) and is indicated by the length of dark blue, dark green or dark
-red bars.  Note that the same ranking and score is shown in the bottom half of
-Fig.~\ref{fig:ranking-genes}.  The right border of the light blue, light green
-and light red bars is at \(1 - \mathrm{ECDF}_g(0.8)\).  The black bars
+The top 50 genes ranked by the gene score defined, for gene \(g\), as \(1 -
+F_g(0.9)\), where \(F_g\) is the empirical cumulative distribution function
+(ECDF) for \(g\).  Thus \(1 - F_g(0.9)\), is the fraction of individuals \(i\)
+for which \(S_{ig}>0.9\).  Note that the same ranking and score is shown in
+the bottom half of Fig.~\ref{fig:ranking-genes}.  The tan colored bars
 indicate the fraction of individuals with nearly unbiased expression
-(Eq.~\ref{eq:unbiased-test}).  ``X'' characters next to gene names indicate
+(Eq.~\ref{eq:unbiased-test}).  Gene names (\(y\) axis) are colored according
+to prior imprinting status: known imprinted (blue), nearby candidate (green),
+and distant candidate (red).  ``X'' characters next to gene names indicate
 mapping bias and/or cis-eQTL effects based on the reference/non-reference
 allele test (Methods) while ``0'' indicates that total allele count was
 insufficient for this test.

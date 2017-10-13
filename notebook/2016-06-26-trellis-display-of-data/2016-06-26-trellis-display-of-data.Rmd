@@ -100,7 +100,7 @@ P$s.age.gender$lattice <-
            subset = Gene %in% gene.ids,
            panel = function(x, y, ...) {
                panel.xyplot(x, y, pch = 21, ...)
-               #panel.smoother(x, y, col = "black", lwd = 2, ...)
+               panel.smoother(x, y, col = "black", lwd = 2, ...)
            },
            par.settings = list(add.text = list(cex = 0.8),
                                superpose.symbol = list(cex = 0.5,
@@ -128,6 +128,28 @@ P$s.age$lattice <-
                                strip.background = list(col = "gray90"),
                                plot.symbol = list(pch = 21, cex = 0.5, col = "black", fill = "gray", alpha = 0.5)),
            auto.key = list(title = "gender", columns = 2),
+           panel = function(x, y, ...) {
+               panel.xyplot(x, y, pch = 21, cex = 0.3, ...)
+               panel.smoother(x, y, col = "plum", lwd = 2, ...)
+           },
+           ylab = "read count ratio, S",
+           xlab = "age",
+           aspect = "fill", layout = c(6, 5))
+plot(P$s.age$lattice)
+```
+
+```{r Q-age, dev=c("png", "pdf"), warning=FALSE}
+P$s.age$lattice <-
+    xyplot(Q ~ Age | Gene, data = Y.long,
+           subset = Gene %in% gene.ids,
+           par.settings = list(add.text = list(cex = 0.8),
+                               strip.background = list(col = "gray90"),
+                               plot.symbol = list(pch = 21, cex = 0.5, col = "black", fill = "gray", alpha = 0.5)),
+           auto.key = list(title = "gender", columns = 2),
+           panel = function(x, y, ...) {
+               panel.xyplot(x, y, pch = 21, cex = 0.3, ...)
+               panel.smoother(x, y, col = "plum", lwd = 2, ...)
+           },
            ylab = "read count ratio, S",
            xlab = "age",
            aspect = "fill", layout = c(6, 5))
@@ -160,7 +182,7 @@ xyplot(Q ~ Age | Gene, data = Y.long, groups = Gender,
        subset = Gene %in% gene.ids,
        panel = function(x, y, ...) {
            panel.xyplot(x, y, pch = 21, ...)
-           #panel.smoother(x, y, col = "black", lwd = 2, ...)
+           panel.smoother(x, y, col = "black", lwd = 2, ...)
        },
        par.settings = list(add.text = list(cex = 0.8),
                            superpose.symbol = list(cex = 0.5,

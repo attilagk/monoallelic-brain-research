@@ -129,7 +129,11 @@ update(my.update(dp), scales = list(x = list(draw = TRUE, relation = "same", rot
 
 
 ```{r S-Dx-age, warning=FALSE, echo=FALSE}
-dp <- xyplot(S ~ Age | Gene, data = Y.long, groups = Dx, pch = 21, cex = 0.3, ylab = "read count ratio, S")
+dp <- xyplot(S ~ Age | Gene, data = Y.long, groups = Dx, pch = 21, cex = 0.3, ylab = "read count ratio, S",
+           panel = function(x, y, ...) {
+               panel.xyplot(x, y, ...)
+               panel.smoother(x, y, col = "black", lwd = 2, ...)
+           })
 update(dp, par.settings = list(add.text = list(cex = 0.8)), auto.key = list(columns = 3))
 ```
 
@@ -173,7 +177,11 @@ update(my.update(dp), scales = list(x = list(draw = TRUE, relation = "same", rot
 ```
 
 ```{r Q-Dx-age, warning=FALSE, echo=FALSE}
-dp <- xyplot(Q ~ Age | Gene, data = Y.long, groups = Dx, pch = 21, cex = 0.3, ylab = "read count ratio, Q")
+dp <- xyplot(Q ~ Age | Gene, data = Y.long, groups = Dx, pch = 21, cex = 0.3, ylab = "read count ratio, Q",
+           panel = function(x, y, ...) {
+               panel.xyplot(x, y, ...)
+               panel.smoother(x, y, col = "black", lwd = 2, ...)
+           })
 update(dp, par.settings = list(add.text = list(cex = 0.8)))
 ```
 
