@@ -150,7 +150,7 @@ levels(genes.ifat$imprinting.status) <- c("known imprinted", "nearby candidate",
 
 ```{r compare-to-ifats-fig, echo=FALSE, out.height=1400, fig.width=7, fig.asp=2}
 xlab <- "fraction of indiv."
-par.set <- list(superpose.polygon = list(col = palette.ifat(detailed = FALSE)))
+par.set <- list(superpose.polygon = list(col = palette.ifat(is.bw = FALSE, detailed = FALSE)))
 trellis.par.set(superpose.polygon = list(lty = 0))
 b.charts <-
     lapply(min.r.names,
@@ -174,10 +174,10 @@ names(ref.allele.bias) <- read.csv("../../results/ref-nonref-test.csv")$gene[1:5
 levels(ref.allele.bias) <- c("X", "0", " ")
 ```
 
-```{r top-ranking-genes, echo=FALSE, fig.width=3.5, fig.asp=2}
+```{r top-ranking-genes, echo=FALSE, fig.width=3.5, fig.asp=2.25}
 # ECDF
 fr <- frac$min.reads.15[50:1]
-par.set <- list(superpose.polygon = list(col = palette.ifat(detailed = FALSE, col2 = "black")))
+par.set <- list(superpose.polygon = list(col = pal.ifat <- palette.ifat(is.bw = TRUE, detailed = TRUE, col2 = "tan")))
 fig.ms <- list(ecdf = barchart(padded.frac(fr = fr), par.settings = par.set, xlab = xlab))
 # tests
 y <- data.frame(t(fr['andys.test', ]))
@@ -192,12 +192,15 @@ fig.ms <- lapply(fig.ms,
                  function(x) update(x, main = "", scales = list(cex = 0.7, x = list(alternating = 1))))
 fig.ms$ecdf <- update(fig.ms$ecdf, strip = strip.custom(factor.levels = "1 - ECDF"),
                       scales = list(y = list(alternating = 1)))
+my.text <- c("1 - F(0.9) = score", "F(0.9) - F(0.8)", "F(0.8) - F(0.7)", "F(0.7) - F(0.6)", "F(0.6) - F(0.5)", "nearly unbiased")
+# color y axis label according to imprinting status
+imp.stat.key <- c("blue", "darkgreen", "red")
+names(imp.stat.key) <- levels(gene.summary[names(fr), "imprinting.status"])
+fig.ms$ecdf <- update(fig.ms$ecdf, scales = list(y = list(col = imp.stat.key[gene.summary[names(fr), "imprinting.status"]])))
 fig.ms$ecdf <- update(fig.ms$ecdf, scales = list(y = list(labels = paste(names(fr), rev(ref.allele.bias)))),
-                      auto.key = list(text = c("known imprinted", "nearby candidate", "distant candidate"),
-                                      points = FALSE, col = c("blue", "darkgreen", "red"), columns = 1))
-fig.ms$tests <- update(fig.ms$tests, scales = list(y = list(alternating = 2)))
-#print(fig.ms$ecdf, position = c(0, 0, 0.55, 1), more = TRUE)
-#print(fig.ms$tests, position = c(0.5, 0, 1, 1), more = FALSE)
+                      auto.key = list(text = my.text, cex = 0.8,
+                                      points = FALSE, rectangles = TRUE, columns = 1))
+#fig.ms$tests <- update(fig.ms$tests, scales = list(y = list(alternating = 2)))
 print(fig.ms$ecdf)
 ```
 

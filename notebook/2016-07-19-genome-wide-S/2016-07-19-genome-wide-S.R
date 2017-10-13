@@ -118,7 +118,8 @@ my.ecdfplot <- function(Y.long, eval.at = c(0.9), survival = TRUE, ...) {
 }
 
 
-# even newer ECDF plot
+# even newer ECDF plot; this colors curves with a ramp according to the
+# cumulative probability (y axis)
 my.ecdfplot2 <- function(Y.long, invert.col.grad = TRUE, ramp.cols = c("red", "blue"), eval.at = c(0.9), ...) {
     genes <- levels(Y.long$gene)
     names(genes) <- genes
@@ -164,7 +165,6 @@ my.ecdfplot2 <- function(Y.long, invert.col.grad = TRUE, ramp.cols = c("red", "b
            eval.at.x = df$eval.at.x, eval.at.y = df$eval.at.y, letter = df$letter,
            xlim = c(0.5, 1), ylab = "1 - ECDF", xlab = NULL, scales = scl, ...)
 }
-
 
 panel.my.levelplot <- function(..., grid.h, grid.v) {
     panel.levelplot(...)
