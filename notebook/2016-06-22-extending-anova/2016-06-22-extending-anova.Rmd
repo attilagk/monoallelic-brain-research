@@ -38,6 +38,7 @@ lattice.options(default.theme = "standard.theme")
 source("~/projects/monoallelic-brain/src/import-data.R")
 source("~/projects/monoallelic-brain/src/fit-glms.R")
 source("~/projects/monoallelic-brain/src/graphics.R")
+source("2016-06-22-extending-anova.R")
 ```
 
 Import data; note that the set of **selected genes have been updated** based on later analysis
@@ -142,17 +143,17 @@ Ef.long <- lapply(M, function(m) { x <- l.l.effects(m); x <- x[ ! x$Coefficient 
 
 Under `logi.S`:
 ```{r effects-fw-rv-logi-S, echo=FALSE}
-(plots$effects.logi.S <- my.stripplot(fm = Coefficient ~ Effect | Order, data = Ef.long$logi.S, main = "Effects under logi.S", aspect = length(levels(Ef.long$logi.S$Coefficient)) / 10))
+(plots$effects.logi.S <- my.stripplot(fm = Coefficient ~ Effect | Order, data = reverse.genes(Ef.long$logi.S), main = "Effects under logi.S", aspect = length(levels(Ef.long$logi.S$Coefficient)) / 10))
 ```
 
 Again, similar tendencies are observed under `wnlm.Q`:
 ```{r effects-fw-rv-wnlm-Q, echo=FALSE}
-(plots$effects.wnlm.Q <- my.stripplot(fm = Coefficient ~ Effect | Order, data = Ef.long$wnlm.Q, main = "Effects under wnlm.Q", aspect = length(levels(Ef.long$wnlm.Q$Coefficient)) / 10))
+(plots$effects.wnlm.Q <- my.stripplot(fm = Coefficient ~ Effect | Order, data = reverse.genes(Ef.long$wnlm.Q), main = "Effects under wnlm.Q", aspect = length(levels(Ef.long$wnlm.Q$Coefficient)) / 10))
 ```
 
 Similarly under `wnlm.R`:
 ```{r effects-fw-rv-wnlm-R, echo=FALSE}
-(plots$effects.wnlm.R <- my.stripplot(fm = Coefficient ~ Effect | Order, data = Ef.long$wnlm.R, main = "Effects under wnlm.R", aspect = length(levels(Ef.long$wnlm.R$Coefficient)) / 10))
+(plots$effects.wnlm.R <- my.stripplot(fm = Coefficient ~ Effect | Order, data = reverse.genes(Ef.long$wnlm.R), main = "Effects under wnlm.R", aspect = length(levels(Ef.long$wnlm.R$Coefficient)) / 10))
 ```
 
 ### Figure for manuscript
@@ -196,42 +197,42 @@ This display is meant to be comparable to a similarly structured trellis display
 
 ```{r effects-fw-rv-logi-S-trellis-coef-cond, fig.asp=1.7, echo=FALSE}
 # conditioning on the Coefficient instead of Gene
-update(my.dotplot(fm = Gene ~ Effect | Coefficient, data = Ef.long$logi.S, main = "Effects under logi.S"), layout = c(6, 4))
+update(my.dotplot(fm = Gene ~ Effect | Coefficient, data = reverse.genes(Ef.long$logi.S), main = "Effects under logi.S"), layout = c(6, 4))
 ```
 
 #### Under logi2.S
 
 ```{r effects-fw-rv-logi2-S-trellis-coef-cond, fig.asp=1.7, echo=FALSE}
 # conditioning on the Coefficient instead of Gene
-update(my.dotplot(fm = Gene ~ Effect | Coefficient, data = Ef.long$logi2.S, main = "Effects under logi2.S"), layout = c(6, 4))
+update(my.dotplot(fm = Gene ~ Effect | Coefficient, data = reverse.genes(Ef.long$logi2.S), main = "Effects under logi2.S"), layout = c(6, 4))
 ```
 
 #### Under wnlm.Q
 
 ```{r effects-fw-rv-wnlm-Q-trellis-coef-cond, fig.asp=1.7, echo=FALSE}
 # conditioning on the Coefficient instead of Gene
-update(my.dotplot(fm = Gene ~ Effect | Coefficient, data = Ef.long$wnlm.Q, main = "Effects under wnlm.Q"), layout = c(6, 4))
+update(my.dotplot(fm = Gene ~ Effect | Coefficient, data = reverse.genes(Ef.long$wnlm.Q), main = "Effects under wnlm.Q"), layout = c(6, 4))
 ```
 
 #### Under unlm.Q
 
 ```{r effects-fw-rv-unlm-Q-trellis-coef-cond, fig.asp=1.7, echo=FALSE}
 # conditioning on the Coefficient instead of Gene
-update(my.dotplot(fm = Gene ~ Effect | Coefficient, data = Ef.long$unlm.Q, main = "Effects under unlm.Q"), layout = c(6, 4))
+update(my.dotplot(fm = Gene ~ Effect | Coefficient, data = reverse.genes(Ef.long$unlm.Q), main = "Effects under unlm.Q"), layout = c(6, 4))
 ```
 
 #### Under wnlm.R
 
 ```{r effects-fw-rv-wnlm-R-trellis-coef-cond, fig.asp=1.7, echo=FALSE}
 # conditioning on the Coefficient instead of Gene
-update(my.dotplot(fm = Gene ~ Effect | Coefficient, data = Ef.long$wnlm.R, main = "Effects under wnlm.R"), layout = c(6, 4))
+update(my.dotplot(fm = Gene ~ Effect | Coefficient, data = reverse.genes(Ef.long$wnlm.R), main = "Effects under wnlm.R"), layout = c(6, 4))
 ```
 
 #### Under unlm.R
 
 ```{r effects-fw-rv-unlm-R-trellis-coef-cond, fig.asp=1.7, echo=FALSE}
 # conditioning on the Coefficient instead of Gene
-update(my.dotplot(fm = Gene ~ Effect | Coefficient, data = Ef.long$unlm.R, main = "Effects under unlm.R"), layout = c(6, 4))
+update(my.dotplot(fm = Gene ~ Effect | Coefficient, data = reverse.genes(Ef.long$unlm.R), main = "Effects under unlm.R"), layout = c(6, 4))
 ```
 
 ## Estimate and CI for regression coefficients
@@ -243,27 +244,28 @@ Betas <- lapply(M, function(m) { x <- get.estimate.CI(m$forward); x <- x[ ! x$Co
 ```
 
 ```{r reg-coef-logi-S, dev=c("png", "pdf"), fig.asp=1.7}
-my.segplot(data = Betas$logi.S, xlim = my.xlim)
+my.segplot(data = reverse.genes(Betas$logi.S), main = expression(paste("99 % CI for ", beta, " under logi.S")))
 ```
 
 ```{r reg-coef-logi2-S, dev=c("png", "pdf"), fig.asp=1.7, echo=FALSE}
-my.segplot(data = Betas$logi2.S, main = expression(paste("99 % CI for ", beta, " under logi2.S")), xlim = my.xlim)
+my.segplot(data = reverse.genes(Betas$logi2.S), main = expression(paste("99 % CI for ", beta, " under logi2.S")))
 ```
 
 ```{r reg-coef-wnlm-Q, dev=c("png", "pdf"), fig.asp=1.7, echo=FALSE}
-my.segplot(data = Betas$wnlm.Q, main = expression(paste("99 % CI for ", beta, " under wnlm.Q")))
+my.segplot(data = reverse.genes(Betas$wnlm.Q), main = expression(paste("99 % CI for ", beta, " under wnlm.Q")))
 ```
 
 ```{r reg-coef-unlm-Q, dev=c("png", "pdf"), fig.asp=1.7, echo=FALSE}
-my.segplot(data = Betas$unlm.Q, main = expression(paste("99 % CI for ", beta, " under unlm.Q")))
+my.segplot(data = reverse.genes(Betas$unlm.Q), main = expression(paste("99 % CI for ", beta, " under unlm.Q")))
+#my.segplot(data = reverse.genes(Betas$unlm.Q), subset = Gene != "WA", main = expression(paste("99 % CI for ", beta, " under unlm.Q")))
 ```
 
 ```{r reg-coef-wnlm-R, dev=c("png", "pdf"), fig.asp=1.7, echo=FALSE}
-my.segplot(data = Betas$wnlm.R, main = expression(paste("99 % CI for ", beta, " under wnlm.R")))
+my.segplot(data = reverse.genes(Betas$wnlm.R), main = expression(paste("99 % CI for ", beta, " under wnlm.R")))
 ```
 
 ```{r reg-coef-unlm-R, dev=c("png", "pdf"), fig.asp=1.7, echo=FALSE}
-my.segplot(data = Betas$unlm.R, main = expression(paste("99 % CI for ", beta, " under unlm.R")))
+my.segplot(data = reverse.genes(Betas$unlm.R), main = expression(paste("99 % CI for ", beta, " under unlm.R")))
 ```
 
 Filtering out results for logi.S if the fit is bad for a given gene, using decisions based on model checking analysis
@@ -281,6 +283,16 @@ Betas.l.f[Betas.l.f$logi.S.Gene %in% c(rownames(logi.S.OK)[! logi.S.OK$logi.S.fi
 
 ```{r reg-coef-logi-S-filt, dev=c("png", "pdf"), fig.asp=1.7}
 my.segplot(data = B.logi.S.f, xlim = my.xlim)
+```
+
+### Figure for manuscript
+
+```{r reg-coef-unlm-Q-ms, dev=c("png", "pdf"), fig.asp=1.7, echo=FALSE}
+b.unlm.Q <- reverse.genes(Betas$unlm.Q)
+f <- b.unlm.Q$Gene
+levels(f) <- c("fixed II", levels(b.unlm.Q$Gene)[-1])
+b.unlm.Q$Gene <- f
+my.segplot(data = b.unlm.Q, main = expression(paste("Estimate and 99 % CI for ", beta[jg], ".  Fixed effects, unlm.Q")))
 ```
 
 ## Comparison of models

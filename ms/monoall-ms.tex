@@ -802,44 +802,6 @@ the two other institutions.
 
 \begin{figure}[H]
 \begin{center}
-\includegraphics{figures/by-me/monoall-dependencies-2/obs-simple-general/obs-simple-general}
-\hspace{\fill}
-\includegraphics{figures/by-me/monoall-dependencies-2/obs-simple-general-gene-aspec/obs-simple-general-gene-aspec}
-\hspace{\fill}
-\includegraphics{figures/by-me/monoall-dependencies-2/mixed/mixed}
-\end{center}
-\caption{ General dependency structures in two fixed effects regression models
-(\emph{left}, \emph{middle}) and a mixed effects model (\emph{right}).  In all
-three cases the regression coefficients \(\beta_{1g},...,\beta_{3g}\) or
-\(\beta_{1g},b_{2g},b_{3g}\) mediate, for a given gene \(g\), probabilistic
-dependencies (arrows) between the response variable \(Y_g\) (read count ratio
-for \(g\)) and the corresponding explanatory variables \(X_1,...,X_3\).  For
-simplicity but without loss of generality only 3 explanatory variables are
-depicted.  The model frameworks differ in how the coefficients relate to each
-other for a given explanatory variable (or a given \(j\)).  \emph{Left:} there
-is no connection among \(\beta_{jg_1},\beta_{jg_2},...\) which means that the
-way \(Y_{g}\), the read count ratio for gene \(g\) depends on variable \(X_j\)
-is completely separate from how the read count ratio for any other gene \(g'\)
-(i.e.~\(Y_{g'}\)) depends on it.  Consequently no information may be shared
-among gene-specific models.  \emph{Middle:} In this case
-\(\beta_{jg_1}=\beta_{jg_2}=...\equiv\beta_j\) so that all genes are identical
-with respect to how their read count ratio depends the explanatory variables.
-Thus genes share all information in the data in the sense that the model
-forces them to be identical.  \emph{Right:} Hierarchical mixed effects model
-where certain dependencies (\(\beta_1\)) are shared among genes while others
-(\(\{b_{2g}\}_g, \{b_{3g}\}_g\)) vary across genes.  The variation is controlled by the
-variance parameters \(\sigma^2_j\).  In this example there is a single set
-\(\{b_{2g}\}_g\) of random coefficients for \(X_2\)---and a similar set for
-\(X_3\)---, which are random intercepts.  In general, however, one or more set
-of random slope coefficients may also be present.  Given the estimates
-\(\hat{\sigma}^2_j\) and the data the gene-specific random coefficients
-\(b_{jg}\) can be predicted.  Among the three only this model framework allows
-information sharing among genes in a flexible way.  }
-\label{fig:glm-vs-hierarch}
-\end{figure}
-
-\begin{figure}[H]
-\begin{center}
 \includegraphics[scale=0.6]{figures/2016-11-01-plotting-distribution-of-s/Q-Dx-age-1.pdf}
 \end{center}
 \caption{
@@ -850,6 +812,59 @@ log transformed data and not only age but several other explanatory variables
 (Table~\ref{tab:predictors}).
 }
 \label{fig:Q-age}
+\end{figure}
+
+\begin{figure}[H]
+\begin{center}
+\emph{fixed I}
+\includegraphics[scale=0.8]{figures/by-me/monoall-dependencies-2/obs-simple-general/obs-simple-general}
+\hspace{\fill}
+\emph{fixed II}
+\includegraphics[scale=0.8]{figures/by-me/monoall-dependencies-2/obs-simple-general-gene-aspec/obs-simple-general-gene-aspec}
+
+\emph{mixed}
+\includegraphics[scale=0.8]{figures/by-me/monoall-dependencies-2/mixed/mixed}
+\end{center}
+\caption{ Three model structures: two \emph{fixed} (upper left and right) and
+a \emph{mixed}
+(lower middle) effects multiple regression model.  In all three model
+structures the read count
+ratio \(Y_g\)---for
+several genes \(g\)---depends somehow on three explanatory variables \(X_j\).
+For each gene \(g\) the probabilistic dependence is mediated by fixed \(\beta_{1g},\beta_{2g},\beta_{3g}\) or random
+\(b_{2g},b_{3g}\) regression coefficients.  \emph{fixed II} is a
+constrained version of the \emph{fixed I} model structure such that
+\(\beta_{jg_1}=\beta_{jg_2}=...\equiv \beta_j\), which means that the effect
+of \(X_j\) on \(Y\) does not vary across genes in \emph{fixed II}.
+The \emph{mixed} model differs from \emph{fixed I}  
+in the way coefficients across genes vary for a given explanatory variable
+\(X_j\).  In the \emph{fixed I} model structure there
+is no connection among \(\beta_{jg_1},\beta_{jg_2},...\), which means that the
+way \(Y_{g}\), the read count ratio for gene \(g\) depends on variable \(X_j\)
+is completely separate from how the read count ratio for any other gene \(g'\)
+(i.e.~\(Y_{g'}\)) depends on it.  Consequently no information may be shared
+among the gene-specific substructures of \emph{fixed I}.  This limitation is
+overcome with the \emph{mixed} model structure
+because a set of coefficients across genes---e.g.~the set \(\{b_{2g}\}_g\))---is
+modeled as a random sample from a normal distribution with 
+parameters \(\mu_2\) and some \(\sigma^2_2>0\).  Thus \(\mu_2\) and
+\(\sigma^2_2\) constitute information on the effect that is shared across
+all genes.  Consequently, information on that effect is shared across all
+genes and genes ``borrow strength from each other''.  When \(\sigma^2_j=0\) all parameters \(\{b_{jg}\}_g\) for \(X_j\) are
+fixed at \(\mu_j\equiv\beta_j\), which is characteristic to the \emph{fixed
+II} model structure.  In the \emph{mixed} model structure this is seen for \(X_1\), which therefore has the same
+effect on \(Y_g\) for every gene \(g\).
+In this example all explanatory variables are continuous in both models.  Any categorical
+explanatory variable (factor) \(X_j\) with \(K\) levels would lead to \(K -
+1\) fixed or random coefficients \(\beta_{j_1g},...,\beta_{j_{K-1}g}\) or 
+\(b_{j_1g},...,b_{j_{K-1}g}\) for any gene \(g\), respectively.  Moreover, if the effect of that
+categorical \(X_j\) is random then it is possible to have a continuous
+\(X_{l'}\) with a random slope with respect to \(X_j\).  In fact the
+\emph{mixed} model structure (lower middle) is equivalent to another one (not shown), where
+``Gene'' is a random factor \(X_\mathrm{Gene}\) with random slope for the
+effects of \(X_2\) and \(X_3\).
+}
+\label{fig:glm-vs-hierarch}
 \end{figure}
 
 \begin{figure}[H]
@@ -880,7 +895,8 @@ the fit quantified by Cook's
 distance (\(y\)-axis).  This is plotted against a function of leverage, which
 quantifies a subcomponent of influence that is restricted to explanatory
 variables (i.e.~individuals with extreme age, PMI,...). In ideal case all data points
-are expected to influence the fit to the same degree.
+are expected to influence the fit to the same degree and thus have short
+Cook's distance.
 }
 \label{fig:fitting-fixed-PEG3}
 \end{figure}
@@ -893,8 +909,8 @@ are expected to influence the fit to the same degree.
 \includegraphics[width=0.45\textwidth]{figures/2016-09-23-model-checking/influence-KCNK9-1.pdf}
 \end{center}
 \caption{
-Fitting four fixed regression models on read count ratio data for the KCNK9
-gene.  See the legend of Fig.~\ref{fig:fitting-fixed-PEG3} for details.
+Fitting various fixed regression models on read count ratio data for the KCNK9
+gene.  See the legend of Fig.~\ref{fig:fitting-fixed-PEG3} for further details.
 }
 \label{fig:fitting-fixed-KCNK9}
 \end{figure}
@@ -905,10 +921,25 @@ gene.  See the legend of Fig.~\ref{fig:fitting-fixed-PEG3} for details.
 \includegraphics[width=0.45\textwidth]{figures/2017-03-08-model-checking/scedasticity-families-M3-1.pdf}
 \end{center}
 \caption{
-Fitting various mixed regression models on read count ratio data for all genes
-jointly. See the legend of Fig.~\ref{fig:fitting-fixed-PEG3} for details.
+Fitting four fixed regression models (named unlm.S, unlm.Q, wnlm.S, wnlm.Q,
+and logi.S) on read count ratio data for the KCNK9 gene.  The plots suggest
+that unlm.Q and wnlm.Q fit the data the best.  See the legend of
+Fig.~\ref{fig:fitting-fixed-PEG3} for further details. Convergence diagnostics
+(not shown) suggested unlm.Q as the favored model for statistical inference.
 }
 \label{fig:qqnorm-mixed}
+\end{figure}
+
+\begin{figure}[H]
+\begin{center}
+\includegraphics[scale=0.6]{figures/2016-06-22-extending-anova/reg-coef-unlm-Q-ms-1.pdf}
+\end{center}
+\caption{
+Predicted fixed coefficients \(\beta_{jg}\) for gene \(g\) (\(y\)-axis) and
+fixed effect \(j\) (panel headers). Positive and negative coefficient indicates direct positive and
+negative dependence of the given gene's read count ratio on age, respectively.
+}
+\label{fig:pred-fixed-coefs}
 \end{figure}
 
 \begin{figure}[H]

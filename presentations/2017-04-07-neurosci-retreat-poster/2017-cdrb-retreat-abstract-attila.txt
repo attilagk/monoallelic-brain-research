@@ -1,0 +1,10 @@
+Genomic Imprinting in the Human Brain
+
+Attila Gulyas-Kovacs, Ifat Keydar and Andy Chess
+
+
+Imprinting is thought to concern some 100 or more genes expressed in various tissues and ages, notably much of the embryo, the placenta, and the adult brain.  Comprehensive mapping between imprinted genes, tissues and ages has just begun.  Although the neuro-psychiatric function of imprinted genes is unclear, they likely play some role in psychotic spectrum conditions.
+
+Imprinted genes express their maternal and paternal allele asymmetrically; we call this allelic bias.  Our study infers allelic bias from RNA-seq read count ratio based on the CommonMind Consortium's data.
+
+We aim at (1) the number and identity of imprinted genes in the human dorsolateral prefrontal cortex, and (2) the identification of predictors of allelic bias among age, ancestry, diagnosis of schizophrenia or affective spectrum disorder, etc.

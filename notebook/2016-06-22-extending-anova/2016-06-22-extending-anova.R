@@ -27,3 +27,10 @@ mtype.compare.plot <- function(mtypeA = "logi.S", mtypeB = "wnlm.Q", dt = do.cal
            fit.OK = fit.OK,
            ...)[1:20]
 }
+
+
+reverse.genes <- function(df) {
+    g <- df$Gene
+    df$Gene <- factor(g, levels = rev(levels(g)))
+    return(df)
+}
