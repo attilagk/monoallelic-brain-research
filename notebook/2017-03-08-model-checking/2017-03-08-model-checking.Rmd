@@ -40,7 +40,15 @@ M3 <- list()
 M3$unlm.Q <- lmer(reformulate(fm$M3[3], response = "Q"), data = dat)
 M3$wnlm.Q <- lmer(reformulate(fm$M3[3], response = "Q"), data = dat, weights = N)
 M3$unlm.S <- lmer(reformulate(fm$M3[3], response = "S"), data = dat)
+M3$wnlm.S <- lmer(reformulate(fm$M3[3], response = "S"), data = dat, weights = N)
 M3$logi.S <- glmer(reformulate(fm$M3[3], response = "H.N"), data = dat, family = binomial)
+# do fit of simpler models to cache results right here
+M1 <- list()
+M1$unlm.Q <- lmer(reformulate(fm$M1[3], response = "Q"), data = dat)
+M1$wnlm.Q <- lmer(reformulate(fm$M1[3], response = "Q"), data = dat, weights = N)
+M1$unlm.S <- lmer(reformulate(fm$M1[3], response = "S"), data = dat)
+M1$wnlm.S <- lmer(reformulate(fm$M1[3], response = "S"), data = dat, weights = N)
+M1$logi.S <- glmer(reformulate(fm$M1[3], response = "H.N"), data = dat, family = binomial)
 ```
 
 ```{r}
@@ -49,7 +57,11 @@ get.diagnostic.data <- function(lM, sel.col = 2:7) {
         cbind(data.frame(Residual = residuals(m <- lM[[x]]), Fitted.value = predict(m), Family = x),
               model.frame(m)[sel.col])
     l <- lapply(names(lM), helper)
-    do.call(rbind, l)
+    long <- do.call(rbind, l)
+    lv <- c("unlm.S", "unlm.Q", "wnlm.S", "wnlm.Q", "logi.S")
+    #lv <- c("logi.S", "unlm.S", "unlm.Q", "wnlm.S", "wnlm.Q")
+    long$Family <- factor(long$Family, levels = lv, ordered = TRUE)
+    return(long)
 }
 ```
 
@@ -57,9 +69,10 @@ get.diagnostic.data <- function(lM, sel.col = 2:7) {
 
 The distribution of residuals under all four model families shows smaller or larger departure from normality.  *unlm.Q* is the closest to standard normal distribution and *wnlm.Q* is equally normal (or perhaps slightly less so).  The distribution under *logi.S* is strikingly far from normal.  So is it under *unlm.S*, for which additionally the scale of distribution is diminished (compare slope of black diagonal to the overall slope of the blue curve) indicating that the variance estimation---which is based on the residuals---is strongly biased downwards.
 
-```{r qqplot-families-M3}
+```{r qqplot-families-M3, fig.asp=1.4}
 diag.M3 <- get.diagnostic.data(M3)
-arg <- list(main = "Normality of residuals", xlab = "normal quantiles", ylab = "empirical quantiles", pch = "+")
+arg <- list(main = "Normality of residuals.
+Mixed multiple regression model, all genes", xlab = "normal quantiles", ylab = "empirical quantiles", pch = "+")
 qqmath(~ Residual | Family, data = diag.M3, scales = list(y = list(relation = "free")),
        xlab = arg$xlab, ylab = arg$ylab, main = arg$main, pch = arg$pch, abline = c(0, 1))
 ```
@@ -72,10 +85,12 @@ qqmath(~ Residual | Gene, data = diag.M3, subset = Family == "unlm.Q", xlab = ar
 
 Inspecting the homogeneity of error variance (or equivalently standard deviation) leads to the same conclusion as above regarding the relative goodness of fit of the various model families:  *unlm.Q* and *wnlm.Q* are the best (the most homoscedastic) while *unlm.S* and *logi.S* show systematic relationships between error and fitted value indicating poorer fit.
 
-```{r scedasticity-families-M3}
-arg <- list(main = "Error variance", xlab = "fitted value", ylab = expression(sqrt(residual)), pch = "+")
+```{r scedasticity-families-M3, fig.asp=1.4}
+arg <- list(main = "Homogeneity of error variance.
+Mixed multiple regression model, all genes", xlab = "fitted value", ylab = expression(sqrt(residual)), pch = "+")
 xyplot(sqrt(abs(Residual)) ~ Fitted.value | Family, data = diag.M3, scales = list(relation = "free"),
-       xlab = arg$xlab, ylab = arg$ylab, main = arg$main, pch = arg$pch)
+       xlab = arg$xlab, ylab = arg$ylab, main = arg$main, pch = arg$pch,
+       panel = function(...) { panel.xyplot(...); panel.loess(..., col = "black") })
 ```
 
 ```{r scedasticity-genes-unlm-Q-M3}
@@ -84,25 +99,20 @@ xyplot(sqrt(abs(Residual)) ~ Fitted.value | Gene, data = diag.M3, subset = Famil
 
 ### Results under a simpler model, $$M1$$
 
-Very similar patterns are seen under $$M1$$ to those under $$M3$$.  The fitting of the respective models from the *wnlm.Q* and *logi.S* families again converges with problems.
+Very similar patterns are seen under $$M1$$ to those under $$M3$$.  The fitting of the respective models from the *wnlm.Q* and *logi.S* families again converges with problems (see above).
 
 ```{r cache=TRUE, echo=TRUE}
-M1 <- list()
-M1$unlm.Q <- lmer(reformulate(fm$M1[3], response = "Q"), data = dat)
-M1$wnlm.Q <- lmer(reformulate(fm$M1[3], response = "Q"), data = dat, weights = N)
-M1$unlm.S <- lmer(reformulate(fm$M1[3], response = "S"), data = dat)
-M1$logi.S <- glmer(reformulate(fm$M1[3], response = "H.N"), data = dat, family = binomial)
 ```
 
-```{r qqplot-families-M1}
+```{r qqplot-families-M1, fig.asp=1.4}
 diag.M1 <- get.diagnostic.data(M1)
-arg <- list(main = "Normality of residuals", xlab = "normal quantiles", ylab = "empirical quantiles", pch = "+")
+arg <- list(main = "mixed multiple regression model, all genes", xlab = "normal quantiles", ylab = "empirical quantiles", pch = "+")
 qqmath(~ Residual | Family, data = diag.M1, scales = list(y = list(relation = "free")),
        xlab = arg$xlab, ylab = arg$ylab, main = arg$main, pch = arg$pch, abline = c(0, 1))
 ```
 
-```{r scedasticity-families-M1}
-arg <- list(main = "Error variance", xlab = "fitted value", ylab = expression(sqrt(residual)), pch = "+")
+```{r scedasticity-families-M1, fig.asp=1.4}
+arg <- list(main = "mixed multiple regression model, all genes", xlab = "fitted value", ylab = expression(sqrt(residual)), pch = "+")
 xyplot(sqrt(abs(Residual)) ~ Fitted.value | Family, data = diag.M1, scales = list(relation = "free"),
        xlab = arg$xlab, ylab = arg$ylab, main = arg$main, pch = arg$pch)
 ```

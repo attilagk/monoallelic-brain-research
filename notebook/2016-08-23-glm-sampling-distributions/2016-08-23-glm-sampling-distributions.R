@@ -135,8 +135,9 @@ grid.predictions.1gene <- function(gene = "GRB10", lll.M = M, M.multi = "simple"
 # Details
 # A rectangle with dotted line shows demarcates the theoretically possible
 # region (non-negative age and S between 0.5 and 1 or S between 0 and 100).
-plot.predictions <- function(df, fm = formula(density ~ x * y | family),
+plot.predictions <- function(l.df, gene, fm = formula(density ~ x * y | family),
                              show.model = TRUE, ...) {
+    df <- l.df[[gene]]
     levelplot(fm, data = df, M.family = df$family,
               panel = function(x, y, subscripts, M.family, ...) {
                   if(show.model) {
@@ -156,5 +157,6 @@ plot.predictions <- function(df, fm = formula(density ~ x * y | family),
               ylim = list(c(0.44, 1.06), c(0.44, 1.06), c(0.44, 1.06), c(0, 8)),
               xlab = "age", ylab = "S: read count ratio;  Q: transformed S",
               cut = 30,
+              main = if(show.model) paste("fixed simple regression model,", gene) else gene,
               ...)
 }

@@ -133,7 +133,8 @@ myqqnorm("logi2.S", skip = skip2)
 myqqnorm.demo <- function(g = "ZNF331") {
     qqmath(~ res.std.dev | model.type, data = diagnostics, subset = gene == g & model.type != "wnlm.R",
                ylim = c(-4, 4), abline = c(0, 1), pch = "+",
-               main = g, xlab = "normal quantiles", ylab = "standardized residual",
+               main = paste("Normality of residuals.
+Fixed multiple regression model,", g), xlab = "normal quantiles", ylab = "standardized residual",
            )[c(1:2, 5, 4)]
 }
 myqqnorm.demo("ZNF331")
@@ -141,6 +142,14 @@ myqqnorm.demo("ZNF331")
 
 ```{r qqnorm-PEG3}
 myqqnorm.demo("PEG3")
+```
+
+```{r qqnorm-ZDBF2}
+myqqnorm.demo("ZDBF2")
+```
+
+```{r qqnorm-KCNK9}
+myqqnorm.demo("KCNK9")
 ```
 
 ### Homogeneity of error (homoscedasticity)
@@ -201,13 +210,23 @@ myhomoscedas.demo <- function(g) {
                panel.smoother(..., method = "loess", col = "black", se = FALSE)
            }, subset = gene == g & model.type != "wnlm.R", pch = "+",
            scales = list(x = list(relation = "free", draw = TRUE)),
-           xlab = "fitted value", ylab = expression(sqrt(std.deviance.resid)), main = g)[c(1:2, 5, 4)]
+           xlab = "fitted value", ylab = expression(sqrt(std.deviance.resid)),
+           main = paste("Homogeneity of error variance.
+Fixed multiple regression model,", g))[c(1:2, 5, 4)]
 }
 myhomoscedas.demo("ZNF331")
 ```
 
 ```{r homoscedas-PEG3}
 myhomoscedas.demo("PEG3")
+```
+
+```{r homoscedas-ZDBF2}
+myhomoscedas.demo("ZDBF2")
+```
+
+```{r homoscedas-KCNK9}
+myhomoscedas.demo("KCNK9")
 ```
 
 ### Influence of individual cases
@@ -266,13 +285,23 @@ myinfluence("logi2.S", skip = skip2)
 ```{r influence-ZNF331}
 myinfluence.demo <- function(g) {
     xyplot(cooks.dist ~ leverage / (1 - leverage) | model.type, data = diagnostics,
-           subset = gene == g & model.type != "wnlm.R", ylab = "Cook's distance", main = g)[c(1:2, 5, 4)]
+           subset = gene == g & model.type != "wnlm.R", ylab = "Cook's distance",
+           main = paste("Influence of outliers.
+Fixed multiple regression model,", g))[c(1:2, 5, 4)]
 }
 myinfluence.demo("ZNF331")
 ```
 
 ```{r influence-PEG3}
 myinfluence.demo("PEG3")
+```
+
+```{r influence-ZDBF2}
+myinfluence.demo("ZDBF2")
+```
+
+```{r influence-KCNK9}
+myinfluence.demo("KCNK9")
 ```
 
 ### Identifying outliers

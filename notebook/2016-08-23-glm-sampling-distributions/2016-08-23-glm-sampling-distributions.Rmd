@@ -80,29 +80,29 @@ gp <-
 
 ```{r GRB10, echo=FALSE}
 plots <- list()
-(plots$GRB10 <- plot.predictions(gp$GRB10, main = "GRB10"))
+(plots$GRB10 <- plot.predictions(gp, gene = "GRB10"))
 ```
 
 ```{r PEG3, echo=FALSE}
-(plots$PEG3 <- plot.predictions(gp$PEG3, main = "PEG3"))
+(plots$PEG3 <- plot.predictions(gp, gene = "PEG3"))
 ```
 
 ```{r ZNF331, echo=FALSE}
-(plots$ZNF331 <- plot.predictions(gp$ZNF331, main = "ZNF331"))
+(plots$ZNF331 <- plot.predictions(gp, gene = "ZNF331"))
 ```
 
 ```{r ZDBF2, echo=FALSE}
-(plots$ZDBF2 <- plot.predictions(gp$ZDBF2, main = "ZDBF2"))
+(plots$ZDBF2 <- plot.predictions(gp, gene = "ZDBF2"))
 ```
 
 ### Examples for up-regulation
 
 ```{r KCNK9, echo=FALSE}
-(plots$KCNK9 <- plot.predictions(gp$KCNK9, main = "KCNK9"))
+(plots$KCNK9 <- plot.predictions(gp, gene = "KCNK9"))
 ```
 
 ```{r PEG10, echo=FALSE}
-(plots$PEG10 <- plot.predictions(gp$PEG10, main = "PEG10"))
+(plots$PEG10 <- plot.predictions(gp, gene = "PEG10"))
 ```
 
 #### Plot only data
@@ -110,11 +110,11 @@ plots <- list()
 The following plots are generated for overlay with the ones above in presentation slides.
 
 ```{r PEG3-data-only, echo=FALSE}
-(plots$PEG3 <- plot.predictions(gp$PEG3, main = "PEG3", show.model = FALSE))
+(plots$PEG3 <- plot.predictions(gp, gene = "PEG3", show.model = FALSE))
 ```
 
 ```{r KCNK9-data-only, echo=FALSE}
-(plots$KCNK9 <- plot.predictions(gp$KCNK9, main = "KCNK9", show.model = FALSE))
+(plots$KCNK9 <- plot.predictions(gp, gene = "KCNK9", show.model = FALSE))
 ```
 
 ### Figure for manuscript

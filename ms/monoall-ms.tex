@@ -121,11 +121,14 @@ characteristic to imprinting.
 
 29 of the top-scoring 50 genes fell into previously described imprinted gene
 clusters (Fig.~\ref{fig:clusters}); 21 of these 29 are \emph{known imprinted}
-genes and 8 are \emph{nearby candidates} (blue and green bars in
+genes while 8 are \emph{nearby candidates} defined as genes near \emph{known
+imprinted} ones but themselves previously not
+shown to be imprinted (blue and green \(y\)-axis labels in
 Fig.~\ref{fig:top-genes}).   \emph{A priori} the expectation is that
-\emph{known imprinted} genes \emph{nearby candidates} are much more likely to
-be imprinted  in the present data set than \emph{distant candidates} (the
-genes outside clusters, Fig.~\ref{fig:top-genes}, red bars).  We combined this
+\emph{known imprinted} genes and \emph{nearby candidates} are much more likely to
+be imprinted  in the present data set than \emph{distant candidates} defined
+as genes that neither belong to nor localize near (\(<1\mathrm{Mb}\)) \emph{known
+imprinted} genes (Fig.~\ref{fig:top-genes}, red \(y\)-axis labels).  We combined this
 prior expectation with two tests based on our data to distinguish imprinting
 from alternative causes of high read count ratio such as mapping bias and
 cis-eQTL effects (see Methods: Reference/non-reference allele test and Test
@@ -143,7 +146,7 @@ that read count ratio is similarly distributed in the Control, SCZ and AFF
 group for all 30 imprinted genes suggesting independence between allelic bias and diagnosis of
 schizophrenia.
 
-To confirm this rigorously we performed statistical inference using mixed
+To show this quantitatively we performed statistical inference using mixed
 effects models (Methods), which can capture much of the complex pattern of
 dependencies in genomic data including those we observed within and between
 technical and biological explanatory variables (Table~\ref{tab:predictors},
@@ -152,7 +155,7 @@ genes ``borrow strength from each other'' (Fig.~\ref{fig:glm-vs-hierarch}).
 We fitted many alternative mixed models, selected the best-fitting one using
 the Akaike Information Criterion (AIC) and confirmed the goodness of fit with
 diagnostic plots (Methods,
-Fig.~\ref{fig:qqnorm-mixed},~\ref{fig:homoscedas-mixed}).
+Fig.~\ref{fig:qqnorm-mixed}).
 
 Based on the best fitting model (henceforth ``the model'') we could formally
 reject the hypotheses that read count ratio depends on diagnosis as either
@@ -163,7 +166,7 @@ the highly significant dependence of read count ratio on gene identity
 (see \((1\mid\mathrm{Gene})\) in Table~\ref{tab:mod-sel} and compare panels in
 Fig.~\ref{fig:S-Dx}).
 
-Fig.~\ref{fig:S-age} suggests that the read count ratio depends negatively on
+Fig.~\ref{fig:S-age} and~\ref{fig:Q-age} suggest that the read count ratio depends negatively on
 age for some imprinted genes, depends positively for others, and is
 independent of age for the rest of imprinted genes.  This apparent
 dependence might be indirect, i.e.~one that is mediated by some variable(s)
@@ -421,14 +424,12 @@ GLMs in general describe a conditional distribution of a response variable
 exponential family and that \(\mathrm{E}(y|\eta) = g^{-1} (\eta)\), where
 \(g\) is some link function.  In the present context the response \(y\) is the
 observed read count ratio that is possibly transformed to improve the model's
-fit to the data.  We performed fitting with the lme4 and stats
-R packages and tested several combinations of transformations, link
-functions, and error distributions (Table~\ref{tab:model-names}).  For
-inference we used the best fitting combination (\(\mathrm{unlm.Q}\),
-Table~\ref{tab:model-names}) as assessed by the normality
-(Fig.~\ref{fig:qqnorm-mixed}) and homoscedasticity
-(Fig.~\ref{fig:homoscedas-mixed}) of residuals as well as by monitoring
-convergence.
+fit to the data.  We performed fitting with the lme4 and stats R packages and
+tested several combinations of transformations, link functions, and error
+distributions (Table~\ref{tab:model-names}).  For inference we used the best
+fitting combination (\(\mathrm{unlm.Q}\), Table~\ref{tab:model-names}) as
+assessed by the normality and homoscedasticity of residuals
+(Fig.~\ref{fig:qqnorm-mixed}) as well as by monitoring convergence.
 
 In mixed GLMs the linear predictor \(\eta = X
 \beta + Z b\) and in fixed GLMS \(\eta = X \beta\), where \(X, Z\) are design
@@ -453,7 +454,7 @@ models (Section~\ref{sec:fitting}).
 Here we describe the detailed syntax and semantics of the normal linear mixed
 models combined with a quasi-log transformation \(Q\) of read count ratio as
 this combination was found to provide the best fit
-(Fig.~\ref{fig:qqnorm-mixed},~\ref{fig:homoscedas-mixed}).  We have data
+(Fig.~\ref{fig:qqnorm-mixed}).  We have data
 on \(579\) individuals and \(30\) imprinted genes and so the response vector is
 \(y=(Q_{i_1g_1},...,Q_{i_{579}g_1},Q_{i_1g_2},...,Q_{i_{579}g_2},...,Q_{i_1g_{30}},...,Q_{i_{579}g_{30}})\).
 The model in matrix notation is
@@ -839,22 +840,75 @@ information sharing among genes in a flexible way.  }
 
 \begin{figure}[H]
 \begin{center}
-\includegraphics[scale=0.6]{figures/2017-03-08-model-checking/qqplot-families-M3-1.pdf}
+\includegraphics[scale=0.6]{figures/2016-11-01-plotting-distribution-of-s/Q-Dx-age-1.pdf}
 \end{center}
 \caption{
-Checking the fit of various model families: analysis of the normality of residuals.
+The quasi-log transformed read count ratio \(Q\) and age for imprinted genes.
+See Fig.~\ref{fig:S-age} for the corresponding plots without quasi-log
+transformation and note that statistical inference was done based on the quasi
+log transformed data and not only age but several other explanatory variables
+(Table~\ref{tab:predictors}).
 }
-\label{fig:qqnorm-mixed}
+\label{fig:Q-age}
 \end{figure}
 
 \begin{figure}[H]
 \begin{center}
-\includegraphics[scale=0.6]{figures/2017-03-08-model-checking/scedasticity-families-M3-1.pdf}
+\includegraphics[width=0.45\textwidth]{figures/2016-08-23-glm-sampling-distributions/PEG3-1.png}
+\includegraphics[width=0.45\textwidth]{figures/2016-09-23-model-checking/qqnorm-PEG3-1.pdf}
+\includegraphics[width=0.45\textwidth]{figures/2016-09-23-model-checking/homoscedas-PEG3-1.pdf}
+\includegraphics[width=0.45\textwidth]{figures/2016-09-23-model-checking/influence-PEG3-1.pdf}
 \end{center}
 \caption{
-Checking the fit of various model families: analysis of homoscedasticity.
+Fitting four different fixed regression models (named logi.S, logi2.S, wnlm.S,
+wnlm.Q) on the read count ratio data for the PEG3 gene.  For explanation of
+model names see Table~\ref{tab:model-names}.
+\emph{Upper left:}
+Fitted curves (black lines) and sampling probabilities (magenta-white-cyan
+color gradient) of a version of the four models that is simple in the sense
+that Age is the
+only explanatory variable.  Simple regression is used for this illustration
+only.  For inference and all other plots in this figure multiple regression
+was performed, where Age is only one of several explanatory variables (Table~\ref{tab:predictors}).
+\emph{Upper right (Normality of residuals):} analysis of the normality of the standardized residuals of
+fits suggests wnlm.Q is the best fitting model.
+\emph{Lower left (Homogeneity of error variance):} Similar conclusion can be made by inspecting how the
+standardized deviance residuals depends on the fitted value.  Goodness of fit
+is indicated by the lack of such dependence.  Black curve: LOESS data smoother.
+\emph{Lower right (Influence of outliers):} Influence of each individual on
+the fit quantified by Cook's
+distance (\(y\)-axis).  This is plotted against a function of leverage, which
+quantifies a subcomponent of influence that is restricted to explanatory
+variables (i.e.~individuals with extreme age, PMI,...). In ideal case all data points
+are expected to influence the fit to the same degree.
 }
-\label{fig:homoscedas-mixed}
+\label{fig:fitting-fixed-PEG3}
+\end{figure}
+
+\begin{figure}[H]
+\begin{center}
+\includegraphics[width=0.45\textwidth]{figures/2016-08-23-glm-sampling-distributions/KCNK9-1.png}
+\includegraphics[width=0.45\textwidth]{figures/2016-09-23-model-checking/qqnorm-KCNK9-1.pdf}
+\includegraphics[width=0.45\textwidth]{figures/2016-09-23-model-checking/homoscedas-KCNK9-1.pdf}
+\includegraphics[width=0.45\textwidth]{figures/2016-09-23-model-checking/influence-KCNK9-1.pdf}
+\end{center}
+\caption{
+Fitting four fixed regression models on read count ratio data for the KCNK9
+gene.  See the legend of Fig.~\ref{fig:fitting-fixed-PEG3} for details.
+}
+\label{fig:fitting-fixed-KCNK9}
+\end{figure}
+
+\begin{figure}[H]
+\begin{center}
+\includegraphics[width=0.45\textwidth]{figures/2017-03-08-model-checking/qqplot-families-M3-1.pdf}
+\includegraphics[width=0.45\textwidth]{figures/2017-03-08-model-checking/scedasticity-families-M3-1.pdf}
+\end{center}
+\caption{
+Fitting various mixed regression models on read count ratio data for all genes
+jointly. See the legend of Fig.~\ref{fig:fitting-fixed-PEG3} for details.
+}
+\label{fig:qqnorm-mixed}
 \end{figure}
 
 \begin{figure}[H]
@@ -922,7 +976,7 @@ model family & abbrev. & response var.~\\
 \caption{Fitted regression model families, in which the response variable is the read count ratio with or without some transformation: 
 \(S\)---untransformed, \(Q\)---\emph{q}uasi-log-transformed, and
 \(R\)---\emph{r}ank-transformed read count ratio.  Diagnostic plots
-(Fig.~\ref{fig:qqnorm-mixed},~\ref{fig:homoscedas-mixed}) and monitoring
+(Fig.~\ref{fig:qqnorm-mixed}) and monitoring
 convergence suggested that the \(\mathrm{unlm}.Q\) combination allows the
 best fit for several linear predictors tested.
 }

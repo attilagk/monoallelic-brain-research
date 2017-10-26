@@ -21,4 +21,4 @@
 \contentsline {section}{\numberline {7}Tables with legends}{20}
 \contentsline {section}{\numberline {8}Supplementary information}{21}
 \contentsline {subsection}{\numberline {8.1}Supplementary figures with legends}{21}
-\contentsline {subsection}{\numberline {8.2}Supplementary tables with legends}{28}
+\contentsline {subsection}{\numberline {8.2}Supplementary tables with legends}{30}
