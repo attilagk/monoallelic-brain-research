@@ -49,6 +49,7 @@ mydotplot <- function(x = get.coef(), ...) {
     n <- names(x)
     fo <- as.formula(paste0("`", n[3], "`", " ~ `", n[1], "` | `", n[2], "`"))
     dotplot(fo, data = x, scales = list(x = list(relation = "free")),
-            xlab = "predicted random coefficient b",
+            main = expression(paste("Predicted random coefficient ", b[jg], ".  Mixed model unlm.Q")),
+            xlab = "",
             ...)
 }

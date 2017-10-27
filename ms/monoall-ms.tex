@@ -146,18 +146,24 @@ that read count ratio is similarly distributed in the Control, SCZ and AFF
 group for all 30 imprinted genes suggesting independence between allelic bias and diagnosis of
 schizophrenia.
 
-To show this quantitatively we performed statistical inference using mixed
-effects models (Methods), which can capture much of the complex pattern of
-dependencies in genomic data including those we observed within and between
-technical and biological explanatory variables (Table~\ref{tab:predictors},
-Fig.~\ref{fig:predictor-associations}), and which gain power from letting
+To show this quantitatively we fitted several fixed and mixed effects models
+that model the dependence of read count ratio jointly on all explanatory
+variables (Methods,
+Section~\ref{sec:regression-overview-informal}-\ref{sec:fitting}).  Such joint
+models can capture much of the complex pattern of dependencies in genomic data
+including those we observed within and between technical and biological
+explanatory variables (Table~\ref{tab:predictors},
+Fig.~\ref{fig:predictor-associations}).  For both the fixed and mixed class we
+selected the model that fitted the data the best (unlm.Q/wnlm.Q for both fixed
+and mixed models,
+Fig.~\ref{fig:fitting-fixed-PEG3},~\ref{fig:fitting-fixed-KCNK9},~\ref{fig:fitting-mixed}).
+Fixed and mixed models also agreed qualitatively on gene-specific coefficients
+reporting effects/dependencies
+(Fig~\ref{fig:pred-rnd-coefs},~\ref{fig:pred-fixed-coefs}). We based final
+inference on the selected mixed model because that gains power from letting
 genes ``borrow strength from each other'' (Fig.~\ref{fig:glm-vs-hierarch}).
-We fitted many alternative mixed models, selected the best-fitting one using
-the Akaike Information Criterion (AIC) and confirmed the goodness of fit with
-diagnostic plots (Methods,
-Fig.~\ref{fig:qqnorm-mixed}).
 
-Based on the best fitting model (henceforth ``the model'') we could formally
+Based on the best fitting mixed model (henceforth ``the model'') we could formally
 reject the hypotheses that read count ratio depends on diagnosis as either
 main effect or interaction (see term \((1\mid\mathrm{Dx})\) and
 \((1\,|\,\mathrm{Dx}:\mathrm{Gene})\) in Table~\ref{tab:mod-sel},
@@ -412,24 +418,59 @@ with \(\mathrm{var}(H_{ig}) = T_{ig}p_{ig}(1-p_{ig})\), and on the equalities
 \end{equation}
 where $z_{p}$ is the $p$ quantile of the standard normal distribution.
 
-\subsection{Mixed and fixed regression models}
-\label{sec:methods-regression}
+\subsection{Statistical models: informal overview}
+\label{sec:regression-overview-informal}
 
-We modeled the dependence of read count ratio of imprinted genes on biological
-and technical explanatory variables (Table~\ref{tab:predictors}) using mixed
-and fixed generalized linear models (GLMs).
+We modeled the dependence of read count ratio of imprinted genes jointly on
+all biological and technical explanatory variables
+(Table~\ref{tab:predictors}) using several multiple regression models.  Based
+on their structure our models can be classified into two sets of fixed and a
+set of mixed regression models (Fig.~\ref{fig:glm-vs-hierarch}).  Based on
+non-structural properties (link function, error distribution, weighting, and
+the data transformation to read count ratio) our models can be also classified
+into the families summarized in Table~\ref{tab:model-names}).
 
-GLMs in general describe a conditional distribution of a response variable
-\(y\) given a linear predictor \(\eta\) such that the distribution is from the
-exponential family and that \(\mathrm{E}(y|\eta) = g^{-1} (\eta)\), where
-\(g\) is some link function.  In the present context the response \(y\) is the
-observed read count ratio that is possibly transformed to improve the model's
-fit to the data.  We performed fitting with the lme4 and stats R packages and
-tested several combinations of transformations, link functions, and error
-distributions (Table~\ref{tab:model-names}).  For inference we used the best
-fitting combination (\(\mathrm{unlm.Q}\), Table~\ref{tab:model-names}) as
-assessed by the normality and homoscedasticity of residuals
-(Fig.~\ref{fig:qqnorm-mixed}) as well as by monitoring convergence.
+Among the two fixed and the mixed structural model class the mixed one is both
+more powerful and robust because its random effects terms allow gene-specific
+parts of the model to ``borrow strength from each other'' as explained by
+Fig.~\ref{fig:glm-vs-hierarch}.  The cost of the enhanced power in mixed
+models is that for the random effects we do not get estimates and confidence
+intervals for gene-specific coefficients (parameters) like for the fixed
+effects coefficients (Fig.~\ref{fig:pred-fixed-coefs}) in fixed models.
+Instead of being estimated, gene-specific coefficients can only be
+\emph{predicted}, which means they lack of confidence intervals and p-values
+of statistical significance  (see Fig.~\ref{fig:pred-rnd-coefs} for predicted
+gene-specific coefficients under a mixed model).  Nonetheless, the low power
+and low robustness of fixed models became apparent from results like those in
+Fig.~\ref{fig:pred-fixed-coefs} so we based our final inference
+(Table~\ref{tab:mod-sel}) on mixed modeling.  Note, however, that we found
+overall qualitative agreement between mixed and fixed models regarding
+gene-specific coefficients (compare Fig~\ref{fig:pred-rnd-coefs} and
+\ref{fig:pred-fixed-coefs}).
+
+To select the best model within the mixed structural class we compared model
+fit of the non-structural types (Fig.~\ref{fig:fitting-mixed}) and found
+that the unlm.Q and wnlm.Q types fitted the data the best.  Similar results
+were obtained for fixed models
+(Fig.~\ref{fig:fitting-fixed-PEG3},~\ref{fig:fitting-fixed-KCNK9}).
+
+\subsection{Statistical models: formal overview}
+\label{sec:regression-overview-formal}
+
+Our fixed and mixed effects multiple regression models are all generalized
+linear models (GLMs).  GLMs in general describe a conditional distribution of
+a response variable \(y\) given a linear predictor \(\eta\) such that the
+distribution is from the exponential family and that \(\mathrm{E}(y|\eta) =
+g^{-1} (\eta)\), where \(g\) is some link function.  In the present context
+the response \(y\) is the observed read count ratio that is possibly
+transformed to improve the model's fit to the data.  We performed fitting with
+the lme4 and stats R packages and tested several combinations of
+transformations, link functions, and error distributions
+(Table~\ref{tab:model-names}).  For inference we used the best fitting
+combination (\(\mathrm{unlm.Q}\), Table~\ref{tab:model-names}) as assessed by
+the normality and homoscedasticity of residuals (Fig.~\ref{fig:fitting-mixed},
+also Fig.~\ref{fig:fitting-fixed-PEG3},~\ref{fig:fitting-fixed-KCNK9}) as well
+as by monitoring convergence.
 
 In mixed GLMs the linear predictor \(\eta = X
 \beta + Z b\) and in fixed GLMS \(\eta = X \beta\), where \(X, Z\) are design
@@ -448,13 +489,13 @@ information shared by all genes.  Therefore we preferred mixed models for final
 inference and used fixed models only to guide selection among possible mixed
 models (Section~\ref{sec:fitting}).
 
-\subsection{Formulation and interpretation of mixed models}
+\subsection{Detailed syntax and semantics of mixed models}
 \label{sec:mixed-mod}
 
 Here we describe the detailed syntax and semantics of the normal linear mixed
 models combined with a quasi-log transformation \(Q\) of read count ratio as
 this combination was found to provide the best fit
-(Fig.~\ref{fig:qqnorm-mixed}).  We have data
+(Fig.~\ref{fig:fitting-mixed}).  We have data
 on \(579\) individuals and \(30\) imprinted genes and so the response vector is
 \(y=(Q_{i_1g_1},...,Q_{i_{579}g_1},Q_{i_1g_2},...,Q_{i_{579}g_2},...,Q_{i_1g_{30}},...,Q_{i_{579}g_{30}})\).
 The model in matrix notation is
@@ -826,44 +867,42 @@ log transformed data and not only age but several other explanatory variables
 \includegraphics[scale=0.8]{figures/by-me/monoall-dependencies-2/mixed/mixed}
 \end{center}
 \caption{ Three model structures: two \emph{fixed} (upper left and right) and
-a \emph{mixed}
-(lower middle) effects multiple regression model.  In all three model
-structures the read count
-ratio \(Y_g\)---for
-several genes \(g\)---depends somehow on three explanatory variables \(X_j\).
-For each gene \(g\) the probabilistic dependence is mediated by fixed \(\beta_{1g},\beta_{2g},\beta_{3g}\) or random
-\(b_{2g},b_{3g}\) regression coefficients.  \emph{fixed II} is a
-constrained version of the \emph{fixed I} model structure such that
+a \emph{mixed} (lower middle) effects multiple regression model.  In all three
+model structures the read count ratio \(Y_g\)---for several genes
+\(g\)---depends somehow on three explanatory variables \(X_j\) like Age or PMI
+(Table~\ref{tab:predictors}).  For each gene \(g\) the probabilistic
+dependence is mediated by fixed \(\beta_{1g},\beta_{2g},\beta_{3g}\) or random
+\(b_{2g},b_{3g}\) regression coefficients.  \emph{fixed II} is a constrained
+version of the \emph{fixed I} model structure such that
 \(\beta_{jg_1}=\beta_{jg_2}=...\equiv \beta_j\), which means that the effect
-of \(X_j\) on \(Y\) does not vary across genes in \emph{fixed II}.
-The \emph{mixed} model differs from \emph{fixed I}  
-in the way coefficients across genes vary for a given explanatory variable
-\(X_j\).  In the \emph{fixed I} model structure there
-is no connection among \(\beta_{jg_1},\beta_{jg_2},...\), which means that the
-way \(Y_{g}\), the read count ratio for gene \(g\) depends on variable \(X_j\)
-is completely separate from how the read count ratio for any other gene \(g'\)
-(i.e.~\(Y_{g'}\)) depends on it.  Consequently no information may be shared
-among the gene-specific substructures of \emph{fixed I}.  This limitation is
-overcome with the \emph{mixed} model structure
-because a set of coefficients across genes---e.g.~the set \(\{b_{2g}\}_g\))---is
-modeled as a random sample from a normal distribution with 
-parameters \(\mu_2\) and some \(\sigma^2_2>0\).  Thus \(\mu_2\) and
-\(\sigma^2_2\) constitute information on the effect that is shared across
-all genes.  Consequently, information on that effect is shared across all
-genes and genes ``borrow strength from each other''.  When \(\sigma^2_j=0\) all parameters \(\{b_{jg}\}_g\) for \(X_j\) are
-fixed at \(\mu_j\equiv\beta_j\), which is characteristic to the \emph{fixed
-II} model structure.  In the \emph{mixed} model structure this is seen for \(X_1\), which therefore has the same
-effect on \(Y_g\) for every gene \(g\).
-In this example all explanatory variables are continuous in both models.  Any categorical
-explanatory variable (factor) \(X_j\) with \(K\) levels would lead to \(K -
-1\) fixed or random coefficients \(\beta_{j_1g},...,\beta_{j_{K-1}g}\) or 
-\(b_{j_1g},...,b_{j_{K-1}g}\) for any gene \(g\), respectively.  Moreover, if the effect of that
-categorical \(X_j\) is random then it is possible to have a continuous
-\(X_{l'}\) with a random slope with respect to \(X_j\).  In fact the
-\emph{mixed} model structure (lower middle) is equivalent to another one (not shown), where
-``Gene'' is a random factor \(X_\mathrm{Gene}\) with random slope for the
-effects of \(X_2\) and \(X_3\).
-}
+of \(X_j\) on \(Y\) does not vary across genes in \emph{fixed II}.  The
+\emph{mixed} model differs from \emph{fixed I}  in the way coefficients across
+genes vary for a given explanatory variable \(X_j\).  In the \emph{fixed I}
+model structure there is no connection among
+\(\beta_{jg_1},\beta_{jg_2},...\), which means that the way \(Y_{g}\), the
+read count ratio for gene \(g\) depends on variable \(X_j\) is completely
+separate from how the read count ratio for any other gene \(g'\)
+(i.e.~\(Y_{g'}\)) depends on \(X_j\).  Consequently, the gene-specific
+substructures of \emph{fixed I} contain no information on each other.  This
+limitation is overcome with the \emph{mixed} model structure because a set of
+coefficients across genes---e.g.~the set \(\{b_{2g}\}_g\))---is modeled as a
+random sample from a normal distribution with parameters \(\mu_2\) and some
+\(\sigma^2_2>0\).  Thus \(\mu_2\) and \(\sigma^2_2\) constitute information on
+the effect that is shared across all genes so that genes ``borrow strength
+from each other''.  When \(\sigma^2_j=0\) in the \emph{mixed} model then all parameters \(\{b_{jg}\}_g\) for
+\(X_j\) are fixed at \(\mu_j\equiv\beta_j\), which is characteristic to the
+\emph{fixed II} model structure.  In the \emph{mixed} model structure this is
+seen for \(X_1\), which therefore has the same effect on \(Y_g\) for every
+gene \(g\).  In this example all explanatory variables are continuous in both
+models.  Any categorical explanatory variable (factor) \(X_j\) with \(K\)
+levels would lead to \(K - 1\) fixed or random coefficients
+\(\beta_{j_1g},...,\beta_{j_{K-1}g}\) or \(b_{j_1g},...,b_{j_{K-1}g}\) for any
+gene \(g\), respectively.  Moreover, if the effect of that categorical \(X_j\)
+is random then it is possible to have a continuous \(X_{j'}\) with a random
+intercept and slope with respect to \(X_j\).  In fact the \emph{mixed} model structure
+(lower middle) is equivalent to another one (not shown), where ``Gene'' is a
+random factor \(X_\mathrm{Gene}\) with random slope for the effects of \(X_2\)
+and \(X_3\).  }
 \label{fig:glm-vs-hierarch}
 \end{figure}
 
@@ -875,9 +914,10 @@ effects of \(X_2\) and \(X_3\).
 \includegraphics[width=0.45\textwidth]{figures/2016-09-23-model-checking/influence-PEG3-1.pdf}
 \end{center}
 \caption{
-Fitting four different fixed regression models (named logi.S, logi2.S, wnlm.S,
-wnlm.Q) on the read count ratio data for the PEG3 gene.  For explanation of
-model names see Table~\ref{tab:model-names}.
+Fitting various fixed regression models, named logi.S, logi2.S, wnlm.S,
+wnlm.Q (Table~\ref{tab:model-names}), on the read count ratio data for the
+PEG3 gene.  Results for models unlm.S, unlm.Q, unlm.R, wnlm.R are omitted for
+clarity and redundancy.  In particular, unlm.Q gave as good fit as wnlm.Q.
 \emph{Upper left:}
 Fitted curves (black lines) and sampling probabilities (magenta-white-cyan
 color gradient) of a version of the four models that is simple in the sense
@@ -921,13 +961,15 @@ gene.  See the legend of Fig.~\ref{fig:fitting-fixed-PEG3} for further details.
 \includegraphics[width=0.45\textwidth]{figures/2017-03-08-model-checking/scedasticity-families-M3-1.pdf}
 \end{center}
 \caption{
-Fitting four fixed regression models (named unlm.S, unlm.Q, wnlm.S, wnlm.Q,
-and logi.S) on read count ratio data for the KCNK9 gene.  The plots suggest
+Fitting various mixed regression models, named logi.S, logi2.S, wnlm.S,
+wnlm.Q (Table~\ref{tab:model-names}), on the read count ratio data for all
+imprinted genes jointly.  Results for models unlm.S, unlm.Q, unlm.R, wnlm.R are omitted for
+clarity.  The plots suggest
 that unlm.Q and wnlm.Q fit the data the best.  See the legend of
-Fig.~\ref{fig:fitting-fixed-PEG3} for further details. Convergence diagnostics
-(not shown) suggested unlm.Q as the favored model for statistical inference.
+Fig.~\ref{fig:fitting-fixed-PEG3} for further details. For its faster convergence 
+(not shown) unlm.Q was selected as the favored model for statistical inference.
 }
-\label{fig:qqnorm-mixed}
+\label{fig:fitting-mixed}
 \end{figure}
 
 \begin{figure}[H]
@@ -935,9 +977,14 @@ Fig.~\ref{fig:fitting-fixed-PEG3} for further details. Convergence diagnostics
 \includegraphics[scale=0.6]{figures/2016-06-22-extending-anova/reg-coef-unlm-Q-ms-1.pdf}
 \end{center}
 \caption{
-Predicted fixed coefficients \(\beta_{jg}\) for gene \(g\) (\(y\)-axis) and
-fixed effect \(j\) (panel headers). Positive and negative coefficient indicates direct positive and
-negative dependence of the given gene's read count ratio on age, respectively.
+Estimated coefficients \(\beta_{jg}\) and \(99\%\) confidence intervals for
+gene \(g\) (\(y\)-axis) and fixed effect \(j\) (panel headers) under the
+\emph{fixed I} model structure (Fig.~\ref{fig:glm-vs-hierarch}).  Below gene
+UBE3A the label fixed II indicates the gene-independent estimate under the \emph{fixed II} model
+(Fig.~\ref{fig:glm-vs-hierarch}).  Positive and negative coefficient indicates
+direct positive and negative dependence of the given gene's read count ratio
+on age, respectively.  Compare with Fig.~\ref{fig:S-age}
+and~\ref{fig:pred-rnd-coefs}.
 }
 \label{fig:pred-fixed-coefs}
 \end{figure}
@@ -948,10 +995,11 @@ negative dependence of the given gene's read count ratio on age, respectively.
 \end{center}
 \caption{
 Predicted random coefficients \(b_{gj}\) for gene \(g\) (\(y\)-axis) and
-random effect \(j\) (panel headers). Positive and negative coefficient indicates direct positive and
+random effect \(j\) (panel headers) under the \emph{mixed} model structure
+(Fig.~\ref{fig:glm-vs-hierarch}). Positive and negative coefficient indicates direct positive and
 negative dependence of the given gene's read count ratio on age, respectively,
 while zero coefficient suggests independence of age.  Compare with
-Fig.~\ref{fig:S-age}.
+Fig.~\ref{fig:S-age} and~\ref{fig:pred-fixed-coefs}.
 }
 \label{fig:pred-rnd-coefs}
 \end{figure}
@@ -1007,7 +1055,7 @@ model family & abbrev. & response var.~\\
 \caption{Fitted regression model families, in which the response variable is the read count ratio with or without some transformation: 
 \(S\)---untransformed, \(Q\)---\emph{q}uasi-log-transformed, and
 \(R\)---\emph{r}ank-transformed read count ratio.  Diagnostic plots
-(Fig.~\ref{fig:qqnorm-mixed}) and monitoring
+(Fig.~\ref{fig:fitting-mixed}) and monitoring
 convergence suggested that the \(\mathrm{unlm}.Q\) combination allows the
 best fit for several linear predictors tested.
 }

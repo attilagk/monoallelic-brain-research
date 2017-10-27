@@ -178,6 +178,7 @@ update(my.update(dp), scales = list(x = list(draw = TRUE, relation = "same", rot
 
 ```{r Q-Dx-age, warning=FALSE, echo=FALSE}
 dp <- xyplot(Q ~ Age | Gene, data = Y.long, groups = Dx, pch = 21, cex = 0.3, ylab = "read count ratio, Q",
+             auto.key = list(columns = 3),
            panel = function(x, y, ...) {
                panel.xyplot(x, y, ...)
                #panel.smoother(x, y, col = "black", lwd = 2, ...)
