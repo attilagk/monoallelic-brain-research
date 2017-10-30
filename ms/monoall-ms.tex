@@ -62,7 +62,7 @@ Here we focus on differences in allele-specific expression, following up on
 the CommonMind Consortium (CMC http://www.synapse.org/CMC) RNA-seq analyses of
 \(>500\) human dorsolateral prefrontal cortex (DLPFC) samples.  We find that the
 fraction of imprinted human genes is consistent with lower (\(\approx 0.5
-\%\))~\cite{Perez2015,DeVeale2012,Baran2015} as opposed to
+\%\))~\cite{Andergassen2017,Babak2015,Baran2015,DeVeale2012,Perez2015} as opposed to
 higher~\cite{Gregg2010a} estimates in mice. The handful of novel potentially
 imprinted genes we find are all in close genomic proximity to known imprinted
 genes.  Analyzing the extent of allelic expression bias---a hallmark of
@@ -98,8 +98,9 @@ RNA-seq reads and helped distinguish allele-specific reads using DNA
 genotyping data before calculating \(S\) and then applied post hoc corrections
 for mapping bias (Methods).
 
-A total of \(5307\) genes passed our filters designed to remove genes with
-scarce RNA-seq data reflecting low expression and/or low coverage of RNA-seq.
+Of \(15584\) genes with RNA-seq data \(5307\) genes passed our filters designed to remove genes with
+scarce RNA-seq data reflecting low expression and/or low coverage of
+RNA-seq (Methods, Section~\ref{sec:filtering}).
 Fig.~\ref{fig:ranking-genes} presents the conditional empirical distribution
 of \(S_{\cdot g}\) across all individuals given each gene \(g\).  The observed wide
 \(S_{\cdot g}\) distributions suggest large across-individuals variation of allelic bias for all
@@ -131,7 +132,7 @@ as genes that neither belong to nor localize near (\(<1\mathrm{Mb}\)) \emph{know
 imprinted} genes (Fig.~\ref{fig:top-genes}, red \(y\)-axis labels).  We combined this
 prior expectation with two tests based on our data to distinguish imprinting
 from alternative causes of high read count ratio such as mapping bias and
-cis-eQTL effects (see Methods: Reference/non-reference allele test and Test
+cis-eQTL effects~\cite{Babak2015} (see Methods: Reference/non-reference allele test and Test
 for nearly unbiased allelic expression).  The results of both tests (X's and
 black bars, Fig.~\ref{fig:top-genes}) agreed well with the \emph{a priori}
 expected status.  This prompted us to call imprinted in the adult human DLPFC
@@ -146,7 +147,7 @@ that read count ratio is similarly distributed in the Control, SCZ and AFF
 group for all 30 imprinted genes suggesting independence between allelic bias and diagnosis of
 schizophrenia.
 
-To show this quantitatively we fitted several fixed and mixed effects models
+To show this quantitatively we fitted several fixed and mixed effects models~\cite{Hoffman2016}
 that model the dependence of read count ratio jointly on all explanatory
 variables (Methods,
 Section~\ref{sec:regression-overview-informal}-\ref{sec:fitting}).  Such joint
@@ -211,8 +212,8 @@ thousand, suggesting that the number of imprinted genes in the brain is an
 order of magnitude greater than in other tissues.  Later work cast doubt on
 the methodology used and found that the number of imprinted genes in brain is
 in line with expectations from studies of other tissues, identifying only a
-handful of new candidate imprinted genes in brain
-~\cite{Perez2015,DeVeale2012,Baran2015}.  Based on 579 postmortem human DLPFC
+handful of new candidate imprinted genes in brain~\cite{Baran2015,DeVeale2012,Perez2015}.
+Based on 579 postmortem human DLPFC
 samples we find evidence supporting only a handful of novel imprinted genes
 all of which reside in genomic locations nearby to known imprinted genes.
 Thus our results support those more recent studies that found no large excess
@@ -238,15 +239,16 @@ QTLs in imprinted genes such that those eQTLS perturb allelic bias in a gene
 specific manner.
 
 Our finding that imprinting depends on age in later adulthood is rather
-intriguing.  Age dependence through early postnatal life supported
-experimentally~\cite{Perez2015} but such dependence during later adulthood has
-so far only been predicted~\cite{Ubeda2012} based on a hypothesis that links
-``genomic imprinting and the social brain''~\cite{Isles2006}.  Previous
-genomics studies~\cite{Baran2015} were statistically underpowered to address
-this question in humans.  Although our age-related finding supports the
-``social brain'' hypothesis, it leaves the possibility open that the observed
-age related changes indicate merely the loss of tight regulation of those
-genes with aging.
+intriguing given the quantitative relationship between epigenetics and
+aging~\cite{Horvath2013}.  Age dependence of imprinting through early
+postnatal life supported experimentally~\cite{Perez2015} but such dependence
+during later adulthood has so far only been predicted~\cite{Ubeda2012} based
+on a hypothesis that links ``genomic imprinting and the social
+brain''~\cite{Isles2006}.  Previous genomics studies~\cite{Baran2015} were
+statistically underpowered to address this question in humans.  Although our
+age-related finding supports the ``social brain'' hypothesis, it leaves the
+possibility open that the observed age related changes indicate merely the
+loss of tight regulation of those genes with aging.
 
 
 \clearpage
@@ -386,7 +388,7 @@ the read count ratio above).
 For a given gene the compound null hypothesis is that the observed high read
 count ratio is due only to imprinting.  For each informative SNP this
 hypothesis means that the reference and non-reference allele are associated
-with equal probability to the \emph{higher read count} (see Methods: Defining
+with equal probability to the \emph{higher read count}~\cite{Babak2015} (see Methods: Defining
 the read count ratio to quantify allelic bias).  Thus for each SNP we assumed
 that the number of individuals for whom the reference allele is associated to
 the \emph{higher read count} is binomially distributed with probability
@@ -418,6 +420,38 @@ with \(\mathrm{var}(H_{ig}) = T_{ig}p_{ig}(1-p_{ig})\), and on the equalities
 \end{equation}
 where $z_{p}$ is the $p$ quantile of the standard normal distribution.
 
+\subsection{Data transformations}
+
+We found transformations of the read count ratio data to be useful for fitting
+our statistical models
+(Section~\ref{sec:regression-overview-informal}-\ref{sec:fitting} below).
+We used either (or none) of the following two transformations:
+
+\begin{enumerate}
+\item
+The quasi-log transformation, defined as
+\begin{equation}
+\tau_Q(S_{ig};T_{ig}) \equiv Q_{ig} = - \log \left( 1 - S_{ig} \frac{T_{ig}}{T_{ig} + c}
+\right),
+\label{eq:Q}
+\end{equation}
+where \(S_{ig}\) and \(T_{ig}\) mean read count ratio and total read count for
+individual \(i\) and gene \(g\);
+\(\log\) means natural logarithm (base \(e\));  \(c\) is a pseudo read
+count set to \(1\) in order to avoid zero in the parenthesis since the \(\log\)
+function is undefined at \(0\).
+\item 
+The rank transformation
+\begin{equation}
+\tau_R(S_{ig};\{S_{jg}\}_j) \equiv R_{ig} = \frac{\# \{j: S_{jg}\le S_{ig}
+\}}{\# j} \times 100.
+\label{eq:R}
+\end{equation}
+Note that \(j\) may equal \(i\) in Eq.~\ref{eq:R}.
+Thus, this transformation first ranks individual \(i\) among all individuals
+\(j\) and then scales the ranks between 1 and 100.
+\end{enumerate}
+
 \subsection{Statistical models: informal overview}
 \label{sec:regression-overview-informal}
 
@@ -425,28 +459,27 @@ We modeled the dependence of read count ratio of imprinted genes jointly on
 all biological and technical explanatory variables
 (Table~\ref{tab:predictors}) using several multiple regression models.  Based
 on their structure our models can be classified into two sets of fixed and a
-set of mixed regression models (Fig.~\ref{fig:glm-vs-hierarch}).  Based on
-non-structural properties (link function, error distribution, weighting, and
-the data transformation to read count ratio) our models can be also classified
-into the families summarized in Table~\ref{tab:model-names}).
+set of mixed regression models (Fig.~\ref{fig:glm-vs-hierarch}).  Furthermore
+our models can be also classified based on non-structural properties (link
+function, error distribution, weighting, and the data transformation to read
+count ratio; see model classes in Table~\ref{tab:model-names}).
 
-Among the two fixed and the mixed structural model class the mixed one is both
-more powerful and robust because its random effects terms allow gene-specific
-parts of the model to ``borrow strength from each other'' as explained by
-Fig.~\ref{fig:glm-vs-hierarch}.  The cost of the enhanced power in mixed
-models is that for the random effects we do not get estimates and confidence
-intervals for gene-specific coefficients (parameters) like for the fixed
-effects coefficients (Fig.~\ref{fig:pred-fixed-coefs}) in fixed models.
-Instead of being estimated, gene-specific coefficients can only be
-\emph{predicted}, which means they lack of confidence intervals and p-values
-of statistical significance  (see Fig.~\ref{fig:pred-rnd-coefs} for predicted
-gene-specific coefficients under a mixed model).  Nonetheless, the low power
-and low robustness of fixed models became apparent from results like those in
-Fig.~\ref{fig:pred-fixed-coefs} so we based our final inference
-(Table~\ref{tab:mod-sel}) on mixed modeling.  Note, however, that we found
-overall qualitative agreement between mixed and fixed models regarding
-gene-specific coefficients (compare Fig~\ref{fig:pred-rnd-coefs} and
-\ref{fig:pred-fixed-coefs}).
+Fig.~\ref{fig:glm-vs-hierarch} explains that among the two fixed and the mixed
+structural model class the mixed one is both more powerful and robust because
+its random effects terms allow gene-specific parts of the model to ``borrow
+strength from each other''.  The cost of the enhanced power in mixed models is
+the lack of estimates and confidence intervals (as well as p-values) for
+gene-specific coefficients (parameters), which the less powerful fixed models
+do provide (Fig.~\ref{fig:pred-fixed-coefs}).  Instead of being estimated,
+gene-specific coefficients in mixed models therefore can only be
+\emph{predicted} without information on confidence surrounding them (see
+Fig.~\ref{fig:pred-rnd-coefs} for predicted gene-specific coefficients under a
+mixed model).  Nonetheless, the low power and low robustness of fixed models
+became apparent from results like those in Fig.~\ref{fig:pred-fixed-coefs} so
+we based our final inference (Table~\ref{tab:mod-sel}) on mixed modeling.
+Note, however, that we found an overall qualitative agreement between mixed and
+fixed models regarding gene-specific coefficients (compare
+Fig~\ref{fig:pred-rnd-coefs} and \ref{fig:pred-fixed-coefs}).
 
 To select the best model within the mixed structural class we compared model
 fit of the non-structural types (Fig.~\ref{fig:fitting-mixed}) and found

@@ -1,20 +1,25 @@
 \relax 
 \bibstyle{plain}
 \citation{Fromer2016a}
-\citation{Perez2015}
-\citation{DeVeale2012}
+\citation{Andergassen2017}
+\citation{Babak2015}
 \citation{Baran2015}
+\citation{DeVeale2012}
+\citation{Perez2015}
 \citation{Gregg2010a}
 \citation{Noor2015}
 \citation{Rees2014}
+\citation{Babak2015}
 \@writefile{toc}{\contentsline {section}{\numberline {1}Main text}{3}}
+\citation{Hoffman2016}
 \citation{Gregg2010a}
 \citation{Gregg2010}
-\citation{Perez2015}
-\citation{DeVeale2012}
 \citation{Baran2015}
+\citation{DeVeale2012}
+\citation{Perez2015}
 \citation{Crespi2008}
 \citation{Sullivan2012}
+\citation{Horvath2013}
 \citation{Perez2015}
 \citation{Ubeda2012}
 \citation{Isles2006}
@@ -27,38 +32,43 @@
 \@writefile{toc}{\contentsline {subsection}{\numberline {2.4}Genotyping and calibration of imputed SNPs}{7}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {2.5}Quality filtering}{7}}
 \newlabel{sec:filtering}{{2.5}{7}}
+\citation{Babak2015}
 \@writefile{toc}{\contentsline {subsection}{\numberline {2.6}Reference/non-reference allele test to correct for mapping bias and eQTLs}{8}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {2.7}Test for nearly unbiased allelic expression}{8}}
 \newlabel{eq:unbiased-test}{{2}{8}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.8}Statistical models: informal overview}{8}}
-\newlabel{sec:regression-overview-informal}{{2.8}{8}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.9}Statistical models: formal overview}{9}}
-\newlabel{sec:regression-overview-formal}{{2.9}{9}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.10}Detailed syntax and semantics of mixed models}{9}}
-\newlabel{sec:mixed-mod}{{2.10}{9}}
-\newlabel{eq:mixed-mod-matrix}{{4}{9}}
-\newlabel{eq:toy-mod-r}{{7}{10}}
-\newlabel{eq:toy-mod-math}{{8}{10}}
-\newlabel{eq:mixed-mod-general}{{9}{11}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.11}Model fitting and selection}{11}}
-\newlabel{sec:fitting}{{2.11}{11}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.8}Data transformations}{8}}
+\newlabel{eq:Q}{{4}{8}}
+\newlabel{eq:R}{{5}{9}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.9}Statistical models: informal overview}{9}}
+\newlabel{sec:regression-overview-informal}{{2.9}{9}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.10}Statistical models: formal overview}{9}}
+\newlabel{sec:regression-overview-formal}{{2.10}{9}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.11}Detailed syntax and semantics of mixed models}{10}}
+\newlabel{sec:mixed-mod}{{2.11}{10}}
+\newlabel{eq:mixed-mod-matrix}{{6}{10}}
+\newlabel{eq:toy-mod-r}{{9}{10}}
+\newlabel{eq:toy-mod-math}{{10}{10}}
+\newlabel{eq:mixed-mod-general}{{11}{11}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.12}Model fitting and selection}{11}}
+\newlabel{sec:fitting}{{2.12}{11}}
 \bibdata{library}
-\bibcite{Bai2014a}{1}
-\bibcite{Baran2015}{2}
-\bibcite{Crespi2008}{3}
-\bibcite{DeVeale2012}{4}
-\bibcite{Fromer2016a}{5}
-\bibcite{Gregg2010}{6}
-\bibcite{Gregg2010a}{7}
-\bibcite{Isles2006}{8}
-\bibcite{Noor2015}{9}
-\bibcite{Perez2015}{10}
+\bibcite{Andergassen2017}{1}
+\bibcite{Babak2015}{2}
+\bibcite{Baran2015}{3}
+\bibcite{Crespi2008}{4}
+\bibcite{DeVeale2012}{5}
+\bibcite{Fromer2016a}{6}
+\bibcite{Gregg2010}{7}
+\bibcite{Gregg2010a}{8}
+\bibcite{Hoffman2016}{9}
+\bibcite{Horvath2013}{10}
 \@writefile{toc}{\contentsline {section}{\numberline {3}References}{12}}
-\bibcite{Rees2014}{11}
-\bibcite{Sullivan2012}{12}
-\bibcite{Ubeda2012}{13}
-\bibcite{Zheng2014}{14}
-\bibcite{Zwemer2012}{15}
+\bibcite{Isles2006}{11}
+\bibcite{Noor2015}{12}
+\bibcite{Perez2015}{13}
+\bibcite{Rees2014}{14}
+\bibcite{Sullivan2012}{15}
+\bibcite{Ubeda2012}{16}
 \@writefile{toc}{\contentsline {section}{\numberline {4}Acknowledgements}{14}}
 \@writefile{toc}{\contentsline {section}{\numberline {5}Author information}{15}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {5.1}Affiliation}{15}}

@@ -7,10 +7,11 @@
 \contentsline {subsection}{\numberline {2.5}Quality filtering}{7}
 \contentsline {subsection}{\numberline {2.6}Reference/non-reference allele test to correct for mapping bias and eQTLs}{8}
 \contentsline {subsection}{\numberline {2.7}Test for nearly unbiased allelic expression}{8}
-\contentsline {subsection}{\numberline {2.8}Statistical models: informal overview}{8}
-\contentsline {subsection}{\numberline {2.9}Statistical models: formal overview}{9}
-\contentsline {subsection}{\numberline {2.10}Detailed syntax and semantics of mixed models}{9}
-\contentsline {subsection}{\numberline {2.11}Model fitting and selection}{11}
+\contentsline {subsection}{\numberline {2.8}Data transformations}{8}
+\contentsline {subsection}{\numberline {2.9}Statistical models: informal overview}{9}
+\contentsline {subsection}{\numberline {2.10}Statistical models: formal overview}{9}
+\contentsline {subsection}{\numberline {2.11}Detailed syntax and semantics of mixed models}{10}
+\contentsline {subsection}{\numberline {2.12}Model fitting and selection}{11}
 \contentsline {section}{\numberline {3}References}{12}
 \contentsline {section}{\numberline {4}Acknowledgements}{14}
 \contentsline {section}{\numberline {5}Author information}{15}

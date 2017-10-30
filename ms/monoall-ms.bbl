@@ -1,10 +1,21 @@
 \begin{thebibliography}{10}
 
-\bibitem{Bai2014a}
-Yu~Bai, Min Ni, Blerta Cooper, Yi~Wei, and Wen Fury.
-\newblock {Inference of high resolution HLA types using genome-wide RNA or DNA
-  sequencing reads}.
-\newblock {\em BMC Genomics}, 15(1):325, may 2014.
+\bibitem{Andergassen2017}
+Daniel Andergassen, Christoph~P Dotter, Daniel Wenzel, Verena Sigl, Philipp~C
+  Bammer, Markus Muckenhuber, Daniela Mayer, Tomasz~M Kulinski, Hans-Christian
+  Theussl, Josef~M Penninger, Christoph Bock, Denise~P Barlow, Florian~M
+  Pauler, and Quanah~J Hudson.
+\newblock Mapping the mouse allelome reveals tissue-specific regulation of
+  allelic expression.
+\newblock {\em eLife}, 6, August 2017.
+
+\bibitem{Babak2015}
+Tomas Babak, Brian DeVeale, Emily~K Tsang, Yiqi Zhou, Xin Li, Kevin~S Smith,
+  Kim~R Kukurba, Rui Zhang, Jin~Billy Li, Derek van~der Kooy, Stephen~B
+  Montgomery, and Hunter~B Fraser.
+\newblock Genetic conflict reflected in tissue-specific maps of genomic
+  imprinting in human and mouse.
+\newblock {\em Nature genetics}, 47:544--549, May 2015.
 
 \bibitem{Baran2015}
 Yael Baran, Meena Subramaniam, Anne Biton, Taru Tukiainen, Emily~K. Tsang,
@@ -62,6 +73,17 @@ Christopher Gregg, Jiangwen Zhang, Brandon Weissbourd, Shujun Luo, Gary~P
   the mouse brain.}
 \newblock {\em Science (New York, N.Y.)}, 329(5992):643--8, aug 2010.
 
+\bibitem{Hoffman2016}
+Gabriel~E Hoffman and Eric~E Schadt.
+\newblock {variancePartition: interpreting drivers of variation in complex gene
+  expression studies.}
+\newblock {\em BMC bioinformatics}, 17(1):483, nov 2016.
+
+\bibitem{Horvath2013}
+Steve Horvath.
+\newblock {DNA methylation age of human tissues and cell types.}
+\newblock {\em Genome biology}, 14(10):R115, oct 2013.
+
 \bibitem{Isles2006}
 Anthony~R Isles, William Davies, and Lawrence~S Wilkinson.
 \newblock {Genomic imprinting and the social brain.}
@@ -105,16 +127,5 @@ Francisco Ubeda and Andy Gardner.
 \newblock {A model for genomic imprinting in the social brain: elders.}
 \newblock {\em Evolution; international journal of organic evolution},
   66(5):1567--81, may 2012.
-
-\bibitem{Zheng2014}
-X~Zheng, J~Shen, C~Cox, J~C Wakefield, M~G Ehm, M~R Nelson, and B~S Weir.
-\newblock {HIBAG--HLA genotype imputation with attribute bagging}.
-\newblock {\em The Pharmacogenomics Journal}, 14(2):192--200, apr 2014.
-
-\bibitem{Zwemer2012}
-Lillian~M Zwemer, Alexander Zak, Benjamin~R Thompson, Andrew Kirby, Mark~J
-  Daly, Andrew Chess, and Alexander~A Gimelbrant.
-\newblock {Autosomal monoallelic expression in the mouse}.
-\newblock {\em Genome Biology}, 13(2):R10, feb 2012.
 
 \end{thebibliography}
