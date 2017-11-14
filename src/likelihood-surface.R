@@ -145,7 +145,7 @@ ll.wireframe <- function(dt = dat$coefs.wnlm.Q, v.A = "Ancestry.2", ...) {
               shade.colors.palette = function(irr, ref, height, ...)
                   trellis.par.get("shade.colors")$palette(irr, ref, 1 - height, ...),
               scales = list(arrows = FALSE),
-              xlab = substitute(expression(paste(beta, "[ ", v.A, " ]")), list(v.A = v.A)),
+              xlab = eval(substitute(expression(paste(beta, "[ ", v.A, " ]")), list(v.A = v.A))),
               ylab = expression(paste(beta, "[ Age ]")),
               zlab = "rel log L",
               ...)
