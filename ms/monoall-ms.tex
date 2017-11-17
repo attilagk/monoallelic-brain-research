@@ -30,7 +30,7 @@
 \pagestyle{plain}
 
 %\title{Variation of Genomic Imprinting in the Human Brain}
-\title{Unperturbed Expression Bias of Imprinted Genes in Schizophrenics}
+\title{Normal Expression Bias of Imprinted Genes in Schizophrenics}
 \author{Attila Guly\'{a}s-Kov\'{a}cs\(^\ddagger\), Ifat Keydar\(^\ddagger\),
 ...,
 %\\
@@ -55,22 +55,23 @@ Andrew Chess\(^\ast\)}
 
 \section{Main text}
 
-How inter-individual differences in gene regulation correlates with disease is
-beginning to be examined through analyses of RNA-seq from post-mortem brains
-of individuals with schizophrenia and from control brains~\cite{Fromer2016a}.
-Here we focus on differences in allele-specific expression, following up on
-the CommonMind Consortium (CMC http://www.synapse.org/CMC) RNA-seq analyses of
-\(>500\) human dorsolateral prefrontal cortex (DLPFC) samples.  We find that the
-fraction of imprinted human genes is consistent with lower (\(\approx 0.5
-\%\))~\cite{Andergassen2017,Babak2015,Baran2015,DeVeale2012,Perez2015} as opposed to
-higher~\cite{Gregg2010a} estimates in mice. The handful of novel potentially
-imprinted genes we find are all in close genomic proximity to known imprinted
-genes.  Analyzing the extent of allelic expression bias---a hallmark of
-imprinting---across hundreds of individuals allowed us to examine its
-dependence on various factors.  We find that allelic bias is independent of
-the diagnosis of schizophrenia.  In contrast
-age up or down-regulates allelic bias of some imprinted genes and genetic
-ancestry also has an impact.
+How inter-individual differences in gene expression correlates with
+schizophrenia is beginning to be examined through analyses of RNA-seq from
+post-mortem brains of individuals with disease and control
+brains~\cite{Fromer2016a}.  Here we focus on differences in allele-specific
+expression, following up on the CommonMind Consortium (CMC
+http://www.synapse.org/CMC) RNA-seq experiments of \(>500\) human dorsolateral
+prefrontal cortex (DLPFC) samples.  Analyzing the extent of allelic expression
+bias---a hallmark of imprinting---we find that the number of imprinted human
+genes is consistent with lower estimates (\(\approx 0.5 \%\) of all
+genes)~\cite{Andergassen2017,Babak2015,Baran2015,DeVeale2012,Perez2015} and
+thus contradicts higher estimates~\cite{Gregg2010a}. Moreover, the handful of
+novel putatively imprinted genes we do find are all in close genomic proximity
+to known imprinted genes.  Joint analysis of the imprinted genes across hundreds
+of individuals allowed us to establish how allelic bias depends on various
+factors.  We find that age and genetic ancestry have gene-specific,
+differential effect on allelic bias.  In contrast, allelic bias appeared
+independent of schizophrenia.  
 
 The observation~\cite{Noor2015,Rees2014} that maternally derived
 microduplications at 15q11-q13---harboring the imprinted gene UBE3A---may not
@@ -78,7 +79,7 @@ only cause Prader-Willi syndrome, but are also highly penetrant for
 schizophrenia has raised the possibility that perturbation of regulation of
 imprinted genes in general may play a role in psychotic disorders.  As it is
 known that the extent of imprinting of individual genes varies over different
-tissues we chose the DLPFC region, which controls complex cognitive and
+tissues we chose to analyze the DLPFC region, which controls complex cognitive and
 executive functions and is known to display functional abnormalities in
 schizophrenia.  We obtained pre-publication DLPFC RNA-seq data from the CMC
 and analyzed allele-specific expression with the idea of (i) identifying
@@ -86,7 +87,7 @@ imprinted genes in the adult human brain and (ii) explaining the
 variability in allelic bias across 579 individuals in terms of their
 psychiatric diagnosis, age at death, etc.  This was facilitated by the
 balanced case-control groups (258 SCZ, 267 Control, 54 bipolar or other
-affective/mood disorder, AFF) and the large age variability.
+affective/mood disorder, AFF) and the large age variability in the cohort.
 
 For each individual \(i\) and gene \(g\) we quantified allelic bias based on
 RNA-seq reads using a statistic called \emph{read count ratio} \(S_{ig}\)
@@ -122,25 +123,26 @@ characteristic to imprinting.
 
 29 of the top-scoring 50 genes fell into previously described imprinted gene
 clusters (Fig.~\ref{fig:clusters}); 21 of these 29 are \emph{known imprinted}
-genes while 8 are \emph{nearby candidates} defined as genes near \emph{known
-imprinted} ones but themselves previously not
-shown to be imprinted (blue and green \(y\)-axis labels in
+genes while 8 are \emph{nearby candidates} defined as genes near
+(\(<1\mathrm{Mb}\) of) \emph{known imprinted} ones but themselves previously
+not shown to be imprinted (blue and green \(y\)-axis labels in
 Fig.~\ref{fig:top-genes}).   \emph{A priori} the expectation is that
-\emph{known imprinted} genes and \emph{nearby candidates} are much more likely to
-be imprinted  in the present data set than \emph{distant candidates} defined
-as genes that neither belong to nor localize near (\(<1\mathrm{Mb}\)) \emph{known
-imprinted} genes (Fig.~\ref{fig:top-genes}, red \(y\)-axis labels).  We combined this
-prior expectation with two tests based on our data to distinguish imprinting
-from alternative causes of high read count ratio such as mapping bias and
-cis-eQTL effects~\cite{Babak2015} (see Methods: Reference/non-reference allele test and Test
-for nearly unbiased allelic expression).  The results of both tests (X's and
-black bars, Fig.~\ref{fig:top-genes}) agreed well with the \emph{a priori}
-expected status.  This prompted us to call imprinted in the adult human DLPFC
-all \emph{known imprinted} and \emph{nearby candidate} genes within the top
-50.  We included also the \emph{known imprinted} gene UBE3A, which ranked
-below 50 but whose score was still substantial (Fig.~\ref{fig:known-genes})
-yielding 30 imprinted genes (panel headers in
-Fig.~\ref{fig:S-Dx}-\ref{fig:S-age}).
+\emph{known imprinted} genes and \emph{nearby candidates} are much more likely
+to be imprinted  in the present data set than \emph{distant candidates}
+defined as genes that neither belong to nor localize near \emph{known
+imprinted} genes (Fig.~\ref{fig:top-genes}, red \(y\)-axis labels).  We
+combined this prior expectation with two tests based on our data to
+distinguish imprinting from alternative causes of high read count ratio such
+as mapping bias and cis-eQTL effects~\cite{Babak2015} (see Methods:
+Reference/non-reference allele test and Test for nearly unbiased allelic
+expression).  The results of both tests (X's and black bars,
+Fig.~\ref{fig:top-genes}) agreed well with the \emph{a priori} expected
+status.  This prompted us to call imprinted in the adult human DLPFC those
+genes in the top 50 that are either
+\emph{known imprinted} or \emph{nearby candidates}.
+We included also the \emph{known imprinted} gene UBE3A, which ranked below 50
+but whose score was still substantial (Fig.~\ref{fig:known-genes}) yielding 30
+imprinted genes (panel headers in Fig.~\ref{fig:S-Dx}-\ref{fig:S-age}).
 
 Getting at the central question of our work Fig.~\ref{fig:S-Dx} shows
 that read count ratio is similarly distributed in the Control, SCZ and AFF
@@ -173,9 +175,10 @@ the highly significant dependence of read count ratio on gene identity
 (see \((1\mid\mathrm{Gene})\) in Table~\ref{tab:mod-sel} and compare panels in
 Fig.~\ref{fig:S-Dx}).
 
-Fig.~\ref{fig:S-age} and~\ref{fig:Q-age} suggest that the read count ratio depends negatively on
+Scatter plots suggested that the read count ratio depends negatively on
 age for some imprinted genes, depends positively for others, and is
-independent of age for the rest of imprinted genes.  This apparent
+independent of age for the rest of imprinted genes (Fig.~\ref{fig:S-age}
+and~\ref{fig:Q-age}).  This apparent
 dependence might be indirect, i.e.~one that is mediated by some variable(s)
 ``inbetween'' age and read count ratio
 (Fig.~\ref{fig:predictor-associations},~\ref{fig:glm-vs-hierarch}) but
