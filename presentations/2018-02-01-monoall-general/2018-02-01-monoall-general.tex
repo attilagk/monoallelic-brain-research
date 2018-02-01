@@ -1,0 +1,114 @@
+\documentclass{beamer} %\documentclass[handout]{beamer}
+
+
+%\includeonlyframes{bsm,title,toc,imprint-mouse-devel,igf2-imprint-evol,sister-disorders,previous-age-studies,our-study,cmc,toc-current,filtering-calling,fitting-models,ll-surface,all-betas,orthogonality,identifiability,anova,betas-cluster,signif-genes,cf-overall-expression,summary,improving-model,p-val,imprinted-brain,chess-lab}
+
+% language settings
+%\usepackage{fontspec, polyglossia}
+%\setdefaultlanguage{magyar}
+
+% common packages
+\usepackage{amsmath, multimedia, hyperref, color, multirow}
+%\usepackage{graphicx}
+
+% TikZ
+\usepackage{tikz}
+%\usetikzlibrary{arrows.meta, decorations.pathmorphing, decorations.pathreplacing, shapes.geometric,mindmap}
+%\usetikzlibrary{shapes.geometric,fadings,bayesnet}
+
+% beamer styles
+\mode<presentation>{
+%\usetheme{Pittsburgh}
+\usetheme{Copenhagen}
+\usecolortheme{beaver}
+%\usecolortheme{seahorse}
+%\usefonttheme{structureitalicserif}
+\setbeamercovered{transparent}
+}
+\setbeamertemplate{blocks}[rounded][shadow=true]
+\AtBeginSubsection[]{
+  \begin{frame}<beamer>{Contents}
+    %\tableofcontents[currentsection]
+    \tableofcontents[currentsubsection]
+  \end{frame}
+}
+%\useoutertheme[]{tree}
+
+\title{Imprinting, schizophrenia, and aging}
+\subtitle{investigated with mixed models and CommonMind data}
+\author{Attila Guly\'{a}s-Kov\'{a}cs}
+\date{Chess Lab}
+
+\newcommand{\platefigscale}[0]{0.7}
+\newcommand{\ownfigscale}[0]{0.4}
+
+\begin{document}
+
+\begin{frame}[plain, label=title]
+\maketitle
+\end{frame}
+
+\begin{frame}{Contents}
+\tableofcontents
+\end{frame}
+
+\section{First part}
+
+\subsection{Imprinting and allelic bias}
+
+\begin{frame}{Schizophrenia: complex genetic architecture}
+\includegraphics[width=1.0\textwidth]{figures/from-others/sullivan-natrevgenet-2012-fig1b.jpg}
+\end{frame}
+
+\begin{frame}{Imprinting and allelic bias}
+\begin{enumerate}
+\item epigenetic mechanism
+\item variation across age and tissue
+\item biological function 
+\end{enumerate}
+\includegraphics[width=0.6\textwidth]{figures/from-others/renfree-2012-fig2.jpg}
+
+{\tiny Renfree et al 2012 Philos Trans R Soc Lond B}
+
+\end{frame}
+
+\begin{frame}{My \only<1>{\emph{previous}} \only<2>{\emph{current}} presentation}
+\begin{itemize}
+%\item genomic imprinting and schizophrenia (SCZ)
+\item<1> CommonMind Consortium data
+\item<1> 30 imprinted genes in DLPFC, some novel
+\item<1> dependence of allelic bias on SCZ? 
+\item<1> weak support
+\begin{itemize}
+\item  differential dependence on age, \alert{not} SCZ
+\end{itemize}
+\item<2> stronger support
+\begin{itemize}
+\item  differential dependence on age, \alert{not} SCZ
+\end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Read count ratio measures allelic expression bias}
+\includegraphics[height=0.75\textheight]{figures/by-me/commonmind-rna-seq/commonmind-rna-seq.pdf}
+\end{frame}
+
+\begin{frame}[plain]
+\begin{center}
+\includegraphics[scale=0.5]{figures/2016-11-01-plotting-distribution-of-s/S-Dx-strip-1.pdf}
+\end{center}
+\end{frame}
+
+\end{document}
+
+
+\begin{columns}[t]
+\begin{column}{0.5\textwidth}
+
+\end{column}
+
+\begin{column}{0.5\textwidth}
+
+\end{column}
+\end{columns}
+
