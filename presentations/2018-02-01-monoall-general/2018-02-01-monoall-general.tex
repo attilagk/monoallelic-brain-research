@@ -93,8 +93,24 @@
 \includegraphics[height=0.75\textheight]{figures/by-me/commonmind-rna-seq/commonmind-rna-seq.pdf}
 \end{frame}
 
-\begin{frame}
-
+\begin{frame}{The data}
+\footnotesize
+\begin{tabular}{|c|ccc|cccc|}
+ & \multicolumn{3}{|c|}{read count ratios} & \multicolumn{4}{|c|}{predictors} \\
+\(i\) & \(Y_1\) & \(\hdots\) & \(Y_{30}\) & \(X_1\) & \(X_2\) & \(\hdots\) & \(X_{12}\) \\
+\textbf{Individual} & \textbf{MAGEL2} & \(\hdots\) & \textbf{UBE3A} & \textbf{Dx} & \textbf{Age} & \(\hdots\) & \textbf{RIN} \\
+\hline
+1 & NA & \(\hdots\) & NA & AFF & 42 & \(\hdots\) & 6.90 \\
+2 & 1.00 & \(\hdots\) & NA & AFF & 58 & \(\hdots\) & 7.00 \\
+3 & NA & \(\hdots\) & 0.89 & AFF & 28 & \(\hdots\) & 6.90 \\
+\(\vdots\) & \(\vdots\) & \(\vdots\) & \(\vdots\) & \(\vdots\) & \(\vdots\) & \(\vdots\) & \(\vdots\) \\
+%574 & NA & \(\vdots\) & 0.90 & SCZ & 59 & \(\vdots\) & 8.60 \\
+%575 & NA & \(\vdots\) & NA & Control & 38 & \(\vdots\) & 8.30 \\
+576 & 0.97 & \(\hdots\) & NA & Control & 42 & \(\hdots\) & 8.50 \\
+577 & 1.00 & \(\hdots\) & NA & SCZ & 27 & \(\hdots\) & 7.50 \\
+578 & 1.00 & \(\hdots\) & NA & Control & 57 & \(\hdots\) & 8.60 \\
+579 & 1.00 & \(\hdots\) & 1.00 & Control & 28 & \(\hdots\) & 7.70 \\
+\end{tabular}
 \end{frame}
 
 \begin{frame}[plain]
@@ -105,9 +121,50 @@
 
 \begin{frame}[plain]
 \begin{center}
+\includegraphics[scale=0.5]{figures/2016-06-26-trellis-display-of-data/evar-scatterplot-matrix-simple-1.png}
+\end{center}
+\end{frame}
+
+\begin{frame}[label=S-Age,plain]
+\begin{center}
 \includegraphics[scale=0.5]{figures/2016-11-01-plotting-distribution-of-s/S-Dx-age-1.pdf}
 \end{center}
 \end{frame}
+
+\begin{frame}{Multiple regression model}
+
+\includegraphics[scale=0.8]{figures/by-me/monoall-dependencies-2/obs-simple-general/obs-simple-general}
+\end{frame}
+
+\begin{frame}
+\includegraphics[scale=0.5]{figures/2016-08-08-imprinted-gene-clusters/segplot-wnlm-Q-99conf-1.pdf}
+\end{frame}
+
+\begin{frame}{Two extreme views}
+\begin{columns}[t]
+\begin{column}{0.5\textwidth}
+
+differential effects
+\begin{itemize}
+\item flexible but complex
+\end{itemize}
+
+\includegraphics[scale=0.8]{figures/by-me/monoall-dependencies-2/obs-simple-general/obs-simple-general}
+\end{column}
+
+\begin{column}{0.5\textwidth}
+
+uniform effects
+\begin{itemize}
+\item rigid but parsimonious
+\end{itemize}
+
+\includegraphics[scale=0.8]{figures/by-me/monoall-dependencies-2/obs-simple-general-gene-aspec/obs-simple-general-gene-aspec}
+\end{column}
+\end{columns}
+\end{frame}
+
+\againframe{S-Age}
 
 \end{document}
 

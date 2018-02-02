@@ -254,3 +254,14 @@ plot(P$splom$lattice)
 #plot(P$splom$ggplot2)
 ggpairs(E[ e.vars[c(1:6, 10)]])
 ```
+
+```{r evar-scatterplot-matrix-simple, dev=c("png", "pdf"), fig.asp=1, warning=FALSE, echo=FALSE, message=FALSE}
+P$splom$lattice <-
+    splom(E[ e.vars[c(5, 1, 6)]], pch = "o", alpha = 0.5, xlab = "",
+          panel = function(x, y, ...)
+              panel.splom(x, y, ..., jitter.x = ! is.numeric(x), jitter.y = ! is.numeric(y))
+          )
+plot(P$splom$lattice)
+#plot(P$splom$ggplot2)
+ggpairs(E[ e.vars[c(5, 1, 6)]])
+```
