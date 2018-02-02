@@ -1,6 +1,0 @@
-\beamer@sectionintoc {1}{First part}{3}{0}{1}
-\beamer@subsectionintoc {1}{1}{Imprinting and allelic bias}{3}{0}{1}
-\beamer@subsectionintoc {1}{2}{Imprinted genes in the brain}{9}{0}{1}
-\beamer@sectionintoc {2}{Second part}{17}{0}{2}
-\beamer@subsectionintoc {2}{1}{Dependence of allelic bias}{17}{0}{2}
-\beamer@subsectionintoc {2}{2}{Future work}{35}{0}{2}
