@@ -75,6 +75,7 @@ Calculate diagnostics:
 ```{r cache=FALSE, warning=FALSE}
 diagnostics <- lapply(names(M), function(m) get.diagnostics(M[[m]][gene.ids], mtype = m))
 diagnostics <- do.call(rbind, diagnostics)
+#diagnostics$gene <- factor(diagnostics$gene, levels = rev(levels(diagnostics$gene)), ordered = TRUE)
 ```
 
 ### Normality of residuals
@@ -150,6 +151,14 @@ myqqnorm.demo("ZDBF2")
 
 ```{r qqnorm-KCNK9}
 myqqnorm.demo("KCNK9")
+```
+
+```{r res-std-dev-wnlmQ-unlmQ-FAM50B-MEST}
+myqqnorm2(genes = c("MEST", "INPP5F"), models = c("wnlm.Q", "unlm.Q"))
+```
+
+```{r res-std-dev-wnlmQ-unlmQ}
+myqqnorm2(genes = gene.ids, models = c("wnlm.Q", "unlm.Q"))
 ```
 
 ### Homogeneity of error (homoscedasticity)

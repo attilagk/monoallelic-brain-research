@@ -1,4 +1,4 @@
 \beamer@sectionintoc {1}{Introduction}{3}{0}{1}
 \beamer@sectionintoc {2}{Our previous work}{7}{0}{2}
-\beamer@sectionintoc {3}{Mixed models}{17}{0}{3}
-\beamer@sectionintoc {4}{Our revised work}{24}{0}{4}
+\beamer@sectionintoc {3}{Mixed models}{16}{0}{3}
+\beamer@sectionintoc {4}{Our revised work}{23}{0}{4}

@@ -20,3 +20,11 @@ get.influence <- function(m, cases) {
     x[names(y)] <- y
     return(x)
 }
+
+myqqnorm2 <- function(genes = gene.ids, models = c("wnlm.Q", "unlm.Q"), dt = diagnostics, pch = if(length(genes) > 3) c("o", "+") else 16, ...) {
+    col <- if(length(models) == 2) c("purple", "red")
+    qqmath(~ res.std.dev | gene, data = dt, groups = model.type, subset = dt$gene %in% genes & dt$model.type %in% models,
+           pch = pch, par.settings = list(superpose.symbol = list(col = col)),
+           abline = c(0, 1), auto.key = list(text = rev(models), col = col, points = FALSE),
+           ...)
+}
