@@ -4,7 +4,7 @@ title: "p values from fixed and mixed models"
 featimg: "p-val-dotplot-wnlmQ-mixed-1.png"
 ---
 
-Hello, World!
+This article was motivated by my Work In Progress (WIP) seminar on 2/14/2018 for the Department of Genetics and Genomic Sciences at Mount Sinai.  The figures are used in the corresponding presentation (2018-02-01-monoall-general.pdf).
 
 ```{r echo=FALSE, message=FALSE}
 library(lme4)

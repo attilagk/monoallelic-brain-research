@@ -202,14 +202,34 @@
 \begin{columns}[t]
 \begin{column}{0.5\textwidth}
 
-\includegraphics[width=\columnwidth]{figures/2017-03-08-model-checking/qqplot-families-M3-1.pdf}
+\includegraphics[width=\columnwidth]{figures/2017-03-08-model-checking/qqplot-families-M3-1.png}
 \end{column}
 
 \begin{column}{0.5\textwidth}
 
-\includegraphics[width=\columnwidth]{figures/2017-03-08-model-checking/scedasticity-families-M3-1.pdf}
+\includegraphics[width=\columnwidth]{figures/2017-03-08-model-checking/scedasticity-families-M3-1.png}
 \end{column}
 \end{columns}
+\end{frame}
+
+\begin{frame}{Effects on read count ratio}
+\begin{itemize}
+\item results based on mixed models:
+\begin{tabular}{r|cc}
+explanatory variable & gene nonspecific & gene specific \\
+\hline
+Schizophrenia (Dx) & - & - \\
+Age & - & + \\
+Ancestry.{1,3} & - & + \\
+Gender & - & + \\
+\end{tabular}
+\item<2-> caution: model fit
+\item<3> interpretation:
+\begin{enumerate}
+\item no detectable link between imprinting and schizophrenia
+\item age, genetics and gender differentially affect imprinting
+\end{enumerate}
+\end{itemize}
 \end{frame}
 
 \end{document}
