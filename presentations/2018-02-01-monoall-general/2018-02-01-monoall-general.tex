@@ -1,4 +1,4 @@
-\documentclass{beamer} %\documentclass[handout]{beamer}
+\documentclass[usenames,dvipsnames]{beamer} %\documentclass[handout]{beamer}
 
 
 %\includeonlyframes{bsm,title,toc,imprint-mouse-devel,igf2-imprint-evol,sister-disorders,previous-age-studies,our-study,cmc,toc-current,filtering-calling,fitting-models,ll-surface,all-betas,orthogonality,identifiability,anova,betas-cluster,signif-genes,cf-overall-expression,summary,improving-model,p-val,imprinted-brain,chess-lab}
@@ -19,9 +19,9 @@
 % beamer styles
 \mode<presentation>{
 %\usetheme{Pittsburgh}
-\usetheme{Copenhagen}
-\usecolortheme{beaver}
-%\usecolortheme{seahorse}
+\usetheme{Singapore}
+%\usecolortheme{dove}
+\usecolortheme{seahorse}
 %\usefonttheme{structureitalicserif}
 \setbeamercovered{transparent}
 }
@@ -52,9 +52,7 @@
 \tableofcontents
 \end{frame}
 
-\section{First part}
-
-\subsection{Imprinting and allelic bias}
+\section{Introduction}
 
 \begin{frame}{Schizophrenia: complex genetic architecture}
 \includegraphics[width=1.0\textwidth]{figures/from-others/sullivan-natrevgenet-2012-fig1b.jpg}
@@ -89,6 +87,8 @@
 \end{itemize}
 \end{frame}
 
+\section{Our previous work}
+
 \begin{frame}{Read count ratio measures allelic expression bias}
 \includegraphics[height=0.75\textheight]{figures/by-me/commonmind-rna-seq/commonmind-rna-seq.pdf}
 \end{frame}
@@ -113,52 +113,109 @@
 \end{tabular}
 \end{frame}
 
-\begin{frame}[plain]
+\begin{frame}%[plain]
 \begin{center}
-\includegraphics[scale=0.5]{figures/2016-11-01-plotting-distribution-of-s/S-Dx-strip-1.pdf}
+\includegraphics[height=0.95\textheight]{figures/2016-11-01-plotting-distribution-of-s/S-Dx-strip-1.pdf}
 \end{center}
 \end{frame}
 
-\begin{frame}[plain]
+\begin{frame}%[plain]
 \begin{center}
-\includegraphics[scale=0.5]{figures/2016-06-26-trellis-display-of-data/evar-scatterplot-matrix-simple-1.png}
+\includegraphics[height=0.95\textheight]{figures/2016-06-26-trellis-display-of-data/evar-scatterplot-matrix-simple-1.pdf}
 \end{center}
 \end{frame}
 
-\begin{frame}[label=S-Age,plain]
+\begin{frame}[label=S-Age]
 \begin{center}
-\includegraphics[scale=0.5]{figures/2016-11-01-plotting-distribution-of-s/S-Dx-age-1.pdf}
+\includegraphics[height=0.95\textheight]{figures/2016-11-01-plotting-distribution-of-s/S-Dx-age-1.pdf}
 \end{center}
 \end{frame}
 
 \begin{frame}
+\begin{center}
+\includegraphics[height=0.95\textheight]{figures/2018-02-10-fixed-mixed-p-values/beta-99-CI-1.pdf}
+\end{center}
+\end{frame}
+
+\begin{frame}<1>[label=pval]
+\begin{center}
+\includegraphics<1>[height=0.95\textheight]{figures/2018-02-10-fixed-mixed-p-values/p-val-dotplot-no-mixed-1.pdf}
+\includegraphics<2>[height=0.95\textheight]{figures/2018-02-10-fixed-mixed-p-values/p-val-dotplot-1.pdf}
+\end{center}
+\end{frame}
+
+\begin{frame}
+\begin{center}
+\includegraphics[height=0.95\textheight]{figures/2016-09-23-model-checking/qqnorm-wnlm-Q-1.pdf}
+\end{center}
+\end{frame}
+
+\begin{frame}
+\begin{center}
+\includegraphics[height=0.95\textheight]{figures/2016-09-23-model-checking/qqnorm-unlm-Q-1.pdf}
+\end{center}
+\end{frame}
+
+\section{Mixed models}
+
+\againframe{S-Age}
+
+\begin{frame}%{The power of mixed models}
 
 \begin{columns}[t]
-\begin{column}{0.65\textwidth}
+\begin{column}{0.70\textwidth}
 
+\includegraphics<1>[width=\columnwidth]{figures/2017-10-16-fixed-and-mixed-models/data-1.pdf}
+
+\includegraphics<2>[width=\columnwidth]{figures/2017-10-16-fixed-and-mixed-models/data-F0-F1-1.pdf}
+
+\includegraphics<3>[width=\columnwidth]{figures/2017-10-16-fixed-and-mixed-models/data-M0-M1-1.pdf}
+
+\includegraphics<4>[width=\columnwidth]{figures/2017-10-16-fixed-and-mixed-models/data-M0-M1-M2-1.pdf}
+
+\includegraphics<5>[width=\columnwidth]{figures/2017-10-16-fixed-and-mixed-models/data-F1-M2-1.pdf}
+
+\includegraphics<6>[width=\columnwidth]{figures/2017-10-16-fixed-and-mixed-models/log-p-val-1.pdf}
 \end{column}
 
-\begin{column}{0.35\textwidth}
-\begin{tabular}{p{0.33\textwidth} p{0.33\textwidth} p{0.33\textwidth}}
-\only<1,4>{M1} &
-\only<2,4>{M2} &
-\only<3,4>{M3} \\
+\begin{column}{0.30\textwidth}
+
+\footnotesize
+\begin{tabular}{p{0.30\textwidth} p{0.30\textwidth} p{0.30\textwidth}}
+\only<2,5,6>{fixed} &
+\only<3,4,6>{mixed} &
+\only<4,5,6>{mixed} \\
+\only<2,5,6>{\color{Red}F1} &
+\only<3,4,6>{\color{Green}M1} &
+\only<4,5,6>{\color{Blue}M2} \\
 \vspace{0pt}
-\includegraphics<1,4>[scale=0.8]{figures/by-me/fixed-mixed/fixed/fixed.pdf} &
+\includegraphics<2,5,6>[scale=0.7]{figures/by-me/fixed-mixed/fixed/fixed.pdf} &
 \vspace{0pt}
-\includegraphics<2,4>[scale=0.8]{figures/by-me/fixed-mixed/mixed/mixed.pdf} &
+\includegraphics<3,4,6>[scale=0.7]{figures/by-me/fixed-mixed/mixed/mixed.pdf} &
 \vspace{0pt}
-\includegraphics<3,4>[scale=0.8]{figures/by-me/fixed-mixed/random/random.pdf} \\
+\includegraphics<4,5,6>[scale=0.7]{figures/by-me/fixed-mixed/random/random.pdf} \\
 \end{tabular}
 \end{column}
 \end{columns}
 \end{frame}
 
-\begin{frame}
-\includegraphics[scale=0.5]{figures/2016-08-08-imprinted-gene-clusters/segplot-wnlm-Q-99conf-1.pdf}
-\end{frame}
+\section{Our revised work}
 
-\againframe{S-Age}
+\againframe{pval}
+
+\begin{frame}
+\begin{columns}[t]
+\begin{column}{0.5\textwidth}
+
+\includegraphics[width=\columnwidth]{figures/2017-03-08-model-checking/qqplot-families-M3-1.pdf}
+\end{column}
+
+\begin{column}{0.5\textwidth}
+
+\includegraphics[width=\columnwidth]{figures/2017-03-08-model-checking/scedasticity-families-M3-1.pdf}
+\end{column}
+\end{columns}
+\end{frame}
 
 \end{document}
 

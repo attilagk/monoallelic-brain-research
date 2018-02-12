@@ -1,0 +1,105 @@
+---
+layout: default
+featimg: "p-val-dotplot-1.png"
+---
+
+Hello, World!
+
+```{r echo=FALSE, message=FALSE}
+library(lme4)
+library(lattice)
+opts_chunk$set(dpi = 144)
+opts_chunk$set(out.width = "700px")
+opts_chunk$set(dev = c("png", "pdf"))
+opts_chunk$set(fig.width = 6)
+lattice.options(default.args = list(as.table = TRUE))
+lattice.options(default.theme = "standard.theme")
+```
+
+```{r}
+csv <- list(fixed = read.csv("../../results/regr-coefs.csv"),
+            mixed = read.csv("../../results/anova-mixed-M5.csv"))
+```
+
+```{r}
+df <- list()
+df$fixed <-
+    subset(csv$fixed, subset = Model == "wnlm.Q" & Coefficient %in% c("DxSCZ", "Age", "Ancestry.1"),
+           select = c(Model, Coefficient, Gene, p.val.t.dist))
+names(df$fixed) <- c("Model", "Predictor", "Term", "p")
+df$mixed <-
+    subset(csv$mixed, X %in% c("Dx", "Dx.Gene", "Age", "Age.Gene", "Ancestry.1", "Ancestry.1.Gene"),
+           select = c(X, p.Chi))
+df$mixed <- cbind(data.frame(Model = "mixed", Predictor = sub(".Gene", "", df$mixed$X), df$mixed))
+names(df$mixed) <- names(df$fixed)
+df$mixed$Term <- c("{b_g}_g", "{b_g}_g", "{b_g}_g", "b", "beta", "beta")
+df$mixed$Predictor <- sub("Dx", "DxSCZ", df$mixed$Predictor)
+# color
+df$fixed$Color <- "red"
+df$mixed <- cbind(df$mixed, data.frame(Color = rep(c("blue", "green4"), each = 3)))
+# binding fixed and mixed results together
+d <- droplevels(rbind(df$fixed, df$mixed))
+levels(d$Model) <- paste0(c("f", "m"), "ixed")
+d$Term <-
+    factor(d$Term,
+           levels = c(genes <- as.character(subset(d, Predictor == "Age" & Model == "fixed", Term, drop = TRUE)), "beta", "b", "{b_g}_g"),
+           ordered = TRUE)
+d$Predictor <-
+    factor(d$Predictor, levels = c("DxSCZ", "Age", "Ancestry.1"), ordered = TRUE)
+pars <- list(fixed = genes, mixed = setdiff(levels(d$Term), genes))
+```
+
+```{r p-val-dotplot-no-mixed}
+my.dotplot <- function(do.mixed = TRUE, df = d, param = pars) {
+    sset <- if(do.mixed) TRUE else df$Model == "fixed"
+    dotplot(Term ~ log10(p) | Predictor, data = df, layout = c(3, 1), subset = sset,
+            xlab = expression(paste(log[10], "p")),
+            auto.key = list(text = if(do.mixed) c("mixed: gene specific", "mixed: gene nonspecific", "earlier fixed effects model") else c("", "", "earlier fixed effects model") ,
+                            col = c("blue", "green4", "red"), points = FALSE),
+            scales = list(y = list(limits = seq(from = 0, to = 1 + length(levels(df$Term))), at = seq_along(levels(df$Term)),
+                                   labels = c(paste0(expression(beta), "_", param$fixed), if(do.mixed) param$mixed else rep("", 3))
+                                   ),
+                          x = list(relation = "free", limits = list(c(-6, 1), c(-6, 1), c(-18, 3)))
+            ),
+            between = list(x = 0.5),
+            par.settings = list(dot.symbol = list(col = c(rep("red", 30), "blue", "green4"))))
+}
+my.dotplot(do.mixed = FALSE)
+```
+
+```{r p-val-dotplot}
+my.dotplot(do.mixed = TRUE)
+```
+
+```{r}
+beta.99.CI <-
+    subset(read.csv("../../results/beta-99-CI.csv"),
+           subset = Model == "wnlm.Q" & Coefficient %in% c("DxSCZ", "Age", "Ancestry.1"),
+           select = c(Estimate, Lower.CL, Upper.CL, Gene, Coefficient))
+beta.99.CI$Gene <- factor(beta.99.CI$Gene, levels = genes, ordered = TRUE)
+beta.99.CI$Coefficient <- factor(beta.99.CI$Coefficient, levels = levels(d$Predictor), ordered = TRUE)
+```
+
+```{r beta-99-CI}
+my.segplot <- function(dt, param = pars, ...) {
+    with(dt, dotplot(Gene ~ Estimate | Coefficient,
+            prepanel = function(x, y, subscripts, ...)
+                list(xlim = range(c(Lower.CL[subscripts], Upper.CL[subscripts]), na.rm = TRUE)),
+            panel = function(x, y, groups, subscripts, ...) {
+                panel.abline(v = 0, col = "cyan", lty = 1)
+                lsegments(x0 = Lower.CL[subscripts], y0 = y, x1 = Upper.CL[subscripts], y1 = y, col = "red", ...)
+                panel.xyplot(x, y, col = "red", pch = 16,...)
+            },
+            scales = list(x = list(relation = "free"),
+                          y = list(limits = seq(from = 0, to = 4 + length(levels(dt$Gene))), at = seq_along(levels(dt$Gene)),
+                                   labels = c(levels(dt$Gene), rep("", 3))
+                                   )
+                          ),
+            auto.key = list(text = c("", "", "earlier fixed effects model"), col = "red", points = FALSE),
+            between = list(x = 0.5),
+            xlab = "beta_g: estimate and 99% conf. int.",
+            layout = c(3, 1),
+            ...))
+}
+my.segplot(beta.99.CI)
+```

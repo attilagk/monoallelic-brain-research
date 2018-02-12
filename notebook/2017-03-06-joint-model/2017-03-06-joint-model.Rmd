@@ -291,7 +291,9 @@ av.6$Ancestry.5 <- anova(M6, update(M6, . ~ . + scale(Ancestry.5)))
 #### Results of ANOVA
 
 ```{r}
+write.csv(summarize.anova(av.5), "../../results/anova-mixed-M5.csv")
 print.av(summarize.anova(av.5))
+write.csv(summarize.anova(av.6), "../../results/anova-mixed-M6.csv")
 print.av(summarize.anova(av.6))
 ```
 

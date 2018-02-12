@@ -178,6 +178,13 @@ beta.99 <- lapply(M, function(l.m) do.beta(l.m[sel.genes], conf.lev = 0.99))
 beta.95 <- lapply(M, function(l.m) do.beta(l.m[sel.genes], conf.lev = 0.95))
 ```
 
+```{r}
+beta.99.long <- do.call(rbind, lapply(names(beta.99), function(x) cbind(beta.99[[x]], data.frame(Model = x))))
+#write.csv(beta.99.long, "../../results/beta-99-CI.csv")
+beta.95.long <- do.call(rbind, lapply(names(beta.99), function(x) cbind(beta.99[[x]], data.frame(Model = x))))
+#write.csv(beta.95.long, "../../results/beta-95-CI.csv")
+```
+
 ### Filtering for poor fit
 
 Filter based on earlier decisions on the goodness of fit of logi.S, which is stored in `results/model-checking.csv`.
