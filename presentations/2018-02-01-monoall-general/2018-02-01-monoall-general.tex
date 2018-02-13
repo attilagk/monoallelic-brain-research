@@ -62,22 +62,22 @@
 \begin{frame}{Imprinting and allelic bias}
 \begin{columns}[t]
 \begin{column}{0.5\textwidth}
+\begin{enumerate}
+\item roles
+\begin{itemize}
+\item psychiatric?
+\item mother--child interaction
+\item neurodevelopmental 
+\end{itemize}
+\item variation: age, tissue
+\end{enumerate}
+\end{column}
+
+\begin{column}{0.5\textwidth}
 
 \includegraphics[width=1.0\columnwidth]{figures/from-others/renfree-2012-fig2.jpg}
 
 {\tiny Renfree et al 2012 Philos Trans R Soc Lond B}
-\end{column}
-
-\begin{column}{0.5\textwidth}
-\begin{enumerate}
-\item variation: age, tissue
-\item roles
-\begin{itemize}
-\item mother--child interaction
-\item neurodevelopmental 
-\item psychiatric?
-\end{itemize}
-\end{enumerate}
 \end{column}
 \end{columns}
 \end{frame}
@@ -87,14 +87,15 @@
 %\item genomic imprinting and schizophrenia (SCZ)
 \item<1> CommonMind Consortium data
 \item<1> 30 imprinted genes in DLPFC, some novel
-\item<1> dependence of allelic bias on SCZ? 
-\item<1> weak support
+\item<1> found allelic bias to depend on SCZ, age
 \begin{itemize}
-\item  differential dependence on SCZ, age
+\item genes varied
+\item weak statistical support 
 \end{itemize}
-\item<2> stronger support
+\item<2> mixed models: more power
+\item<2> found allelic bias to depend on age but \alert{not} SCZ
 \begin{itemize}
-\item  differential dependence on age, \alert{not} SCZ
+\item genes varied
 \end{itemize}
 \end{itemize}
 \end{frame}
@@ -108,7 +109,7 @@
 \begin{frame}{The data}
 \footnotesize
 \begin{tabular}{|c|ccc|cccc|}
- & \multicolumn{3}{|c|}{read count ratios} & \multicolumn{4}{|c|}{predictors} \\
+ & \multicolumn{3}{|c|}{read count ratios} & \multicolumn{4}{|c|}{explanatory variables} \\
 \(i\) & \(Y_1\) & \(\hdots\) & \(Y_{30}\) & \(X_1\) & \(X_2\) & \(\hdots\) & \(X_{12}\) \\
 \textbf{Individual} & \textbf{MAGEL2} & \(\hdots\) & \textbf{UBE3A} & \textbf{Dx} & \textbf{Age} & \(\hdots\) & \textbf{RIN} \\
 \hline
@@ -217,7 +218,7 @@ https://attilagk.github.io/R-you-experienced/
 
 \section{Our revised work}
 
-\begin{frame}{Fitting mixed models on CommonMind data}
+\begin{frame}{Fitting mixed models on the CommonMind data}
 \begin{columns}[t]
 \begin{column}{0.5\textwidth}
 
