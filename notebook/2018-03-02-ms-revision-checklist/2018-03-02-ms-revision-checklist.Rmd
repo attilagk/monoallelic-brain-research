@@ -1,0 +1,10 @@
+---
+layout: default
+#title: 
+tags: []
+#featimg: ""
+---
+
+Checklist for revision and resubmission to Nature Communications
+
+The checklist can be found [here]({{ site.baseurl}}/assets/projects/bsm/variant-callers.csv).

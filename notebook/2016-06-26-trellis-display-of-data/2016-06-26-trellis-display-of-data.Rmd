@@ -252,7 +252,10 @@ P$splom$lattice <-
 #P$splom$ggplot2 <- ggpairs(E[ e.vars[c(1:6, 10)]])
 plot(P$splom$lattice)
 #plot(P$splom$ggplot2)
-ggpairs(E[ e.vars[c(1:6, 10)]])
+```
+
+```{r evar-scatterplot-matrix-gg, dev=c("png", "pdf"), fig.asp=1, warning=FALSE, echo=FALSE, message=FALSE}
+ggpairs(E[ e.vars[c(1:6, 10)]], showStrips = TRUE)
 ```
 
 ```{r evar-scatterplot-matrix-simple, dev=c("png", "pdf"), fig.asp=1, warning=FALSE, echo=FALSE, message=FALSE}
