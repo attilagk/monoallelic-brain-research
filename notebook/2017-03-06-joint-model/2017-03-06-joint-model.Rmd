@@ -297,6 +297,96 @@ write.csv(summarize.anova(av.6), "../../results/anova-mixed-M6.csv")
 print.av(summarize.anova(av.6))
 ```
 
+#### Revision for Nature Communications
+
+```{r cache=TRUE}
+M5.odd <- lmer(formula(M5), data = dat, subset = Gene %in% gene.ids[seq(from = 1, to = length(gene.ids), by = 2)])
+M5.even <- lmer(formula(M5), data = dat, subset = Gene %in% gene.ids[seq(from = 2, to = length(gene.ids), by = 2)])
+```
+
+```{r cache=TRUE, eval=TRUE}
+av.5.odd <- list()
+av.5.odd$Age.Gene <-
+    anova(update(M5.odd, . ~ . - (scale(Age) + scale(RIN) + scale(Ancestry.1) + scale(Ancestry.3) | Gene) + (scale(RIN) + scale(Ancestry.1) + scale(Ancestry.3) | Gene)),
+          M5.odd)
+av.5.odd$Ancestry.1.Gene <-
+    anova(update(M5.odd, . ~ . - (scale(Age) + scale(RIN) + scale(Ancestry.1) + scale(Ancestry.3) | Gene) + (scale(Age) + scale(RIN) + scale(Ancestry.3) | Gene)),
+          M5.odd)
+av.5.odd$Ancestry.2.Gene <-
+    anova(M5.odd,
+          update(M5.odd, . ~ . - (scale(Age) + scale(RIN) + scale(Ancestry.1) + scale(Ancestry.3) | Gene) + (scale(Age) + scale(RIN) + scale(Ancestry.1) + scale(Ancestry.2) + scale(Ancestry.3) | Gene)))
+av.5.odd$Ancestry.3.Gene <-
+    anova(update(M5.odd, . ~ . - (scale(Age) + scale(RIN) + scale(Ancestry.1) + scale(Ancestry.3) | Gene) + (scale(Age) + scale(RIN) + scale(Ancestry.1) | Gene)),
+          M5.odd)
+av.5.odd$Ancestry.4.Gene <-
+    anova(M5.odd,
+          update(M5.odd, . ~ . - (scale(Age) + scale(RIN) + scale(Ancestry.1) + scale(Ancestry.3) | Gene) + (scale(Age) + scale(RIN) + scale(Ancestry.1) + scale(Ancestry.4) + scale(Ancestry.3) | Gene)))
+av.5.odd$Ancestry.5.Gene <-
+    anova(M5.odd,
+          update(M5.odd, . ~ . - (scale(Age) + scale(RIN) + scale(Ancestry.1) + scale(Ancestry.3) | Gene) + (scale(Age) + scale(RIN) + scale(Ancestry.1) + scale(Ancestry.5) + scale(Ancestry.3) | Gene)))
+av.5.odd$Gender.Gene <-
+    anova(update(M5.odd, . ~ . - (1 | Gender:Gene)), M5.odd)
+av.5.odd$Gender <- anova(M5.odd, update(M5.odd, . ~ . + (1 | Gender)))
+# note that the next one is an addition to M5.odd
+av.5.odd$Dx.Gene <-
+    anova(M5.odd, update(M5.odd, . ~ . + (1 | Dx:Gene)))
+av.5.odd$Dx <- anova(M5.odd, update(M5.odd, . ~ . + (1 | Dx)))
+av.5.odd$Gene <-
+    anova(update(M5.odd, . ~ . - (scale(Age) + scale(RIN) + scale(Ancestry.1) + scale(Ancestry.3) | Gene) + (-1 + scale(Age) + scale(RIN) + scale(Ancestry.1) + scale(Ancestry.3) | Gene)),
+          M5.odd)
+av.5.odd$Age <- anova(M5.odd, update(M5.odd, . ~ . + scale(Age)))
+av.5.odd$Ancestry.1 <- anova(M5.odd, update(M5.odd, . ~ . + scale(Ancestry.1)))
+av.5.odd$Ancestry.2 <- anova(M5.odd, update(M5.odd, . ~ . + scale(Ancestry.2)))
+av.5.odd$Ancestry.3 <- anova(M5.odd, update(M5.odd, . ~ . + scale(Ancestry.3)))
+av.5.odd$Ancestry.4 <- anova(M5.odd, update(M5.odd, . ~ . + scale(Ancestry.4)))
+av.5.odd$Ancestry.5 <- anova(M5.odd, update(M5.odd, . ~ . + scale(Ancestry.5)))
+```
+
+```{r cache=TRUE, eval=TRUE}
+av.5.even <- list()
+av.5.even$Age.Gene <-
+    anova(update(M5.even, . ~ . - (scale(Age) + scale(RIN) + scale(Ancestry.1) + scale(Ancestry.3) | Gene) + (scale(RIN) + scale(Ancestry.1) + scale(Ancestry.3) | Gene)),
+          M5.even)
+av.5.even$Ancestry.1.Gene <-
+    anova(update(M5.even, . ~ . - (scale(Age) + scale(RIN) + scale(Ancestry.1) + scale(Ancestry.3) | Gene) + (scale(Age) + scale(RIN) + scale(Ancestry.3) | Gene)),
+          M5.even)
+av.5.even$Ancestry.2.Gene <-
+    anova(M5.even,
+          update(M5.even, . ~ . - (scale(Age) + scale(RIN) + scale(Ancestry.1) + scale(Ancestry.3) | Gene) + (scale(Age) + scale(RIN) + scale(Ancestry.1) + scale(Ancestry.2) + scale(Ancestry.3) | Gene)))
+av.5.even$Ancestry.3.Gene <-
+    anova(update(M5.even, . ~ . - (scale(Age) + scale(RIN) + scale(Ancestry.1) + scale(Ancestry.3) | Gene) + (scale(Age) + scale(RIN) + scale(Ancestry.1) | Gene)),
+          M5.even)
+av.5.even$Ancestry.4.Gene <-
+    anova(M5.even,
+          update(M5.even, . ~ . - (scale(Age) + scale(RIN) + scale(Ancestry.1) + scale(Ancestry.3) | Gene) + (scale(Age) + scale(RIN) + scale(Ancestry.1) + scale(Ancestry.4) + scale(Ancestry.3) | Gene)))
+av.5.even$Ancestry.5.Gene <-
+    anova(M5.even,
+          update(M5.even, . ~ . - (scale(Age) + scale(RIN) + scale(Ancestry.1) + scale(Ancestry.3) | Gene) + (scale(Age) + scale(RIN) + scale(Ancestry.1) + scale(Ancestry.5) + scale(Ancestry.3) | Gene)))
+av.5.even$Gender.Gene <-
+    anova(update(M5.even, . ~ . - (1 | Gender:Gene)), M5.even)
+av.5.even$Gender <- anova(M5.even, update(M5.even, . ~ . + (1 | Gender)))
+# note that the next one is an addition to M5.even
+av.5.even$Dx.Gene <-
+    anova(M5.even, update(M5.even, . ~ . + (1 | Dx:Gene)))
+av.5.even$Dx <- anova(M5.even, update(M5.even, . ~ . + (1 | Dx)))
+av.5.even$Gene <-
+    anova(update(M5.even, . ~ . - (scale(Age) + scale(RIN) + scale(Ancestry.1) + scale(Ancestry.3) | Gene) + (-1 + scale(Age) + scale(RIN) + scale(Ancestry.1) + scale(Ancestry.3) | Gene)),
+          M5.even)
+av.5.even$Age <- anova(M5.even, update(M5.even, . ~ . + scale(Age)))
+av.5.even$Ancestry.1 <- anova(M5.even, update(M5.even, . ~ . + scale(Ancestry.1)))
+av.5.even$Ancestry.2 <- anova(M5.even, update(M5.even, . ~ . + scale(Ancestry.2)))
+av.5.even$Ancestry.3 <- anova(M5.even, update(M5.even, . ~ . + scale(Ancestry.3)))
+av.5.even$Ancestry.4 <- anova(M5.even, update(M5.even, . ~ . + scale(Ancestry.4)))
+av.5.even$Ancestry.5 <- anova(M5.even, update(M5.even, . ~ . + scale(Ancestry.5)))
+```
+
+```{r}
+write.csv(summarize.anova(av.5.odd), "../../results/anova-mixed-M5.odd.csv")
+print.av(summarize.anova(av.5.odd))
+write.csv(summarize.anova(av.5.even), "../../results/anova-mixed-M5.even.csv")
+print.av(summarize.anova(av.5.even))
+```
+
 #### Summary
 
 * significant *Gene*-specific random effect of *Age*, *Ancestry.1* *Ancestry.3*,  and *Gender*

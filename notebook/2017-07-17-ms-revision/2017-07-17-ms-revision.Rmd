@@ -5,6 +5,7 @@ tags: [ manuscript, ]
 
 Recent versions of the manuscript are listed in reverse chronological order and can be downloaded via the links.
 
+1. [pdf]({{ site.baseurl }}/assets/projects/monoallelic-brain/2018-03-06-monoall-ms.pdf) and [rtf]({{ site.baseurl }}/assets/projects/monoallelic-brain/2018-03-06-monoall-ms.rtf) as of 2018-03-06
 1. [pdf]({{ site.baseurl }}/assets/projects/monoallelic-brain/2018-02-01-monoall-ms.pdf) and [rtf]({{ site.baseurl }}/assets/projects/monoallelic-brain/2018-02-01-monoall-ms.rtf) as of 2018-02-01
 1. [pdf]({{ site.baseurl }}/assets/projects/monoallelic-brain/2017-12-12-monoall-ms.pdf) and [rtf]({{ site.baseurl }}/assets/projects/monoallelic-brain/2017-12-12-monoall-ms.rtf) as of 2017-12-12
 1. [pdf]({{ site.baseurl }}/assets/projects/monoallelic-brain/2017-11-17-monoall-ms.pdf) and [rtf]({{ site.baseurl }}/assets/projects/monoallelic-brain/2017-11-17-monoall-ms.rtf) as of 2017-11-17
