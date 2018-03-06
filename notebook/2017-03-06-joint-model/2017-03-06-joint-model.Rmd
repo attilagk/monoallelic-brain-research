@@ -380,6 +380,19 @@ av.5.even$Ancestry.4 <- anova(M5.even, update(M5.even, . ~ . + scale(Ancestry.4)
 av.5.even$Ancestry.5 <- anova(M5.even, update(M5.even, . ~ . + scale(Ancestry.5)))
 ```
 
+The less significant p-values for the `even` gene subset compared to the `odd` gene subset are partly explained by fewer observations (more missing values) in the `even` subset, and partly by the fact that the `even` subset is less variable in terms of e.g. age dependence.
+
+```{r echo=FALSE}
+dat.sset <- list(odd  = subset(dat, subset = Gene %in% gene.ids[seq(from = 1, to = length(gene.ids), by = 2)]),
+                 even = subset(dat, subset = Gene %in% gene.ids[seq(from = 2, to = length(gene.ids), by = 2)]))
+print("number of non-NA observations")
+nrow(dat.sset$odd) - sapply(dat.sset, function(x) sum(is.na(x$Q)))
+print("number of total observations in subsets")
+sapply(dat.sset, nrow)
+print("fraction of non-NA observations")
+1 - sapply(dat.sset, function(x) sum(is.na(x$Q))) / nrow(dat.sset$odd)
+```
+
 ```{r}
 write.csv(summarize.anova(av.5.odd), "../../results/anova-mixed-M5.odd.csv")
 print.av(summarize.anova(av.5.odd))
