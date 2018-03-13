@@ -177,5 +177,36 @@ plot.all.c(plots)
 plot.all.b(plots)
 ```
 
+## Revision for Nature Communications
+
+```{r}
+source("../../src/fit-glms.R")
+set.seed(19760415) # my birthdate
+sel.g.rnd <- sample(names(S), 42)
+Y.long <- reshape.Y2long(sel.g.rnd)
+```
+
+```{r S-Dx-strip, warning=FALSE, echo=FALSE, fig.asp = 1.2}
+trellis.par.set(standard.theme())
+dp <-
+    stripplot(S ~ Dx | Gene, groups = Dx, data = Y.long, subset = Y.long$Dx %in% c("Control", "SCZ", "AFF"),
+              plot.points = FALSE, panel = function(x, y,...) {
+                  if(FALSE) # violin plot doesn't work for several data pockets
+                      panel.violin(x, y,..., col = "gray", border = 0)
+                  panel.bwplot(x, y,..., pch = "|")
+                  panel.stripplot(x, y,..., jitter.data = TRUE, factor = 4, pch = 21, cex = 0.3)
+              })
+my.update <- function(dp, ...) {
+    update(dp, scales = list(x = list(draw = FALSE, relation = "free")),
+           par.settings = list(add.text = list(cex = 0.8)),
+           xlab = "read count ratio, S",
+           ...)
+}
+update(my.update(dp), scales = list(x = list(draw = TRUE, relation = "same", rot = 90)),
+       xlab = "Dx", ylab = "read count ratio, S", auto.key = list(columns = 3),
+       par.settings = list(box.rectangle = list(col = "black", fill = "gray"), box.umbrella = list(col = "black"), plot.symbol = list(cex = 0)), layout = c(6, 7))
+```
+
+
 [ifat]: http://katahdin.mssm.edu/ifat/web/cm/home
 [Fig 1]: https://docs.google.com/presentation/d/1YvpA1AJ-zzir1Iw0F25tO9x8gkSAzqaO4fjB7K3zBhE/edit#slide=id.p4

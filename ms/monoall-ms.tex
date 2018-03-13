@@ -156,11 +156,12 @@ imprinted genes (panel headers in Fig.~\ref{fig:S-Dx}-\ref{fig:S-age}).
 Getting at the central question of our work Fig.~\ref{fig:S-Dx} shows
 that read count ratio is similarly distributed in the Control, SCZ and AFF
 group for all 30 imprinted genes suggesting independence between allelic bias and diagnosis of
-schizophrenia.
+schizophrenia.  Similar pattern was observed for not imprinted genes
+(Fig.~\ref{fig:S-Dx-rnd-genes}).
 
-To show this quantitatively we fitted several fixed and mixed effects models~\cite{Hoffman2016}
-that model the dependence of read count ratio jointly on all explanatory
-variables (Methods,
+To support the above qualitative result on imprinted genes, we fitted several
+fixed and mixed effects models~\cite{Hoffman2016} that model the dependence of
+read count ratio jointly on all explanatory variables (Methods,
 Section~\ref{sec:regression-overview-informal}-\ref{sec:fitting}).  Such joint
 models can capture much of the complex pattern of dependencies in genomic data
 including those we observed within and between technical and biological
@@ -1066,6 +1067,16 @@ connected by straight lines. This demonstrates that gene rank is roughly consist
 thresholds.
 }
 \label{fig:2-scores}
+\end{figure}
+
+\begin{figure}[H]
+\begin{center}
+\includegraphics[scale=0.6]{figures/2016-07-19-genome-wide-S/S-Dx-strip-1.pdf}
+\end{center}
+\caption{Distribution of read count ratio in Control, Schizophrenic (SCZ) and
+Affective spectrum disorder (AFF) individuals for randomly selected not
+imprinted genes.}
+\label{fig:S-Dx-rnd-genes}
 \end{figure}
 
 \clearpage
