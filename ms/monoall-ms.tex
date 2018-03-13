@@ -813,26 +813,34 @@ when comparing PEG3 or ZNF331 (negative dependence) to KCNK9 or RP13-487P22.1
 
 \begin{table}[H]
 \begin{center}
-\begin{tabular}{rlrc}
-predictor term                              & interpretation&   \(\Delta\)AIC &        p-value \\
+\begin{tabular}{|ll|rc|l|}
 \hline
-\((1\,|\,\mathrm{Gene})\)                   & variability among genes & \(-126.8\)  & \(8.5\times 10^{-28}\) \\
-\((1\,|\,\mathrm{Dx})\)                     & variability among Control, SCZ, AFF & \(2.0\)  & \(1.0\)  \\
-\((1\,|\,\mathrm{Dx}:\mathrm{Gene})\)       & Gene specific variability among Ctrl, SCZ, AFF & \(0.4\) &  \(0.21\) \\
-\(\mathrm{Age}\)                            & effect of Age & \(1.3\)   & \(0.39\) \\
-\((\mathrm{Age}\,|\,\mathrm{Gene})\)        & Gene specific effect of Age & \(-18.9\)  & \(2.5\times 10^{-5}\)  \\
-\(\mathrm{Ancestry.1}\)                     & effect of Ancestry.1 & \(0.6\)  & \(0.24\) \\
-\((\mathrm{Ancestry.1}\,|\,\mathrm{Gene})\) & Gene specific effect of Ancestry.1 & \(-71.2\)   & \(4.6\times 10^{-16}\) \\
-\(\mathrm{Ancestry.3}\)                     & effect of Ancestry.3 & \(1.6\)  & \(0.54\) \\
-\((\mathrm{Ancestry.3}\,|\,\mathrm{Gene})\) & Gene specific effect of Ancestry.3 & \(-17.9\)   & \(3.8\times 10^{-5}\) \\
-\((1\,|\,\mathrm{Gender})\)                 & difference between Male and Female & \(2.0\)  & \(1.0\)  \\
-\((1\,|\,\mathrm{Gender}:\mathrm{Gene})\)   & Gene specific difference between M and F & \(-5.7\) &  \(5.5\times 10^{-3}\) \\
+\multicolumn{2}{|c|}{Hypothesis}                      & \multicolumn{2}{c|}{Results}             & Interpretation                               \\
+response & predictor term                             & \(\Delta\)AIC   & p-value                &                                              \\
+\hline
+\(Q\)    &\((1\,|\,\mathrm{Gene})\)                   & \(-126.8\)      & \(8.5\times 10^{-28}\) & imprinted genes vary in allelic bias     \\
+\(Q\)    &\((1\,|\,\mathrm{Dx})\)                     & \(2.0\)         & \(1.0\)                & similar allelic bias for Control, SCZ, AFF \\
+\(Q\)    &\((1\,|\,\mathrm{Dx}:\mathrm{Gene})\)       & \(0.4\)         & \(0.21\)               & similar gene specific allelic bias for Control, SCZ, AFF    \\
+\(Q\)    &\(\mathrm{Age}\)                            & \(1.3\)         & \(0.39\)               & no effect of Age on allelic bias (gene non-specific)              \\
+\(Q\)    &\((\mathrm{Age}\,|\,\mathrm{Gene})\)        & \(-18.9\)       & \(2.5\times 10^{-5}\)  & gene specific effect of Age on allelic bias                \\
+\(Q\)    &\(\mathrm{Ancestry.1}\)                     & \(0.6\)         & \(0.24\)               & no genetic effect on allelic bias               \\
+\(Q\)    &\((\mathrm{Ancestry.1}\,|\,\mathrm{Gene})\) & \(-71.2\)       & \(4.6\times 10^{-16}\) & no gene specific genetic effect on allelic bias               \\
+\(Q\)    &\(\mathrm{Ancestry.3}\)                     & \(1.6\)         & \(0.54\)               & no genetic effect on allelic bias               \\
+\(Q\)    &\((\mathrm{Ancestry.3}\,|\,\mathrm{Gene})\) & \(-17.9\)       & \(3.8\times 10^{-5}\)  & no gene specific genetic effect on allelic bias               \\
+\(Q\)    &\((1\,|\,\mathrm{Gender})\)                 & \(2.0\)         & \(1.0\)                & no Male-Female difference in allelic bias       \\
+\(Q\)    &\((1\,|\,\mathrm{Gender}:\mathrm{Gene})\)   & \(-5.7\)        & \(5.5\times 10^{-3}\)  & no gene specific Male-Female difference in allelic bias       \\
+\hline
 \end{tabular}
 \end{center}
-\caption{Dependence of read count ratio on various predictor terms in the
-mixed model; largely
-negative \(\Delta\mathrm{AIC}\) and small p-values indicate significant
-dependence (see Methods).
+\caption{Hypothesis tests concerning the effect of various predictor terms on
+the quasi log-translformed read count ratio \(Q\) of imprinted genes,
+interpreted as effects on allelic bias.
+Predictor terms whose effect on \(Q\) is modeled as random are enclosed in
+parentheses.  Terms like \((1\,|\,\mathrm{Dx})\) or \(\mathrm{Age}\) denote effects that are
+uniform across imprinted genes (gene non-specific), while terms like
+\((1\,|\,\mathrm{Dx}:\mathrm{Gene})\) or \((\mathrm{Age}\,|\,\mathrm{Gene})\) mean that the effect is specific to
+certain imprinted gene(s). Strongly negative \(\Delta\mathrm{AIC}\) and small
+p-value indicate significant dependence (see Methods).
 }
 \label{tab:mod-sel}
 \end{table}
