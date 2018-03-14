@@ -1,6 +1,7 @@
 #! /usr/bin/env bash
 
-dest="$HOME/lab-notebook/assets/projects/monoallelic-brain"
+#dest="$HOME/lab-notebook/assets/projects/monoallelic-brain"
+dest="$HOME/websites/open-notebook/monoallelic-brain/assets/projects/monoallelic-brain"
 prefix=$(date +%Y-%m-%d)
 bn="monoall-ms"
 
@@ -8,7 +9,8 @@ bn="monoall-ms"
 latex2rtf $bn.tex
 
 # prefix and copy tex, pdf and rtf files to lab-notebook
-for e in {tex,pdf,rtf}; do
+#for e in {tex,pdf,rtf}; do
+for e in {tex,pdf}; do
     f=$bn.$e
     cp $f $dest/${prefix}-$f
 done

@@ -1,0 +1,7 @@
+---
+layout: default
+title: "Open Lab Notebook"
+tags: [reproducible-research, open-notebook]
+---
+
+This work has been published in Nature Communications (REF).  The project's lab notebook is now openly accessible at [https://attilagk.github.io/monoallelic-brain-notebook/](https://attilagk.github.io/monoallelic-brain-notebook/).

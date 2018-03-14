@@ -821,26 +821,30 @@ response & predictor term                             & \(\Delta\)AIC   & p-valu
 \(Q\)    &\((1\,|\,\mathrm{Gene})\)                   & \(-126.8\)      & \(8.5\times 10^{-28}\) & imprinted genes vary in allelic bias     \\
 \(Q\)    &\((1\,|\,\mathrm{Dx})\)                     & \(2.0\)         & \(1.0\)                & similar allelic bias for Control, SCZ, AFF \\
 \(Q\)    &\((1\,|\,\mathrm{Dx}:\mathrm{Gene})\)       & \(0.4\)         & \(0.21\)               & similar gene specific allelic bias for Control, SCZ, AFF    \\
-\(Q\)    &\(\mathrm{Age}\)                            & \(1.3\)         & \(0.39\)               & no effect of Age on allelic bias (gene non-specific)              \\
+\(Q\)    &\(\mathrm{Age}\)                            & \(1.3\)         & \(0.39\)               & no uniform effect of Age on allelic bias               \\
 \(Q\)    &\((\mathrm{Age}\,|\,\mathrm{Gene})\)        & \(-18.9\)       & \(2.5\times 10^{-5}\)  & gene specific effect of Age on allelic bias                \\
-\(Q\)    &\(\mathrm{Ancestry.1}\)                     & \(0.6\)         & \(0.24\)               & no genetic effect on allelic bias               \\
-\(Q\)    &\((\mathrm{Ancestry.1}\,|\,\mathrm{Gene})\) & \(-71.2\)       & \(4.6\times 10^{-16}\) & no gene specific genetic effect on allelic bias               \\
-\(Q\)    &\(\mathrm{Ancestry.3}\)                     & \(1.6\)         & \(0.54\)               & no genetic effect on allelic bias               \\
-\(Q\)    &\((\mathrm{Ancestry.3}\,|\,\mathrm{Gene})\) & \(-17.9\)       & \(3.8\times 10^{-5}\)  & no gene specific genetic effect on allelic bias               \\
-\(Q\)    &\((1\,|\,\mathrm{Gender})\)                 & \(2.0\)         & \(1.0\)                & no Male-Female difference in allelic bias       \\
-\(Q\)    &\((1\,|\,\mathrm{Gender}:\mathrm{Gene})\)   & \(-5.7\)        & \(5.5\times 10^{-3}\)  & no gene specific Male-Female difference in allelic bias       \\
+\(Q\)    &\(\mathrm{Ancestry.1}\)                     & \(0.6\)         & \(0.24\)               & no uniform genetic effect on allelic bias               \\
+\(Q\)    &\((\mathrm{Ancestry.1}\,|\,\mathrm{Gene})\) & \(-71.2\)       & \(4.6\times 10^{-16}\) & gene specific genetic effect on allelic bias               \\
+\(Q\)    &\(\mathrm{Ancestry.3}\)                     & \(1.6\)         & \(0.54\)               & no uniform genetic effect on allelic bias               \\
+\(Q\)    &\((\mathrm{Ancestry.3}\,|\,\mathrm{Gene})\) & \(-17.9\)       & \(3.8\times 10^{-5}\)  & gene specific genetic effect on allelic bias               \\
+\(Q\)    &\((1\,|\,\mathrm{Gender})\)                 & \(2.0\)         & \(1.0\)                & no uniform Male-Female difference in allelic bias       \\
+\(Q\)    &\((1\,|\,\mathrm{Gender}:\mathrm{Gene})\)   & \(-5.7\)        & \(5.5\times 10^{-3}\)  & gene specific Male-Female difference in allelic bias       \\
 \hline
 \end{tabular}
 \end{center}
 \caption{Hypothesis tests concerning the effect of various predictor terms on
 the quasi log-translformed read count ratio \(Q\) of imprinted genes,
-interpreted as effects on allelic bias.
-Predictor terms whose effect on \(Q\) is modeled as random are enclosed in
-parentheses.  Terms like \((1\,|\,\mathrm{Dx})\) or \(\mathrm{Age}\) denote effects that are
-uniform across imprinted genes (gene non-specific), while terms like
-\((1\,|\,\mathrm{Dx}:\mathrm{Gene})\) or \((\mathrm{Age}\,|\,\mathrm{Gene})\) mean that the effect is specific to
-certain imprinted gene(s). Strongly negative \(\Delta\mathrm{AIC}\) and small
-p-value indicate significant dependence (see Methods).
+interpreted as effects on allelic bias.  Predictor terms whose effect on \(Q\)
+is modeled as random are enclosed in parentheses.  Terms like
+\((1\,|\,\mathrm{Dx})\) or \(\mathrm{Age}\) denote effects that are
+\emph{uniform} across imprinted genes, while terms like
+\((1\,|\,\mathrm{Dx}:\mathrm{Gene})\) or \((\mathrm{Age}\,|\,\mathrm{Gene})\)
+mean that the effect is \emph{specific} to certain imprinted gene(s). Strongly
+negative \(\Delta\mathrm{AIC}\) and small p-value indicate significant
+dependence.  Note that the results are based on mixed models that contained
+several terms besides the one tested for and shown here in the second column.
+For details see Sections~\ref{sec:regression-overview-informal}
+to~\ref{sec:fitting} in Methods.
 }
 \label{tab:mod-sel}
 \end{table}

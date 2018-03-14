@@ -1,0 +1,95 @@
+reviewer #1
+We write "pre-publication DLPFC RNA-seq data" but Fromer et al (ref 6) already published the data
+authors
+The word "pre-publication" has been removed.
+
+reviewer #1
+Removal of PCR replicates in RNA-seq data? This is necessary for SNP calling but the replicates should be retained for expression analysis.
+authors
+The reviewer raises an interesting point.  In our previous published work (Fromer et al) we chose to remove all duplicate reads and for consistency we made the same choice in the present work.  It is our thinking that this more conservative approach is warranted as the intial cDNA library was made using RNA obtained via the Ribo-Zero Magnetic Gold kit (Illumina/Epicenter Cat # MRZG12324) and random primed cDNA synthesis. Most reads with exact coincidence of start and end sites are overwhelmingly likely to indeed be PCR duplicates.
+
+reviewer #1
+Is there a better way to display these data or provide other values?
+authors
+Yes there are other ways to look at the data presented in Figure 5. Supporting figure Fig S4 is similar to Fig 5 with the difference that we plot the Q statistic the quasi log transformed read count ratio.  Q appeared more informative than the untransformed read count ratio S on the dependence on age and other explanatory variables.  Moreover Q was used for fitting the regression models instead of S because the fit was better with Q (see figs S6 S7 S8).
+
+reviewer #1
+In Figure S3 labels for Institution Gender diagnosis or ancestry are not included
+authors
+We updated Figure S3 with the requested labels.
+
+reviewer #2
+the title is misleading and "in Schizophrenia" should be removed
+authors
+We respectfully disagree with this point. Our view is that the title accurately reflects the data and analyses we present. We have made changes and extended the analyses addressing the other points raised by both reviewers.
+
+reviewer #2
+if the authors applied their method to other tissues
+authors
+In this study we chose to focus all our efforts to the DLPFC area because of manyfold evidence that this tissue is relevant to SCZ.  This was confirmed by our preceding work Fromer et al (ref #6).  Had we found even week evidence for involvement of imprinted genes’ allelic bias in SCZ in the DLPFC we would have considered expanding the scope of our present study.  But given our present findings it doesn’t appear as a promising direction to endeavor.
+
+reviewer #2
+How robust the results are the arbitrarily chosen "S_{ig} > 0.9" threshold? If 0.7 were chosen how would the top 50 genes change?
+authors
+The 0.9 threshold is not completely arbitrary because imprinted genes are known to have high allelic bias.  Nonetheless we took the reviewer’s advice and investigated how the gene score changes if we use threshold 0.7 instead of 0.9.  We added a new supplementary figure Fig S11 that shows that the ranking with threshold 0.7 is roughly consistent with the threshold 0.9.
+
+reviewer #2
+Couldn’t genes simply be ranked by the sum of the S_{ig} scores across individuals?
+authors
+Yes the gene score could have been done with the sum of S_{ig} scores---or equivalently their average---across individuals for any given gene. Our approach is based on the 90 percentile instead of the average which has two advantages.  First percentiles are less affected by outliers that may potentially emerge due to technical artifacts and the impact of sampling.  Second as we explain above the appropriate percentile can be selected (90% in this case) to reflect the biologically meaningful part of the distribution i.e. the fraction of individuals for whom the gene in question is imprinted to a great extent.
+
+reviewer #2
+question about the "top 50" genes why 50 how would the top 20 top 100 behave in terms of imprinting enrichment?
+authors
+Figure 3 demonstrates that below about rank 25 (lower half) most of the genes are false positives as they tend to have mapping bias and a high fraction of nearly unbiased data points (tan bars).  Thus taking the top 50 genes with respect to the gene score is sufficient and there is no need to go deeper (such as top 100).
+
+reviewer #2
+Wouldn’t it be simpler to make the point by drawing a ROC curve (truth=known imprinted genes S_{ig}>.9 fraction as predictor)?
+authors
+Unfortunately ROC curves wouldn’t be more useful than Fig 3.  This is because ROC curves are not appropriate here since the a priori known imprinted genes in various tissues / species / developmental stages can not be counted on to behave in a textbook manner in the sense that they are also imptinted in the context of the adult human DLPFC.  Indeed our analyses show that they are not necessarily imprinted in that context.
+
+reviewer #2
+How robust are the model fit conclusions (e.g. about age random effect) to changes in gene selection (i.e. taking more or less imprinted genes with skewed allelic ratio?)
+authors
+As the reviewer suggested we fitted the model for subsets of the genes and the results are qualitatively quite similar (but of course less significant because there are fewer genes and data points in a given subset than in the entire data set).  These new results are presented in a new supplementary table (Table S3).
+
+reviewer #2
+why did the authors not test disease status as a fixed effect for one gene at a time
+authors
+We did in fact test the effect of disease status (Dx) as a fixed effect on each of the 30 imprinted gene.  But we didn’t emphasize these because the fixed effects model is less robust and powerful than the mixed model.  In any case the results based on fixed effects modeling were shown in Fig S9 and remain there.
+
+reviewer #2
+why did the authors not test disease status [...] not only considering the 30 genes but all ~5k genes
+authors
+We did not investigate thousands of non-imprinted genes for two reasons.  First the scope of our work is imprinted genes.  Second the results for imprinted genes show that disease status has at most a mild effect on read count ratio while effects of other variables (including technical ones) are substantial.  Hence multivariate modeling is required to isolate the effect of disease status.  But fitting multivariate regression models---especially the powerful mixed ones we used for the 30 imprinted genes---is computationally very costly.  It is not feasible to do on hundreds let alone thousands of genes.
+
+reviewer #2
+According to figure 4 they tested the 30 genes one at a time (although I don’t find the corresponding model described in the methods section).
+authors
+Figure 4 presents only a qualitative analysis of the potential effect of disease status on read count ratio.  As mentioned earler quantitiative analysis included both joint (mixed) modeling as well as less powerful and robust one-at-a-time (fixed effects) modeling of genes.  Both kind of modeling is described in Methods sections 2.9 - 2.11.
+
+reviewer #2
+Why not more than 30?
+authors
+Fig S12 has been added which shows the "Distribution of read count ratio in Control Schizophrenic (SCZ) and Affective spectrum disorder (AFF) individuals for randomly selected not imprinted genes."
+
+reviewer #2
+The model fit descriptions on page 4 (bottom half) are far too technical for the readership of Nat Comms. Please better describe the meaning of the significant random effect components (e.g. indirect component of the age effect).
+authors
+Table I and its legend have been carefully restructured edited and extended to simply and clearly present the hypothesis tests based on mixed models the results and the interpretation of the results.
+
+reviewer #2
+"Of 15584 genes with RNA-seq data 5307 genes passed our filters designed to remove genes with scarce RNA-seq data reflecting low expression and/or low coverage of RNA-seq (Methods Section 2.5)." -- It seems a bit too stringent as a filter: many potential genes with allelic bias may have been thrown out at this stage. Is the method so sensitive that such harsh filters are necessary or is it simply being overly cautious? If it is the former it would need to be mentioned as a weakness that only a third of the genes can be tested.
+authors
+We share the concern of the reviewer.  The problem is that we cannot make use of all reads that map to the exome but only those that map to heterozygous SNPs in the exome.  This dramatically reduces the amount of data informative on allelic bias and thus after careful consideration we decided that the filtering was essential for us to be able to perform robust analyses (and avoid pitfalls that have been pointed out in some the earlier published work).
+
+reviewer #2
+I do not see how low power can be excluded here: "That this key result is not due to low power is indicated by the highly significant dependence of read count ratio on gene identity" Just because genes have different read count ratios it proves that the study was well-powered to detect differences between normal and SCZ brains?
+authors
+The main text has been updated with the following explanation: "This key result is not due to low power. This is because in the mixed model the Gene variable (which identifies the gene that a particular data point corresponds to) is similar to the Dx variable (reporting on disease status) in that they are both categorical and are modeled as random effects.  If Dx had an effect size that is comparable to the effect of Gene than that effect would be detected by our model based inference since the effect of Gene is highly significant.
+
+reviewer #2
+Where is the "nearly unbiased allelic expression" test used in the manuscript?
+authors
+We used that test to derive the black bars in Fig 3.  We did actually mention this in the main text (page 4 paragraph 1) so we leave the corresponding part of the manuscript unchanged.
+
