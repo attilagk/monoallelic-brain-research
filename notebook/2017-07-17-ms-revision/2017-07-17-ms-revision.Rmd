@@ -3,8 +3,13 @@ layout: default
 tags: [ manuscript, ]
 ---
 
+Sequential versions of the manuscript in PDF and RTF format as well as checklist for revision and resubmission to Nature Communications.
+
+The checklist can be found [here]({{ site.baseurl}}/assets/projects/monoallelic-brain/nat-comms-checklist.csv).
+
 Recent versions of the manuscript are listed in reverse chronological order and can be downloaded via the links.
 
+1. [pdf]({{ site.baseurl }}/assets/projects/monoallelic-brain/2018-03-14-monoall-ms.pdf) and [rtf]({{ site.baseurl }}/assets/projects/monoallelic-brain/2018-03-14-monoall-ms.rtf) as of 2018-03-14
 1. [pdf]({{ site.baseurl }}/assets/projects/monoallelic-brain/2018-03-06-monoall-ms.pdf) and [rtf]({{ site.baseurl }}/assets/projects/monoallelic-brain/2018-03-06-monoall-ms.rtf) as of 2018-03-06
 1. [pdf]({{ site.baseurl }}/assets/projects/monoallelic-brain/2018-02-01-monoall-ms.pdf) and [rtf]({{ site.baseurl }}/assets/projects/monoallelic-brain/2018-02-01-monoall-ms.rtf) as of 2018-02-01
 1. [pdf]({{ site.baseurl }}/assets/projects/monoallelic-brain/2017-12-12-monoall-ms.pdf) and [rtf]({{ site.baseurl }}/assets/projects/monoallelic-brain/2017-12-12-monoall-ms.rtf) as of 2017-12-12
