@@ -7,7 +7,7 @@ Daniel Andergassen, Christoph~P Dotter, Daniel Wenzel, Verena Sigl, Philipp~C
   Pauler, and Quanah~J Hudson.
 \newblock Mapping the mouse allelome reveals tissue-specific regulation of
   allelic expression.
-\newblock {\em eLife}, 6, August 2017.
+\newblock 6.
 
 \bibitem{Babak2015}
 Tomas Babak, Brian DeVeale, Emily~K Tsang, Yiqi Zhou, Xin Li, Kevin~S Smith,
@@ -15,7 +15,7 @@ Tomas Babak, Brian DeVeale, Emily~K Tsang, Yiqi Zhou, Xin Li, Kevin~S Smith,
   Montgomery, and Hunter~B Fraser.
 \newblock Genetic conflict reflected in tissue-specific maps of genomic
   imprinting in human and mouse.
-\newblock {\em Nature genetics}, 47:544--549, May 2015.
+\newblock 47:544--549.
 
 \bibitem{Baran2015}
 Yael Baran, Meena Subramaniam, Anne Biton, Taru Tukiainen, Emily~K. Tsang,
@@ -26,20 +26,19 @@ Yael Baran, Meena Subramaniam, Anne Biton, Taru Tukiainen, Emily~K. Tsang,
   Lappalainen.
 \newblock {The landscape of genomic imprinting across diverse adult human
   tissues}.
-\newblock {\em Genome Research}, 25(7), 2015.
+\newblock 25(7).
 
 \bibitem{Crespi2008}
 Bernard Crespi.
 \newblock {Genomic imprinting in the development and evolution of psychotic
   spectrum conditions.}
-\newblock {\em Biological reviews of the Cambridge Philosophical Society},
-  83(4):441--93, nov 2008.
+\newblock 83(4):441--93.
 
 \bibitem{DeVeale2012}
 Brian DeVeale, Derek van~der Kooy, and Tomas Babak.
 \newblock {Critical evaluation of imprinted gene expression by RNA-seq: A new
   perspective}.
-\newblock {\em PLoS Genetics}, 8(3):e1002600, jan 2012.
+\newblock 8(3):e1002600.
 
 \bibitem{Fromer2016a}
 Menachem Fromer, Panos Roussos, Solveig~K Sieberts, Jessica~S Johnson, David~H
@@ -57,38 +56,36 @@ Menachem Fromer, Panos Roussos, Solveig~K Sieberts, Jessica~S Johnson, David~H
   Katsanis, Enrico Domenici, Bernie Devlin, and Pamela Sklar.
 \newblock {Gene expression elucidates functional impact of polygenic risk for
   schizophrenia.}
-\newblock {\em Nature neuroscience}, sep 2016.
 
 \bibitem{Gregg2010}
 Christopher Gregg, Jiangwen Zhang, James~E. Butler, David Haig, and Catherine
   Dulac.
 \newblock {Sex-Specific Parent-of-Origin Allelic Expression in the Mouse
   Brain}.
-\newblock {\em Science}, 329(5992):682--685, aug 2010.
+\newblock 329(5992):682--685.
 
 \bibitem{Gregg2010a}
 Christopher Gregg, Jiangwen Zhang, Brandon Weissbourd, Shujun Luo, Gary~P
   Schroth, David Haig, and Catherine Dulac.
 \newblock {High-resolution analysis of parent-of-origin allelic expression in
   the mouse brain.}
-\newblock {\em Science (New York, N.Y.)}, 329(5992):643--8, aug 2010.
+\newblock 329(5992):643--8.
 
 \bibitem{Hoffman2016}
 Gabriel~E Hoffman and Eric~E Schadt.
 \newblock {variancePartition: interpreting drivers of variation in complex gene
   expression studies.}
-\newblock {\em BMC bioinformatics}, 17(1):483, nov 2016.
+\newblock 17(1):483.
 
 \bibitem{Horvath2013}
 Steve Horvath.
 \newblock {DNA methylation age of human tissues and cell types.}
-\newblock {\em Genome biology}, 14(10):R115, oct 2013.
+\newblock 14(10):R115.
 
 \bibitem{Isles2006}
 Anthony~R Isles, William Davies, and Lawrence~S Wilkinson.
 \newblock {Genomic imprinting and the social brain.}
-\newblock {\em Philosophical transactions of the Royal Society of London.
-  Series B, Biological sciences}, 361(1476):2229--37, dec 2006.
+\newblock 361(1476):2229--37.
 
 \bibitem{Noor2015}
 Abdul Noor, Lucie Dupuis, Kirti Mittal, Anath~C. Lionel, Christian~R. Marshall,
@@ -104,7 +101,7 @@ Julio~D Perez, Nimrod~D Rubinstein, Daniel~E Fernandez, Stephen~W Santoro,
   Shau-Kwaun Chen, Jun~S Liu, and Catherine Dulac.
 \newblock {Quantitative and functional interrogation of parent-of-origin
   allelic expression biases in the brain.}
-\newblock {\em eLife}, 4:e07860, jan 2015.
+\newblock 4:e07860.
 
 \bibitem{Rees2014}
 Elliott Rees, James T~R Walters, Lyudmila Georgieva, Anthony~R Isles,
@@ -113,19 +110,17 @@ Elliott Rees, James T~R Walters, Lyudmila Georgieva, Anthony~R Isles,
   Owen, and George Kirov.
 \newblock {Analysis of copy number variations at 15 schizophrenia-associated
   loci.}
-\newblock {\em The British journal of psychiatry : the journal of mental
-  science}, 204(2):108--14, feb 2014.
+\newblock 204(2):108--14.
 
 \bibitem{Sullivan2012}
 Patrick~F Sullivan, Mark~J Daly, and Michael O'Donovan.
 \newblock {Genetic architectures of psychiatric disorders: the emerging picture
   and its implications}.
-\newblock {\em Nature Reviews Genetics}, 13(8):537--551, aug 2012.
+\newblock 13(8):537--551.
 
 \bibitem{Ubeda2012}
 Francisco Ubeda and Andy Gardner.
 \newblock {A model for genomic imprinting in the social brain: elders.}
-\newblock {\em Evolution; international journal of organic evolution},
-  66(5):1567--81, may 2012.
+\newblock 66(5):1567--81.
 
 \end{thebibliography}

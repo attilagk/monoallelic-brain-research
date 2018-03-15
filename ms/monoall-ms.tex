@@ -16,7 +16,7 @@
 \usepackage{amsmath, geometry, graphicx, tikz}
 \usepackage{float}
 \usetikzlibrary{arrows.meta}
-\bibliographystyle{plain}
+\bibliographystyle{abbrv}
 
 % https://tex.stackexchange.com/questions/6758/how-can-i-create-a-bibliography-like-a-section
 \usepackage{etoolbox}
@@ -61,25 +61,24 @@ Medicine, Psychiatry and Biomedical Informatics, Vanderbilt University
 
 \clearpage
 
-\section{Main text}
+\section{Abstract}
 
 How gene expression correlates with schizophrenia across individuals is
 beginning to be examined through analyses of RNA-seq from post-mortem brains
-of individuals with disease and control brains~\cite{Fromer2016a}.  Here we
-focus on variation in allele-specific expression, following up on the
-CommonMind Consortium (CMC http://www.synapse.org/CMC) RNA-seq experiments of
-\(>500\) human dorsolateral prefrontal cortex (DLPFC) samples.  Analyzing the
-extent of allelic expression bias---a hallmark of imprinting---we find that
-the number of imprinted human genes is consistent with lower estimates
-(\(\approx 0.5 \%\) of all
-genes)~\cite{Andergassen2017,Babak2015,Baran2015,DeVeale2012,Perez2015} and
-thus contradicts much higher estimates~\cite{Gregg2010a}. Moreover, the handful of
-novel putatively imprinted genes we do find are all in close genomic proximity
-to known imprinted genes.  Joint analysis of the imprinted genes across
-hundreds of individuals allowed us to establish how allelic bias depends on
-various factors.  We find that age and genetic ancestry have gene-specific,
-differential effect on allelic bias.  In contrast, allelic bias appeared
-independent of schizophrenia.  
+of individuals with disease and control brains.  Here we focus on variation in
+allele-specific expression, following up on the CommonMind Consortium (CMC)
+RNA-seq experiments of \(>500\) human dorsolateral prefrontal cortex (DLPFC)
+samples.  Analyzing the extent of allelic expression bias---a hallmark of
+imprinting---we find that the number of imprinted human genes is consistent
+with lower estimates (\(\approx 0.5 \%\) of all genes) and thus contradicts
+much higher estimates. Moreover, the handful of novel putatively imprinted
+genes we do find are all in close genomic proximity to known imprinted genes.
+Joint analysis of the imprinted genes across hundreds of individuals allowed
+us to establish how allelic bias depends on various factors.  We find that age
+and genetic ancestry have gene-specific, differential effect on allelic bias.
+In contrast, allelic bias appeared independent of schizophrenia.  
+
+\section{Introduction}
 
 The observation~\cite{Noor2015,Rees2014} that maternally derived
 microduplications at 15q11-q13---harboring the imprinted gene UBE3A---may not
@@ -89,13 +88,26 @@ imprinted genes in general may play a role in psychotic disorders.  As it is
 known that the extent of imprinting of individual genes varies over different
 tissues we chose to analyze the DLPFC region, which controls complex cognitive and
 executive functions and is known to display functional abnormalities in
-schizophrenia.  We obtained pre-publication DLPFC RNA-seq data from the CMC
-and analyzed allele-specific expression with the idea of (i) identifying
-imprinted genes in the adult human brain and (ii) explaining the
-variability in allelic bias across 579 individuals in terms of their
-psychiatric diagnosis, age at death, etc.  This was facilitated by the
-balanced case-control groups (258 SCZ, 267 Control, 54 bipolar or other
-affective/mood disorder, AFF) and the large age variability in the cohort.
+schizophrenia.
+
+A related question is the number of imprinted genes in the human brain.  Some
+1,300 genes were estimated to be imprinted in the mouse
+brain~\cite{Gregg2010a} but followup studies using mouse or human subjects
+arrived at estimates that are lower with an order of
+magnitude~\cite{Andergassen2017,Babak2015,Baran2015,DeVeale2012,Perez2015}.
+
+We obtained DLPFC RNA-seq data from the CMC~\cite{Fromer2016a}
+(http://www.synapse.org/CMC) and analyzed allele-specific
+expression with the idea of (i) identifying imprinted genes in the adult human
+brain and (ii) explaining the variability in allelic bias across 579
+individuals in terms of their psychiatric diagnosis, age at death, etc.  This
+was facilitated by the balanced case-control groups (258 SCZ, 267 Control, 54
+bipolar or other affective/mood disorder, AFF) and the large age variability
+in the cohort.
+
+\section{Results}
+
+\subsection{Identification of imprinted genes in the adult human brain}
 
 For each individual \(i\) and gene \(g\) we quantified allelic bias based on
 RNA-seq reads using a statistic called \emph{read count ratio} \(S_{ig}\)
@@ -152,6 +164,8 @@ genes in the top 50 that are either
 We included also the \emph{known imprinted} gene UBE3A, which ranked below 50
 but whose score was still substantial (Fig.~\ref{fig:known-genes}) yielding 30
 imprinted genes (panel headers in Fig.~\ref{fig:S-Dx}-\ref{fig:S-age}).
+
+\subsection{Explaining the variability in allelic bias of imprinted genes}
 
 Getting at the central question of our work Fig.~\ref{fig:S-Dx} shows
 that read count ratio is similarly distributed in the Control, SCZ and AFF
@@ -227,6 +241,8 @@ number of data points and in the variability of certain effects across genes.
 In summary age, ancestry, and to a lesser extent gender, are suggested by our
 model-based analysis to exert effect on allelic bias in a way that the
 direction and magnitude of the effect varies across genes.
+
+\section{Discussion}
 
 The number of imprinted genes in the mammalian brain has been controversial:
 some early genome wide studies~\cite{Gregg2010a,Gregg2010} estimated over a
@@ -680,7 +696,138 @@ fitting model'' even thought it may represent only a local optimum in model
 space.
 
 \clearpage
-\bibliography{library}
+%\bibliography{library}
+\begin{thebibliography}{10}
+
+\bibitem{Andergassen2017}
+Daniel Andergassen, Christoph~P Dotter, Daniel Wenzel, Verena Sigl, Philipp~C
+  Bammer, Markus Muckenhuber, Daniela Mayer, Tomasz~M Kulinski, Hans-Christian
+  Theussl, Josef~M Penninger, Christoph Bock, Denise~P Barlow, Florian~M
+  Pauler, and Quanah~J Hudson.
+\newblock Mapping the mouse allelome reveals tissue-specific regulation of
+  allelic expression.
+\newblock {\em eLife}, 6, August 2017.
+
+\bibitem{Babak2015}
+Tomas Babak, Brian DeVeale, Emily~K Tsang, Yiqi Zhou, Xin Li, Kevin~S Smith,
+  Kim~R Kukurba, Rui Zhang, Jin~Billy Li, Derek van~der Kooy, Stephen~B
+  Montgomery, and Hunter~B Fraser.
+\newblock Genetic conflict reflected in tissue-specific maps of genomic
+  imprinting in human and mouse.
+\newblock {\em Nature genetics}, 47:544--549, May 2015.
+
+\bibitem{Baran2015}
+Yael Baran, Meena Subramaniam, Anne Biton, Taru Tukiainen, Emily~K. Tsang,
+  Manuel~A. Rivas, Matti Pirinen, Maria Gutierrez-Arcelus, Kevin~S. Smith,
+  Kim~R. Kukurba, Rui Zhang, Celeste Eng, Dara~G. Torgerson, Cydney Urbanek,
+  Jin~Billy Li, Jose~R. Rodriguez-Santana, Esteban~G. Burchard, Max~A. Seibold,
+  Daniel~G. MacArthur, Stephen~B. Montgomery, Noah~A. Zaitlen, and Tuuli
+  Lappalainen.
+\newblock {The landscape of genomic imprinting across diverse adult human
+  tissues}.
+\newblock {\em Genome Research}, 25(7), 2015.
+
+\bibitem{Crespi2008}
+Bernard Crespi.
+\newblock {Genomic imprinting in the development and evolution of psychotic
+  spectrum conditions.}
+\newblock {\em Biological reviews of the Cambridge Philosophical Society},
+  83(4):441--93, nov 2008.
+
+\bibitem{DeVeale2012}
+Brian DeVeale, Derek van~der Kooy, and Tomas Babak.
+\newblock {Critical evaluation of imprinted gene expression by RNA-seq: A new
+  perspective}.
+\newblock {\em PLoS Genetics}, 8(3):e1002600, jan 2012.
+
+\bibitem{Fromer2016a}
+Menachem Fromer, Panos Roussos, Solveig~K Sieberts, Jessica~S Johnson, David~H
+  Kavanagh, Thanneer~M Perumal, Douglas~M Ruderfer, Edwin~C Oh, Aaron Topol,
+  Hardik~R Shah, Lambertus~L Klei, Robin Kramer, Dalila Pinto, Zeynep~H
+  G{\"{u}}m{\"{u}}ş, A~Ercument Cicek, Kristen~K Dang, Andrew Browne, Cong Lu,
+  Lu~Xie, Ben Readhead, Eli~A Stahl, Jianqiu Xiao, Mahsa Parvizi, Tymor
+  Hamamsy, John~F Fullard, Ying-Chih Wang, Milind~C Mahajan, Jonathan M~J
+  Derry, Joel~T Dudley, Scott~E Hemby, Benjamin~A Logsdon, Konrad Talbot,
+  Towfique Raj, David~A Bennett, Philip~L {De Jager}, Jun Zhu, Bin Zhang,
+  Patrick~F Sullivan, Andrew Chess, Shaun~M Purcell, Leslie~A Shinobu, Lara~M
+  Mangravite, Hiroyoshi Toyoshiba, Raquel~E Gur, Chang-Gyu Hahn, David~A Lewis,
+  Vahram Haroutunian, Mette~A Peters, Barbara~K Lipska, Joseph~D Buxbaum,
+  Eric~E Schadt, Keisuke Hirai, Kathryn Roeder, Kristen~J Brennand, Nicholas
+  Katsanis, Enrico Domenici, Bernie Devlin, and Pamela Sklar.
+\newblock {Gene expression elucidates functional impact of polygenic risk for
+  schizophrenia.}
+\newblock {\em Nature neuroscience}, sep 2016.
+
+\bibitem{Gregg2010}
+Christopher Gregg, Jiangwen Zhang, James~E. Butler, David Haig, and Catherine
+  Dulac.
+\newblock {Sex-Specific Parent-of-Origin Allelic Expression in the Mouse
+  Brain}.
+\newblock {\em Science}, 329(5992):682--685, aug 2010.
+
+\bibitem{Gregg2010a}
+Christopher Gregg, Jiangwen Zhang, Brandon Weissbourd, Shujun Luo, Gary~P
+  Schroth, David Haig, and Catherine Dulac.
+\newblock {High-resolution analysis of parent-of-origin allelic expression in
+  the mouse brain.}
+\newblock {\em Science (New York, N.Y.)}, 329(5992):643--8, aug 2010.
+
+\bibitem{Hoffman2016}
+Gabriel~E Hoffman and Eric~E Schadt.
+\newblock {variancePartition: interpreting drivers of variation in complex gene
+  expression studies.}
+\newblock {\em BMC bioinformatics}, 17(1):483, nov 2016.
+
+\bibitem{Horvath2013}
+Steve Horvath.
+\newblock {DNA methylation age of human tissues and cell types.}
+\newblock {\em Genome biology}, 14(10):R115, oct 2013.
+
+\bibitem{Isles2006}
+Anthony~R Isles, William Davies, and Lawrence~S Wilkinson.
+\newblock {Genomic imprinting and the social brain.}
+\newblock {\em Philosophical transactions of the Royal Society of London.
+  Series B, Biological sciences}, 361(1476):2229--37, dec 2006.
+
+\bibitem{Noor2015}
+Abdul Noor, Lucie Dupuis, Kirti Mittal, Anath~C. Lionel, Christian~R. Marshall,
+  Stephen~W. Scherer, Tracy Stockley, John~B. Vincent, Roberto Mendoza-Londono,
+  and Dimitri~J. Stavropoulos.
+\newblock 15q11.2 duplication encompassing only the {UBE}3a gene is associated
+  with developmental delay and neuropsychiatric phenotypes.
+\newblock 36(7):689--693.
+
+\bibitem{Perez2015}
+Julio~D Perez, Nimrod~D Rubinstein, Daniel~E Fernandez, Stephen~W Santoro,
+  Leigh~A Needleman, Olivia Ho-Shing, John~J Choi, Mariela Zirlinger,
+  Shau-Kwaun Chen, Jun~S Liu, and Catherine Dulac.
+\newblock {Quantitative and functional interrogation of parent-of-origin
+  allelic expression biases in the brain.}
+\newblock {\em eLife}, 4:e07860, jan 2015.
+
+\bibitem{Rees2014}
+Elliott Rees, James T~R Walters, Lyudmila Georgieva, Anthony~R Isles,
+  Kimberly~D Chambert, Alexander~L Richards, Gerwyn Mahoney-Davies, Sophie~E
+  Legge, Jennifer~L Moran, Steven~A McCarroll, Michael~C O'Donovan, Michael~J
+  Owen, and George Kirov.
+\newblock {Analysis of copy number variations at 15 schizophrenia-associated
+  loci.}
+\newblock {\em The British journal of psychiatry : the journal of mental
+  science}, 204(2):108--14, feb 2014.
+
+\bibitem{Sullivan2012}
+Patrick~F Sullivan, Mark~J Daly, and Michael O'Donovan.
+\newblock {Genetic architectures of psychiatric disorders: the emerging picture
+  and its implications}.
+\newblock {\em Nature Reviews Genetics}, 13(8):537--551, aug 2012.
+
+\bibitem{Ubeda2012}
+Francisco Ubeda and Andy Gardner.
+\newblock {A model for genomic imprinting in the social brain: elders.}
+\newblock {\em Evolution; international journal of organic evolution},
+  66(5):1567--81, may 2012.
+
+\end{thebibliography}
 
 \clearpage
 \section{Acknowledgements}

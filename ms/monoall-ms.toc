@@ -1,26 +1,31 @@
-\contentsline {section}{\numberline {1}Main text}{3}
-\contentsline {section}{\numberline {2}Methods}{6}
-\contentsline {subsection}{\numberline {2.1}Defining the read count ratio to quantify allelic bias}{6}
-\contentsline {subsection}{\numberline {2.2}Brain samples, RNA-seq}{6}
-\contentsline {subsection}{\numberline {2.3}Mapping, SNP calling and filtering}{6}
-\contentsline {subsection}{\numberline {2.4}Genotyping and calibration of imputed SNPs}{7}
-\contentsline {subsection}{\numberline {2.5}Quality filtering}{7}
-\contentsline {subsection}{\numberline {2.6}Reference/non-reference allele test to correct for mapping bias and eQTLs}{8}
-\contentsline {subsection}{\numberline {2.7}Test for nearly unbiased allelic expression}{8}
-\contentsline {subsection}{\numberline {2.8}Data transformations}{8}
-\contentsline {subsection}{\numberline {2.9}Statistical models: informal overview}{9}
-\contentsline {subsection}{\numberline {2.10}Statistical models: formal overview}{9}
-\contentsline {subsection}{\numberline {2.11}Detailed syntax and semantics of mixed models}{10}
-\contentsline {subsection}{\numberline {2.12}Model fitting and selection}{11}
-\contentsline {section}{\numberline {3}References}{12}
-\contentsline {section}{\numberline {4}Acknowledgements}{14}
-\contentsline {section}{\numberline {5}Author information}{15}
-\contentsline {subsection}{\numberline {5.1}Affiliation}{15}
-\contentsline {subsection}{\numberline {5.2}Contributions}{15}
-\contentsline {subsection}{\numberline {5.3}Competing financial interests}{15}
-\contentsline {subsection}{\numberline {5.4}Corresponding author}{15}
-\contentsline {section}{\numberline {6}Figures with legends}{16}
-\contentsline {section}{\numberline {7}Tables with legends}{21}
-\contentsline {section}{\numberline {8}Supplementary information}{22}
-\contentsline {subsection}{\numberline {8.1}Supplementary figures with legends}{22}
-\contentsline {subsection}{\numberline {8.2}Supplementary tables with legends}{34}
+\contentsline {section}{\numberline {1}Abstract}{3}
+\contentsline {section}{\numberline {2}Introduction}{3}
+\contentsline {section}{\numberline {3}Results}{3}
+\contentsline {subsection}{\numberline {3.1}Identification of imprinted genes in the adult human brain}{3}
+\contentsline {subsection}{\numberline {3.2}Explaining the variability in allelic bias of imprinted genes}{4}
+\contentsline {section}{\numberline {4}Discussion}{5}
+\contentsline {section}{\numberline {5}Methods}{7}
+\contentsline {subsection}{\numberline {5.1}Defining the read count ratio to quantify allelic bias}{7}
+\contentsline {subsection}{\numberline {5.2}Brain samples, RNA-seq}{7}
+\contentsline {subsection}{\numberline {5.3}Mapping, SNP calling and filtering}{7}
+\contentsline {subsection}{\numberline {5.4}Genotyping and calibration of imputed SNPs}{8}
+\contentsline {subsection}{\numberline {5.5}Quality filtering}{8}
+\contentsline {subsection}{\numberline {5.6}Reference/non-reference allele test to correct for mapping bias and eQTLs}{9}
+\contentsline {subsection}{\numberline {5.7}Test for nearly unbiased allelic expression}{9}
+\contentsline {subsection}{\numberline {5.8}Data transformations}{9}
+\contentsline {subsection}{\numberline {5.9}Statistical models: informal overview}{10}
+\contentsline {subsection}{\numberline {5.10}Statistical models: formal overview}{10}
+\contentsline {subsection}{\numberline {5.11}Detailed syntax and semantics of mixed models}{11}
+\contentsline {subsection}{\numberline {5.12}Model fitting and selection}{12}
+\contentsline {section}{\numberline {6}References}{13}
+\contentsline {section}{\numberline {7}Acknowledgements}{15}
+\contentsline {section}{\numberline {8}Author information}{16}
+\contentsline {subsection}{\numberline {8.1}Affiliation}{16}
+\contentsline {subsection}{\numberline {8.2}Contributions}{16}
+\contentsline {subsection}{\numberline {8.3}Competing financial interests}{16}
+\contentsline {subsection}{\numberline {8.4}Corresponding author}{16}
+\contentsline {section}{\numberline {9}Figures with legends}{17}
+\contentsline {section}{\numberline {10}Tables with legends}{20}
+\contentsline {section}{\numberline {11}Supplementary information}{21}
+\contentsline {subsection}{\numberline {11.1}Supplementary figures with legends}{21}
+\contentsline {subsection}{\numberline {11.2}Supplementary tables with legends}{28}
