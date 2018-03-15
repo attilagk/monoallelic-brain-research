@@ -1,51 +1,63 @@
 This is BibTeX, Version 0.99d (TeX Live 2016/Debian)
 Capacity: max_strings=100000, hash_size=100000, hash_prime=85009
 The top-level auxiliary file: monoall-ms.aux
-The style file: plain.bst
-Illegal, another \bibstyle command---line 63 of file monoall-ms.aux
- : \bibstyle
- :          {plain}
-I'm skipping whatever remains of this command
-Database file #1: library.bib
-You've used 17 entries,
+The style file: abbrv.bst
+I found no \bibdata command---while reading file monoall-ms.aux
+Warning--I didn't find a database entry for "Noor2015"
+Warning--I didn't find a database entry for "Rees2014"
+Warning--I didn't find a database entry for "Gregg2010a"
+Warning--I didn't find a database entry for "Andergassen2017"
+Warning--I didn't find a database entry for "Babak2015"
+Warning--I didn't find a database entry for "Baran2015"
+Warning--I didn't find a database entry for "DeVeale2012"
+Warning--I didn't find a database entry for "Perez2015"
+Warning--I didn't find a database entry for "Fromer2016a"
+Warning--I didn't find a database entry for "Hoffman2016"
+Warning--I didn't find a database entry for "Gregg2010"
+Warning--I didn't find a database entry for "Crespi2008"
+Warning--I didn't find a database entry for "Sullivan2012"
+Warning--I didn't find a database entry for "Horvath2013"
+Warning--I didn't find a database entry for "Ubeda2012"
+Warning--I didn't find a database entry for "Isles2006"
+You've used 0 entries,
             2118 wiz_defined-function locations,
-            632 strings with 10097 characters,
-and the built_in function-call counts, 9903 in all, are:
-= -- 852
-> -- 908
+            528 strings with 4031 characters,
+and the built_in function-call counts, 18 in all, are:
+= -- 0
+> -- 0
 < -- 0
-+ -- 361
-- -- 344
-* -- 1022
-:= -- 1768
-add.period$ -- 51
-call.type$ -- 17
-change.case$ -- 223
++ -- 0
+- -- 0
+* -- 2
+:= -- 7
+add.period$ -- 0
+call.type$ -- 0
+change.case$ -- 0
 chr.to.int$ -- 0
-cite$ -- 17
-duplicate$ -- 185
-empty$ -- 455
-format.name$ -- 344
-if$ -- 1828
+cite$ -- 0
+duplicate$ -- 0
+empty$ -- 1
+format.name$ -- 0
+if$ -- 1
 int.to.chr$ -- 0
-int.to.str$ -- 17
-missing$ -- 17
-newline$ -- 88
-num.names$ -- 34
-pop$ -- 191
+int.to.str$ -- 0
+missing$ -- 0
+newline$ -- 3
+num.names$ -- 0
+pop$ -- 0
 preamble$ -- 1
-purify$ -- 206
+purify$ -- 0
 quote$ -- 0
-skip$ -- 123
+skip$ -- 1
 stack$ -- 0
-substring$ -- 497
-swap$ -- 17
+substring$ -- 0
+swap$ -- 0
 text.length$ -- 0
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 68
+type$ -- 0
 warning$ -- 0
-while$ -- 62
-width$ -- 19
-write$ -- 188
+while$ -- 0
+width$ -- 0
+write$ -- 2
 (There was 1 error message)

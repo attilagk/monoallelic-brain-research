@@ -25,7 +25,7 @@
 \contentsline {subsection}{\numberline {8.3}Competing financial interests}{16}
 \contentsline {subsection}{\numberline {8.4}Corresponding author}{16}
 \contentsline {section}{\numberline {9}Figures with legends}{17}
-\contentsline {section}{\numberline {10}Tables with legends}{20}
-\contentsline {section}{\numberline {11}Supplementary information}{21}
-\contentsline {subsection}{\numberline {11.1}Supplementary figures with legends}{21}
-\contentsline {subsection}{\numberline {11.2}Supplementary tables with legends}{28}
+\contentsline {section}{\numberline {10}Tables with legends}{22}
+\contentsline {section}{\numberline {11}Supplementary information}{23}
+\contentsline {subsection}{\numberline {11.1}Supplementary figures with legends}{23}
+\contentsline {subsection}{\numberline {11.2}Supplementary tables with legends}{35}
