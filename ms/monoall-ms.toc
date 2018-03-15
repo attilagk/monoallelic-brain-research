@@ -17,15 +17,14 @@
 \contentsline {subsection}{\numberline {5.10}Statistical models: formal overview}{10}
 \contentsline {subsection}{\numberline {5.11}Detailed syntax and semantics of mixed models}{11}
 \contentsline {subsection}{\numberline {5.12}Model fitting and selection}{12}
-\contentsline {section}{\numberline {6}References}{13}
-\contentsline {section}{\numberline {7}Acknowledgements}{15}
-\contentsline {section}{\numberline {8}Author information}{16}
-\contentsline {subsection}{\numberline {8.1}Affiliation}{16}
-\contentsline {subsection}{\numberline {8.2}Contributions}{16}
-\contentsline {subsection}{\numberline {8.3}Competing financial interests}{16}
-\contentsline {subsection}{\numberline {8.4}Corresponding author}{16}
-\contentsline {section}{\numberline {9}Figures with legends}{17}
-\contentsline {section}{\numberline {10}Tables with legends}{22}
-\contentsline {section}{\numberline {11}Supplementary information}{23}
-\contentsline {subsection}{\numberline {11.1}Supplementary figures with legends}{23}
-\contentsline {subsection}{\numberline {11.2}Supplementary tables with legends}{35}
+\contentsline {section}{\numberline {6}Acknowledgements}{15}
+\contentsline {section}{\numberline {7}Author information}{16}
+\contentsline {subsection}{\numberline {7.1}Affiliation}{16}
+\contentsline {subsection}{\numberline {7.2}Contributions}{16}
+\contentsline {subsection}{\numberline {7.3}Competing financial interests}{16}
+\contentsline {subsection}{\numberline {7.4}Corresponding author}{16}
+\contentsline {section}{\numberline {8}Figures with legends}{17}
+\contentsline {section}{\numberline {9}Tables with legends}{22}
+\contentsline {section}{\numberline {10}Supplementary information}{23}
+\contentsline {subsection}{\numberline {10.1}Supplementary figures with legends}{23}
+\contentsline {subsection}{\numberline {10.2}Supplementary tables with legends}{35}
