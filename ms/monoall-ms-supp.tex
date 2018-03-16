@@ -1,0 +1,393 @@
+% You can submit either a single PDF file that includes the manuscript text
+% and any display items, or separate files for text, figures and tables.
+%
+% 1500 words, excluding the introductory paragraph, online Methods,
+% references and figure legends
+%
+% TODOs
+% - cover letter
+
+\documentclass[letterpaper]{article}
+%\documentclass[12pt,letterpaper]{article}
+%\setlength{\textwidth}{480pt}
+%\setlength{\textheight}{630pt}
+%\setlength{\voffset}{0pt}
+
+\usepackage{amsmath, geometry, graphicx}
+\usepackage{float}
+\bibliographystyle{plain}
+
+% https://tex.stackexchange.com/questions/6758/how-can-i-create-a-bibliography-like-a-section
+%\usepackage{etoolbox}
+%\patchcmd{\thebibliography}{\section*}{\section}{}{}
+
+\pagestyle{plain}
+
+\title{Normal Expression Bias of Imprinted Genes in Schizophrenia
+(Supplementary Information)}
+
+\author{Attila Guly\'{a}s-Kov\'{a}cs\(^{1,2,\ddagger}\), Ifat Keydar\(^{1,2,8,\ddagger}\), \\
+Eva Xia\(^{1,3}\), Menachem Fromer\(^{2,4,9}\), Gabriel Hoffman\(^{2}\), Douglas
+Ruderfer\(^{2,4,10}\), \\
+CommonMind Consortium, Ravi Sachidanandam\(^{5}\), \\
+Andrew Chess\(^{1,2,6,7,\ast}\)}
+
+\date{Icahn School of Medicine at Mount Sinai (ISMMS)}
+
+\begin{document}
+
+\maketitle
+
+\begin{description}
+\item[1] Department of Cell, Developmental and Regenerative Biology, ISMMS 
+\item[2] Institute for Genomics and Multiscale Biology, Department of Genetics and Genomic Sciences, ISMMS 
+\item[3] Neuroscience Program, The Graduate School of Biomedical Sciences, ISMMS 
+\item[4] Division of Psychiatric Genomics, Department of Psychiatry, ISMMS 
+\item[5] Department of Oncological Sciences, ISMMS 
+\item[6] Fishberg Department of Neuroscience, ISMMS 
+\item[7] Friedman Brain Institute, ISMMS 
+\item[8] Present affiliation: The Simon And Katya Michaeli Bioinformatics
+Laboratory For The Research Of The Genome Department of Human Molecular
+Genetics \& Biochemistry, Sackler Medical School, Tel Aviv University
+\item[9] Present affiliation: Verily Life Sciences
+\item[10] Present affiliation: Division of Genetic Medicine, Departments of
+Medicine, Psychiatry and Biomedical Informatics, Vanderbilt University
+\item[\(\ddagger\)] equal contribution 
+\item[\(\ast\)] correspondence: andrew.chess@mssm.edu 
+\end{description}
+
+\section{Supplementary Figures}
+
+\setcounter{figure}{0}
+\makeatletter 
+%\renewcommand{\thefigure}{S\@arabic\c@figure}
+\renewcommand{\thefigure}{Suppl.~\@arabic\c@figure}
+\makeatother
+
+\begin{figure}[H]
+\begin{center}
+\includegraphics[scale=0.6]{figures/2016-08-08-imprinted-gene-clusters/score-genomic-location-1.png}
+\end{center}
+\caption{
+Clustering of top-scoring genes in the context of human DLPFC around genomic locations that
+had been previously described as imprinted gene clusters in other contexts.
+}
+\label{fig:clusters}
+\end{figure}
+
+\begin{figure}[H]
+\begin{center}
+\includegraphics[scale=0.6]{figures/2016-08-01-ifats-filters/known-genes-1.pdf}
+\caption{Known imprinted genes ranked by the gene score (dark blue bars).
+``Known imprinted'' refers to prior studies on imprinting in the context of
+any tissue and developmental stage.  The length of the
+black bars indicates the fraction of individuals passing the test of nearly
+unbiased expression.}
+\label{fig:known-genes}
+\end{center}
+\end{figure}
+
+\begin{figure}[H]
+\begin{center}
+\includegraphics[scale=0.6]{figures/2016-06-26-trellis-display-of-data/evar-scatterplot-matrix-gg-1.png}
+\end{center}
+\caption{
+Distribution and inter-dependence of explanatory variables.  The diagonal graphs of the
+plot-matrix show the marginal distribution of six variables (Age,
+Institution,...)~while the off-diagonal graphs show pairwise joint
+distributions.  For instance, the upper left graph shows that, in the whole
+cohort, individuals' Age
+ranges between ca.~15 and 105 years and most individuals around 75 years; the
+bottom and right neighbor of this graph both show (albeit in different
+representation) the joint distribution of Age and Institution, from which can
+be seen that individuals from Pittsburg tended to be younger than those from
+the two other institutions.
+}
+\label{fig:predictor-associations}
+\end{figure}
+
+\begin{figure}[H]
+\begin{center}
+\includegraphics[scale=0.6]{figures/2016-11-01-plotting-distribution-of-s/Q-Dx-age-1.pdf}
+\end{center}
+\caption{
+The quasi-log transformed read count ratio \(Q\) and age for imprinted genes.
+See Fig.~5 for the corresponding plots without quasi-log
+transformation and note that statistical inference was done based on the quasi
+log transformed data and not only age but several other explanatory variables
+(Table~\ref{tab:predictors}).
+}
+\label{fig:Q-age}
+\end{figure}
+
+\begin{figure}[H]
+\begin{center}
+\emph{fixed I}
+\includegraphics[scale=0.8]{figures/by-me/monoall-dependencies-2/obs-simple-general/obs-simple-general}
+\hspace{\fill}
+\emph{fixed II}
+\includegraphics[scale=0.8]{figures/by-me/monoall-dependencies-2/obs-simple-general-gene-aspec/obs-simple-general-gene-aspec}
+
+\emph{mixed}
+\includegraphics[scale=0.8]{figures/by-me/monoall-dependencies-2/mixed/mixed}
+\end{center}
+\caption{ Three model structures: two \emph{fixed} (upper left and right) and
+a \emph{mixed} (lower middle) effects multiple regression model.  In all three
+model structures the read count ratio \(Y_g\)---for several genes
+\(g\)---depends somehow on three explanatory variables \(X_j\) like Age or PMI
+(Table~\ref{tab:predictors}).  For each gene \(g\) the probabilistic
+dependence is mediated by fixed \(\beta_{1g},\beta_{2g},\beta_{3g}\) or random
+\(b_{2g},b_{3g}\) regression coefficients.  \emph{fixed II} is a constrained
+version of the \emph{fixed I} model structure such that
+\(\beta_{jg_1}=\beta_{jg_2}=...\equiv \beta_j\), which means that the effect
+of \(X_j\) on \(Y\) does not vary across genes in \emph{fixed II}.  The
+\emph{mixed} model differs from \emph{fixed I}  in the way coefficients across
+genes vary for a given explanatory variable \(X_j\).  In the \emph{fixed I}
+model structure there is no connection among
+\(\beta_{jg_1},\beta_{jg_2},...\), which means that the way \(Y_{g}\), the
+read count ratio for gene \(g\) depends on variable \(X_j\) is completely
+separate from how the read count ratio for any other gene \(g'\)
+(i.e.~\(Y_{g'}\)) depends on \(X_j\).  Consequently, the gene-specific
+substructures of \emph{fixed I} contain no information on each other.  This
+limitation is overcome with the \emph{mixed} model structure because a set of
+coefficients across genes---e.g.~the set \(\{b_{2g}\}_g\))---is modeled as a
+random sample from a normal distribution with parameters \(\mu_2\) and some
+\(\sigma^2_2>0\).  Thus \(\mu_2\) and \(\sigma^2_2\) constitute information on
+the effect that is shared across all genes so that genes ``borrow strength
+from each other''.  When \(\sigma^2_j=0\) in the \emph{mixed} model then all parameters \(\{b_{jg}\}_g\) for
+\(X_j\) are fixed at \(\mu_j\equiv\beta_j\), which is characteristic to the
+\emph{fixed II} model structure.  In the \emph{mixed} model structure this is
+seen for \(X_1\), which therefore has the same effect on \(Y_g\) for every
+gene \(g\).  In this example all explanatory variables are continuous in both
+models.  Any categorical explanatory variable (factor) \(X_j\) with \(K\)
+levels would lead to \(K - 1\) fixed or random coefficients
+\(\beta_{j_1g},...,\beta_{j_{K-1}g}\) or \(b_{j_1g},...,b_{j_{K-1}g}\) for any
+gene \(g\), respectively.  Moreover, if the effect of that categorical \(X_j\)
+is random then it is possible to have a continuous \(X_{j'}\) with a random
+intercept and slope with respect to \(X_j\).  In fact the \emph{mixed} model structure
+(lower middle) is equivalent to another one (not shown), where ``Gene'' is a
+random factor \(X_\mathrm{Gene}\) with random slope for the effects of \(X_2\)
+and \(X_3\).  }
+\label{fig:glm-vs-hierarch}
+\end{figure}
+
+\begin{figure}[H]
+\begin{center}
+\includegraphics[width=0.45\textwidth]{figures/2016-08-23-glm-sampling-distributions/PEG3-1.png}
+\includegraphics[width=0.45\textwidth]{figures/2016-09-23-model-checking/qqnorm-PEG3-1.pdf}
+\includegraphics[width=0.45\textwidth]{figures/2016-09-23-model-checking/homoscedas-PEG3-1.pdf}
+\includegraphics[width=0.45\textwidth]{figures/2016-09-23-model-checking/influence-PEG3-1.pdf}
+\end{center}
+\caption{
+Fitting various fixed regression models, named logi.S, logi2.S, wnlm.S,
+wnlm.Q (Table~\ref{tab:model-names}), on the read count ratio data for the
+PEG3 gene.  Results for models unlm.S, unlm.Q, unlm.R, wnlm.R are omitted for
+clarity and redundancy.  In particular, unlm.Q gave as good fit as wnlm.Q.
+\emph{Upper left:}
+Fitted curves (black lines) and sampling probabilities (magenta-white-cyan
+color gradient) of a version of the four models that is simple in the sense
+that Age is the
+only explanatory variable.  Simple regression is used for this illustration
+only.  For inference and all other plots in this figure multiple regression
+was performed, where Age is only one of several explanatory variables (Table~\ref{tab:predictors}).
+\emph{Upper right (Normality of residuals):} analysis of the normality of the standardized residuals of
+fits suggests wnlm.Q is the best fitting model.
+\emph{Lower left (Homogeneity of error variance):} Similar conclusion can be made by inspecting how the
+standardized deviance residuals depends on the fitted value.  Goodness of fit
+is indicated by the lack of such dependence.  Black curve: LOESS data smoother.
+\emph{Lower right (Influence of outliers):} Influence of each individual on
+the fit quantified by Cook's
+distance (\(y\)-axis).  This is plotted against a function of leverage, which
+quantifies a subcomponent of influence that is restricted to explanatory
+variables (i.e.~individuals with extreme age, PMI,...). In ideal case all data points
+are expected to influence the fit to the same degree and thus have short
+Cook's distance.
+}
+\label{fig:fitting-fixed-PEG3}
+\end{figure}
+
+\begin{figure}[H]
+\begin{center}
+\includegraphics[width=0.45\textwidth]{figures/2016-08-23-glm-sampling-distributions/KCNK9-1.png}
+\includegraphics[width=0.45\textwidth]{figures/2016-09-23-model-checking/qqnorm-KCNK9-1.pdf}
+\includegraphics[width=0.45\textwidth]{figures/2016-09-23-model-checking/homoscedas-KCNK9-1.pdf}
+\includegraphics[width=0.45\textwidth]{figures/2016-09-23-model-checking/influence-KCNK9-1.pdf}
+\end{center}
+\caption{
+Fitting various fixed regression models on read count ratio data for the KCNK9
+gene.  See the legend of Fig.~\ref{fig:fitting-fixed-PEG3} for further details.
+}
+\label{fig:fitting-fixed-KCNK9}
+\end{figure}
+
+\begin{figure}[H]
+\begin{center}
+\includegraphics[width=0.45\textwidth]{figures/2017-03-08-model-checking/qqplot-families-M3-1.pdf}
+\includegraphics[width=0.45\textwidth]{figures/2017-03-08-model-checking/scedasticity-families-M3-1.pdf}
+\end{center}
+\caption{
+Fitting various mixed regression models, named logi.S, logi2.S, wnlm.S,
+wnlm.Q (Table~\ref{tab:model-names}), on the read count ratio data for all
+imprinted genes jointly.  Results for models unlm.S, unlm.Q, unlm.R, wnlm.R are omitted for
+clarity.  The plots suggest
+that unlm.Q and wnlm.Q fit the data the best.  See the legend of
+Fig.~\ref{fig:fitting-fixed-PEG3} for further details. For its faster convergence 
+(not shown) unlm.Q was selected as the favored model for statistical inference.
+}
+\label{fig:fitting-mixed}
+\end{figure}
+
+\begin{figure}[H]
+\begin{center}
+\includegraphics[scale=0.6]{figures/2016-06-22-extending-anova/reg-coef-unlm-Q-ms-1.pdf}
+\end{center}
+\caption{
+Estimated coefficients \(\beta_{jg}\) and \(99\%\) confidence intervals for
+gene \(g\) (\(y\)-axis) and fixed effect \(j\) (panel headers) under the
+\emph{fixed I} model structure (Fig.~\ref{fig:glm-vs-hierarch}).  Below gene
+UBE3A the label fixed II indicates the gene-independent estimate under the \emph{fixed II} model
+(Fig.~\ref{fig:glm-vs-hierarch}).  Positive and negative coefficient indicates
+direct positive and negative dependence of the given gene's read count ratio
+on age, respectively.  Compare with Fig.~5
+and~\ref{fig:pred-rnd-coefs}.
+}
+\label{fig:pred-fixed-coefs}
+\end{figure}
+
+\begin{figure}[H]
+\begin{center}
+\includegraphics[scale=0.6]{figures/2017-07-31-mixed-model-coefs/ranef-gender-gender-gene-m5-all-panels-1.pdf}
+\end{center}
+\caption{
+Predicted random coefficients \(b_{gj}\) for gene \(g\) (\(y\)-axis) and
+random effect \(j\) (panel headers) under the \emph{mixed} model structure
+(Fig.~\ref{fig:glm-vs-hierarch}). Positive and negative coefficient indicates direct positive and
+negative dependence of the given gene's read count ratio on age, respectively,
+while zero coefficient suggests independence of age.  Compare with
+Fig.~5 and~\ref{fig:pred-fixed-coefs}.
+}
+\label{fig:pred-rnd-coefs}
+\end{figure}
+
+\begin{figure}[H]
+\begin{center}
+\includegraphics[scale=0.6]{figures/2016-08-08-imprinted-gene-clusters/2-scores-strip-1.png}
+\includegraphics[scale=0.6]{figures/2016-08-08-imprinted-gene-clusters/2-scores-parallel-1.png}
+\end{center}
+\caption{
+\emph{Top:} Distribution of gene score as defined as \(1 - \mathrm{ECDF}(0.9)\) (threshold
+0.9) or as \(1 - \mathrm{ECDF}(0.7)\) (threshold 0.7).
+\emph{Bottom:} The same gene scores are shown as in the top graph with the
+additional information that points corresponing to the same genes are
+connected by straight lines. This demonstrates that gene rank is roughly consistent between the two
+thresholds.
+}
+\label{fig:2-scores}
+\end{figure}
+
+\begin{figure}[H]
+\begin{center}
+\includegraphics[scale=0.6]{figures/2016-07-19-genome-wide-S/S-Dx-strip-1.pdf}
+\end{center}
+\caption{Distribution of read count ratio in Control, Schizophrenic (SCZ) and
+Affective spectrum disorder (AFF) individuals for randomly selected not
+imprinted genes.}
+\label{fig:S-Dx-rnd-genes}
+\end{figure}
+
+\clearpage
+
+\section{Supplementary Tables}
+
+\setcounter{table}{0}
+\makeatletter 
+\renewcommand{\thetable}{Suppl.~\@arabic\c@table}
+\makeatother
+
+\begin{table}[H]
+\begin{center}
+\begin{tabular}{r|l}
+explanatory variable & levels\\
+\hline
+Age &  \\
+Institution & [MSSM], Penn, Pitt\\
+Gender & [Female], Male\\
+PMI & \\
+Dx & [Control], SCZ, AFF \\
+RIN &  \\
+RNA\_batch & [A], B, C, D, E, F, G, H, 0\\
+Ancestry.1 & \\
+\vdots & \\
+Ancestry.5 &  \\
+\end{tabular}
+\caption{ \emph{Left column:} explanatory variables of read count
+ratio.  \emph{Right column:} levels of each factor-valued (i.e.~categorical)
+variable.  Square brackets \([...]\) surround the baseline level against
+which other levels are contrasted.  \emph{Abbreviations:} PMI: post-mortem
+interval; Dx: disease status; AFF: affective spectrum disorder; SCZ:
+schizophrenia; RIN: RNA integrity number;
+Ancestry.\(k\): the \(k\)-th eigenvalue from the decomposition of genotypes
+indicating population structure.}
+\label{tab:predictors}
+\end{center}
+\end{table}
+
+\begin{table}[H]
+\begin{center}
+\begin{tabular}{ccc}
+%\multicolumn{2}{c}{\replaced{link function and error distribution}{regression models}} \\
+model family & abbrev. & response var.~\\
+\hline
+\emph{u}nweighted \emph{n}ormal \emph{l}inear & unlm  & \(S, Q,\) or \(R\) \\
+\emph{w}eighted \emph{n}ormal \emph{l}inear & wnlm  & \(S, Q,\) or \(R\) \\
+\emph{logi}stic & logi & \(S\) \\
+\emph{logi}stic, \(\frac{1}{2}\times\) down-scaled link fun.~& logi2 & \(S\) \\
+\end{tabular}
+\caption{Fitted regression model families, in which the response variable is the read count ratio with or without some transformation: 
+\(S\)---untransformed, \(Q\)---\emph{q}uasi-log-transformed, and
+\(R\)---\emph{r}ank-transformed read count ratio.  Diagnostic plots
+(Fig.~\ref{fig:fitting-mixed}) and monitoring
+convergence suggested that the \(\mathrm{unlm}.Q\) combination allows the
+best fit for several linear predictors tested.
+}
+\label{tab:model-names}
+\end{center}
+\end{table}
+
+\begin{table}[H]
+\begin{center}
+\begin{tabular}{r|rc|rc}
+data subset                                & \multicolumn{2}{c}{odd ranked genes} & \multicolumn{2}{c}{even ranked genes}\\
+predictor term                             &\(\Delta\)AIC&       p-value          &\(\Delta\)AIC&       p-value          \\
+\hline
+\((1\,|\,\mathrm{Gene})\)                  & \(-61.2\)   & \(5.7\times 10^{-14}\) & \(-59.2\)   & \(1.5\times 10^{-13}\) \\
+\((1\,|\,\mathrm{Dx})\)                    & \(2.0\)     & \(1.0\)                & \(2.0\)     & \(1.0\)                \\
+\((1\,|\,\mathrm{Dx}:\mathrm{Gene})\)      & \(1.9\)     & \(0.71\)               & \(0.0\)     &  \(0.16\)              \\
+\(\mathrm{Age}\)                           & \(0.0\)     & \(0.16\)               & \(2.0\)     & \(0.86\)               \\
+\((\mathrm{Age}\,|\,\mathrm{Gene})\)       & \(-11.8\)   & \(5.8\times 10^{-4}\)  & \(5.1\)     & \(0.43\)               \\
+\(\mathrm{Ancestry.1}\)                    & \(-0.4\)    & \(0.12\)               & \(1.8\)     & \(0.66\)               \\
+\((\mathrm{Ancestry.1}\,|\,\mathrm{Gene})\)& \(-40.1\)   & \(1.3\times 10^{-9}\)  & \(-18.5\)   & \(2.9\times 10^{-5}\)  \\
+\(\mathrm{Ancestry.3}\)                    & \(1.7\)     & \(0.59\)               & \(1.6\)     & \(0.54\)               \\
+\((\mathrm{Ancestry.3}\,|\,\mathrm{Gene})\)& \(-13.3\)   & \(2.9\times 10^{-4}\)  & \(6.0\)     & \(0.55\)               \\
+\((1\,|\,\mathrm{Gender})\)                & \(2.0\)     & \(1.0\)                & \(0.7\)     & \(0.25\)               \\
+\((1\,|\,\mathrm{Gender}:\mathrm{Gene})\)  & \(-2.2\)    & \(4.0\times 10^{-2}\)  & \(0.1\)     & \(0.17\)               \\
+\end{tabular}
+\end{center}
+\caption{Results based on mixed models fitted on two subsets of the data: the
+first subset corresponds to odd ranked genes, while the second to even ranked
+genes (see odd and columns in Fig.~4, Fig.~5, and
+Fig.~\ref{fig:Q-age}).  A few findings are notable.  First, these results are
+less significant in general than those obtained from the full data set
+(Table~1), which follows from the reduction both in the number
+of data points and in the number of genes.  Second, the term
+\((\mathrm{Age}\,|\,\mathrm{Gene})\) is significant for odd ranked genes but
+not for even ranked genes.  This agrees with the qualitative pattern seen in
+Fig.~\ref{fig:Q-age}, where the genes in the odd columns show a pronounced
+variability with respect to age dependence but genes in even columns do not.
+The differences between the two subsets are also explained in part by the fact
+that there happen to be more missing data for even ranked genes.
+}
+\label{tab:mod-sel-sset}
+\end{table}
+
+\end{document}

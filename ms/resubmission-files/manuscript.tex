@@ -131,7 +131,7 @@ To identify imprinted genes in the human adult DLPFC we defined the score of
 each gene \(g\) as the fraction of individuals \(i\) for whom \(S_{ig}>0.9\).
 We ranked all 5307 genes according to their score
 (Fig.~2 bottom right).  An alternative definition of the
-score, \(S_{ig}>0.7\), yielded similar ranking (Supplementary Fig.~11). The
+score, \(S_{ig}>0.7\), yielded similar ranking (Fig.~S11). The
 heat map of the \(S_{\cdot g}\) distribution for ranked genes
 (Fig.~2, lower left) shows that the top \(50\) genes,
 which constitute \(\approx 1\%\) of all genes in our analysis, are
@@ -139,7 +139,7 @@ qualitatively different from the bottom \(\approx 99\%\) exhibiting strongly
 right-shifted distribution of \(S_{\cdot g}\) characteristic to imprinting.
 
 29 of the top-scoring 50 genes fell into previously described imprinted gene
-clusters (Supplementary Fig.~1); 21 of these 29 are \emph{known imprinted}
+clusters (Fig.~S1); 21 of these 29 are \emph{known imprinted}
 genes while 8 are \emph{nearby candidates} defined as genes near
 (\(<1\mathrm{Mb}\) of) \emph{known imprinted} ones but themselves previously
 not shown to be imprinted (blue and green \(y\)-axis labels in
@@ -158,7 +158,7 @@ status.  This prompted us to call imprinted in the adult human DLPFC those
 genes in the top 50 that are either
 \emph{known imprinted} or \emph{nearby candidates}.
 We included also the \emph{known imprinted} gene UBE3A, which ranked below 50
-but whose score was still substantial (Supplementary Fig.~2) yielding 30
+but whose score was still substantial (Fig.~S2) yielding 30
 imprinted genes (panel headers in Fig.~4-5).
 
 \subsection*{Explaining the variability in allelic bias of imprinted genes}
@@ -167,7 +167,7 @@ Getting at the central question of our work Fig.~4 shows
 that read count ratio is similarly distributed in the Control, SCZ and AFF
 group for all 30 imprinted genes suggesting independence between allelic bias and diagnosis of
 schizophrenia.  Similar pattern was observed for not imprinted genes
-(Supplementary Fig.~12).
+(Fig.~S12).
 
 To support the above qualitative result on imprinted genes, we fitted several
 fixed and mixed effects models~\cite{Hoffman2016} that model the dependence of
@@ -175,16 +175,16 @@ read count ratio jointly on all explanatory variables (Methods: ``Statistical
 models---informal overview'', and beyond).  Such joint
 models can capture much of the complex pattern of dependencies in genomic data
 including those we observed within and between technical and biological
-explanatory variables (Supplementary Table~1,
-Supplementary Fig.~3).  For both the fixed and mixed class we
+explanatory variables (Table~S1,
+Fig.~S3).  For both the fixed and mixed class we
 selected the model that fitted the data the best (unlm.Q/wnlm.Q for both fixed
 and mixed models,
-Supplementary Fig.~6-8).
+Fig.~S6,~S7,~S8).
 Fixed and mixed models also agreed qualitatively on gene-specific coefficients
 reporting effects/dependencies
-(Supplementary Fig~9-10). We based final
+(Fig~S10,~S9). We based final
 inference on the selected mixed model because that gains power from letting
-genes ``borrow strength from each other'' (Supplementary Fig.~5).
+genes ``borrow strength from each other'' (Fig.~S5).
 
 Based on the best fitting mixed model (henceforth ``the model'') we could
 formally reject the hypotheses that read count ratio depends on diagnosis as
@@ -202,9 +202,9 @@ and compare panels in Fig.~4).
 Scatter plots suggested that the read count ratio depends negatively on age
 for some imprinted genes, depends positively for others, and is independent of
 age for the rest of imprinted genes (Fig.~5
-and~Supplementary Fig.~4).  This apparent dependence might be indirect, i.e.~one
+and~S4).  This apparent dependence might be indirect, i.e.~one
 that is mediated by some variable(s) ``inbetween'' age and read count ratio
-(Supplementary Fig.~3,~5) but the
+(Fig.~S3,~S5) but the
 model allowed us to isolate the direct component of age dependence: we found
 that the gene-specific random age effect is indeed significant even if no
 fixed effect---which would be shared by all imprinted genes---was supported
@@ -213,7 +213,7 @@ in Table~1).
 
 Based on the model we also predicted
 gene-specific regression coefficients mediating the direct component of age
-effect (Supplementary Fig.~10 top middle).  The predicted coefficients
+effect (Fig.~S10 top middle).  The predicted coefficients
 agreed well with all but a few panels of Fig.~5 the latter of
 which (e.g.~UBE3A) therefore represent purely indirect dependence.
 
@@ -226,10 +226,10 @@ statistical significance, are
 \((\mathrm{Ancestry.3}\,|\,\mathrm{Gene})\) and
 \((1\,|\,\mathrm{Gender}:\mathrm{Gene})\) (Table~1).  The
 corresponding predicted random coefficients are presented in
-Supplementary Fig.~10.
+Fig.~S10.
 
 Finally, we fitted the same mixed models to two subsets of data, each
-containing only 15 genes.  The results (Supplementary Table~3) are
+containing only 15 genes.  The results (Table~S3) are
 qualitatively similar to those based on the full data set with 30 genes apart
 from a few marked differences that are explained by the reduction in both the
 number of data points and in the variability of certain effects across genes.
@@ -489,35 +489,35 @@ Thus, this transformation first ranks individual \(i\) among all individuals
 
 We modeled the dependence of read count ratio of imprinted genes jointly on
 all biological and technical explanatory variables
-(Supplementary Table~1) using several multiple regression models.  Based
+(Table~S1) using several multiple regression models.  Based
 on their structure our models can be classified into two sets of fixed and a
-set of mixed regression models (Supplementary Fig.~5).  Furthermore
+set of mixed regression models (Fig.~S5).  Furthermore
 our models can be also classified based on non-structural properties (link
 function, error distribution, weighting, and the data transformation to read
-count ratio; see model classes in Supplementary Table~2).
+count ratio; see model classes in Table~S2).
 
-Supplementary Fig.~5 explains that among the two fixed and the mixed
+Fig.~S5 explains that among the two fixed and the mixed
 structural model class the mixed one is both more powerful and robust because
 its random effects terms allow gene-specific parts of the model to ``borrow
 strength from each other''.  The cost of the enhanced power in mixed models is
 the lack of estimates and confidence intervals (as well as p-values) for
 gene-specific coefficients (parameters), which the less powerful fixed models
-do provide (Supplementary Fig.~9).  Instead of being estimated,
+do provide (Fig.~S9).  Instead of being estimated,
 gene-specific coefficients in mixed models therefore can only be
 \emph{predicted} without information on confidence surrounding them (see
-Supplementary Fig.~10 for predicted gene-specific coefficients under a
+Fig.~S10 for predicted gene-specific coefficients under a
 mixed model).  Nonetheless, the low power and low robustness of fixed models
-became apparent from results like those in Supplementary Fig.~9 so
+became apparent from results like those in Fig.~S9 so
 we based our final inference (Table~1) on mixed modeling.
 Note, however, that we found an overall qualitative agreement between mixed and
 fixed models regarding gene-specific coefficients (compare
-Supplementary Fig~9 and 10).
+Fig~S10 and S9).
 
 To select the best model within the mixed structural class we compared model
-fit of the non-structural types (Supplementary Fig.~8) and found
+fit of the non-structural types (Fig.~S8) and found
 that the unlm.Q and wnlm.Q types fitted the data the best.  Similar results
 were obtained for fixed models
-(Supplementary Fig.~6,~7).
+(Fig.~S6,~S7).
 
 \subsection*{Statistical models---formal overview}
 \label{sec:regression-overview-formal}
@@ -531,10 +531,10 @@ the response \(y\) is the observed read count ratio that is possibly
 transformed to improve the model's fit to the data.  We performed fitting with
 the lme4 and stats R packages and tested several combinations of
 transformations, link functions, and error distributions
-(Supplementary Table~2).  For inference we used the best fitting
-combination (\(\mathrm{unlm.Q}\), Supplementary Table~2) as assessed by
-the normality and homoscedasticity of residuals (Supplementary Fig.~8,
-also Supplementary Fig.~6,~7) as well
+(Table~S2).  For inference we used the best fitting
+combination (\(\mathrm{unlm.Q}\), Table~S2) as assessed by
+the normality and homoscedasticity of residuals (Fig.~S8,
+also Fig.~S6,~S7) as well
 as by monitoring convergence.
 
 In mixed GLMs the linear predictor \(\eta = X \beta + Z b\) and in fixed GLMS
@@ -542,7 +542,7 @@ In mixed GLMs the linear predictor \(\eta = X \beta + Z b\) and in fixed GLMS
 explanatory variables whereas \(\beta \) and \(b\) are fixed and random
 vectors of regression coefficients that mediate fixed and random effects,
 respectively (see Methods: ``Detailed syntax and semantics of mixed models''
-and Supplementary Fig.~5 for details).
+and Fig.~S5 for details).
 
 Besides the random effects term \(Zb\) the key difference between
 the mixed and fixed models in this study is that the former describes
@@ -559,7 +559,7 @@ models (Methods: ``Model fitting and selection'').
 Here we describe the detailed syntax and semantics of the normal linear mixed
 models combined with a quasi-log transformation \(Q\) of read count ratio as
 this combination was found to provide the best fit
-(Supplementary Fig.~8).  We have data
+(Fig.~S8).  We have data
 on \(579\) individuals and \(30\) imprinted genes and so the response vector is
 \(y=(Q_{i_1g_1},...,Q_{i_{579}g_1},Q_{i_1g_2},...,Q_{i_{579}g_2},...,Q_{i_1g_{30}},...,Q_{i_{579}g_{30}})\).
 The model in matrix notation is
@@ -687,22 +687,6 @@ Q &\sim&
 We refer to this as the ``best
 fitting model'' even thought it may represent only a local optimum in model
 space.
-
-\subsection*{Data availability}
-
-Data and analytical results generated through the CommonMind Consortium are
-available through the CommonMind Consortium Knowledge Portal:
-doi:10.7303/syn2759792.  Intermediate results leading to the final results
-published here are available from the authors at request.
-
-\subsection*{Code availability}
-
-All code developed by A.~Guly\'{a}s-Kov\'{a}cs is available at:\\
-https://github.com/attilagk/monoallelic-brain-notebook
-
-The corresponding lab
-notebook can be browsed as a website at:\\
-https://attilagk.github.io/monoallelic-brain-notebook
 
 %\bibliography{library}
 \begin{thebibliography}{10}
