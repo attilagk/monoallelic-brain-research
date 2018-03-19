@@ -16,6 +16,10 @@ results
 *.pdf
 *.html
 *.swp
+*.zip
+*.tar
+*.gz
+*.gzip
 
 # ignore knitr's cache
 **/cache/
