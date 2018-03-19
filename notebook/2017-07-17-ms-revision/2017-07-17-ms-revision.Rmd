@@ -9,6 +9,11 @@ The checklist can be found [here]({{ site.baseurl}}/assets/projects/monoallelic-
 
 Recent versions of the manuscript are listed in reverse chronological order and can be downloaded via the links.
 
+1. as of 2018-03-19, before resubmission
+    * [manuscript pdf]({{ site.baseurl }}/assets/projects/monoallelic-brain/2018-03-19-monoall-ms.pdf)
+    * [manuscript pdf]({{ site.baseurl }}/assets/projects/monoallelic-brain/2018-03-19-manuscript-changes.pdf) with changes highlighted
+    * [supplementary information pdf]({{ site.baseurl }}/assets/projects/monoallelic-brain/2018-03-19-supplementary-information.pdf)
+    * [supplementary information pdf]({{ site.baseurl }}/assets/projects/monoallelic-brain/2018-03-19-supplementary-information-changes.pdf) with changes highlighted
 1. [pdf]({{ site.baseurl }}/assets/projects/monoallelic-brain/2018-03-14-monoall-ms.pdf) as of 2018-03-14
 1. [pdf]({{ site.baseurl }}/assets/projects/monoallelic-brain/2018-03-06-monoall-ms.pdf) as of 2018-03-06
 1. [pdf]({{ site.baseurl }}/assets/projects/monoallelic-brain/2018-02-01-monoall-ms.pdf) as of 2018-02-01
