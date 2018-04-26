@@ -1,0 +1,19 @@
+Dear Dr Min Cho,
+
+please review the final, revised, version of our manuscript NCOMMS-18-04807A.  As for your questions, we do agree to publish the review-rebuttal communication along with the manuscript, and we approve the suggested Editor's Summary.
+
+The revision contains the following improvements:
+
+1. We followed the advice of reviewer 2 and made the title clearer; the new title is "Unperturbed Expression Bias of Imprinted Genes in Schizophrenia"
+
+2. Also prompted by reviewer 2, we inserted new text as the third-to-last paragraph of the Results section: "Although some of the random effects[...]"
+
+3. We performed copy editing including but not limited to the changes you suggested.  Other changes concern the format of the references (e.g. capitalized journal names).
+
+Along with the LaTeX-formatted manuscript, the figure files, and the supplementary PDF document, we send you the completed manuscript checklist as well as a featured image and the corresponding licensing document.
+
+We believe that open access scientific publishing calls for the advocacy of free or open source software.  Therefore we kindly ask you to improve the format of the manuscript checklist, whose editing is not supported by standard Linux distributions.  Also, the Image Licence to Publish form is a write protected Word document, which prevents direct editing with a word processor.
+
+We are excited to publish the present research study in Nature Communications and thank you and the reviewers for the excellent work and constructive criticism.
+
+The authors
