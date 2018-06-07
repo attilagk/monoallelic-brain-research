@@ -1,0 +1,285 @@
+\documentclass[usenames,dvipsnames]{beamer}
+%\documentclass[handout]{beamer}
+
+% language settings
+%\usepackage{fontspec, polyglossia}
+%\setdefaultlanguage{magyar}
+
+% common packages
+\usepackage{amsmath, multimedia, hyperref, color, multirow}
+\usepackage[table]{xcolor}
+%\usepackage{graphicx}
+
+% TikZ
+\usepackage{tikz}
+%\usetikzlibrary{arrows.meta, decorations.pathmorphing, decorations.pathreplacing, shapes.geometric,mindmap}
+%\usetikzlibrary{shapes.geometric,fadings,bayesnet}
+
+% beamer styles
+\mode<presentation>{
+%\usetheme{Warsaw}
+\usetheme{Boadilla}
+%\usetheme{Antibes}
+%\usecolortheme{beaver}
+\usecolortheme{crane}
+%\usefonttheme{structureitalicserif}
+\setbeamercovered{transparent}
+}
+\setbeamertemplate{blocks}[rounded][shadow=true]
+\AtBeginSubsection[]{
+  \begin{frame}<beamer>{Contents}
+    \tableofcontents[currentsection,currentsubsection]
+  \end{frame}
+}
+%\useoutertheme[]{tree}
+
+% title, etc
+\title{Schizophrenia and Variation of Imprinting}
+\subtitle{Unperturbed Expression Bias of Imprinted Genes in Schizophrenia}
+\author{Attila Guly\'{a}s-Kov\'{a}cs}
+\date{Chess Lab}
+
+\begin{document}
+
+\maketitle
+
+\begin{frame}{Outline}
+\begin{enumerate}
+\item summarize our published study\\
+{\small
+\textbf{Unperturbed Expression Bias of Imprinted Genes in Schizophrenia}\\
+Gulyas-Kovacs et al \textit{Nature Communications}, in press}
+\item demo: lab notebook 
+\item ongoing work: brain somatic mozaicism 
+\end{enumerate}
+\end{frame}
+
+\begin{frame}{The complex genetic architecture of schizophrenia}
+\includegraphics[width=1.0\textwidth]{figures/from-others/sullivan-natrevgenet-2012-fig1b.jpg}
+
+{\tiny Sullivan 2012 Nat Rev Genet.}
+\end{frame}
+
+\begin{frame}[t, label=sister-disorders]{Imprinted genes: role in
+schizophrenia?}
+\includegraphics[width=1.0\textwidth]{figures/from-others/peters-2014-imprinting-fig1b.jpg}
+
+%{\tiny Peters 2014}
+\begin{columns}[t]
+\begin{column}{0.5\textwidth}
+%{\tiny Angelman syndrome. Boy with a puppet}
+
+\includegraphics<2>[width=0.60\columnwidth]{figures/from-others/boy-with-a-puppet-Giovanni-Francesco-Caroto.jpg}
+
+%{\tiny Boy with a Puppet}
+\end{column}
+\begin{column}{0.5\textwidth}
+%{\tiny Prader-Willi syndr.  Eugenia ``La Monstrua''}
+
+\includegraphics<2>[width=0.70\columnwidth]{figures/from-others/Eugenia-Martínez-Vallejo-clothed-cropped.jpg}
+
+%{\tiny Eugenia Mart\'{i}nez Vallejo}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Our study as part of the CommonMind Consortium}
+previous work
+\begin{itemize}
+\item RNA-seq on Control, SCZ, AFF individuals
+\item allele nonspecific expression 
+\item Fromer et al\footnote{Nature Neuroscience , 19(11):1442} found
+differences
+\end{itemize}
+\vfill
+
+present study
+\begin{itemize}
+\item allele specific expression
+\item which genes are imprinted in human DLPF cortex?
+\item inter-individual variation of imprinting: schizophrenia?
+\end{itemize} 
+\end{frame}
+
+\begin{frame}[label=cmc]{We adopted the \emph{read count ratio} approach}
+\includegraphics[width=1.0\textwidth]{figures/by-me/commonmind-rna-seq/commonmind-rna-seq.pdf}
+\end{frame}
+
+\begin{frame}{Identification of 30 imprinted genes in human DLFPC}
+\begin{center}
+\includegraphics[height=0.85\textheight]{figures/2016-07-19-genome-wide-S/complex-plot-1.png}
+\end{center}
+\end{frame}
+
+\begin{frame}{Univariate analysis: Control, SCZ, AFF similar}
+\begin{center}
+\includegraphics[height=0.85\textheight]{figures/2016-11-01-plotting-distribution-of-s/S-Dx-strip-1.pdf}
+\end{center}
+\end{frame}
+
+\begin{frame}{Univariate analysis: age effect}
+\begin{center}
+\includegraphics[height=0.85\textheight]{figures/2016-11-01-plotting-distribution-of-s/S-Dx-age-1.pdf}
+\end{center}
+\end{frame}
+
+\begin{frame}{Data call for multivariate analysis}
+\footnotesize
+\begin{tabular}{|c|ccc|cccc|}
+ & \multicolumn{3}{|c|}{read count ratios} & \multicolumn{4}{|c|}{explanatory variables} \\
+\(i\) & \(Y_1\) & \(\hdots\) & \(Y_{30}\) & \(X_1\) & \(X_2\) & \(\hdots\) & \(X_{12}\) \\
+\textbf{Individual} & \textbf{MAGEL2} & \(\hdots\) & \textbf{UBE3A} & \textbf{Dx} & \textbf{Age} & \(\hdots\) & \textbf{RIN} \\
+\hline
+1 & NA & \(\hdots\) & NA & AFF & 42 & \(\hdots\) & 6.90 \\
+2 & 1.00 & \(\hdots\) & NA & AFF & 58 & \(\hdots\) & 7.00 \\
+3 & NA & \(\hdots\) & 0.89 & AFF & 28 & \(\hdots\) & 6.90 \\
+\(\vdots\) & \(\vdots\) & \(\vdots\) & \(\vdots\) & \(\vdots\) & \(\vdots\) & \(\vdots\) & \(\vdots\) \\
+%574 & NA & \(\vdots\) & 0.90 & SCZ & 59 & \(\vdots\) & 8.60 \\
+%575 & NA & \(\vdots\) & NA & Control & 38 & \(\vdots\) & 8.30 \\
+576 & 0.97 & \(\hdots\) & NA & Control & 42 & \(\hdots\) & 8.50 \\
+577 & 1.00 & \(\hdots\) & NA & SCZ & 27 & \(\hdots\) & 7.50 \\
+578 & 1.00 & \(\hdots\) & NA & Control & 57 & \(\hdots\) & 8.60 \\
+579 & 1.00 & \(\hdots\) & 1.00 & Control & 28 & \(\hdots\) & 7.70 \\
+\end{tabular}
+\end{frame}
+
+\begin{frame}{Multivariate statistical models}
+\begin{columns}[t]
+\begin{column}{0.33\textwidth}
+\emph{fixed I}
+
+\includegraphics[scale=0.8]{figures/by-me/monoall-dependencies-2/obs-simple-general/obs-simple-general}
+\end{column}
+
+\begin{column}{0.33\textwidth}
+\emph{fixed II}
+
+\includegraphics[scale=0.8]{figures/by-me/monoall-dependencies-2/obs-simple-general-gene-aspec/obs-simple-general-gene-aspec}
+\end{column}
+\begin{column}{0.33\textwidth}
+\emph{mixed}
+
+\includegraphics[scale=0.8]{figures/by-me/monoall-dependencies-2/mixed/mixed}
+\end{column}
+\end{columns}
+\vfill
+\begin{itemize}
+\item fixed I: too complex \(\Rightarrow\) low power
+\item fixed II: too simplistic \(\Rightarrow\) bias
+\item mixed: powerful middle ground---even with interactions
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Results and interpretation}
+\footnotesize
+\begin{tabular}{rll}
+\hline
+\textbf{Hypothesis}                      & \textbf{Results}             & \textbf{Interpretation}                               \\
+predictor term                             & p-value                &                                              \\
+\hline
+\((1\,|\,\mathrm{Gene})\)                   & \(8.5\times 10^{-28}\) & imprinted genes vary in allelic bias     \\
+\colorbox{pink}{\((1\,|\,\mathrm{Dx})\)}                     & \colorbox{pink}{\(1.0\)}                & similar allelic bias for Control, SCZ, AFF \\
+\colorbox{pink}{\((1\,|\,\mathrm{Dx}:\mathrm{Gene})\)}       & \colorbox{pink}{\(0.21\)}               & similar gene specific allelic bias for Control, SCZ, AFF    \\
+\(\mathrm{Age}\)                            & \(0.39\)               & no uniform effect of Age on allelic bias               \\
+\colorbox{LimeGreen}{\((\mathrm{Age}\,|\,\mathrm{Gene})\)}        & \colorbox{LimeGreen}{\(2.5\times 10^{-5}\)}  & gene specific effect of Age on allelic bias                \\
+\(\mathrm{Ancestry.1}\)                     & \(0.24\)               & no uniform genetic effect on allelic bias               \\
+\colorbox{LimeGreen}{\((\mathrm{Ancestry.1}\,|\,\mathrm{Gene})\)} & \colorbox{LimeGreen}{\(4.6\times 10^{-16}\)} & gene specific genetic effect on allelic bias               \\ %\(\mathrm{Ancestry.3}\)                     & \(0.54\)               & no uniform genetic effect on allelic bias               \\
+%\((\mathrm{Ancestry.3}\,|\,\mathrm{Gene})\) & \(3.8\times 10^{-5}\)  & gene specific genetic effect on allelic bias               \\
+\((1\,|\,\mathrm{Gender})\)                 & \(1.0\)                & no uniform Male-Female difference in allelic bias       \\
+\colorbox{LimeGreen}{\((1\,|\,\mathrm{Gender}:\mathrm{Gene})\)}   & \colorbox{LimeGreen}{\(5.5\times 10^{-3}\)}  & gene specific Male-Female difference in allelic bias       \\
+\hline
+\end{tabular}
+\end{frame}
+
+\begin{frame}{Lab notebook}
+aims
+\begin{enumerate}
+\item efficient presentation 
+\begin{itemize}
+\item<2> web: shareability, hyperlinks, figures, math typesetting,...
+\end{itemize}
+\item reproducible research
+\begin{itemize}
+\item<2> version control: \texttt{git}
+\item<2> literate programming: include code chunks
+\item<2> dynamic documents: code \(\Rightarrow\) output
+\end{itemize}
+\end{enumerate}
+\end{frame}
+
+\begin{frame}{Brain Somatic Mosaicism}
+\includegraphics[width=1.0\columnwidth]{figures/from-others/gage-curropsysbio-2016-1.jpg}
+
+{\tiny Paquola, Erwin, Gage 2016}
+\end{frame}
+
+\begin{frame}{Detection of somatic variants}
+\includegraphics[width=1.0\textwidth]{figures/from-others/bsm-science-fig2.jpg}
+
+{\tiny Science. 2017 356(6336)}
+\end{frame}
+
+\begin{frame}{No single best variant caller method}
+\begin{center}
+\includegraphics{figures/by-me/var-calling-workflows/var-calling-workflows.pdf}
+\end{center}
+\end{frame}
+
+\begin{frame}{Low concordance of callsets}
+\begin{center}
+\includegraphics[height=0.85\textheight]{figures/2018-04-08-call-set-concordance/venn-common-sample-wgs-snvs-1.png}
+\end{center}
+\end{frame}
+
+\begin{frame}{Ongoing work}
+dealing with error
+\begin{itemize}
+\item estimate error rates using gold standard DNA
+\item optimization---machine learning
+\end{itemize}
+\vfill
+somatic variants and schizophrenia
+\begin{itemize}
+\item comparison of Control and SCZ samples
+\end{itemize} 
+\end{frame}
+
+\begin{frame}{Acknowledgements}
+thanks to
+\begin{itemize}
+\item Andy Chess
+\item Chaggai Rosenbluh
+\item Eva Xia 
+\end{itemize}
+\vfill
+publications
+\begin{itemize}
+\item Gulyas-Kovacs et al 2018 \\
+\emph{Nature Communications, in press\\
+bioRxiv 329748; doi: https://doi.org/10.1101/329748 }
+\item my lab notebook\\
+\emph{https://attilagk.github.io/monoallelic-brain-notebook/}
+\end{itemize}
+\begin{columns}[t]
+\begin{column}{0.5\textwidth}
+\end{column}
+
+\begin{column}{0.5\textwidth}
+\end{column}
+\end{columns}
+\end{frame}
+
+\end{document}
+
+
+
+\begin{columns}[t]
+\begin{column}{0.5\textwidth}
+
+\end{column}
+
+\begin{column}{0.5\textwidth}
+
+\end{column}
+\end{columns}
+
