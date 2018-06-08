@@ -7,7 +7,7 @@
 
 % common packages
 \usepackage{amsmath, multimedia, hyperref, color, multirow}
-\usepackage[table]{xcolor}
+\usepackage{xcolor}
 %\usepackage{graphicx}
 
 % TikZ
@@ -50,7 +50,7 @@
 \textbf{Unperturbed Expression Bias of Imprinted Genes in Schizophrenia}\\
 Gulyas-Kovacs et al \textit{Nature Communications}, in press}
 \item demo: lab notebook 
-\item ongoing work: brain somatic mozaicism 
+\item ongoing work: brain somatic mosaicism 
 \end{enumerate}
 \end{frame}
 
@@ -67,14 +67,14 @@ schizophrenia?}
 %{\tiny Peters 2014}
 \begin{columns}[t]
 \begin{column}{0.5\textwidth}
-%{\tiny Angelman syndrome. Boy with a puppet}
+{\tiny Angelman syndrome}
 
 \includegraphics<2>[width=0.60\columnwidth]{figures/from-others/boy-with-a-puppet-Giovanni-Francesco-Caroto.jpg}
 
 %{\tiny Boy with a Puppet}
 \end{column}
 \begin{column}{0.5\textwidth}
-%{\tiny Prader-Willi syndr.  Eugenia ``La Monstrua''}
+{\tiny Prader-Willi syndrome}
 
 \includegraphics<2>[width=0.70\columnwidth]{figures/from-others/Eugenia-Martínez-Vallejo-clothed-cropped.jpg}
 
@@ -86,17 +86,16 @@ schizophrenia?}
 \begin{frame}{Our study as part of the CommonMind Consortium}
 previous work
 \begin{itemize}
-\item RNA-seq on Control, SCZ, AFF individuals
-\item allele nonspecific expression 
-\item Fromer et al\footnote{Nature Neuroscience , 19(11):1442} found
-differences
+\item RNA-seq on Control, schizophrenic (SCZ), and AFF individuals
+\item dorsolateral prefrontal cortex (DLPFC)
+\item differences in allele nonspecific expression\footnote{Fromer et al Nature Neuroscience , 19(11):1442}
 \end{itemize}
 \vfill
 
 present study
 \begin{itemize}
 \item allele specific expression
-\item which genes are imprinted in human DLPF cortex?
+\item which genes are imprinted in human DLPFC?
 \item inter-individual variation of imprinting: schizophrenia?
 \end{itemize} 
 \end{frame}
@@ -111,66 +110,77 @@ present study
 \end{center}
 \end{frame}
 
-\begin{frame}{Univariate analysis: Control, SCZ, AFF similar}
+\begin{frame}[label=Dx]{Univariate analysis: Control, SCZ, AFF similar}
 \begin{center}
 \includegraphics[height=0.85\textheight]{figures/2016-11-01-plotting-distribution-of-s/S-Dx-strip-1.pdf}
 \end{center}
 \end{frame}
 
-\begin{frame}{Univariate analysis: age effect}
+\begin{frame}[label=age]{Univariate analysis: age effect}
 \begin{center}
 \includegraphics[height=0.85\textheight]{figures/2016-11-01-plotting-distribution-of-s/S-Dx-age-1.pdf}
 \end{center}
 \end{frame}
 
-\begin{frame}{Data call for multivariate analysis}
-\footnotesize
-\begin{tabular}{|c|ccc|cccc|}
- & \multicolumn{3}{|c|}{read count ratios} & \multicolumn{4}{|c|}{explanatory variables} \\
-\(i\) & \(Y_1\) & \(\hdots\) & \(Y_{30}\) & \(X_1\) & \(X_2\) & \(\hdots\) & \(X_{12}\) \\
-\textbf{Individual} & \textbf{MAGEL2} & \(\hdots\) & \textbf{UBE3A} & \textbf{Dx} & \textbf{Age} & \(\hdots\) & \textbf{RIN} \\
-\hline
-1 & NA & \(\hdots\) & NA & AFF & 42 & \(\hdots\) & 6.90 \\
-2 & 1.00 & \(\hdots\) & NA & AFF & 58 & \(\hdots\) & 7.00 \\
-3 & NA & \(\hdots\) & 0.89 & AFF & 28 & \(\hdots\) & 6.90 \\
-\(\vdots\) & \(\vdots\) & \(\vdots\) & \(\vdots\) & \(\vdots\) & \(\vdots\) & \(\vdots\) & \(\vdots\) \\
-%574 & NA & \(\vdots\) & 0.90 & SCZ & 59 & \(\vdots\) & 8.60 \\
-%575 & NA & \(\vdots\) & NA & Control & 38 & \(\vdots\) & 8.30 \\
-576 & 0.97 & \(\hdots\) & NA & Control & 42 & \(\hdots\) & 8.50 \\
-577 & 1.00 & \(\hdots\) & NA & SCZ & 27 & \(\hdots\) & 7.50 \\
-578 & 1.00 & \(\hdots\) & NA & Control & 57 & \(\hdots\) & 8.60 \\
-579 & 1.00 & \(\hdots\) & 1.00 & Control & 28 & \(\hdots\) & 7.70 \\
-\end{tabular}
-\end{frame}
 
-\begin{frame}{Multivariate statistical models}
+\begin{frame}[t]{Multivariate statistical models}
+\footnotesize
+\begin{eqnarray*}
+y_g &\sim&
+1 +
+\text{Dx} + 
+\text{Age} + 
+\text{Ances.1} + 
+... +
+\text{Ances.5} + 
+\text{Gender} + 
+\text{Instit} + 
+\text{PMI} + 
+\text{batch} + 
+\text{RIN} \\
+%y &=& X \beta + \varepsilon \\
+\visible<3>{
+y &\sim& \overbrace{1 + \mathrm{Age}}^{\text{fixed effect}} +
+\overbrace{\underbrace{(1 + \mathrm{Age} + \mathrm{Ancestry.1} \,|\,
+\mathrm{Gene})}_{k=1} +
+\underbrace{(1 \,|\, \mathrm{Dx}:\mathrm{Gene})}_{k=2}}^{\text{random
+effects}}
+%\\
+%y &=& X \beta + Z b + \varepsilon
+}
+\end{eqnarray*}
 \begin{columns}[t]
 \begin{column}{0.33\textwidth}
 \emph{fixed I}
 
+\begin{figure}[ht]
 \includegraphics[scale=0.8]{figures/by-me/monoall-dependencies-2/obs-simple-general/obs-simple-general}
+\end{figure}
 \end{column}
 
 \begin{column}{0.33\textwidth}
+\visible<2->{
 \emph{fixed II}
-
+\begin{figure}[ht]
 \includegraphics[scale=0.8]{figures/by-me/monoall-dependencies-2/obs-simple-general-gene-aspec/obs-simple-general-gene-aspec}
+\end{figure}
+}
 \end{column}
 \begin{column}{0.33\textwidth}
+\visible<3>{
 \emph{mixed}
-
+\begin{figure}[ht]
 \includegraphics[scale=0.8]{figures/by-me/monoall-dependencies-2/mixed/mixed}
+\end{figure}
+}
+
 \end{column}
 \end{columns}
-\vfill
-\begin{itemize}
-\item fixed I: too complex \(\Rightarrow\) low power
-\item fixed II: too simplistic \(\Rightarrow\) bias
-\item mixed: powerful middle ground---even with interactions
-\end{itemize}
 \end{frame}
 
-\begin{frame}{Results and interpretation}
+
+
+\begin{frame}[label=results]{Results and interpretation}
 \footnotesize
 \begin{tabular}{rll}
 \hline
@@ -190,6 +200,14 @@ predictor term                             & p-value                &           
 \hline
 \end{tabular}
 \end{frame}
+
+\againframe{Dx}
+
+\againframe{results}
+
+\againframe{age}
+
+\againframe{results}
 
 \begin{frame}{Lab notebook}
 aims
@@ -217,18 +235,6 @@ aims
 \includegraphics[width=1.0\textwidth]{figures/from-others/bsm-science-fig2.jpg}
 
 {\tiny Science. 2017 356(6336)}
-\end{frame}
-
-\begin{frame}{No single best variant caller method}
-\begin{center}
-\includegraphics{figures/by-me/var-calling-workflows/var-calling-workflows.pdf}
-\end{center}
-\end{frame}
-
-\begin{frame}{Low concordance of callsets}
-\begin{center}
-\includegraphics[height=0.85\textheight]{figures/2018-04-08-call-set-concordance/venn-common-sample-wgs-snvs-1.png}
-\end{center}
 \end{frame}
 
 \begin{frame}{Ongoing work}
