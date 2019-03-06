@@ -12,7 +12,7 @@
 
 This computational project is a large part of a biomedical research study at the Mount Sinai School of Medicine in Andy Chess' laboratory.  The study has been published as *Unperturbed expression bias of imprinted genes in schizophreniaa* ([Nat Commun. 2018 Jul 25;9(1):2914](https://www.nature.com/articles/s41467-018-04960-9)).
 
-Along with the research article my lab notebook was published as a [website](https://attilagk.github.io/monoallelic-brain-notebook/), whose source is in my [monoallelic-brain-website](https://github.com/attilagk/monoallelic-brain-website) repository.  The present repository, however, contains not only the source of the articles of lab notebook but also scripts, or $$\LaTeX$$ presentations (see next section) while it lacks the website specific files present in [monoallelic-brain-website](https://github.com/attilagk/monoallelic-brain-website).
+Along with the research article my lab notebook was published as a [website](https://attilagk.github.io/monoallelic-brain-notebook/), whose source is in my [monoallelic-brain-website](https://github.com/attilagk/monoallelic-brain-website) repository.  The present repository, however, contains not only the source of the articles of lab notebook but also scripts, or presentations (see next section) while it lacks the website specific files present in [monoallelic-brain-website](https://github.com/attilagk/monoallelic-brain-website).
 
 ## Structure and content
 
